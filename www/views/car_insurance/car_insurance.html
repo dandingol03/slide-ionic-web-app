@@ -1,0 +1,124 @@
+<ion-view >
+
+
+  <ion-nav-bar class="bar-stable" align-title="center" >
+
+
+    <ion-nav-buttons side="left">
+      <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
+        <i class="ion-chevron-left"></i>
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>
+
+    </ion-nav-title>
+
+
+    <ion-nav-buttons side="right">
+
+      <button class="button button-icon button-clear" >
+        <i class="ion-plus"></i>
+      </button>
+    </ion-nav-buttons>
+
+  </ion-nav-bar>
+
+
+  <ion-content scroll="false">
+
+
+    <div class="list" style="margin-bottom: 0px;">
+      <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
+        <li style="width:33.3%;" ng-repeat="tab in tabs">
+          <div class="cell"
+               ng-class="{true: 'selected', false: ''}[tabIndex==$index]"
+               ng-click="tab_change($index)">
+            <span style="position:absolute;left: 20%;top:40%;">
+              {{tab.mealName}}
+            </span>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+    <div style="height: 80%;">
+      <ion-scroll style="height: 92%;">
+        <!-- 基础套餐 -->
+        <div>
+          <div class="row"
+               ng-repeat="(key, product)  in tabs[tabIndex].products"
+               style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;">
+            <div class="col-80" style="margin-left: 10%;">
+              <label class="item"
+                     style="border:0px;display: inline-block;width: 100%;position: relative"
+                     ng-click="toggle(product,'checked')"
+                >
+                {{product.productName}}
+                <div
+                  style="font-size: 2.5em;display: inline-block;position: absolute;right: 10%;top:0%;"
+                  >
+                  <i ng-if="product.checked!=true" class="ion-ios-checkmark-outline"></i>
+                  <i ng-if="product.checked==true" class="ion-ios-checkmark"></i>
+                </div>
+              </label>
+
+              <label class="item" style="border:0px;display: inline-block;width: 100%;"
+                     ng-if="product.insuranceTypes!==undefined&&product.insuranceTypes!==null"
+                     ng-click="actionSheet(product,'insuranceTypes',['insuranceTypes=>insuranceType','productIds=>productId'])"
+                >
+                保额:
+              <span style="position: absolute;right: 50%;">
+                  {{product.insuranceType}}
+                  <i class="ion-ios-arrow-down"></i>
+                </span>
+
+
+              </label>
+              <label class="item" style="border:0px;display: inline-block;width: 100%;"
+                     ng-if="(product.insuranceTypes==undefined||product.insuranceTypes==null)&&
+                     (product.insuranceType!=null||product.insuranceType!=undefined)"
+                >
+                保额:
+              <span style="position: absolute;right:50%;">
+                  {{product.insuranceType}}
+                </span>
+              </label>
+
+
+
+
+              <label class="item"
+                     style="border:0px;display: inline-block;width: 100%;position: relative"
+                >
+                不计免赔
+                <div class="toggle toggle-assertive" style="position: absolute;right: 6%;">
+                  <input type="checkbox" ng-model="product.irrespective">
+                  <div class="track">
+                    <div class="handle"></div>
+                  </div>
+                </div>
+              </label>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 15%;position: relative"
+           ng-click="openCompanyModal();"
+        >
+        <button style="position: absolute;bottom:30%;" class="button button-block button-positive">
+          确认套餐选择
+        </button>
+      </div>
+    </div>
+
+
+  </ion-content>
+
+
+
+
+</ion-view>
