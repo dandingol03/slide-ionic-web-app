@@ -27,36 +27,6 @@
 
       </div>
 
-      <div class="item"
-           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
-           ng-click="selfGeoLocation(maintain,'geolocation')"
-        >
-        <span class="input-label" style="display: inline-block;width: 35%;">
-          我的位置:
-        </span>
-
-        <span
-          style="display: inline-block;width: 49%;"
-          ng-if="maintain.geolocation==undefined||maintain.geolocation==null"
-          >
-          点击获取位置
-        </span>
-
-         <span
-           style="display: inline-block;width: 49%;"
-           ng-if="maintain.geolocation!==undefined&&maintain.geolocation!==null"
-           >
-          点击刷新地理位置
-        </span>
-
-        <span
-          style="display: inline-block;width: 16%;"
-          >
-          <i class="ion-ios-world-outline" style="font-size: 1.5em;"></i>
-        </span>
-
-      </div>
-
       <button class="button button-block button-calm" ng-click="commit_daily()">
         上报服务
       </button>

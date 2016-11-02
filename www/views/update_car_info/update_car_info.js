@@ -5,7 +5,8 @@ angular.module('starter')
   .controller('updateCarInfoController',function($scope,$state,$http,$rootScope,$ionicActionSheet,
                                                $cordovaFileTransfer,$cordovaFile,
                                                  $cordovaCamera,$cordovaImagePicker,Proxy,
-                                                 $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate){
+                                                 $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate,
+                                                 $timeout){
 
 
     $scope.licenseIndexChange=function(i) {
@@ -211,6 +212,38 @@ angular.module('starter')
     $scope.blurFrameNum=function(){
       $scope.frameNumHint='hidden list';
     }
+
+      $scope.firstTabHint='hidden list';
+      $scope.firstTabStyle={display:'none'};
+      $scope.focusInFirstTab=function(){
+        $scope.firstTabHint='hidden list';
+      }
+      $scope.blurFirstTab=function(){
+        $scope.firstTabHint='list';
+        $scope.firstTabStyle='';
+        $timeout(function(){
+          $scope.firstTabHint='hidden list';
+          $scope.firstTabStyle={display:'none'};
+        },1000);
+      }
+
+
+      $scope.secondTabHint='list';
+      $timeout(function(){
+        $scope.secondTabHint='hidden list';
+      },3000);
+
+      $scope.focusInSecondTab=function(){
+        $scope.secondTabHint='hidden list';
+      }
+      $scope.blurSecondTab=function(){
+        $scope.secondTabHint='list';
+        $timeout(function(){
+          $scope.secondTabHint='hidden list';
+        },1000);
+      }
+
+
 
     $scope.slideDescriptionHint='list';
     /***  悬浮窗  ***/
