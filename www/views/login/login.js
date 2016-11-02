@@ -95,6 +95,9 @@ angular.module('starter')
 
 
 
+
+
+
     $scope.doLogin=function(){
       if($rootScope.registrationId==undefined||$rootScope.registrationId==null||$rootScope.registrationId=='')
       {
