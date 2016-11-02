@@ -3,9 +3,9 @@
  */
 angular.module('starter')
 
-  .controller('appendCarInsurancederController',function($scope,$state,$http, $location,
-                                                $rootScope,$ionicActionSheet,$cordovaCamera,$cordovaImagePicker,
-                                                $ionicModal,Proxy,$stateParams,$cordovaFileTransfer){
+  .controller('appendLifeBenefiterController',function($scope,$state,$http, $location,
+                                                          $rootScope,$ionicActionSheet,$cordovaCamera,$cordovaImagePicker,
+                                                          $ionicModal,Proxy,$stateParams,$cordovaFileTransfer){
 
     $scope.go_back=function(){
       window.history.back();
@@ -16,7 +16,29 @@ angular.module('starter')
       $scope.tabIndex=i;
     };
 
-    $scope.insuranceder={};
+
+    if($stateParams.info!==undefined&&$stateParams.info!==null)
+    {
+      var info=$stateParams.info;
+      if(Object.prototype.toString.call(info)=='[object String]')
+        info=JSON.parse(info);
+      if(info.order!==undefined&&info.order!==null)
+        $scope.order=info.order;
+
+    }
+
+
+
+    $scope.benefiter={};
+    $scope.legal={perName:'法定',checked:false};
+    $scope.checkLegal=function(){
+      if($scope.legal.checked==false){
+        $scope.legal.checked=true;
+      }else{
+        $scope.legal.checked=false;
+      }
+    }
+
 
     if($stateParams.info!==undefined&&$stateParams.info!==null)
     {
@@ -24,40 +46,37 @@ angular.module('starter')
       if(Object.prototype.toString.call(info)=='[object String]')
         info = JSON.parse(info);
       $scope.info=info;
-
-      $scope.info.products.map(function(product,i){
-        if(product.productId==null||product.productId==undefined){
-          product.productId=product.productIds[0];
-        }
-      })
     }
 
     $scope.mutex=function(item,cluster){
-      if(item.checked==true)
-      {
-       item.checked=false;
-      }
-      else{
-        item.checked=true;
-        $scope.insuranceder=item;
+      if($scope.legal.checked==true){
         cluster.map(function(cell,i) {
           if(cell.personId!=item.personId)
             cell.checked=false;
         })
       }
+      else{
+        if(item.checked==true)
+        {
+          item.checked=false;
+        }
+        else{
+          item.checked=true;
+          cluster.map(function(cell,i) {
+            if(cell.personId!=item.personId)
+              cell.checked=false;
+          })
+        }
+
+      }
+
     }
 
-    $scope.selectInsuranceder=function(person){
-      person.check=true;
-    }
 
-    $scope.car_insurance.insuranceder={
-      perName:''
-    };
 
     $scope.car_insurance.relativePersons={};
 
-    $scope.selectCarInsuranceder=function(){
+    $scope.selectLifeBenefiter=function(){
       $http({
         method: "POST",
         url: Proxy.local()+"/svr/request",
@@ -69,13 +88,13 @@ angular.module('starter')
           request:'getRelativePersonsWithinPerName',
           info:
           {
-            perName:$scope.car_insurance.insuranceder.perName
+            perName:$scope.order.benefiter.perName
           }
         }
       }).then(function(res) {
         var json=res.data;
         if(json.re==1){
-          $scope.car_insurance.relativePersons=json.data;
+          $scope.relativePersons=json.data;
         }
       })
 
@@ -175,47 +194,33 @@ angular.module('starter')
     }
 
 
-    //提交车险意向
+    //确认寿险受益人
     $scope.confirm=function(){
 
-      alert('personId='+$scope.insuranceder.personId);
-
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'generateCarInsuranceOrder',
-          info:
+      if($scope.legal.checked==true){
+        $scope.order.benefiter=null;
+        $rootScope.dashboard.tabIndex=1;
+        $rootScope.life_insurance.benefiter=null;
+        $rootScope.life_insurance.isLegalBenefiter=1;
+        $state.go('tabs.dashboard');
+      }
+      else{
+        $scope.relativePersons.map(function(relative,i) {
+          if(relative.checked==true)
           {
-            products:$scope.info.products,
-            companys:$scope.info.companys,
-            carId:$scope.info.carId,
-            insurancederId:$scope.insuranceder.personId
+            $scope.order.benefiter=relative;
+            $rootScope.dashboard.tabIndex=1;
+            $rootScope.life_insurance.benefiter=relative;
+            $state.go('tabs.dashboard');
           }
-        }
-      }).then(function(res) {
-        var json=res.data;
-        var orderId=json.data;
-        if(orderId!==undefined&&orderId!==null)
-        {
-          $state.go('car_orders');
-        }
-      }).catch(function(err) {
-        var str='';
-        for(var field in err)
-          str+='field'+field+'\r\n'
-            +err[field];
-        console.error('error=\r\n' + str);
-      });
+        });
+      }
+
     }
 
 
 //提交统一函数
-    $scope.upload=function(cmd,item,field){
+    $scope.upload=function(cmd,item){
 
       var personId=null;
       $http({
@@ -238,16 +243,16 @@ angular.module('starter')
 
             personId=json.data.personId;
 
-            $scope.insuranceder.personId=personId;
+            $scope.benefiter.personId=personId;
 
             alert('personid='+personId);
-            alert('personid='+$scope.insuranceder.personId);
+            alert('personid='+$scope.benefiter.personId);
             var suffix='';
             var imageType='perIdCard';
-            alert('path='+$scope.car_insurance.insuranceder.perIdCard1_img);
-            if($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.jpg')!=-1)
+            alert('path='+$scope.benefiter.perIdCard1_img);
+            if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
               suffix='jpg';
-            else if($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.png')!=-1)
+            else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
               suffix='png';
             else{}
             var server=Proxy.local()+'/svr/request?request=uploadPhoto' +
@@ -263,16 +268,16 @@ angular.module('starter')
             var perIdAttachId1=null;
             var perIdAttachId2=null;
 
-            $cordovaFileTransfer.upload(server, $scope.car_insurance.insuranceder.perIdCard1_img, options)
+            $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard1_img, options)
               .then(function(res) {
                 alert('upload perIdCard1 success');
                 for(var field in res) {
                   alert('field=' + field + '\r\n' + res[field]);
                 }
                 var su=null
-                if($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.jpg')!=-1)
+                if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
                   su='jpg';
-                else if($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.png')!=-1)
+                else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
                   su='png';
                 alert('suffix=' + su);
                 return $http({
@@ -300,13 +305,13 @@ angular.module('starter')
                   perIdAttachId1=json.data;
                   alert('perIdAttachId1=' + perIdAttachId1);
                   var su=null;
-                  if($scope.car_insurance.insuranceder.perIdCard2_img.indexOf('.jpg')!=-1)
+                  if($scope.benefiter.perIdCard2_img.indexOf('.jpg')!=-1)
                     su='jpg';
-                  else if($scope.car_insurance.insuranceder.perIdCard2_img.indexOf('.png')!=-1)
+                  else if($scope.benefiter.perIdCard2_img.indexOf('.png')!=-1)
                     su='png';
                   server=Proxy.local()+'/svr/request?request=uploadPhoto' +
                     '&imageType='+imageType+'&suffix='+su+'&filename='+'perIdAttachId2'+'&personId='+personId;
-                  return  $cordovaFileTransfer.upload(server, $scope.car_insurance.insuranceder.perIdCard2_img, options)
+                  return  $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard2_img, options)
                     .then(function(res) {
                       alert('upload perIdCard2 success');
                       for(var field in res) {
@@ -351,17 +356,41 @@ angular.module('starter')
                           }
                         });
                       }
-                    })
+                    }).then(function(res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                        return $http({
+                          method: "POST",
+                          url: Proxy.local()+"/svr/request",
+                          headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token,
+                          },
+                          data:
+                          {
+                            request:'getInfoPersonInfoByPersonId',
+                            info:{
+                              personId:personId
+                            }
+                          }
+                        });
+                      }
+                    }).then(function(res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                        $rootScope.life_insurance.benefiter=json.data;
+                        $rootScope.dashboard.tabIndex=1;
+                        $state.go('tabs.dashboard');
+                      }
+                    });
                 }
-
               })
           }else{}
 
-          alert('...it is back')
+
         }).then(function(res) {
 
-      })
-      .catch(function(err) {
+        })
+        .catch(function(err) {
           var str='';
           for(var field in err)
             str+=err[field];
