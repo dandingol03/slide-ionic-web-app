@@ -357,8 +357,8 @@ angular.module('starter', ['ionic','ngCordova','ngBaiduMap','ionic-datepicker','
       }
 
       try{
-        window.plugins.jPushPlugin.init();
         window.plugins.jPushPlugin.setDebugMode(true);
+        window.plugins.jPushPlugin.init();
         window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
         document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
         document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
