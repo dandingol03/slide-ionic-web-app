@@ -66,6 +66,21 @@ angular.module('starter')
         $scope.tabIndex=0;
 
 
+    //寿险
+    $scope.life_insurance=
+    {
+      insurer:{perTypeCode:'I'},
+      insuranceder:{perTypeCode:'I'},
+      benefiter:{perTypeCode:'I'},
+      intend:{},
+      order:{
+        insurer:{},
+        insuranceder:{},
+        benefiter:{}
+      }
+    };
+
+
 
     //车驾管信息
     $scope.carManage={
@@ -142,6 +157,27 @@ angular.module('starter')
         $scope.licenseIndex=$rootScope.dashboard.licenseIndex;
       else
         $scope.licenseIndex=0;
+      //同步寿险信息
+      if($rootScope.life_insurance.insurer!==undefined&&$rootScope.life_insurance.insurer!==null){
+        $scope.life_insurance.order.insurer=$rootScope.life_insurance.insurer;
+      }
+      if($rootScope.life_insurance.insuranceder!==undefined&&$rootScope.life_insurance.insuranceder!==null)
+      {
+        $scope.life_insurance.order.insuranceder=$rootScope.life_insurance.insuranceder;
+      }
+      if($rootScope.life_insurance.benefiter!==undefined&&$rootScope.life_insurance.benefiter!==null)
+      {
+        $scope.life_insurance.order.benefiter=$rootScope.life_insurance.benefiter;
+      }
+      if($rootScope.life_insurance.isLegalBenefiter!==undefined&&$rootScope.life_insurance.isLegalBenefiter!==null)
+      {
+        $scope.life_insurance.order.isLegalBenefiter=$rootScope.life_insurance.isLegalBenefiter;
+      }
+      if($rootScope.life_insurance.planInsuranceFee!==undefined&&$rootScope.life_insurance.planInsuranceFee!==null)
+      {
+        $scope.life_insurance.order.planInsuranceFee=$rootScope.life_insurance.planInsuranceFee;
+      }
+
     }else{
       $scope.subTabIndex=0;
     }
@@ -1460,18 +1496,7 @@ angular.module('starter')
     }
 
 
-    $scope.life_insurance=
-    {
-      insurer:{perTypeCode:'I'},
-      insuranceder:{perTypeCode:'I'},
-      benefiter:{perTypeCode:'I'},
-      intend:{},
-      order:{
-        insurer:{},
-        insuranceder:{},
-        benefiter:{}
-      }
-    };
+
 
 
     $scope.apply=function () {
@@ -1700,10 +1725,11 @@ angular.module('starter')
     $scope.saveLifeInsuranceIntend=function()
     {
 
-      if($scope.life_insurance.order.insuranceder.personId!==undefined&&$scope.life_insurance.order.insuranceder.personId!==null
-        &&$scope.life_insurance.order.insurer.personId!==undefined&&$scope.life_insurance.order.insurer.personId!==null
-        &&$scope.life_insurance.order.benefiter.personId!==undefined&&$scope.life_insurance.order.benefiter.personId!==null
-        &&$scope.life_insurance.order.planInsuranceFee!==undefined&&$scope.life_insurance.order.planInsuranceFee!==null
+      if($scope.life_insurance.order.insuranceder.personId!=undefined&&$scope.life_insurance.order.insuranceder.personId!=null
+        &&$scope.life_insurance.order.insurer.personId!=undefined&&$scope.life_insurance.order.insurer.personId!=null
+        &&(($scope.life_insurance.order.benefiter.personId!=undefined&&$scope.life_insurance.order.benefiter.personId!=null)
+          ||($scope.life_insurance.order.isLegalBenefiter!=undefined&&$scope.life_insurance.order.isLegalBenefiter!=null))
+        &&$scope.life_insurance.order.planInsuranceFee!=undefined&&$scope.life_insurance.order.planInsuranceFee!=null
       )
       {
         $http({
@@ -3476,7 +3502,23 @@ $scope.carService=function(){
       });
     };
 
+    //进入寿险选择投保人
+    $scope.goFetchLifeInsurer=function(order){
+      $rootScope.life_insurance.planInsuranceFee=$scope.life_insurance.order.planInsuranceFee;
+      $state.go('append_life_insurer', {info: JSON.stringify({order: order})});
+    }
 
+    //进入寿险选择被保险人
+    $scope.goFetchLifeInsuranceder=function(order){
+      $rootScope.life_insurance.planInsuranceFee=$scope.life_insurance.order.planInsuranceFee;
+      $state.go('append_life_insuranceder', {info: JSON.stringify({order: order})});
+    }
+
+    //进入寿险选择寿益人
+    $scope.goFetchLifeBenefiter=function(order){
+      $rootScope.life_insurance.planInsuranceFee=$scope.life_insurance.order.planInsuranceFee;
+      $state.go('append_life_benefiter', {info: JSON.stringify({order: order})});
+    }
 
 
     $scope.ActionSheet= function (options,item,field,addon_field,url,fail) {
