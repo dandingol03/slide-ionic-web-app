@@ -3881,8 +3881,14 @@ $scope.carService=function(){
       {
         $rootScope.maintain.dailys=$scope.dailys;
       }
-
-      $state.go('locate_maintain_nearby',{locate:JSON.stringify({locateType:locateType,locateIndex:index})});
+      if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined&&$scope.carInfo.carId!==null)
+        $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
+      else{
+        var confirmPopup = $ionicPopup.confirm({
+          title: '',
+          template: '请选择您的车辆'
+        });
+      }
     };
 
     $scope.pickMaintainDaily=function(locateType,index) {
