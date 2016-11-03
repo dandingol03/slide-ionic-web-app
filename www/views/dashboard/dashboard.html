@@ -209,7 +209,9 @@
 
         <div class="item"
              style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-             padding:10px;background-color:transparent;overflow:initial">
+             padding:10px;background-color:transparent;overflow:initial"
+             ng-click="Toggle('boolean',life_insurance.order,'hasSocietyInsurance')"
+                >
 
           <span
             style="display: inline-block;width: 35%;text-align: left"
@@ -223,8 +225,7 @@
             {{life_insurance.order.hasSocietyInsurance==true?'有':'无'}}
           </span>
 
-          <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;"
-               ng-click="Toggle('boolean',life_insurance.order,'hasSocietyInsurance')">
+          <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;">
             <i ng-if="life_insurance.order.hasSocietyInsurance!=true" class="ion-ios-checkmark-outline" style="font-size: 1.6em;"></i>
             <i ng-if="life_insurance.order.hasSocietyInsurance==true" class="ion-ios-checkmark" style="font-size: 1.6em;"></i>
           </span>
@@ -233,7 +234,9 @@
         <!-- 有无商业保险 -->
         <div class="item"
              style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-             padding:10px;background-color:transparent;overflow:initial">
+             padding:10px;background-color:transparent;overflow:initial"
+             ng-click="Toggle('boolean',life_insurance.order,'hasCommerceInsurance')"
+                >
 
           <span
             style="display: inline-block;width: 45%;text-align: left"
@@ -247,8 +250,7 @@
             {{life_insurance.order.hasCommerceInsurance==true?'有':'无'}}
           </span>
 
-          <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;"
-                ng-click="Toggle('boolean',life_insurance.order,'hasCommerceInsurance')">
+          <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;">
             <i ng-if="life_insurance.order.hasCommerceInsurance!=true" class="ion-ios-checkmark-outline" style="font-size: 1.6em;"></i>
             <i ng-if="life_insurance.order.hasCommerceInsurance==true" class="ion-ios-checkmark" style="font-size: 1.6em;"></i>
           </span>
@@ -304,14 +306,11 @@
           </span>
 
           <span style="width: 55%;display: inline-block;text-align: left;">
-            <!--<input type="text" placeholder="请输入您的车牌"-->
-                   <!--style="display:inline-block;background-color: transparent;"-->
-                   <!--ng-value="carInfo.carNum"-->
-                   <!--ng-model="carInfo.carNum"-->
-                   <!--ng-focus="focusInCarNum()"-->
-                   <!--ng-blur="blurCarNum()"-->
-              <!--/>-->
-            {{carInfo.carNum}}
+            <input type="text"
+                   style="display:inline-block;background-color: transparent;"
+                   ng-value="carInfo.carNum"
+                   ng-model="carInfo.carNum"
+              />
           </span>
 
 

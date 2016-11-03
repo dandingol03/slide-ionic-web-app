@@ -2779,16 +2779,21 @@ $scope.carService=function(){
 
     //查询已绑定车辆,并显示车牌信息
     $scope.selectCarInfoByCarNum=function(item,modal){
+
+      var data={
+        request:'fetchInsuranceCarInfoByCustomerId'
+      };
+      if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
+        data.carNum=$scope.carInfo.carNum;
+
+
       $http({
         method: "POST",
         url: Proxy.local()+"/svr/request",
         headers: {
           'Authorization': "Bearer " + $rootScope.access_token
         },
-        data:
-        {
-          request:'fetchInsuranceCarInfoByCustomerId'
-        }
+        data:data
       }).then(function(res) {
         var json=res.data;
         if(json.re==1) {
