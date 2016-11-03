@@ -446,7 +446,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         showTodayButton: true,
         dateFormat: 'dd MMMM yyyy',
         closeOnSelect: false,
-        disableWeekdays: [6]
       };
       ionicDatePickerProvider.configDatePicker(datePickerObj);
     })

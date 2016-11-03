@@ -271,22 +271,13 @@ angular.module('starter')
           var month=parseInt(date.getMonth())+1;
           item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
         },
-        disabledDates: [            //Optional
-          new Date(2016, 2, 16),
-          new Date(2015, 3, 16),
-          new Date(2015, 4, 16),
-          new Date(2015, 5, 16),
-          new Date('Wednesday, August 12, 2015'),
-          new Date("08-16-2016"),
-          new Date(1439676000000)
-        ],
         from: new Date(1949, 10, 1), //Optional
         to: new Date(2040, 10, 30), //Optional
-        inputDate: new Date(),      //Optional
-        mondayFirst: false,          //Optional
-        disableWeekdays: [0],       //Optional
-        closeOnSelect: false,       //Optional
-        templateType: 'popup'     //Optional
+        inputDate: new Date(),
+        mondayFirst: false,
+        closeOnSelect: false,
+        templateType: 'popup',
+        weeksList: ["S", "M", "T", "W", "T", "F", "S"]
       };
       ionicDatePicker.openDatePicker(ipObj1);
     };
