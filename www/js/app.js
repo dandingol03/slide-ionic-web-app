@@ -658,7 +658,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('locate_paperValidate_nearby',{
-            url:'/locate_paperValidate_nearby/:locateType',
+            url:'/locate_paperValidate_nearby/:locate',
             controller:'locatePaperValidateNearbyController',
             templateUrl:'views/locate_paperValidate_nearby/locate_paperValidate_nearby.html'
           })
@@ -741,7 +741,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://202.194.14.106:3000";
+            return "http://192.168.3.2:3000";
           else
             return "/proxy/node_server";
         },

@@ -40,7 +40,8 @@
       "locator": "jpush-phonegap-plugin",
       "id": "jpush-phonegap-plugin"
     },
-    "cordova-plugin-file-transfer"
+    "cordova-plugin-file-transfer",
+    "cordova-plugin-geolocation"
   ],
   "cordovaPlatforms": [
     "ios",

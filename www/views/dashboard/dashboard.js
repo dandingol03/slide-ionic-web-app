@@ -3863,6 +3863,7 @@ $scope.carService=function(){
 
 
     $scope.pickMaintain=function(locateType,index){
+
       if($scope.maintain.description.text!==undefined&&$scope.maintain.description.text!==null)
         $rootScope.maintain.description.text=$scope.maintain.description.text;
       if($scope.maintain.description.audio!==undefined&&$scope.maintain.description.audio!==null)
@@ -3900,7 +3901,16 @@ $scope.carService=function(){
     };
 
     $scope.pickPaperValidate=function(locateType) {
-      $state.go('locate_paperValidate_nearby', {locateType: locateType});
+        if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined
+        &&$scope.carInfo.carId!==null)
+        {
+            $state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
+        }else{
+            var confirmPopup = $ionicPopup.confirm({
+                title: '',
+                template: '请选择您的车辆'
+            });
+        }
     };
 
 
