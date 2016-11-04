@@ -785,6 +785,8 @@ angular.module('starter')
 
 
       $scope.go_back = function () {
+        $rootScope.dashboard.tabIndex=3;
+        $rootScope.dashboard.service='代办车辆年审';
         window.history.back();
       }
 
