@@ -21,7 +21,192 @@ angular.module('starter')
     }
 
 
-    BaiduMapService.getBMap().then(function (res) {
+
+      //提交车驾管服务订单
+      $scope.generateServiceOrder=function(){
+
+          $scope.carManage.carId=$scope.carInfo.carId;
+          if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
+          {
+              var unit=null;
+              var units=null;
+              var servicePerson=null;
+              var servicePlace=null;
+              unit=$scope.unit;
+              units=$scope.units;
+              if(unit!==undefined&&unit!==null)
+                  servicePlace=unit.unitName;
+
+              $scope.carManage.serviceType=23;
+
+              if(unit!==undefined&&unit!==null)//已选维修厂
+              {
+
+                  $http({
+                      method: "POST",
+                      url: Proxy.local()+"/svr/request",
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token,
+                      },
+                      data:
+                          {
+                              request:'getServicePersonByUnitId',
+                              info:{
+                                  unitId:$scope.unit.unitId
+                              }
+                          }
+                  }).then(function(res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          servicePerson=json.data;
+                          $scope.carManage.servicePersonId=servicePerson.servicePersonId;
+                          return $http({
+                              method: "POST",
+                              url: Proxy.local() + "/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data: {
+                                  request: 'generateCarServiceOrder',
+                                  info: {
+                                      carManage: $scope.carManage,
+                                      servicePlace:servicePlace
+                                  }
+                              }
+                          })
+                      }
+                  }).then(function(res) {
+                      var json = res.data;
+                      if (json.re == 1) {
+                          //TODO:append address and serviceType and serviceTime
+                          var serviceName = $scope.serviceTypeMap[$scope.maintain.serviceType];
+                          var order=json.data;
+                          var servicePersonIds = [order.servicePersonId];
+                          return $http({
+                              method: "POST",
+                              url: Proxy.local() + "/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data: {
+                                  request: 'sendCustomMessage',
+                                  info: {
+                                      order: order,
+                                      serviceItems: $scope.maintain.subServiceTypes,
+                                      servicePersonIds: servicePersonIds,
+                                      serviceName: serviceName,
+                                      category:'carManage',
+                                      type: 'to-servicePerson'
+                                  }
+                              }
+                          });
+                      } else {
+                          return ({re: -1});
+                      }
+                  }).catch(function (err) {
+                      var str = '';
+                      for (var field in err)
+                          str += err[field];
+                  });
+              }
+              else//未选定维修厂
+              {
+                  var order = null;
+                  var servicePersonIds = [];
+                  var personIds = [];
+                  $http({
+                      method: "POST",
+                      url: Proxy.local() + "/svr/request",
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token
+                      },
+                      data: {
+                          request: 'generateCarServiceOrder',
+                          info: {
+                              carManage: $scope.carManage
+                          }
+                      }
+                  }).then(function (res) {
+                      var json = res.data;
+                      if (json.re == 1) {
+                          order=json.data;
+
+                          return $http({
+                              method: "POST",
+                              url: Proxy.local() + "/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data: {
+                                  request: 'getServicePersonsByUnits',
+                                  info: {
+                                      units: units
+                                  }
+                              }
+                          });
+                      }
+                  }).then(function(res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          json.data.map(function(servicePerson,i) {
+                              servicePersonIds.push(servicePerson.servicePersonId);
+                              personIds.push(servicePerson.personId);
+                          });
+                          return $http({
+                              method: "POST",
+                              url: Proxy.local() + "/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data: {
+                                  request: 'updateCandidateState',
+                                  info: {
+                                      orderId: order.orderId,
+                                      servicePersonIds: servicePersonIds,
+                                      candidate:1
+                                  }
+                              }
+                          });
+                      }
+                  }).then(function (res) {
+                      var json = res.data;
+                      if (json.re == 1) {
+                          //TODO:append address and serviceType and serviceTime
+                          var serviceName = '车驾管-接送机';
+                          return $http({
+                              method: "POST",
+                              url: Proxy.local() + "/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data: {
+                                  request: 'sendCustomMessage',
+                                  info: {
+                                      order: order,
+                                      serviceItems: null,
+                                      servicePersonIds: servicePersonIds,
+                                      serviceName: serviceName,
+                                      type: 'to-servicePerson'
+                                  }
+                              }
+                          });
+                      } else {
+                          return ({re: -1});
+                      }
+                  }).catch(function (err) {
+                      var str = '';
+                      for (var field in err)
+                          str += err[field];
+                      console.error('error=\r\n' + str);
+                  });
+              }
+          }
+
+      }
+
+
+
+      BaiduMapService.getBMap().then(function (res) {
       $scope.bMap = res;
       var BMap = $scope.bMap;
       var map = new BMap.Map("container");          // 创建地图实例

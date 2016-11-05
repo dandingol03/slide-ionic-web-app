@@ -91,6 +91,7 @@ angular.module('starter')
               if(unit!==undefined&&unit!==null)
                   servicePlace=unit.unitName;
 
+              $scope.carManage.serviceType=24;
 
               if(unit!==undefined&&unit!==null)//已选维修厂
               {
@@ -225,7 +226,7 @@ angular.module('starter')
                       var json = res.data;
                       if (json.re == 1) {
                           //TODO:append address and serviceType and serviceTime
-                          var serviceName = '车驾管-审车';
+                          var serviceName = '车驾管-取送车';
                           return $http({
                               method: "POST",
                               url: Proxy.local() + "/svr/request",

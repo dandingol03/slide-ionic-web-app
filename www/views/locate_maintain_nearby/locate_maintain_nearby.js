@@ -129,6 +129,7 @@ angular.module('starter')
           if(unit!==undefined&&unit!==null)
             servicePlace=unit.unitName;
 
+          $scope.carManage.serviceType=21;
 
           if(unit!==undefined&&unit!==null)//已选维修厂
           {
