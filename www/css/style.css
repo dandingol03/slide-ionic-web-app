@@ -995,3 +995,7 @@ table.table1{
 .hidden{
   display: none;
 }
+
+.passwordForget-view ion-header-bar .title.header-item{
+  color:#bf530c;
+}

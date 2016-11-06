@@ -13,7 +13,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-                  $ionicPopup,Proxy,$http,$state) {
+                  $ionicPopup,Proxy,$http,$state,$q) {
 
 
 
@@ -114,7 +114,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         var onReceiveNotification = function(data) {
           try{
-
             console.log('received notification :' + data);
             alert('notification got');
             var notification = angular.fromJson(data);
@@ -327,11 +326,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                   })
 
-
-                  break;
-
-
-
+                    break;
 
 
               }
@@ -354,16 +349,18 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         $rootScope.onGetRegistradionID = function(data) {
+
           try {
-            console.log("JPushPlugin:registrationID is " + data);
+              console.log("JPushPlugin:registrationID is " + data);
           } catch(exception) {
             alert(exception);
           }
         }
 
         try{
-          window.plugins.jPushPlugin.init();
+
           window.plugins.jPushPlugin.setDebugMode(true);
+          window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
           document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
           document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
@@ -562,6 +559,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             templateUrl:'views/passwordModify/passwordModify.html'
           })
 
+          .state('passwordForget',{
+              url:'/passwordForget',
+              controller:'passwordForgetController',
+              templateUrl:'views/passwordForget/passwordForget.html'
+          })
+
           .state('car_orders',{
             cache:false,
             url:'/car_orders/:selected',
@@ -741,7 +744,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.3.2:3000";
+            return "http://192.168.1.113:3000";
           else
             return "/proxy/node_server";
         },
