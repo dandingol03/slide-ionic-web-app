@@ -271,22 +271,13 @@ angular.module('starter')
           var month=parseInt(date.getMonth())+1;
           item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
         },
-        disabledDates: [            //Optional
-          new Date(2016, 2, 16),
-          new Date(2015, 3, 16),
-          new Date(2015, 4, 16),
-          new Date(2015, 5, 16),
-          new Date('Wednesday, August 12, 2015'),
-          new Date("08-16-2016"),
-          new Date(1439676000000)
-        ],
         from: new Date(1949, 10, 1), //Optional
         to: new Date(2040, 10, 30), //Optional
-        inputDate: new Date(),      //Optional
-        mondayFirst: false,          //Optional
-        disableWeekdays: [0],       //Optional
-        closeOnSelect: false,       //Optional
-        templateType: 'popup'     //Optional
+        inputDate: new Date(),
+        mondayFirst: false,
+        closeOnSelect: false,
+        templateType: 'popup',
+        weeksList: ["S", "M", "T", "W", "T", "F", "S"]
       };
       ionicDatePicker.openDatePicker(ipObj1);
     };
@@ -2779,16 +2770,21 @@ $scope.carService=function(){
 
     //查询已绑定车辆,并显示车牌信息
     $scope.selectCarInfoByCarNum=function(item,modal){
+
+      var data={
+        request:'fetchInsuranceCarInfoByCustomerId'
+      };
+      if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
+        data.carNum=$scope.carInfo.carNum;
+
+
       $http({
         method: "POST",
         url: Proxy.local()+"/svr/request",
         headers: {
           'Authorization': "Bearer " + $rootScope.access_token
         },
-        data:
-        {
-          request:'fetchInsuranceCarInfoByCustomerId'
-        }
+        data:data
       }).then(function(res) {
         var json=res.data;
         if(json.re==1) {
@@ -3867,6 +3863,7 @@ $scope.carService=function(){
 
 
     $scope.pickMaintain=function(locateType,index){
+
       if($scope.maintain.description.text!==undefined&&$scope.maintain.description.text!==null)
         $rootScope.maintain.description.text=$scope.maintain.description.text;
       if($scope.maintain.description.audio!==undefined&&$scope.maintain.description.audio!==null)
@@ -3876,8 +3873,14 @@ $scope.carService=function(){
       {
         $rootScope.maintain.dailys=$scope.dailys;
       }
-
-      $state.go('locate_maintain_nearby',{locate:JSON.stringify({locateType:locateType,locateIndex:index})});
+      if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined&&$scope.carInfo.carId!==null)
+        $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
+      else{
+        var confirmPopup = $ionicPopup.confirm({
+          title: '',
+          template: '请选择您的车辆'
+        });
+      }
     };
 
     $scope.pickMaintainDaily=function(locateType,index) {
@@ -3898,7 +3901,16 @@ $scope.carService=function(){
     };
 
     $scope.pickPaperValidate=function(locateType) {
-      $state.go('locate_paperValidate_nearby', {locateType: locateType});
+        if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined
+        &&$scope.carInfo.carId!==null)
+        {
+            $state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
+        }else{
+            var confirmPopup = $ionicPopup.confirm({
+                title: '',
+                template: '请选择您的车辆'
+            });
+        }
     };
 
 

@@ -7,19 +7,296 @@ angular.module('starter')
 
   .controller('locateMaintainNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                        Proxy,$stateParams) {
+                                                        Proxy,$stateParams,ionicDatePicker,
+                                                        $ionicActionSheet) {
 
-    $scope.maintain = {
-      maintenance: {}
-    };
+      $scope.datepick = function(item,field){
+        var ipObj1 = {
+          callback: function (val) {  //Mandatory
 
-    if ($stateParams.locate !== undefined && $stateParams.locate !== null) {
-      $scope.locate=$stateParams.locate;
-      if(Object.prototype.toString.call($scope.locate)=='[object String]')
-        $scope.locate=JSON.parse($scope.locate);
-      $scope.locateType = $scope.locate.locateType;
-    }
+            var date=new Date(val);
+            var month=parseInt(date.getMonth())+1;
+            item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
+          },
+          disabledDates: [            //Optional
+            new Date(2016, 2, 16),
+            new Date(2015, 3, 16),
+            new Date(2015, 4, 16),
+            new Date(2015, 5, 16),
+            new Date('Wednesday, August 12, 2015'),
+            new Date("08-16-2016"),
+            new Date(1439676000000)
+          ],
+          from: new Date(1949, 10, 1), //Optional
+          to: new Date(2040, 10, 30), //Optional
+          inputDate: new Date(),      //Optional
+          mondayFirst: false,          //Optional
+          disableWeekdays: [0],       //Optional
+          closeOnSelect: false,       //Optional
+          templateType: 'popup'     //Optional
+        };
+        ionicDatePicker.openDatePicker(ipObj1);
+      };
 
+      $scope.maintain = {
+        maintenance: {}
+      };
+
+      $scope.carManage={
+
+      };
+
+
+      if ($stateParams.locate !== undefined && $stateParams.locate !== null) {
+        $scope.locate=$stateParams.locate;
+        if(Object.prototype.toString.call($scope.locate)=='[object String]')
+          $scope.locate=JSON.parse($scope.locate);
+        $scope.locateType = $scope.locate.locateType;
+        $scope.carInfo=$scope.locate.carInfo;
+      }
+
+      //查询已绑定车辆,并显示车牌信息
+      $scope.selectCarInfoByCarNum=function(item,modal){
+
+        var data={
+          request:'fetchInsuranceCarInfoByCustomerId'
+        };
+        if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
+          data.carNum=$scope.carInfo.carNum;
+
+
+        $http({
+          method: "POST",
+          url: Proxy.local()+"/svr/request",
+          headers: {
+            'Authorization': "Bearer " + $rootScope.access_token
+          },
+          data:data
+        }).then(function(res) {
+          var json=res.data;
+          if(json.re==1) {
+            var cars=json.data;
+            var buttons=[];
+            buttons.push({text: "<b>创建新车</b>"});
+            cars.map(function(car,i) {
+              var ele=car;
+              ele.text='<b>'+car.carNum+'</b>';
+              buttons.push(ele);
+            });
+            var carSheet = $ionicActionSheet.show({
+              buttons: buttons,
+              titleText: '<b>选择车辆信息</b>',
+              cancelText: 'Cancel',
+              cancel: function() {
+                // add cancel code..
+              },
+              buttonClicked: function(index) {
+                if(index==0) {
+                  //TODO:create new car info
+                  if(modal!==undefined&&modal!==null)
+                    modal.hide();
+                  $state.go('update_car_info');
+                }else{
+                  var car=cars[index-1];
+                  $scope.carInfo=car;
+
+                }
+                return true;
+              },
+              cssClass:'center'
+            });
+          }
+        }).catch(function(err) {
+          var str='';
+          for(var field in err)
+            str+=err[field];
+          console.error('error=\r\n' + str);
+        });
+      }
+
+
+      $scope.generateServiceOrder=function(){
+
+        $scope.carManage.carId=$scope.carInfo.carId;
+        if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
+        {
+          var unit=null;
+          var units=null;
+          var servicePerson=null;
+          var servicePlace=null;
+          unit=$scope.unit;
+          units=$scope.units;
+          if(unit!==undefined&&unit!==null)
+            servicePlace=unit.unitName;
+
+          $scope.carManage.serviceType=21;
+
+          if(unit!==undefined&&unit!==null)//已选维修厂
+          {
+
+            $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                'Authorization': "Bearer " + $rootScope.access_token,
+              },
+              data:
+              {
+                request:'getServicePersonByUnitId',
+                info:{
+                  unitId:$scope.unit.unitId
+                }
+              }
+            }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                servicePerson=json.data;
+                $scope.carManage.servicePersonId=servicePerson.servicePersonId;
+                return $http({
+                  method: "POST",
+                  url: Proxy.local() + "/svr/request",
+                  headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                    request: 'generateCarServiceOrder',
+                    info: {
+                      carManage: $scope.carManage,
+                      servicePlace:servicePlace
+                    }
+                  }
+                })
+              }
+            }).then(function(res) {
+              var json = res.data;
+              if (json.re == 1) {
+                //TODO:append address and serviceType and serviceTime
+                var serviceName = $scope.serviceTypeMap[$scope.maintain.serviceType];
+                var order=json.data;
+                var servicePersonIds = [order.servicePersonId];
+                return $http({
+                  method: "POST",
+                  url: Proxy.local() + "/svr/request",
+                  headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                    request: 'sendCustomMessage',
+                    info: {
+                      order: order,
+                      serviceItems: $scope.maintain.subServiceTypes,
+                      servicePersonIds: servicePersonIds,
+                      serviceName: serviceName,
+                      category:'carManage',
+                      type: 'to-servicePerson'
+                    }
+                  }
+                });
+              } else {
+                return ({re: -1});
+              }
+            }).catch(function (err) {
+              var str = '';
+              for (var field in err)
+                str += err[field];
+            });
+          }
+          else//未选定维修厂
+          {
+            var order = null;
+            var servicePersonIds = [];
+            var personIds = [];
+            $http({
+              method: "POST",
+              url: Proxy.local() + "/svr/request",
+              headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data: {
+                request: 'generateCarServiceOrder',
+                info: {
+                  carManage: $scope.carManage
+                }
+              }
+            }).then(function (res) {
+              var json = res.data;
+              if (json.re == 1) {
+                order=json.data;
+
+                return $http({
+                  method: "POST",
+                  url: Proxy.local() + "/svr/request",
+                  headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                    request: 'getServicePersonsByUnits',
+                    info: {
+                      units: units
+                    }
+                  }
+                });
+              }
+            }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                json.data.map(function(servicePerson,i) {
+                  servicePersonIds.push(servicePerson.servicePersonId);
+                  personIds.push(servicePerson.personId);
+                });
+                return $http({
+                  method: "POST",
+                  url: Proxy.local() + "/svr/request",
+                  headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                    request: 'updateCandidateState',
+                    info: {
+                      orderId: order.orderId,
+                      servicePersonIds: servicePersonIds,
+                      candidate:1
+                    }
+                  }
+                });
+              }
+            }).then(function (res) {
+              var json = res.data;
+              if (json.re == 1) {
+                //TODO:append address and serviceType and serviceTime
+                var serviceName = '车驾管-审车';
+                return $http({
+                  method: "POST",
+                  url: Proxy.local() + "/svr/request",
+                  headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                    request: 'sendCustomMessage',
+                    info: {
+                      order: order,
+                      serviceItems: null,
+                      servicePersonIds: servicePersonIds,
+                      serviceName: serviceName,
+                      type: 'to-servicePerson'
+                    }
+                  }
+                });
+              } else {
+                return ({re: -1});
+              }
+            }).catch(function (err) {
+              var str = '';
+              for (var field in err)
+                str += err[field];
+              console.error('error=\r\n' + str);
+            });
+
+          }
+
+        }
+
+      }
 
     BaiduMapService.getBMap().then(function (res) {
       $scope.bMap = res;
@@ -504,14 +781,15 @@ angular.module('starter')
           default:
             break;
         }
-
-
       }
+
+
 
       $scope.go_back = function () {
+        $rootScope.dashboard.tabIndex=3;
+        $rootScope.dashboard.service='代办车辆年审';
         window.history.back();
       }
-
 
 
       //var geolocation = new BMap.Geolocation();

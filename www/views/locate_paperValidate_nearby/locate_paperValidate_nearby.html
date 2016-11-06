@@ -31,21 +31,68 @@
       </div>
 
 
-
-      <div class="item"
-           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;
-           padding:10px;background-color:transparent;position: relative"
-           ng-click="maintenance_confirm()"
-        >
-        <button class="button button-positive" style="width: 80%;margin-left:10%;margin-right:10%;">
-          确认维修厂
-        </button>
-      </div>
-
       <div class="item"
            style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;padding:10px;background-color:transparent;">
         <div id="locate_paperValidate_nearby" style="width:100%;height:300px;"></div>
       </div>
+
+
+      <div class="item"
+           style="margin:1px;
+           border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;"
+           ng-click="datepick(carManage,'estimateTime')">
+        <span class="input-label" style="display: inline-block;width: 35%;">
+          服务时间:
+        </span>
+
+        <span style="display: inline-block;width: 49%;color:#aaa;font-size: 0.85em;"
+              ng-if="carManage.estimateTime==undefined||carManage.estimateTime===null">
+          请选择服务时间
+        </span>
+
+
+        <span style="display: inline-block;width: 49%;font-size: 0.85em;"
+              ng-if="carManage.estimateTime!=undefined&&carManage.estimateTime!==null">
+          {{carManage.estimateTime}}
+          </span>
+
+
+        <span style="display: inline-block;width: 16%;">
+          <i class="ion-calendar" style="font-size: 1.5em;"></i>
+        </span>
+
+      </div>
+
+      <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
+        <span class="input-label" style="display: inline-block;width: 35%;text-align: left">
+            车牌:
+        </span>
+        <span style="width: 49%;display: inline-block;text-align: left;">
+            <input type="text" placeholder="请输入您的车牌"
+                   style="display:inline-block;background-color: transparent;"
+                   ng-value="carInfo.carNum"
+                   ng-model="carInfo.carNum"
+            />
+        </span>
+        <span class="camera"
+              style="width:16%;font-size: 1.5em;"
+              ng-click="selectCarInfoByCarNum(carManage,carManage_t_a_modal)"
+        >
+          <i class="ion-chevron-down"></i>
+        </span>
+      </div>
+
+      <div class="item"
+           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;
+           padding:10px;background-color:transparent;position: relative"
+           ng-click="generateServiceOrder()"
+      >
+        <button class="button button-positive" style="width: 80%;margin-left:10%;margin-right:10%;">
+          确认
+        </button>
+      </div>
+
+
 
     </div>
   </ion-content>
