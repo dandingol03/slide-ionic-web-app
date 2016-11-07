@@ -46,6 +46,8 @@ angular.module('starter')
 
       };
 
+      $scope.servicePlace=null;
+
 
       if ($stateParams.locate !== undefined && $stateParams.locate !== null) {
         $scope.locate=$stateParams.locate;
@@ -122,86 +124,67 @@ angular.module('starter')
         {
           var unit=null;
           var units=null;
-          var servicePerson=null;
-          var servicePlace=null;
+          var servicePerson=$scope.carManage.servicePerson;
+          //所选车管所
+          var servicePlace=$scope.servicePlace.name;
           unit=$scope.unit;
+          //范围围修厂
           units=$scope.units;
-          if(unit!==undefined&&unit!==null)
-            servicePlace=unit.unitName;
 
           $scope.carManage.serviceType=21;
 
           if(unit!==undefined&&unit!==null)//已选维修厂
           {
 
+            $scope.carManage.servicePersonId=servicePerson.servicePersonId;
             $http({
-              method: "POST",
-              url: Proxy.local()+"/svr/request",
-              headers: {
-                'Authorization': "Bearer " + $rootScope.access_token,
-              },
-              data:
-              {
-                request:'getServicePersonByUnitId',
-                info:{
-                  unitId:$scope.unit.unitId
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                  request: 'generateCarServiceOrder',
+                  info: {
+                    carManage: $scope.carManage,
+                    servicePlace:servicePlace
+                  }
                 }
-              }
+
             }).then(function(res) {
-              var json=res.data;
-              if(json.re==1) {
-                servicePerson=json.data;
-                $scope.carManage.servicePersonId=servicePerson.servicePersonId;
-                return $http({
-                  method: "POST",
-                  url: Proxy.local() + "/svr/request",
-                  headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data: {
-                    request: 'generateCarServiceOrder',
-                    info: {
-                      carManage: $scope.carManage,
-                      servicePlace:servicePlace
-                    }
+            var json = res.data;
+            if (json.re == 1) {
+              //TODO:append address and serviceType and serviceTime
+              var serviceName = $scope.serviceTypeMap[$scope.maintain.serviceType];
+              var order=json.data;
+              var servicePersonIds = [order.servicePersonId];
+              return $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                  request: 'sendCustomMessage',
+                  info: {
+                    order: order,
+                    serviceItems: $scope.maintain.subServiceTypes,
+                    servicePersonIds: servicePersonIds,
+                    serviceName: serviceName,
+                    category:'carManage',
+                    type: 'to-servicePerson'
                   }
-                })
-              }
-            }).then(function(res) {
-              var json = res.data;
-              if (json.re == 1) {
-                //TODO:append address and serviceType and serviceTime
-                var serviceName = $scope.serviceTypeMap[$scope.maintain.serviceType];
-                var order=json.data;
-                var servicePersonIds = [order.servicePersonId];
-                return $http({
-                  method: "POST",
-                  url: Proxy.local() + "/svr/request",
-                  headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data: {
-                    request: 'sendCustomMessage',
-                    info: {
-                      order: order,
-                      serviceItems: $scope.maintain.subServiceTypes,
-                      servicePersonIds: servicePersonIds,
-                      serviceName: serviceName,
-                      category:'carManage',
-                      type: 'to-servicePerson'
-                    }
-                  }
-                });
-              } else {
-                return ({re: -1});
-              }
-            }).catch(function (err) {
-              var str = '';
-              for (var field in err)
-                str += err[field];
-            });
-          }
-          else//未选定维修厂
+                }
+              });
+            } else {
+              return ({re: -1});
+            }
+          }).catch(function (err) {
+            var str = '';
+            for (var field in err)
+              str += err[field];
+          });
+          }else//未选定维修厂
           {
             var order = null;
             var servicePersonIds = [];
@@ -215,7 +198,8 @@ angular.module('starter')
               data: {
                 request: 'generateCarServiceOrder',
                 info: {
-                  carManage: $scope.carManage
+                    carManage: $scope.carManage,
+                    servicePlace:servicePlace
                 }
               }
             }).then(function (res) {
@@ -294,6 +278,11 @@ angular.module('starter')
 
           }
 
+        }else{
+            $ionicPopup.alert({
+                title: '',
+                template: '请选择预约时间'
+            });
         }
 
       }
@@ -379,11 +368,29 @@ angular.module('starter')
         }
         else {
           label.setStyle({
-            color: '#00f'
+            color: '#ff8000'
           });
           $scope.unit = unit;
 
-          $scope.labels.map(function (item, i) {
+          var unitId=unit.unitId;
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data: {
+                    request: 'getServicePersonByUnitId',
+                    info:{
+                      unitId:unitId
+                    }
+                }
+            }).then(function(res) {
+                var json=res.data;
+                $scope.carManage.servicePerson=json.data;
+            })
+
+          $scope.unitLabels.map(function (item, i) {
             if (item.getContent().trim() != label.getContent().trim())
               item.setStyle({color: '#222', 'font-size': '0.8em'});
           })
@@ -431,6 +438,8 @@ angular.module('starter')
 
                   $scope.unitOverlays=[];
 
+                  $scope.unitLabels=[];
+
                   $scope.units.map(function (unit, i) {
                       var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(100,100));
                       var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude),{icon:bIcon});
@@ -447,7 +456,7 @@ angular.module('starter')
                       mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
                       mk.setLabel(label);
                       $scope.unitOverlays.push(mk);
-
+                      $scope.unitLabels.push(label);
                   });
 
 

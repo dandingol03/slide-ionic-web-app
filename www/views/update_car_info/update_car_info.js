@@ -421,6 +421,12 @@ angular.module('starter')
             if(json.re==1){
               $scope.carInfo.licenseAttachId3=json.data;
               alert('licenseAttachId3='+$scope.carInfo.licenseAttachId3)
+
+                $ionicPopup.alert({
+                    title: '创建车辆',
+                    template: '成功创建新车!'
+                });
+
               $state.go('tabs.dashboard');
             }
         }).catch(function(err) {
