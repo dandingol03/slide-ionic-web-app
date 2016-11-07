@@ -56,7 +56,8 @@ angular.module('starter')
             var unit=null;
             var units=null;
             var servicePerson=null;
-            var servicePlace=null;
+            //服务地点
+            var servicePlace='遥墙机场';
             unit=$scope.unit;
             units=$scope.units;
             if(unit!==undefined&&unit!==null)
