@@ -298,6 +298,7 @@ angular.module('starter')
 
       }
 
+
     BaiduMapService.getBMap().then(function (res) {
       $scope.bMap = res;
       var BMap = $scope.bMap;

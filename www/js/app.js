@@ -744,6 +744,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             return "http://192.168.3.2:3000";
           else
             return "/proxy/node_server";
+            
         },
         remote:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
