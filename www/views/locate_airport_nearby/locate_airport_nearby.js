@@ -7,19 +7,45 @@ angular.module('starter')
 
   .controller('locateAirportNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                        Proxy,$stateParams,$ionicLoading) {
-    $scope.airTransfer = {
-      airTransfers: {}
-    };
+                                                        Proxy,$stateParams,$ionicLoading,ionicDatePicker) {
+      $scope.datepick = function(item,field){
+          var ipObj1 = {
+              callback: function (val) {  //Mandatory
 
-    if ($stateParams.locateType !== undefined && $stateParams.locateType !== null) {
-      $scope.locateType = $stateParams.locateType;
-    }
+                  var date=new Date(val);
+                  var month=parseInt(date.getMonth())+1;
+                  item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
+              },
+              disabledDates: [            //Optional
+                  new Date(2016, 2, 16),
+                  new Date(2015, 3, 16),
+                  new Date(2015, 4, 16),
+                  new Date(2015, 5, 16),
+                  new Date('Wednesday, August 12, 2015'),
+                  new Date("08-16-2016"),
+                  new Date(1439676000000)
+              ],
+              from: new Date(1949, 10, 1), //Optional
+              to: new Date(2040, 10, 30), //Optional
+              inputDate: new Date(),      //Optional
+              mondayFirst: false,          //Optional
+              disableWeekdays: [0],       //Optional
+              closeOnSelect: false,       //Optional
+              templateType: 'popup'     //Optional
+          };
+          ionicDatePicker.openDatePicker(ipObj1);
+      };
 
+      $scope.airTransfer = {
+          airTransfers: {}
+      };
 
-    $scope.filterType={
+      if($stateParams.locateType !== undefined && $stateParams.locateType !== null) {
+          $scope.locateType = $stateParams.locateType;
+      }
 
-    };
+      $scope.filterType={
+      };
 
     //提交车驾管服务订单
     $scope.generateServiceOrder=function(){
@@ -30,7 +56,8 @@ angular.module('starter')
             var unit=null;
             var units=null;
             var servicePerson=null;
-            var servicePlace=null;
+            //服务地点
+            var servicePlace='遥墙机场';
             unit=$scope.unit;
             units=$scope.units;
             if(unit!==undefined&&unit!==null)
@@ -207,78 +234,51 @@ angular.module('starter')
 
 
 
-    //单选项
-    $scope.Mutex=function(item,cluster){
-      if(cluster[item]!=true)
-      {
-        cluster[item]=true;
-        for(var field in cluster)
-        {
-          if(field!=item)
-            cluster[field]=false;
-        }
-        //选择目的地
-        if(item=='destiny')
-        {
-          $scope.map.clearOverlays();
-          $scope.map.addEventListener('click', $scope.clickFunc);
-          $scope.appendSelfLocation($scope.BMap,$scope.map);
+      $scope.appendSelfLocation=function(BMap,map) {
+          var posOptions = {timeout: 10000, enableHighAccuracy: false};
+          // Setup the loader
 
-        }else//选择维修厂
-        {
-          $scope.appendAirportLocation($scope.BMap, $scope.map);
-          $scope.fetchMaintennacesInArea($scope.BMap);
-          $scope.map.removeEventListener('click', $scope.clickFunc);
-          $scope.map.setZoom(9);
-        }
-      }
-      else
-        cluster[item]=false;
-    }
-
-    $scope.appendSelfLocation=function(BMap,map) {
-      var posOptions = {timeout: 10000, enableHighAccuracy: false};
-      // Setup the loader
-      $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
-
-      //仅限手机环境
-      if(window.cordova!==undefined&&window.cordova!==null)
-      {
-          $cordovaGeolocation
-              .getCurrentPosition(posOptions)
-              .then(function (position) {
-                  var lat = position.coords.latitude;
-                  var lng = position.coords.longitude;
-                  console.log(lng + ',' + lat);
-                  var ggPoint = new BMap.Point(lng, lat);
-                  var convertor = new BMap.Convertor();
-                  var pointArr = [];
-                  pointArr.push(ggPoint);
-
-                  var translateCallback = function (data) {
-                      if (data.status === 0) {
-                          var marker = new BMap.Marker(data.points[0]);
-                          map.addOverlay(marker);
-                          var label = new BMap.Label("转换后的您的位置", {offset: new BMap.Size(20, -10)});
-                          marker.setLabel(label); //添加百度label
-                          map.centerAndZoom(data.points[0],14);
-                          $ionicLoading.hide();
-                      }
-                  }
-                  convertor.translate(pointArr, 1, 5, translateCallback)
-              }, function (err) {
-                  $ionicLoading.hide();
-                  console.error('error=\r\n' + err.toString());
+          //仅限手机环境
+          if(window.cordova!==undefined&&window.cordova!==null)
+          {
+              $ionicLoading.show({
+                  content: 'Loading',
+                  animation: 'fade-in',
+                  showBackdrop: true,
+                  maxWidth: 200,
+                  showDelay: 0
               });
-      }
 
-    }
+              $cordovaGeolocation
+                  .getCurrentPosition(posOptions)
+                  .then(function (position) {
+                      var lat = position.coords.latitude;
+                      var lng = position.coords.longitude;
+                      console.log(lng + ',' + lat);
+                      var ggPoint = new BMap.Point(lng, lat);
+                      var convertor = new BMap.Convertor();
+                      var pointArr = [];
+                      pointArr.push(ggPoint);
+
+                      var translateCallback = function (data) {
+                          if (data.status === 0) {
+                              var marker = new BMap.Marker(data.points[0]);
+                              map.addOverlay(marker);
+                              var label = new BMap.Label("转换后的您的位置", {offset: new BMap.Size(20, -10)});
+                              marker.setLabel(label); //添加百度label
+                              map.centerAndZoom(data.points[0],14);
+                              $ionicLoading.hide();
+                          }
+                      }
+                      convertor.translate(pointArr, 1, 5, translateCallback)
+                  }, function (err) {
+                      $ionicLoading.hide();
+                      console.error('error=\r\n' + err.toString());
+                  });
+          }else//浏览器环境
+          {}
+
+        }
 
     $scope.appendAirportLocation=function(BMap,map){
       //设置本地位置
@@ -355,26 +355,11 @@ angular.module('starter')
         label.setStyle({
           color: '#00f'
         });
-        $scope.unit = unit;
 
-        $scope.labels.map(function (item, i) {
-          if (item.getContent().trim() != label.getContent().trim())
-            item.setStyle({color: '#222', 'font-size': '0.8em'});
-        })
-      }
-    }
 
-    //选择维修厂
-    $scope.marker_select = function (unit, label) {
-      if ($scope.unit !== undefined && $scope.unit !== null) {
-        $scope.unit = null;
-        label.setStyle({color: '#222', 'font-size': '0.8em'});
-      }
-      else {
-        label.setStyle({
-          color: '#00f'
+        $scope.$apply(function(){
+            $scope.unit = unit;
         });
-        $scope.unit = unit;
 
         $scope.labels.map(function (item, i) {
           if (item.getContent().trim() != label.getContent().trim())
