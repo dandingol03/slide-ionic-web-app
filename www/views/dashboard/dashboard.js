@@ -3873,15 +3873,9 @@ $scope.carService=function(){
       {
         $rootScope.maintain.dailys=$scope.dailys;
       }
-      if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined&&$scope.carInfo.carId!==null)
-        $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
-      else{
-        var confirmPopup = $ionicPopup.confirm({
-          title: '',
-          template: '请选择您的车辆'
-        });
-      }
-    };
+
+      $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
+    }
 
     $scope.pickMaintainDaily=function(locateType,index) {
 
@@ -3898,20 +3892,11 @@ $scope.carService=function(){
 
     $scope.pickParkCarNearby=function(locateType) {
       $state.go('locate_parkCar_nearby', {locateType: locateType});
-    };
+    }
 
     $scope.pickPaperValidate=function(locateType) {
-        if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined
-        &&$scope.carInfo.carId!==null)
-        {
-            $state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
-        }else{
-            var confirmPopup = $ionicPopup.confirm({
-                title: '',
-                template: '请选择您的车辆'
-            });
-        }
-    };
+        $state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
+    }
 
 
     /*** bind matching_car_info modal ***/
