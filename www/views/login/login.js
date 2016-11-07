@@ -101,11 +101,15 @@ angular.module('starter')
 
           if(window.plugins!==undefined&&window.plugins!==null) {
             try {
-              window.plugins.jPushPlugin.getRegistrationID($rootScope.onGetRegistradionID);
-              $scope.login();
+
+                window.plugins.jPushPlugin.getRegistrationID(function(data) {
+                    alert('fluid request callback');
+                    alert('registrationId=\r\n'+data);
+                    $rootScope.registrationId=data;
+                    $scope.login();
+                });
             } catch (e) {
               alert(e);
-
             }
           }
           else{
@@ -380,6 +384,10 @@ angular.module('starter')
         }).error(function(err) {
           console.log('...');
         });
+      }
+
+      $scope.goFetchPassword=function(){
+          $state.go('passwordForget');
       }
 
 

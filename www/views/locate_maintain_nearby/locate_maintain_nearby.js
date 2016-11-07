@@ -314,72 +314,45 @@ angular.module('starter')
       $scope.tpMarkers=[];
       $scope.dragF=false;
       //map添加拖拽结束事件
-      map.addEventListener("dragend", function(){
-        //中心点渲染
-        var center = map.getCenter();
-        console.log("地图中心点变更为：" + center.lng + ", " + center.lat);
-        map.clearOverlays();
-        var point=center;
-        //设置地图中心点覆盖物
-        var mkCenter = new BMap.Marker(point);
-        map.addOverlay(mkCenter);
-        var label = new BMap.Label('中心', {offset: new BMap.Size(20, -10)});
-        label.setStyle({
-          color: '#fff',
-          fontSize: "12px",
-          height: "20px",
-          lineHeight: "20px",
-          fontFamily: "微软雅黑",
-          border: '0px',
-          'background-color':'#222'
-        });
-        mkCenter.setLabel(label);
-
-        //拖拽延时
-        if($scope.timer!==undefined&&$scope.timer!==null)
-        {
-          $timeout.cancel( $scope.timer);
-        }
-        else{}
-        $scope.timer = $timeout(
-          function() {
-            render();
-          },
-          1000
-        );
-
-        var render=function(){
-
-          //5公里范围内维修厂集合
-          $scope.units = [];
-          $scope.unitsInTown.map(function (unit, i) {
-            if (unit.longitude !== undefined && unit.longitude !== null &&
-              unit.latitude !== undefined && unit.latitude !== null) {
-              var distance = map.getDistance(point, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
-              if (distance <= 5000)
-                $scope.units.push(unit);
-            }
-          });
-
-          $scope.units.map(function (unit, i) {
-            var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
-            map.addOverlay(mk);
-            var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
-            label.setStyle({
-              color: '#222',
-              fontSize: "12px",
-              height: "20px",
-              lineHeight: "20px",
-              fontFamily: "微软雅黑",
-              border: '0px'
-            });
-            mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
-            mk.setLabel(label);
-            $scope.labels.push(label);
-          });
-        }
-
-      });
+      // map.addEventListener("dragend", function(){
+      //   //中心点渲染
+      //   var center = map.getCenter();
+      //   console.log("地图中心点变更为：" + center.lng + ", " + center.lat);
+      //   map.clearOverlays();
+      //   var point=center;
+      //   //设置地图中心点覆盖物
+      //   var mkCenter = new BMap.Marker(point);
+      //   mkCenter.setIcon("http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png");
+      //   map.addOverlay(mkCenter);
+      //   var label = new BMap.Label('中心', {offset: new BMap.Size(20, -10)});
+      //   label.setStyle({
+      //     color: '#fff',
+      //     fontSize: "12px",
+      //     height: "20px",
+      //     lineHeight: "20px",
+      //     fontFamily: "微软雅黑",
+      //     border: '0px',
+      //     'background-color':'#222'
+      //   });
+      //   mkCenter.setLabel(label);
+      //
+      //   //拖拽延时
+      //   if($scope.timer!==undefined&&$scope.timer!==null)
+      //   {
+      //     $timeout.cancel( $scope.timer);
+      //   }
+      //   else{}
+      //   $scope.timer = $timeout(
+      //     function() {
+      //       render();
+      //     },
+      //     1000
+      //   );
+      //
+      //   var render=function(){
+      //   }
+      //
+      // });
 
 
 
@@ -417,8 +390,73 @@ angular.module('starter')
         }
       }
 
+        //选择车管所
+        $scope.servicePlace_select = function (servicePlace, label) {
+            if ($scope.servicePlace !== undefined && $scope.servicePlace !== null) {
+                $scope.servicePlace = null;
+                label.setStyle({color: '#222', 'font-size': '0.8em'});
+            }
+            else
+              {
+
+                  label.setStyle({
+                      color: '#00f'
+                  });
+                  $scope.servicePlace = servicePlace;
+
+                  $scope.servicePlaceLabels.map(function (item, i) {
+                      if (item.getContent().trim() != label.getContent().trim())
+                          item.setStyle({color: '#222', 'font-size': '0.8em'});
+                  });
+
+                  //渲染5公里的维修厂
+                  var ll=new BMap.Point(servicePlace.longitude, servicePlace.latitude);
+                  $scope.unitsInTown.map(function (unit, i) {
+                      if (unit.longitude !== undefined && unit.longitude !== null &&
+                          unit.latitude !== undefined && unit.latitude !== null) {
+
+                          var distance = map.getDistance(ll, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
+                          if (distance <= 5000)
+                              $scope.units.push(unit);
+                      }
+                  });
+
+                  //移除周边维修厂覆盖物
+                  if($scope.unitOverlays!==undefined&&$scope.unitOverlays!==null&&$scope.unitOverlays.length>0)
+                  {
+                      $scope.unitOverlays.map(function(overlay,i) {
+                          map.removeOverlay(overlay);
+                      })
+                  }
+
+                  $scope.unitOverlays=[];
+
+                  $scope.units.map(function (unit, i) {
+                      var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(100,100));
+                      var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude),{icon:bIcon});
+                      map.addOverlay(mk);
+                      var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
+                      label.setStyle({
+                          color: '#222',
+                          fontSize: "12px",
+                          height: "20px",
+                          lineHeight: "20px",
+                          fontFamily: "微软雅黑",
+                          border: '0px'
+                      });
+                      mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
+                      mk.setLabel(label);
+                      $scope.unitOverlays.push(mk);
+
+                  });
+
+
+              }
+        }
+
 
       var posOptions = {timeout: 10000, enableHighAccuracy: false};
+
       $cordovaGeolocation
         .getCurrentPosition(posOptions)
         .then(function (position) {
@@ -615,7 +653,7 @@ angular.module('starter')
 
 
       //获取该地区的所有维修厂,并进行距离过滤
-      $scope.fetchAndRenderNearBy = function () {
+      $scope.fetchAndRenderNearBy = function (servicePlacePoint) {
         $http({
           method: "POST",
           url: Proxy.local() + "/svr/request",
@@ -633,37 +671,7 @@ angular.module('starter')
         }).then(function (res) {
           var json = res.data;
           if (json.re == 1) {
-            $scope.units = [];
             $scope.unitsInTown = json.data;
-            json.data.map(function (unit, i) {
-              if (unit.longitude !== undefined && unit.longitude !== null &&
-                unit.latitude !== undefined && unit.latitude !== null) {
-                var center = $scope.maintain.center;
-                var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
-                if (distance <= 5000)
-                  $scope.units.push(unit);
-              }
-            });
-            //remove previous markers
-            map.clearOverlays();
-            //render new markers
-            $scope.labels = [];
-            $scope.units.map(function (unit, i) {
-              var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
-              map.addOverlay(mk);
-              var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
-              label.setStyle({
-                color: '#222',
-                fontSize: "12px",
-                height: "20px",
-                lineHeight: "20px",
-                fontFamily: "微软雅黑",
-                border: '0px'
-              });
-              mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
-              mk.setLabel(label);
-              $scope.labels.push(label);
-            });
           }
         }).catch(function (err) {
           var str = '';
@@ -676,7 +684,62 @@ angular.module('starter')
       $scope.maintain.center = map.getCenter();
       $scope.fetchAndRenderNearBy();
 
-      $scope.pct_confirm = function (town) {
+      //获取本地区的所有车管所,并添加覆盖物
+        $scope.fetchServicePlacesInArea = function () {
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data: {
+                    request: 'fetchServicePlacesInArea',
+                    info: {
+                        provinceName: $scope.area.province,
+                        cityName: $scope.area.city,
+                        townName: $scope.area.town
+                    }
+                }
+            }).then(function (res) {
+                var json = res.data;
+                if (json.re == 1) {
+                    $scope.units = [];
+                    $scope.servicePlaces = json.data;
+
+                    //remove previous markers
+                    map.clearOverlays();
+                    //render new markers
+                    $scope.servicePlaceLabels = [];
+                    $scope.servicePlaces.map(function (servicePlace, i) {
+                        var rIcon = new BMap.Icon('img/mark_r.png', new BMap.Size(100,100));
+                        var mk = new BMap.Marker(new BMap.Point(servicePlace.longitude, servicePlace.latitude),{icon:rIcon});
+                        map.addOverlay(mk);
+                        var label = new BMap.Label(servicePlace.name, {offset: new BMap.Size(20, -10)});
+                        label.setStyle({
+                            color: '#222',
+                            fontSize: "12px",
+                            height: "20px",
+                            lineHeight: "20px",
+                            fontFamily: "微软雅黑",
+                            border: '0px'
+                        });
+                        mk.addEventListener("click", $scope.servicePlace_select.bind(this, servicePlace, label));
+                        mk.setLabel(label);
+                        $scope.servicePlaceLabels.push(label);
+                    });
+                }
+            }).catch(function (err) {
+                var str = '';
+                for (var field in err)
+                    str += err[field];
+                console.error('error=\r\n' + str);
+            })
+        }
+
+        $scope.fetchServicePlacesInArea();
+
+
+        $scope.pct_confirm = function (town) {
         if (town !== undefined && town !== null)
           $scope.area.town = town;
         $scope.close_selectPCTModal();
