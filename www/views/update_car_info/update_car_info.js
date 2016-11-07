@@ -6,242 +6,246 @@ angular.module('starter')
                                                $cordovaFileTransfer,$cordovaFile,
                                                  $cordovaCamera,$cordovaImagePicker,Proxy,
                                                  $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate,
-                                                 $timeout){
+                                                 $timeout,$ionicPopup){
 
 
-    $scope.licenseIndexChange=function(i) {
-      $scope.licenseIndex=i;
-      $ionicSlideBoxDelegate.$getByHandle('carInfo-slide').slide(i);
-    };
+        $scope.licenseIndexChange=function(i) {
+          $scope.licenseIndex=i;
+          $ionicSlideBoxDelegate.$getByHandle('carInfo-slide').slide(i);
+        };
 
-    $scope.licenseSlideChanged=function(i){
-      $scope.licenseIndex=i;
+        $scope.licenseSlideChanged=function(i){
+          $scope.licenseIndex=i;
 
-    }
-
-    $scope.go_back=function(){
-      window.history.back();
-    };
-
-    $scope.carInfo={};
-
-    $scope.fetchRelative=function(item,field,matched) {
-      $http({
-        method: "POST",
-        url: Proxy.local()+'/svr/request',
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'getRelativePersons'
-        }
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1) {
-          if(json.data!=undefined&&json.data!=null){
-            $scope.relatives=json.data;
-
-            $scope.open_selectRelativeModal(item,field,matched);
-          }
-        }else{
-          $scope.open_selectRelativeModal(item,field,matched);
         }
 
-      }).catch(function(err) {
-        var str='';
-        for(var field in err)
-          str+=err[field];
-        console.error('error=\r\n' + str);
-      });
-    };
+        $scope.go_back=function(){
+          window.history.back();
+        };
 
+        $scope.carInfo={};
 
-    //查询已绑定车辆,并显示车牌信息
-    $scope.selectCarInfoByCarNum=function(item){
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'fetchInsuranceCarInfoByCustomerId'
-        }
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1) {
-          var cars=json.data;
-          var buttons=[];
-          cars.map(function(car,i) {
-            var ele=car;
-            ele.text='<b>'+car.carNum+'</b>';
-            buttons.push(ele);
-          });
-          var carSheet = $ionicActionSheet.show({
-            buttons: buttons,
-            titleText: '<b>选择车辆信息</b>',
-            cancelText: 'Cancel',
-            cancel: function() {
-              // add cancel code..
+        $scope.fetchRelative=function(item,field,matched) {
+          $http({
+            method: "POST",
+            url: Proxy.local()+'/svr/request',
+            headers: {
+              'Authorization': "Bearer " + $rootScope.access_token
             },
-            buttonClicked: function(index) {
+            data:
+            {
+              request:'getRelativePersons'
+            }
+          }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+              if(json.data!=undefined&&json.data!=null){
+                $scope.relatives=json.data;
 
-                var car=cars[index];
-                if(item!==undefined&&item!==null)
-                {
-                  item.carId=car.carId;
-                }else{
-                  $scope.carInfo.carNum=car.carNum;
-                  $scope.carInfo.ownerName=car.ownerName;
-                  $scope.carInfo.ownerIdCard=car.ownerIdCard;
-                  $scope.carInfo.issueDate=car.issueDate;
-                  $scope.carInfo.factoryNum=car.factoryNum;
-                  $scope.carInfo.engineNum=car.engineNum;
-                  $scope.carInfo.frameNum=car.frameNum;
-                }
-
-              return true;
-            },
-            cssClass:'center'
-          });
-        }
-      }).catch(function(err) {
-        var str='';
-        for(var field in err)
-          str+=err[field];
-        console.error('error=\r\n' + str);
-      });
-    }
-
-    $scope.selectCarInfoWithPerName=function(){
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'getRelativePersons'
-        }
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1) {
-          var persons=json.data;
-          var buttons=[];
-          persons.map(function(person,i) {
-            var ele=person;
-            ele.text='<b>'+person.perName+'</b>';
-            buttons.push(ele);
-          });
-          var personSheet = $ionicActionSheet.show({
-            buttons: buttons,
-            titleText: '<b>选择人员</b>',
-            cancelText: 'Cancel',
-            cancel: function() {
-              // add cancel code..
-            },
-            buttonClicked: function(index) {
-              var person=persons[index];
-              if(person!==undefined&&person!==null) {
-                $http({
-                  method: "POST",
-                  url: Proxy.local()+"/svr/request",
-                  headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data:
-                  {
-                    request:'getCarInfoByPersonId',
-                    info:{
-                      personId:person.personId
-                    }
-                  }
-                }).then(function(res) {
-                  var json=res.data;
-                  var cars=json.data;
-                  $scope.carInfo=cars[0];
-
-                });
+                $scope.open_selectRelativeModal(item,field,matched);
               }
-              return true;
+            }else{
+              $scope.open_selectRelativeModal(item,field,matched);
+            }
+
+          }).catch(function(err) {
+            var str='';
+            for(var field in err)
+              str+=err[field];
+            console.error('error=\r\n' + str);
+          });
+        };
+
+
+        //查询已绑定车辆,并显示车牌信息
+        $scope.selectCarInfoByCarNum=function(item){
+          $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+              'Authorization': "Bearer " + $rootScope.access_token
             },
-            cssClass:'center'
+            data:
+            {
+              request:'fetchInsuranceCarInfoByCustomerId'
+            }
+          }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+              var cars=json.data;
+              var buttons=[];
+              cars.map(function(car,i) {
+                var ele=car;
+                ele.text='<b>'+car.carNum+'</b>';
+                buttons.push(ele);
+              });
+              var carSheet = $ionicActionSheet.show({
+                buttons: buttons,
+                titleText: '<b>选择车辆信息</b>',
+                cancelText: 'Cancel',
+                cancel: function() {
+                  // add cancel code..
+                },
+                buttonClicked: function(index) {
+
+                    var car=cars[index];
+                    if(item!==undefined&&item!==null)
+                    {
+                      item.carId=car.carId;
+                    }else{
+                      $scope.carInfo.carNum=car.carNum;
+                      $scope.carInfo.ownerName=car.ownerName;
+                      $scope.carInfo.ownerIdCard=car.ownerIdCard;
+                      $scope.carInfo.issueDate=car.issueDate;
+                      $scope.carInfo.factoryNum=car.factoryNum;
+                      $scope.carInfo.engineNum=car.engineNum;
+                      $scope.carInfo.frameNum=car.frameNum;
+                    }
+
+                  return true;
+                },
+                cssClass:'center'
+              });
+            }
+          }).catch(function(err) {
+            var str='';
+            for(var field in err)
+              str+=err[field];
+            console.error('error=\r\n' + str);
           });
         }
-      }).catch(function(err) {
-        var str='';
-        for(var field in err)
-          str+=err[field];
-        console.error('error=\r\n' + str);
-      });
-    }
+
+        $scope.selectCarInfoWithPerName=function(){
+          $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+              'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data:
+            {
+              request:'getRelativePersons'
+            }
+          }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+              var persons=json.data;
+              var buttons=[];
+              persons.map(function(person,i) {
+                var ele=person;
+                ele.text='<b>'+person.perName+'</b>';
+                buttons.push(ele);
+              });
+              var personSheet = $ionicActionSheet.show({
+                buttons: buttons,
+                titleText: '<b>选择人员</b>',
+                cancelText: 'Cancel',
+                cancel: function() {
+                  // add cancel code..
+                },
+                buttonClicked: function(index) {
+                  var person=persons[index];
+                  if(person!==undefined&&person!==null) {
+                    $http({
+                      method: "POST",
+                      url: Proxy.local()+"/svr/request",
+                      headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                      },
+                      data:
+                      {
+                        request:'getCarInfoByPersonId',
+                        info:{
+                          personId:person.personId
+                        }
+                      }
+                    }).then(function(res) {
+                      var json=res.data;
+                      var cars=json.data;
+                      $scope.carInfo=cars[0];
+
+                    });
+                  }
+                  return true;
+                },
+                cssClass:'center'
+              });
+            }
+          }).catch(function(err) {
+            var str='';
+            for(var field in err)
+              str+=err[field];
+            console.error('error=\r\n' + str);
+          });
+        }
 
 
-    /***  悬浮窗  ***/
-    $scope.carNumHint='hidden list';
-    $scope.focusInCarNum=function(){
-      $scope.carNumHint='list';
-    }
-    $scope.blurCarNum= function () {
-      $scope.carNumHint = 'hidden list';
-    }
+        /***  悬浮窗  ***/
+        $scope.carNumHint='hidden list';
+        $scope.focusInCarNum=function(){
+          $scope.carNumHint='list';
+        }
+        $scope.blurCarNum= function () {
+          $scope.carNumHint = 'hidden list';
+        }
 
-    $scope.factoryNumHint='hidden list';
-    $scope.focusInFactoryNum=function(){
-      $scope.factoryNumHint='list';
-    }
-    $scope.blurFactoryNum=function(){
-      $scope.factoryNumHint='hidden list';
-    }
+        $scope.factoryNumHint='hidden list';
+        $scope.focusInFactoryNum=function(){
+          $scope.factoryNumHint='list';
+        }
+        $scope.blurFactoryNum=function(){
+          $scope.factoryNumHint='hidden list';
+        }
 
-    $scope.engineNumHint='hidden list';
-    $scope.focusInEngineNum=function(){
-      $scope.engineNumHint='list';
-    }
-    $scope.blurEngineNum=function(){
-      $scope.engineNumHint='hidden list';
-    }
+        $scope.engineNumHint='hidden list';
+        $scope.focusInEngineNum=function(){
+          $scope.engineNumHint='list';
+        }
+        $scope.blurEngineNum=function(){
+          $scope.engineNumHint='hidden list';
+        }
 
-    $scope.frameNumHint='hidden list';
-    $scope.focusInFrameNum=function(){
-      $scope.frameNumHint='list';
-    }
-    $scope.blurFrameNum=function(){
-      $scope.frameNumHint='hidden list';
-    }
+        $scope.frameNumHint='hidden list';
+        $scope.focusInFrameNum=function(){
+          $scope.frameNumHint='list';
+        }
 
-      $scope.firstTabHint='hidden list';
-      $scope.firstTabStyle={display:'none'};
-      $scope.focusInFirstTab=function(){
+        $scope.blurFrameNum=function(){
+          $scope.frameNumHint='hidden list';
+        }
+
+
         $scope.firstTabHint='hidden list';
-      }
-      $scope.blurFirstTab=function(){
-        $scope.firstTabHint='list';
-        $scope.firstTabStyle='';
-        $timeout(function(){
-          $scope.firstTabHint='hidden list';
-          $scope.firstTabStyle={display:'none'};
-        },1000);
-      }
+        $scope.firstTabStyle={display:'none'};
+        $scope.focusInFirstTab=function(){
+            $scope.firstTabHint='hidden list';
+        }
 
+        $scope.blurFirstTab=function(){
+            $scope.firstTabHint='list';
+            $scope.firstTabStyle='';
+            $timeout(function(){
+                $scope.firstTabHint='hidden list';
+                $scope.firstTabStyle={display:'none'};
+            },1000);
+        }
 
-      $scope.secondTabHint='list';
-      $timeout(function(){
-        $scope.secondTabHint='hidden list';
-      },3000);
-
-      $scope.focusInSecondTab=function(){
-        $scope.secondTabHint='hidden list';
-      }
-      $scope.blurSecondTab=function(){
         $scope.secondTabHint='list';
         $timeout(function(){
-          $scope.secondTabHint='hidden list';
-        },1000);
-      }
+            $scope.secondTabHint='hidden list';
+        },3000);
+
+        $scope.focusInSecondTab=function(){
+            $scope.secondTabHint='hidden list';
+        }
+
+        $scope.blurSecondTab=function(){
+            $scope.secondTabHint='list';
+            $timeout(function(){
+                $scope.secondTabHint='hidden list';
+            },1000);
+
+        }
 
 
 
@@ -258,183 +262,209 @@ angular.module('starter')
 
     $scope.postCarInfo=function(){
 
-      var licenseAttachId1 = null;
-      var licenseAttachId2 = null;
-      var licenseAttachId3 = null;
-      var carId=null;
-      var server=null;
-      var imageType = 'licenseCard';
-      var options = {
-        fileKey: 'file',
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        }
-      };
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'uploadCarAndOwnerInfo',
-          info:$scope.carInfo
-        }
-      })
-        .then(function (res) {
-        var json=res.data;
-        if(json.re==1) {
 
-          var carInfo = json.data;
-          carId = carInfo.carId;
-          //TODO:update licenseCard
-          var suffix = '';
-          if ($scope.carInfo.licenseCard1_img.indexOf('.jpg') != -1)
-            suffix = 'jpg';
-          else if ($scope.carInfo.licenseCard1_img.indexOf('.png') != -1)
-            suffix = 'png';
-          else {
-          }
-           server = Proxy.local() + '/svr/request?request=uploadPhoto' +
-            '&imageType=' + imageType + '&suffix=' + suffix + '&filename=' + 'licenseAttachId1' + '&carId=' + carId;
+        var engineNum=$scope.carInfo.engineNum;
+        //validate engineNum
+        if(engineNum!==undefined&&engineNum!==null&&!isNaN(engineNum)&&engineNum.toString().length==6) {
+
+            if ($scope.carInfo.carNum !== undefined && $scope.carInfo.carNum !== null && $scope.carInfo.carNum !== '') {
+
+                if ($scope.carInfo.ownerName !== undefined && $scope.carInfo.ownerName !== null && $scope.carInfo.ownerName !== '') {
+                    var licenseAttachId1 = null;
+                    var licenseAttachId2 = null;
+                    var licenseAttachId3 = null;
+                    var carId = null;
+                    var server = null;
+                    var imageType = 'licenseCard';
+                    var options = {
+                        fileKey: 'file',
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        }
+                    };
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'uploadCarAndOwnerInfo',
+                            info: $scope.carInfo
+                        }
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+
+                            var carInfo = json.data;
+                            carId = carInfo.carId;
+                            //TODO:update licenseCard
+                            var suffix = '';
+                            if ($scope.carInfo.licenseCard1_img.indexOf('.jpg') != -1)
+                                suffix = 'jpg';
+                            else if ($scope.carInfo.licenseCard1_img.indexOf('.png') != -1)
+                                suffix = 'png';
+                            else {
+                            }
+                            server = Proxy.local() + '/svr/request?request=uploadPhoto' +
+                                '&imageType=' + imageType + '&suffix=' + suffix + '&filename=' + 'licenseAttachId1' + '&carId=' + carId;
+
+                            return $cordovaFileTransfer.upload(server, $scope.carInfo.licenseCard1_img, options);
+                        }
+                    }).then(function (res) {
 
 
-          return $cordovaFileTransfer.upload(server, $scope.carInfo.licenseCard1_img, options);
-        }})
-        .then(function(res) {
-              alert('upload first license success');
-              for(var field in res) {
-                alert('field=' + field + '\r\n' + res[field]);
-              }
-              var su=null
-              if($scope.carInfo.licenseCard1_img.indexOf('.jpg')!=-1)
-                su='jpg';
-              else if($scope.carInfo.licenseCard1_img.indexOf('.png')!=-1)
-                su='png';
-              alert('suffix=' + su);
-              return $http({
-                method: "POST",
-                url: Proxy.local()+"/svr/request",
-                headers: {
-                  'Authorization': "Bearer " + $rootScope.access_token,
-                },
-                data:
-                {
-                  request:'createPhotoAttachment',
-                  info:{
-                    imageType:'licenseCard',
-                    filename:'licenseAttachId1',
-                    suffix:su,
-                    docType:'I3',
-                    carId:carId
-                  }
+                        alert('upload first license success');
+                        for (var field in res) {
+                            alert('field=' + field + '\r\n' + res[field]);
+                        }
+                        var su = null
+                        if ($scope.carInfo.licenseCard1_img.indexOf('.jpg') != -1)
+                            su = 'jpg';
+                        else if ($scope.carInfo.licenseCard1_img.indexOf('.png') != -1)
+                            su = 'png';
+                        alert('suffix=' + su);
+                        return $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token,
+                            },
+                            data: {
+                                request: 'createPhotoAttachment',
+                                info: {
+                                    imageType: 'licenseCard',
+                                    filename: 'licenseAttachId1',
+                                    suffix: su,
+                                    docType: 'I3',
+                                    carId: carId
+                                }
+                            }
+                        });
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+
+                            $scope.carInfo.licenseAttachId1 = json.data;
+                            alert('licenseAttachId1=' + $scope.carInfo.licenseAttachId1)
+                            var su = null;
+                            if ($scope.carInfo.licenseCard2_img.indexOf('.jpg') != -1)
+                                su = 'jpg';
+                            else if ($scope.carInfo.licenseCard2_img.indexOf('.png') != -1)
+                                su = 'png';
+                            server = Proxy.local() + '/svr/request?request=uploadPhoto' +
+                                '&imageType=' + imageType + '&suffix=' + su + '&filename=' + 'licenseAttachId2' + '&carId=' + carId;
+                            return $cordovaFileTransfer.upload(server, $scope.carInfo.licenseCard2_img, options);
+                        }
+
+                    }).then(function (res) {
+                        alert('second image upload success');
+
+                        var su = null;
+                        if ($scope.carInfo.licenseCard2_img.indexOf('.jpg') != -1)
+                            su = 'jpg';
+                        else if ($scope.carInfo.licenseCard2_img.indexOf('.png') != -1)
+                            su = 'png';
+                        return $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token,
+                            },
+                            data: {
+                                request: 'createPhotoAttachment',
+                                info: {
+                                    imageType: 'licenseCard',
+                                    filename: 'licenseAttachId2',
+                                    suffix: su,
+                                    docType: 'I3',
+                                    carId: carId
+                                }
+                            }
+                        });
+
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+                            $scope.carInfo.licenseAttachId2 = json.data;
+                            alert('licenseAttachId2=' + $scope.carInfo.licenseAttachId2)
+                            var su = null;
+                            if ($scope.carInfo.licenseCard3_img.indexOf('.jpg') != -1)
+                                su = 'jpg';
+                            else if ($scope.carInfo.licenseCard3_img.indexOf('.png') != -1)
+                                su = 'png';
+                            server = Proxy.local() + '/svr/request?request=uploadPhoto' +
+                                '&imageType=' + imageType + '&suffix=' + su + '&filename=' + 'licenseAttachId3' + '&carId=' + carId;
+                            return $cordovaFileTransfer.upload(server, $scope.carInfo.licenseCard3_img, options);
+                        }
+                    }).then(function (res) {
+                        alert('third image upload successfully');
+                        var su = null;
+                        if ($scope.carInfo.licenseCard3_img.indexOf('.jpg') != -1)
+                            su = 'jpg';
+                        else if ($scope.carInfo.licenseCard3_img.indexOf('.png') != -1)
+                            su = 'png';
+                        return $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token,
+                            },
+                            data: {
+                                request: 'createPhotoAttachment',
+                                info: {
+                                    imageType: 'licenseCard',
+                                    filename: 'licenseAttachId3',
+                                    suffix: su,
+                                    docType: 'I3',
+                                    carId: carId
+                                }
+                            }
+                        });
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+                            $scope.carInfo.licenseAttachId3 = json.data;
+                            alert('licenseAttachId3=' + $scope.carInfo.licenseAttachId3);
+                            var conf= $ionicPopup.alert({
+                                title: '创建车辆',
+                                template: '成功创建新车!'
+                            });
+                            conf.then(function() {
+                                $state.go('tabs.dashboard');
+                            })
+                        }
+
+                    }).catch(function (err) {
+                        var str = '';
+                        for (var field in err)
+                            str += err[field];
+                        alert('error=================\r\n' + str);
+                    });
+                } else {
+                    $ionicPopup.alert({
+                        title: '错误信息',
+                        template: '请填入姓名'
+                    });
                 }
-              });
-            })
-        .then(function(res) {
-              var json=res.data;
-              if(json.re==1) {
-
-                $scope.carInfo.licenseAttachId1=json.data;
-                alert('licenseAttachId1='+$scope.carInfo.licenseAttachId1)
-                var su=null;
-                if($scope.carInfo.licenseCard2_img.indexOf('.jpg')!=-1)
-                  su='jpg';
-                else if($scope.carInfo.licenseCard2_img.indexOf('.png')!=-1)
-                  su='png';
-                server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                  '&imageType='+imageType+'&suffix='+su+'&filename='+'licenseAttachId2'+'&carId='+carId;
-                return  $cordovaFileTransfer.upload(server, $scope.carInfo.licenseCard2_img, options);
-              }
-        })
-        .then(function(res) {
-              alert('second image upload success');
-
-              var su=null;
-              if($scope.carInfo.licenseCard2_img.indexOf('.jpg')!=-1)
-                su='jpg';
-              else if($scope.carInfo.licenseCard2_img.indexOf('.png')!=-1)
-                su='png';
-              return $http({
-                method: "POST",
-                url: Proxy.local()+"/svr/request",
-                headers: {
-                  'Authorization': "Bearer " + $rootScope.access_token,
-                },
-                data:
-                {
-                  request:'createPhotoAttachment',
-                  info:{
-                    imageType:'licenseCard',
-                    filename:'licenseAttachId2',
-                    suffix:su,
-                    docType:'I3',
-                    carId:carId
-                  }
-                }
-              });
-        })
-        .then(function(res) {
-              var json=res.data;
-              if(json.re==1) {
-                $scope.carInfo.licenseAttachId2=json.data;
-                alert('licenseAttachId2='+$scope.carInfo.licenseAttachId2)
-                var su=null;
-                if($scope.carInfo.licenseCard3_img.indexOf('.jpg')!=-1)
-                  su='jpg';
-                else if($scope.carInfo.licenseCard3_img.indexOf('.png')!=-1)
-                  su='png';
-                server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                  '&imageType='+imageType+'&suffix='+su+'&filename='+'licenseAttachId3'+'&carId='+carId;
-                return  $cordovaFileTransfer.upload(server, $scope.carInfo.licenseCard3_img, options);
-              }
-        })
-        .then(function(res) {
-              alert('third image upload successfully');
-              var su=null;
-              if($scope.carInfo.licenseCard3_img.indexOf('.jpg')!=-1)
-                su='jpg';
-              else if($scope.carInfo.licenseCard3_img.indexOf('.png')!=-1)
-                su='png';
-              return $http({
-                method: "POST",
-                url: Proxy.local()+"/svr/request",
-                headers: {
-                  'Authorization': "Bearer " + $rootScope.access_token,
-                },
-                data:
-                {
-                  request:'createPhotoAttachment',
-                  info:{
-                    imageType:'licenseCard',
-                    filename:'licenseAttachId3',
-                    suffix:su,
-                    docType:'I3',
-                    carId:carId
-                  }
-                }
-              });
-        })
-        .then(function(res) {
-            var json=res.data;
-            if(json.re==1){
-              $scope.carInfo.licenseAttachId3=json.data;
-              alert('licenseAttachId3='+$scope.carInfo.licenseAttachId3)
-
+            }
+            else{
                 $ionicPopup.alert({
-                    title: '创建车辆',
-                    template: '成功创建新车!'
+                    title: '错误信息',
+                    template: '请填入车牌号'
                 });
 
-              $state.go('tabs.dashboard');
             }
-        }).catch(function(err) {
-          var str='';
-          for(var field in err)
-            str+=err[field];
-          alert('error=================\r\n' + str);
-        });
+
+
+        }
+        else{
+            $ionicPopup.alert({
+                title: '错误信息',
+                template: '请输入6位发动机号'
+            });
+        }
+
     }
 
     /*** show demo modal ***/

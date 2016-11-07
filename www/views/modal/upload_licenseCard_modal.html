@@ -78,6 +78,7 @@
 
                   <div style="width:  100%;text-align:center;margin-left:0%;height:200px;"
                        ng-if="carInfo.licenseCard2_img==undefined||carInfo.licenseCard2_img==null"
+                       ng-click="addAttachment(carInfo,'licenseCard2_img')"
                           >
                      <span style="font-size: 10em;" ng-click="addAttachment(carInfo,'licenseCard2_img')">
                          <i class="ion-android-camera"></i>
@@ -98,9 +99,9 @@
               <div class="item"
                    style="background-color:transparent;border: 0px;padding: 0px;">
                   <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
-                <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
-                    行驶证3面:
-                </span>
+                    <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
+                        行驶证3面:
+                    </span>
                   </div>
               </div>
               <div class="item"
@@ -115,6 +116,7 @@
 
                   <div style="width:  100%;text-align:center;margin-left:0%;height:200px;"
                        ng-if="carInfo.licenseCard3_img==undefined||carInfo.licenseCard3_img==null"
+                       ng-click="addAttachment(carInfo,'licenseCard3_img')"
                           >
                      <span style="font-size: 10em;"  ng-click="addAttachment(carInfo,'licenseCard3_img')">
                          <i class="ion-android-camera"></i>
