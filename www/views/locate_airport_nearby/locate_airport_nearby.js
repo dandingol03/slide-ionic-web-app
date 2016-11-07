@@ -202,18 +202,8 @@ angular.module('starter')
 
     }
 
-
-    switch($scope.locateType)
-    {
-      case 'destiny':
-        $scope.filterType.destiny=true;
-        $scope.filterType.maintenance=false;
-        break;
-      case 'maintenance':
-        $scope.filterType.destiny=false;
-        $scope.filterType.maintenance=true;
-        break;
-    }
+      $scope.filterType.destiny=false;
+      $scope.filterType.maintenance=true;
 
 
 
@@ -256,32 +246,37 @@ angular.module('starter')
         maxWidth: 200,
         showDelay: 0
       });
-      $cordovaGeolocation
-        .getCurrentPosition(posOptions)
-        .then(function (position) {
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          console.log(lng + ',' + lat);
-          var ggPoint = new BMap.Point(lng, lat);
-          var convertor = new BMap.Convertor();
-          var pointArr = [];
-          pointArr.push(ggPoint);
 
-          var translateCallback = function (data) {
-            if (data.status === 0) {
-              var marker = new BMap.Marker(data.points[0]);
-              map.addOverlay(marker);
-              var label = new BMap.Label("转换后的您的位置", {offset: new BMap.Size(20, -10)});
-              marker.setLabel(label); //添加百度label
-              map.centerAndZoom(data.points[0],14);
-              $ionicLoading.hide();
-            }
-          }
-          convertor.translate(pointArr, 1, 5, translateCallback)
-        }, function (err) {
-            $ionicLoading.hide();
-          console.error('error=\r\n' + err.toString());
-        });
+      //仅限手机环境
+      if(window.cordova!==undefined&&window.cordova!==null)
+      {
+          $cordovaGeolocation
+              .getCurrentPosition(posOptions)
+              .then(function (position) {
+                  var lat = position.coords.latitude;
+                  var lng = position.coords.longitude;
+                  console.log(lng + ',' + lat);
+                  var ggPoint = new BMap.Point(lng, lat);
+                  var convertor = new BMap.Convertor();
+                  var pointArr = [];
+                  pointArr.push(ggPoint);
+
+                  var translateCallback = function (data) {
+                      if (data.status === 0) {
+                          var marker = new BMap.Marker(data.points[0]);
+                          map.addOverlay(marker);
+                          var label = new BMap.Label("转换后的您的位置", {offset: new BMap.Size(20, -10)});
+                          marker.setLabel(label); //添加百度label
+                          map.centerAndZoom(data.points[0],14);
+                          $ionicLoading.hide();
+                      }
+                  }
+                  convertor.translate(pointArr, 1, 5, translateCallback)
+              }, function (err) {
+                  $ionicLoading.hide();
+                  console.error('error=\r\n' + err.toString());
+              });
+      }
 
     }
 
