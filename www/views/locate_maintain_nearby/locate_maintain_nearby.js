@@ -155,9 +155,10 @@ angular.module('starter')
             var json = res.data;
             if (json.re == 1) {
               //TODO:append address and serviceType and serviceTime
-              var serviceName = $scope.serviceTypeMap[$scope.maintain.serviceType];
+              var serviceName = '车驾管-审车';
               var order=json.data;
               var servicePersonIds = [order.servicePersonId];
+              var serviceItems=$scope.maintain.subServiceTypes;
               return $http({
                 method: "POST",
                 url: Proxy.local() + "/svr/request",
@@ -168,7 +169,6 @@ angular.module('starter')
                   request: 'sendCustomMessage',
                   info: {
                     order: order,
-                    serviceItems: $scope.maintain.subServiceTypes,
                     servicePersonIds: servicePersonIds,
                     serviceName: serviceName,
                     category:'carManage',
@@ -408,7 +408,10 @@ angular.module('starter')
                   label.setStyle({
                       color: '#00f'
                   });
-                  $scope.servicePlace = servicePlace;
+
+                  $scope.$apply(function(){
+                      $scope.servicePlace = servicePlace;
+                  });
 
                   $scope.servicePlaceLabels.map(function (item, i) {
                       if (item.getContent().trim() != label.getContent().trim())
@@ -479,10 +482,10 @@ angular.module('starter')
           var translateCallback = function (data) {
             if (data.status === 0) {
               var marker = new BMap.Marker(data.points[0]);
-              map.addOverlay(marker);
+              //map.addOverlay(marker);
               var label = new BMap.Label("转换后的百度坐标（正确）", {offset: new BMap.Size(20, -10)});
               marker.setLabel(label); //添加百度label
-              map.setCenter(data.points[0]);
+              //map.setCenter(data.points[0]);
             }
           }
 
@@ -661,7 +664,7 @@ angular.module('starter')
 
 
       //获取该地区的所有维修厂,并进行距离过滤
-      $scope.fetchAndRenderNearBy = function (servicePlacePoint) {
+      $scope.fetchAndRenderNearBy = function () {
         $http({
           method: "POST",
           url: Proxy.local() + "/svr/request",
