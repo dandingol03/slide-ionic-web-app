@@ -120,7 +120,8 @@ angular.module('starter')
       $scope.generateServiceOrder=function(){
 
         $scope.carManage.carId=$scope.carInfo.carId;
-        if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
+        if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
+            &&$scope.carManage.carId!=undefined&&$scope.carManage.estimateTime!=null)
         {
           var unit=null;
           var units=null;
@@ -135,7 +136,6 @@ angular.module('starter')
 
           if(unit!==undefined&&unit!==null)//已选维修厂
           {
-
             $scope.carManage.servicePersonId=servicePerson.servicePersonId;
             $http({
                 method: "POST",
@@ -279,10 +279,20 @@ angular.module('starter')
           }
 
         }else{
-            $ionicPopup.alert({
-                title: '',
-                template: '请选择预约时间'
-            });
+            if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
+                $ionicPopup.alert({
+                    title: '',
+                    template: '请选择预约时间'
+                });
+            }else{
+                $ionicPopup.alert({
+                    title: '',
+                    template: '请选择车辆信息'
+                });
+
+            }
+
+
         }
 
       }
