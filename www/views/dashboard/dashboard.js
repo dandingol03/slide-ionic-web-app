@@ -1941,6 +1941,14 @@ $scope.openAirportTransfer=function(){
         item.checked=true;
     }
 
+
+    $scope.grid_check=function (index) {
+        if($scope.dailys[index].checked!=true)
+            $scope.dailys[index].checked=true;
+        else
+            $scope.dailys[index].checked=false;
+    }
+
     $scope.accident = {};
     $scope.accidant_check=function(type)
     {

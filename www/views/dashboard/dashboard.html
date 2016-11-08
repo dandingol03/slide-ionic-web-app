@@ -45,8 +45,7 @@
       <!-- 寿险 -->
       <div ng-if="tabIndex==1" scroll="true" style="background-color:rgba(255,255,255,0);">
 
-        <div
-                class="item item-divider"
+        <div class="item item-divider"
                 style="background: transparent;border-top:0px;border-left:0px;border-right:0px;">
           填写寿险意向
         </div>
@@ -529,6 +528,116 @@
             <div class="item item-divider" style="background-color: transparent;border-top:0px;">
               服务项目列表
             </div>
+
+            <div class="list padding">
+              <div class="row" style='border-bottom:0px;'>
+
+                <div class="col"
+                     style="padding: 16px;border:1px solid;border-right: 0px;border-bottom:0px;"
+                     ng-click="grid_check(0)"
+                >
+                  <div>
+                    <i class="ion-paintbucket"></i>
+                  </div>
+                  <span>机油、机滤</span>
+                  <div ng-if="" style="color:#00f;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
+                </div>
+
+                <div class="col"
+                     style="padding: 16px;border:1px solid;border-right: 0px;border-bottom:0px;"
+                     ng-click="grid_check(1)">
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <span>检查制动系统</span>
+                  <span>更换刹车片</span>
+                </div>
+
+                <div class="col"
+                     style="padding: 16px;border:1px solid;border-bottom:0px;"
+                     ng-click="grid_check(2)">
+                  <div>
+                    <i class="ion-ios-cloud"></i>
+                  </div>
+                  <span>雨刷片更换</span>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col"
+                     style="padding: 16px;border:1px solid;border-bottom: 0px;border-right: 0px;"
+                     ng-click="grid_check(3)"
+                >
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <span>轮胎更换</span>
+                </div>
+                <div class="col"
+                     style="padding: 16px;border:1px solid;border-bottom: 0px;border-right:0px;"
+                     ng-click="grid_check(4)"
+                >
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <span>燃油添加剂</span>
+                </div>
+                <div class="col"
+                     style="padding: 16px;border:1px solid;border-bottom:0px;"
+                     ng-click="grid_check(5)"
+                >
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <span>空气滤清器</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col"
+                     style="padding: 16px;border:1px solid;"
+                     ng-click="grid_check(6)">
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <span>检查火花塞</span>
+                </div>
+                <div class="col"
+                     style="padding: 16px;border:1px solid;border-right:0px;border-left:0px;"
+                     ng-click="grid_check(7)">
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <span>检查驱动皮带</span>
+                </div>
+                <div class="col"
+                     style="padding: 16px;border:1px solid"
+                     ng-click="grid_check(8)">
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <span>更换空调滤芯</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div style="padding: 16px;border:1px solid;width: 33.33%;border-top:0px;"
+                     ng-click="grid_check(9)">
+                  <div>
+                    <i class="ion-wrench"></i>
+                  </div>
+                  <div>更换蓄电池</div>
+                  <div>防冻液</div>
+                </div>
+              </div>
+
+            </div>
+
+
+
+
 
             <div class="list" style="background-color: transparent;">
               <div class="item" ng-repeat="item in dailys" style="background-color: transparent;padding: 0;">
