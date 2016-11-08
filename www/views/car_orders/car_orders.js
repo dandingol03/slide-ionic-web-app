@@ -56,7 +56,7 @@ angular.module('starter')
 
 
     //车险订单  0.已生成;1.待支付
-    $scope.tabIndex=0;
+    $scope.tabIndex=1;
 
     $scope.priceIndex=-1;
 
@@ -121,7 +121,7 @@ angular.module('starter')
     $scope.apply=function(){
       var selected_price=null;
 
-      $scope.orderPricedList.map(function(order) {
+        $scope.orderPricedList.map(function(order) {
         order.prices.map(function(price,i) {
           if(price.checked==true)
             selected_price=price;

@@ -50,7 +50,7 @@ angular.module('starter')
     //提交车驾管服务订单
     $scope.generateServiceOrder=function(){
 
-        $scope.carManage.carId=$scope.carInfo.carId;
+        //$scope.carManage.carId=$scope.carInfo.carId;
         if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
         {
             var unit=null;
@@ -64,6 +64,7 @@ angular.module('starter')
                 servicePlace=unit.unitName;
 
 
+            $scope.carManage.serviceType='23';
             if(unit!==undefined&&unit!==null)//已选维修厂
             {
 
