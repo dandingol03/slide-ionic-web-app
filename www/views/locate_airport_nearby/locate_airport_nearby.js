@@ -7,7 +7,8 @@ angular.module('starter')
 
   .controller('locateAirportNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                        Proxy,$stateParams,$ionicLoading,ionicDatePicker) {
+                                                        Proxy,$stateParams,$ionicLoading,ionicDatePicker,
+                                                       $ionicPopup) {
       $scope.datepick = function(item,field){
           var ipObj1 = {
               callback: function (val) {  //Mandatory
@@ -45,28 +46,49 @@ angular.module('starter')
       }
 
       $scope.filterType={
+          pickUp:true,
+          seeOff:false
       };
+
+      $scope.Mutex=function(field,item) {
+          if(item[field]==true)
+          {
+              item[field]=false;
+          }else{
+              item[field]=true;
+              for(var f in item) {
+                  if(f!=field)
+                      item[f]=false;
+              }
+          }
+      };
+
+
 
     //提交车驾管服务订单
     $scope.generateServiceOrder=function(){
 
-        $scope.carManage.carId=$scope.carInfo.carId;
+        //TODO:servicePlaceId is unknown
+
         if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
         {
             var unit=null;
             var units=null;
             var servicePerson=null;
             //服务地点
-            var servicePlace='遥墙机场';
+
+
+            if($scope.filterType.pickUp==true)
+            {
+                $scope.carManage.customerPlace=$scope.carManage.destination;
+            }else{
+                $scope.carManage.customerPlace=$scope.carManage.originStop;
+            }
             unit=$scope.unit;
             units=$scope.units;
-            if(unit!==undefined&&unit!==null)
-                servicePlace=unit.unitName;
-
 
             if(unit!==undefined&&unit!==null)//已选维修厂
             {
-
                 $http({
                     method: "POST",
                     url: Proxy.local()+"/svr/request",
@@ -94,8 +116,7 @@ angular.module('starter')
                             data: {
                                 request: 'generateCarServiceOrder',
                                 info: {
-                                    carManage: $scope.carManage,
-                                    servicePlace:servicePlace
+                                    carManage: $scope.carManage
                                 }
                             }
                         })
@@ -128,6 +149,17 @@ angular.module('starter')
                     } else {
                         return ({re: -1});
                     }
+                }).then(function(res) {
+                  var json=res.data;
+                  if(json.re==1) {
+                      var myPopup = $ionicPopup.show({
+                          template: '',
+                          title: '<strong>取送机服务已生成订单</strong>',
+                          subTitle: '',
+                          scope: $scope,
+                          buttons: buttons
+                      });
+                  }
                 }).catch(function (err) {
                     var str = '';
                     for (var field in err)
@@ -229,8 +261,7 @@ angular.module('starter')
 
     }
 
-      $scope.filterType.destiny=false;
-      $scope.filterType.maintenance=true;
+
 
 
 
@@ -280,25 +311,30 @@ angular.module('starter')
 
         }
 
-    $scope.appendAirportLocation=function(BMap,map){
-      //设置本地位置
-      var point = new BMap.Point(117.219, 36.852);
-      var mk = new BMap.Marker(point);  // 创建标注
+    $scope.appendAirportLocation=function(BMap,map,servicePlace){
+
+
+      if(servicePlace!==undefined&&servicePlace!==null)
+          $scope.carManage.servicePlaceId=servicePlace.placeId;
+      var point=new BMap.Point(servicePlace.longitude, servicePlace.latitude);
+      var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+      var mk = new BMap.Marker(point,{icon:bIcon});  // 创建标注
       map.addOverlay(mk);               // 将标注添加到地图中
-      mk.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画// 。
       map.addControl(new BMap.NavigationControl());
       map.addControl(new BMap.ScaleControl());
       map.enableScrollWheelZoom(true);
       var label = new BMap.Label("遥墙机场", {offset: new BMap.Size(20, -10)});
       label.setStyle({
-        color: '#222',
-        fontSize: "12px",
-        height: "20px",
-        lineHeight: "20px",
-        fontFamily: "微软雅黑",
-        border: '0px'
+          color: '#222',
+          fontSize: "12px",
+          height: "20px",
+          lineHeight: "20px",
+          fontFamily: "微软雅黑",
+          border: '0px'
       });
       mk.setLabel(label);
+
+
     }
 
     $scope.clickFunc=function(e){
@@ -330,19 +366,34 @@ angular.module('starter')
     $scope.init_map=function(BMap){
       var map = new BMap.Map("locate_airport_nearby");          // 创建地图实例
       //遥墙机场经纬度
-      var point = new BMap.Point(117.219, 36.852);
-      if(point!==undefined&&point!==null)
-        $scope.point=point;
-      map.centerAndZoom(point, 9);  //初始化地图,设置城市和地图级别
+        $http({
+            method: "POST",
+            url: Proxy.local() + "/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token,
+            },
+            data: {
+                request: 'getInsuranceCarServicePlaceByName',
+                info: {
+                    name:'遥墙机场'
+                }
+            }
+        }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+                var servicePlace=json.data;
+                var point = new BMap.Point(servicePlace.longitude, servicePlace.latitude);
+                if(point!==undefined&&point!==null)
+                    $scope.point=point;
+                map.centerAndZoom(point, 10);  //初始化地图,设置城市和地图级别
+                $scope.map=map;
 
-      $scope.map=map;
+                //添加自身位置
+                $scope.appendAirportLocation(BMap,map,servicePlace);
+            }
 
-      //地图添加点击事件
-      //map.addEventListener('click', $scope.clickFunc);
+        })
 
-
-      //添加自身位置
-      $scope.appendAirportLocation(BMap,map);
     }
 
     //选择维修厂
@@ -358,7 +409,7 @@ angular.module('starter')
 
 
         $scope.$apply(function(){
-            $scope.unit = unit;
+            scope.unit = unit;
         });
 
         $scope.labels.map(function (item, i) {
@@ -405,10 +456,8 @@ angular.module('starter')
           $scope.units.map(function (unit, i) {
             var nmk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
             var npoint =new BMap.Point(unit.longitude, unit.latitude);
-            var polyline = new BMap.Polyline([$scope.point,npoint], {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5});  //定义折线
-
             $scope.map.addOverlay(nmk);
-            $scope.map.addOverlay(polyline);     //添加折线到地图上
+
             var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
             label.setStyle({
               color: '#222',
