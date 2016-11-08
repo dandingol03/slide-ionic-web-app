@@ -1006,3 +1006,11 @@ table.table1{
 .passwordForget-view ion-header-bar .title.header-item{
   color:#bf530c;
 }
+
+ion-header-bar.dashboard-nav {
+
+}
+
+.list .item.top-no-border:first-child{
+  border-top:0px;
+}

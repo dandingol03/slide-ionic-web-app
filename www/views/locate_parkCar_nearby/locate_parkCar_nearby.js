@@ -7,74 +7,67 @@ angular.module('starter')
 
   .controller('locateParkCarNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                        BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                       Proxy,$stateParams,$ionicLoading) {
+                                                       Proxy,$stateParams,$ionicLoading,ionicDatePicker,
+                                                       $q,$ionicActionSheet) {
 
 
 
-    if ($stateParams.locateType !== undefined && $stateParams.locateType !== null) {
-      $scope.locateType = $stateParams.locateType;
-    }
 
-    $scope.filterType={
-      destiny:false,
-      maintenance:true
-    }
-
-    $scope.Mutex=function(item,cluster){
-      if(cluster[item]!=true)
-      {
-        cluster[item]=true;
-        for(var field in cluster)
-        {
-          if(field!=item)
-            cluster[field]=false;
-        }
-        //选择目的地
-        if(item=='destiny')
-        {
-          $scope.map.clearOverlays();
-          $scope.map.addEventListener('click', $scope.clickFunc);
-          $scope.appendSelfLocation($scope.BMap,$scope.map);
-
-
-      $scope.bMap = res;
-      var BMap = $scope.bMap;
-      var map = new BMap.Map("locate_parkCar_nearby");          // 创建地图实例
-      var point = new BMap.Point(117.219, 36.852);
-      map.centerAndZoom(point, 9);  //初始化地图,设置城市和地图级别
-      map.addEventListener("click",function(e){
-        alert(e.point.lng + "," + e.point.lat);
-        var mk = new BMap.Marker(e.point);  // 创建标注
-        map.addOverlay(mk);               // 将标注添加到地图中
-        var label = new BMap.Label("目的地", {offset: new BMap.Size(20, -10)});
-        label.setStyle({
-          color: '#222',
-          fontSize: "12px",
-          height: "20px",
-          lineHeight: "20px",
-          fontFamily: "微软雅黑",
-          border: '0px'
-        });
-        mk.setLabel(label);
-        if($scope.mk!=null&&$scope.mk!=undefined){
-        map.removeOverlay($scope.mk);
-
-        }
-        $scope.mk=mk;
-        map.panTo(e.point);
-      });
-
-        }else//选择维修厂
-        {
-          $scope.appendAirportLocation($scope.BMap, $scope.map);
-          $scope.fetchMaintennacesInArea($scope.BMap);
-          $scope.map.removeEventListener('click', $scope.clickFunc);
-          $scope.map.setZoom(9);
-        }
+      if($stateParams.locateType !== undefined && $stateParams.locateType !== null) {
+          $scope.locateType = $stateParams.locateType;
       }
-      else
-        cluster[item]=false;
-    }
+
+      $scope.datepick = function(item,field){
+          var ipObj1 = {
+              callback: function (val) {  //Mandatory
+
+                  var date=new Date(val);
+                  var month=parseInt(date.getMonth())+1;
+                  item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
+              },
+              disabledDates: [            //Optional
+                  new Date(2016, 2, 16),
+                  new Date(2015, 3, 16),
+                  new Date(2015, 4, 16),
+                  new Date(2015, 5, 16),
+                  new Date('Wednesday, August 12, 2015'),
+                  new Date("08-16-2016"),
+                  new Date(1439676000000)
+              ],
+              from: new Date(1949, 10, 1), //Optional
+              to: new Date(2040, 10, 30), //Optional
+              inputDate: new Date(),      //Optional
+              mondayFirst: false,          //Optional
+              disableWeekdays: [0],       //Optional
+              closeOnSelect: false,       //Optional
+              templateType: 'popup'     //Optional
+          };
+          ionicDatePicker.openDatePicker(ipObj1);
+      };
+
+      $scope.trainMarkers=[];
+
+      $scope.trainLabels=[];
+
+
+      $scope.filterType={
+          pickUp:true,
+          seeOff:false
+      };
+
+      $scope.Mutex=function(field,item) {
+          if(item[field]==true)
+          {
+              item[field]=false;
+          }else{
+              item[field]=true;
+              for(var f in item) {
+                  if(f!=field)
+                      item[f]=false;
+              }
+          }
+      };
+
 
       //提交车驾管服务订单
       $scope.generateServiceOrder=function(){
@@ -258,68 +251,154 @@ angular.module('starter')
 
       }
 
-
-
-
-    $scope.appendSelfLocation=function(BMap,map) {
-      var posOptions = {timeout: 10000, enableHighAccuracy: false};
-      // Setup the loader
-      $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
-      $cordovaGeolocation
-      .getCurrentPosition(posOptions)
-        .then(function (position) {
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          console.log(lng + ',' + lat);
-          var ggPoint = new BMap.Point(lng, lat);
-          var convertor = new BMap.Convertor();
-          var pointArr = [];
-          pointArr.push(ggPoint);
-
-          var translateCallback = function (data) {
-            if (data.status === 0) {
-              var marker = new BMap.Marker(data.points[0]);
-              map.addOverlay(marker);
-              var label = new BMap.Label("转换后的您的位置", {offset: new BMap.Size(20, -10)});
-              marker.setLabel(label); //添加百度label
-              map.centerAndZoom(data.points[0],14);
-              $ionicLoading.hide();
-            }
+      $scope.getServicePersonsInHistory=function () {
+          var deferred=$q.defer();
+          if($scope.servicePersons!==undefined&&$scope.servicePersons!==null)
+              deferred.resolve({re: 1, data: $scope.servicePersons});
+          else
+          {
+              $http({
+                  method: "POST",
+                  url: Proxy.local()+"/svr/request",
+                  // url: "http://192.168.1.106:3000/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data:
+                      {
+                          request:'fetchServicePersonInHistory'
+                      }
+              }).then(function(res) {
+                  var json=res.data;
+                  if(json.re==1) {
+                      $scope.servicePersons=json.data;
+                      deferred.resolve({re: 1, data: json.data});
+                  }
+              })
           }
-          convertor.translate(pointArr, 1, 5, translateCallback)
-        }, function (err) {
-          // error
-          console.error('error=\r\n' + err.toString());
-        });
+          return deferred.promise;
+      }
 
-    }
+      //车驾管选择服务人员
+      $scope.service_person_select=function(item,field) {
 
-    $scope.appendAirportLocation=function(BMap,map){
-      //设置本地位置
-      var point = new BMap.Point(117.219, 36.852);
-      var mk = new BMap.Marker(point);  // 创建标注
-      map.addOverlay(mk);               // 将标注添加到地图中
-      mk.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画// 。
-      map.addControl(new BMap.NavigationControl());
-      map.addControl(new BMap.ScaleControl());
-      map.enableScrollWheelZoom(true);
-      var label = new BMap.Label("遥墙机场", {offset: new BMap.Size(20, -10)});
-      label.setStyle({
-        color: '#222',
-        fontSize: "12px",
-        height: "20px",
-        lineHeight: "20px",
-        fontFamily: "微软雅黑",
-        border: '0px'
-      });
-      mk.setLabel(label);
-    }
+          $scope.getServicePersonsInHistory()
+         .then(function(json) {
+
+              if(json.re==1) {
+                  var servicePersons=json.data;
+                  var buttons=[];
+                  servicePersons.map(function(servicePerson,i) {
+                      var item=servicePerson;
+                      item.text=servicePerson.perName;
+                      buttons.push(item);
+                  });
+                  var hideSheet= $ionicActionSheet.show({
+                      buttons:buttons,
+                      titleText: '选择服务人员',
+                      cancelText: 'Cancel',
+                      buttonClicked: function(index) {
+                          var person=buttons[index];
+                          item[field]=person;
+                          $http({
+                              method: "POST",
+                              url: Proxy.local()+"/svr/request",
+                              // url: "http://192.168.1.106:3000/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data:
+                                  {
+                                      request:'fetchUnitByUnitId',
+                                      info:{
+                                          unitId:person.unitId
+                                      }
+                                  }
+                          }).then(function(res) {
+                              var json=res.data;
+                              if(json.re==1) {
+                                  var unit=json.data;
+                                  $rootScope.unit=unit;
+                              }
+                          });
+
+                          hideSheet();
+                          return true;
+                      },
+                      cssClass:'motor_insurance_actionsheet'
+                  });
+              }
+          }).catch(function(err) {
+              var str='';
+              for(var field in err) {
+                  str+=err[field];
+              }
+              console.error('error=\r\n' + str);
+          });
+
+      }
+
+
+
+
+      $scope.appendSelfLocation=function(BMap,map) {
+          var posOptions = {timeout: 10000, enableHighAccuracy: false};
+          // Setup the loader
+          $ionicLoading.show({
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: true,
+            maxWidth: 200,
+            showDelay: 0
+          });
+          $cordovaGeolocation
+          .getCurrentPosition(posOptions)
+            .then(function (position) {
+              var lat = position.coords.latitude;
+              var lng = position.coords.longitude;
+              console.log(lng + ',' + lat);
+              var ggPoint = new BMap.Point(lng, lat);
+              var convertor = new BMap.Convertor();
+              var pointArr = [];
+              pointArr.push(ggPoint);
+
+              var translateCallback = function (data) {
+                if (data.status === 0) {
+                  var marker = new BMap.Marker(data.points[0]);
+                  map.addOverlay(marker);
+                  var label = new BMap.Label("转换后的您的位置", {offset: new BMap.Size(20, -10)});
+                  marker.setLabel(label); //添加百度label
+                  map.centerAndZoom(data.points[0],14);
+                  $ionicLoading.hide();
+                }
+              }
+              convertor.translate(pointArr, 1, 5, translateCallback)
+            }, function (err) {
+              // error
+              console.error('error=\r\n' + err.toString());
+            });
+
+      }
+
+      $scope.appendAirportLocation=function(BMap,map,servicePlace){
+
+          if(servicePlace!==undefined&&servicePlace!==null)
+              $scope.carManage.servicePlaceId=servicePlace.placeId;
+          var point=new BMap.Point(servicePlace.longitude, servicePlace.latitude);
+          //var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+          var mk = new BMap.Marker(point);  // 创建标注
+          map.addOverlay(mk);               // 将标注添加到地图中
+          var label = new BMap.Label("遥墙机场", {offset: new BMap.Size(20, -10)});
+          label.setStyle({
+            color: '#222',
+            fontSize: "12px",
+            height: "20px",
+            lineHeight: "20px",
+            fontFamily: "微软雅黑",
+            border: '0px'
+          });
+          mk.setLabel(label);
+      }
 
     $scope.clickFunc=function(e){
       console.log('click point='+e.point.lng + "," + e.point.lat);
@@ -346,37 +425,79 @@ angular.module('starter')
       map.panTo(e.point);
     }
 
+
     //地图初始化
-    $scope.init_map=function(BMap){
-      var map = new BMap.Map("locate_parkCar_nearby");          // 创建地图实例
-      //遥墙机场经纬度
-      var point = new BMap.Point(117.219, 36.852);
-      if(point!==undefined&&point!==null)
-        $scope.point=point;
-      map.centerAndZoom(point, 9);  //初始化地图,设置城市和地图级别
+      $scope.init_map=function(BMap) {
+          var map = new BMap.Map("locate_parkCar_nearby");          // 创建地图实例
+          //遥墙机场经纬度
+          var point=null;
+          $http({
+              method: "POST",
+              url: Proxy.local() + "/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token,
+              },
+              data: {
+                  request: 'getInsuranceCarServicePlaceByName',
+                  info: {
+                     name:'遥墙机场'
+                  }
+              }
+          }).then(function(res) {
+              var json=res.data;
+              var servicePlace=json.data;
+              point = new BMap.Point(servicePlace.longitude, servicePlace.latitude);
 
-      $scope.map=map;
+              if (point !== undefined && point !== null)
+                  $scope.point = point;
+              map.centerAndZoom(point, 10);  //初始化地图,设置城市和地图级别
+              $scope.map = map;
+              //添加自身位置
+              //$scope.appendAirportLocation(BMap, map,servicePlace);
 
-      //地图添加点击事件
-      //map.addEventListener('click', $scope.clickFunc);
+              map.addControl(new BMap.NavigationControl());
+              map.addControl(new BMap.ScaleControl());
+              map.enableScrollWheelZoom(true);
 
 
-      //添加自身位置
-      $scope.appendAirportLocation(BMap,map);
-    }
+          })
+      }
 
 
     //选择维修厂
-    $scope.marker_select = function (unit, label) {
+    $scope.marker_select = function (unit, label,marker) {
       if ($scope.unit !== undefined && $scope.unit !== null) {
-        $scope.unit = null;
+        $scope.unit=null;
         label.setStyle({color: '#222', 'font-size': '0.8em'});
+        marker.setIcon(new BMap.Icon('img/mark_r.png', new BMap.Size(20,25)));
       }
       else {
         label.setStyle({
           color: '#00f'
         });
-        $scope.unit = unit;
+
+        var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+        marker.setIcon(bIcon);
+
+        $scope.$apply(function(){
+            $scope.unit = unit;
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data: {
+                    request: 'getServicePersonByUnitId',
+                    info: {
+                        unitId: $scope.unit.unitId
+                    }
+                }
+            }).then(function(res) {
+                var json=res.data;
+                $scope.carManage.servicePerson=json.data;
+            })
+        });
 
         $scope.labels.map(function (item, i) {
           if (item.getContent().trim() != label.getContent().trim())
@@ -384,6 +505,26 @@ angular.module('starter')
         })
       }
     }
+
+      //选择火车站
+      $scope.poi_select=function(poi,label) {
+          if ($scope.poi !== undefined && $scope.poi !== null) {
+              $scope.poi=null;
+              label.setStyle({color: '#222', 'font-size': '0.8em'});
+          }
+          else {
+              label.setStyle({
+                  color: '#00f'
+              });
+              $scope.poi = poi;
+
+              $scope.trainLabels.map(function (item, i) {
+                  if (item.getContent().trim() != label.getContent().trim())
+                      item.setStyle({color: '#222', 'font-size': '0.8em'});
+              })
+          }
+      };
+
 
     //刷新附近维修厂
     //获取该地区的所有维修厂,并进行距离过滤
@@ -420,25 +561,25 @@ angular.module('starter')
           //render new markers
           $scope.labels = [];
           $scope.units.map(function (unit, i) {
-            var nmk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
-            var npoint =new BMap.Point(unit.longitude, unit.latitude);
-            var polyline = new BMap.Polyline([$scope.point,npoint], {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5});  //定义折线
 
-            $scope.map.addOverlay(nmk);
-            $scope.map.addOverlay(polyline);     //添加折线到地图上
-            var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
-            label.setStyle({
-              color: '#222',
-              fontSize: "12px",
-              height: "20px",
-              lineHeight: "20px",
-              fontFamily: "微软雅黑",
-              border: '0px'
-            });
+              var rIcon=new BMap.Icon('img/mark_r.png', new BMap.Size(20,25));
+              var nmk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude),{icon:rIcon});
 
-            nmk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
-            nmk.setLabel(label);
-            $scope.labels.push(label);
+              $scope.map.addOverlay(nmk);
+
+              var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
+              label.setStyle({
+                  color: '#222',
+                  fontSize: "12px",
+                  height: "20px",
+                  lineHeight: "20px",
+                  fontFamily: "微软雅黑",
+                  border: '0px'
+              });
+
+              nmk.addEventListener("click", $scope.marker_select.bind(this, unit, label,nmk));
+              nmk.setLabel(label);
+              $scope.labels.push(label);
           });
         }
         //圈渲染
@@ -511,7 +652,9 @@ angular.module('starter')
       //地图初始化
       $scope.init_map(BMap);
 
-      $scope.fetchMaintennacesInArea(BMap);
+      //绘制周边所有维修厂
+        $scope.fetchMaintennacesInArea(BMap);
+
     });
 
     $scope.go_back = function () {

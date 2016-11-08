@@ -1,36 +1,73 @@
-<ion-view  name="login-view">
-  <ion-nav-bar>
-  </ion-nav-bar>
-  <ion-content class="login_background">
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view  hide-nav-bar="true">
 
-    <div style="margin-top:30%;margin-bottom:30%;">
-      <img src="img/jiehuibao.png"/>
-    </div>
+    <ion-content class="login_background">
 
-    <label class="item item-input">
-      <input type="text" placeholder="用户名/手机号" ng-model="user.username">
-    </label>
+      <div style="margin-top:30%;margin-bottom:30%;">
+        <img src="img/jiehuibao.png"/>
+      </div>
 
-    <label class="item item-input" >
-      <input type="password" placeholder="密码" ng-model="user.password">
-    </label>
+      <div class="list padding">
 
-    <button class="button button-block  button-balanced"
-            ng-click="doLogin()"
-            style="width: 60%;margin-left:20%;margin-bottom: 70px;"
-    >
-      登录
-    </button>
+        <div class="item"
+             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+             padding:4px;background-color:transparent;overflow:initial;width: 65%;margin-left:16%;">
+        <span class="input-label"
+              style="display: inline-block;width: 13%;text-align: left;font-size: 1.8em;">
+          <i class="ion-person"></i>
+        </span>
+          <span style="width: 87%;display: inline-block;text-align: left;">
+            <input type="text"
+                   style="display:inline-block;background-color: transparent;width: 100%;"
+                   placeholder="用户名/手机号"
+                   ng-value="user.username"
+                   ng-model="user.username"/>
+          </span>
+        </div>
 
-    <span
-            style="padding:5%;margin-right:35%;" ng-click="goRegister()">
-      注册新用户
-    </span>
+        <div class="item"
+             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+             padding:4px;background-color:transparent;overflow:initial;width: 65%;margin-left:16%;">
+        <span class="input-label"
+              style="display: inline-block;width: 13%;text-align: left;font-size: 1.8em;">
+          <i class="ion-ios-locked"></i>
+        </span>
+          <span style="width: 87%;display: inline-block;text-align: left;">
+            <input type="password"
+                   style="display:inline-block;background-color: transparent;width: 100%;"
+                   placeholder="密码"
+                   ng-value="user.password"
+                   ng-model="user.password"/>
+        </span>
+        </div>
 
-    <span style="padding:5%;" ng-click="goFetchPassword()">
-      忘记密码
-    </span>
+        <button class="button button-block  button-balanced"
+                ng-click="doLogin()"
+                style="width: 60%;margin-left:20%;margin-top:30px;border-radius: 24px;background: #2b984a"
+        >
+          登录
+        </button>
+
+        <div class="item"
+             style="margin:1px;border:0px;
+             padding:4px;background-color:transparent;overflow:initial;width: 65%;margin-left:16%;">
+          <span class="input-label"
+                style="display: inline-block;width: 49%;text-align: center;border-right:1px solid #00f;color:#222;"
+                ng-click="goRegister()"
+          >
+            注册新用户
+          </span>
+          <span class="input-label"
+                style="display: inline-block;width: 49%;text-align: center;color:#222;"
+                ng-click="goFetchPassword()"
+          >
+            忘记密码
+          </span>
+        </div>
 
 
-  </ion-content>
-</ion-view>
+      </div>
+
+    </ion-content>
+  </ion-view>
+</ion-nav-view>
