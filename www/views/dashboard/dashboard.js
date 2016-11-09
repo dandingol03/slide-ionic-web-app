@@ -1942,6 +1942,10 @@ $scope.openAirportTransfer=function(){
     }
 
 
+    $scope.grid_selected_style={padding: '16px',background:'#222',color:'#fff',border:'1px solid','border-right': '0px','border-bottom':'0px'};
+    $scope.grid_style={padding: '16px',border:'1px solid','border-right': '0px','border-bottom':'0px'};
+
+
     $scope.grid_check=function (index) {
         if($scope.dailys[index].checked!=true)
             $scope.dailys[index].checked=true;

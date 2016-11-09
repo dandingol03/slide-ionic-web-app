@@ -14,6 +14,10 @@ angular.module('starter')
     $scope.userInfo={};
     $scope.code=0;
 
+      $scope.go_back=function(){
+          window.history.back();
+      }
+
     $scope.validate=function(item,field,pattern) {
       if(pattern!==undefined&&pattern!==null)
       {
