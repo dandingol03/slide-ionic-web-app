@@ -300,10 +300,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 case 'from-background':
                   var order=message.order;
                   var servicePersonId=message.servicePersonId;
-                  alert('orderId='+order.orderId);
 
                   var tem='';
                   var mobilePhone=null;
+                  //仅限于服务订单
                   if(message.mobilePhone!==undefined&&message.mobilePhone!==null)
                     mobilePhone=message.mobilePhone;
                   else
