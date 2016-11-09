@@ -720,6 +720,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             templateUrl:'views/append_life_benefiter/append_life_benefiter.html'
           })
 
+          .state('car_order_pay',{
+              url:'/car_order_pay/:info',
+              controller:'carOrderPayController',
+              templateUrl:'views/car_order_pay/car_order_pay.html'
+          })
+
+
 
       // if none of the above states are matched, use this as the fallback
 

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../../../../../../Downloads/style.css">
 <ion-nav-view class="slide-left-right" hide-nav-bar="true">
   <ion-view class="dashboard-view" hide-nav-bar="true">
 
@@ -288,10 +289,8 @@
         <div class="list list-inset padding" style="margin-bottom:40px;background-color: transparent;">
 
 
-          <div
-                  class="item item-divider"
-                  style="margin:1px;border:0px;padding:10px;position: relative;background-color:transparent;"
-          >
+          <div class="item item-divider"
+               style="margin:1px;border:0px;padding:10px;position: relative;background-color:transparent;">
             <span>选择车辆</span>
           </div>
 
@@ -533,14 +532,13 @@
               <div class="row" style='border-bottom:0px;'>
 
                 <div class="col"
-                     style="padding: 16px;border:1px solid;border-right: 0px;border-bottom:0px;"
-                     ng-click="grid_check(0)"
-                >
+                     style="padding:16px;border:1px solid;border-right:0px;border-bottom:0px;"
+                     ng-click="grid_check(0)">
                   <div>
                     <i class="ion-paintbucket"></i>
                   </div>
                   <span>机油、机滤</span>
-                  <div ng-if="" style="color:#00f;font-size: 1.8em;">
+                  <div ng-if="dailys[0].checked==true" style="color: #ff0000;font-size: 1.8em;">
                     <i class="ion-checkmark"></i>
                   </div>
                 </div>
@@ -577,8 +575,7 @@
                 </div>
                 <div class="col"
                      style="padding: 16px;border:1px solid;border-bottom: 0px;border-right:0px;"
-                     ng-click="grid_check(4)"
-                >
+                     ng-click="grid_check(4)">
                   <div>
                     <i class="ion-wrench"></i>
                   </div>
@@ -586,8 +583,7 @@
                 </div>
                 <div class="col"
                      style="padding: 16px;border:1px solid;border-bottom:0px;"
-                     ng-click="grid_check(5)"
-                >
+                     ng-click="grid_check(5)">
                   <div>
                     <i class="ion-wrench"></i>
                   </div>

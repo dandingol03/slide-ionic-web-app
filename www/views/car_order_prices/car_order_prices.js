@@ -136,6 +136,20 @@ angular.module('starter')
     };
     /*** bind apeend_carOrderPerson_modal ***/
 
+
+    //提交车险方案
+    $scope.applyCarPrice=function(){
+        var selected_price = null;
+        var order = $scope.order;
+        order.prices.map(function (price, i) {
+            if (price.checked == true)
+                selected_price = price;
+        });
+
+        $state.go('car_order_pay',{info:JSON.stringify({order:order,price:selected_price})});
+    }
+
+
     //提交车险方案
     $scope.apply=function() {
       var selected_price = null;
