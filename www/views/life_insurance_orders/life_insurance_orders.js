@@ -20,18 +20,22 @@ angular.module('starter')
       });
     }
 
+      //tabIndex选定
+      if($stateParams.tabIndex!==undefined&&$stateParams.tabIndex!==null&&$stateParams.tabIndex!='')
+          $scope.tabIndex = parseInt($stateParams.tabIndex);
+      else
+      {
+          $scope.tabIndex=1;
+      }
+
+
+
     $scope.go_back=function(){
       window.history.back();
-
     }
-
 
     $scope.tab_change=function(i){
       $scope.tabIndex=i;
-    }
-
-    $scope.go_back=function(){
-      window.history.back();
     }
 
     $scope.toggle=function (item,field) {
@@ -79,6 +83,7 @@ angular.module('starter')
     }
 
 
+    //同步时机存在问题
     //获取寿险订单
     if($rootScope.lifeInsurance!==undefined&&$rootScope.lifeInsurance!==null)
     {
@@ -243,14 +248,6 @@ angular.module('starter')
         });
       }
 
-    }
-
-    //tabIndex选定
-    if($stateParams.tabIndex!==undefined&&$stateParams.tabIndex!==null&&$stateParams.tabIndex!='')
-      $scope.tabIndex = parseInt($stateParams.tabIndex);
-    else
-    {
-        $scope.tabIndex=1;
     }
 
   });

@@ -1021,3 +1021,8 @@ ion-header-bar.dashboard-nav {
   text-align:center;
   margin:0
 }
+
+.my-info-bk{
+  background: url('../img/myinfo_bk.jpg') no-repeat;
+  background-size:100% 100%;
+}

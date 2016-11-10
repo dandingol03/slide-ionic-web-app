@@ -1,7 +1,9 @@
 angular.module('starter')
 
   .controller('carOrdersController',function($scope,$state,$http,
-                                             $location, $rootScope,Proxy){
+                                             $location, $rootScope,Proxy,
+                                             $stateParams){
+
 
 
 

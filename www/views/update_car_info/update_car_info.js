@@ -265,11 +265,13 @@ angular.module('starter')
 
         var engineNum=$scope.carInfo.engineNum;
         //validate engineNum
+
         if(engineNum!==undefined&&engineNum!==null&&!isNaN(engineNum)&&engineNum.toString().length==6) {
 
             if ($scope.carInfo.carNum !== undefined && $scope.carInfo.carNum !== null && $scope.carInfo.carNum !== '') {
 
                 if ($scope.carInfo.ownerName !== undefined && $scope.carInfo.ownerName !== null && $scope.carInfo.ownerName !== '') {
+
                     var licenseAttachId1 = null;
                     var licenseAttachId2 = null;
                     var licenseAttachId3 = null;
