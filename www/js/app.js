@@ -300,10 +300,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 case 'from-background':
                   var order=message.order;
                   var servicePersonId=message.servicePersonId;
-                  alert('orderId='+order.orderId);
 
                   var tem='';
                   var mobilePhone=null;
+                  //仅限于服务订单
                   if(message.mobilePhone!==undefined&&message.mobilePhone!==null)
                     mobilePhone=message.mobilePhone;
                   else
@@ -724,6 +724,31 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               url:'/car_order_pay/:info',
               controller:'carOrderPayController',
               templateUrl:'views/car_order_pay/car_order_pay.html'
+          })
+
+          .state('my_menus',{
+              url:'/my_menus',
+              abstract:true,
+              templateUrl:'views/my_menus/my_menus.html',
+              controller:'myMenusController'
+          })
+
+          .state('my_menus.search', {
+              url: '/search',
+              views: {
+                  'menuContent': {
+                      templateUrl: 'views/search/search.html'
+                  }
+              }
+          })
+
+          .state('my_menus.browse', {
+              url: '/browse',
+              views: {
+                  'menuContent': {
+                      templateUrl: 'views/browse/browse.html'
+                  }
+              }
           })
 
 

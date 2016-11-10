@@ -142,6 +142,9 @@ angular.module('starter')
       //登录
       $scope.login = function(){
 
+
+
+
         $http({
           method:"POST",
           data:"grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
