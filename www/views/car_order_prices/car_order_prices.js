@@ -27,6 +27,9 @@ angular.module('starter')
       $scope.tabIndex=i;
     }
 
+    $scope.goDetail=function(price){
+        $state.go('car_price_detail',{price:JSON.stringify(price)});
+    }
 
     $scope.setterPrice=function(i,item) {
       if($scope.priceIndex==i)
