@@ -68,8 +68,10 @@ angular.module('starter')
     //提交车驾管服务订单
     $scope.generateServiceOrder=function(){
 
-        //TODO:servicePlaceId is unknown
 
+        //$scope.carManage.carId=$scope.carInfo.carId;
+
+        //TODO:servicePlaceId is unknown
         if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
         {
             var unit=null;
@@ -87,6 +89,7 @@ angular.module('starter')
             unit=$scope.unit;
             units=$scope.units;
 
+            $scope.carManage.serviceType='23';
             if(unit!==undefined&&unit!==null)//已选维修厂
             {
                 $http({

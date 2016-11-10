@@ -202,6 +202,9 @@ angular.module('starter')
         var orderId=json.data;
         if(orderId!==undefined&&orderId!==null)
         {
+
+          alert('订单以创建,请等待报价');
+
           $state.go('car_orders');
         }
       }).catch(function(err) {

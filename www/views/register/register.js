@@ -89,7 +89,12 @@ angular.module('starter')
 
           }
           else{
-            alert('注册失败');
+            if(json.re==2){
+              alert('该手机号已存在');
+            }else{
+              alert('注册失败');
+            }
+
           }
         })
       }

@@ -1,24 +1,6 @@
 <ion-nav-view class="slide-left-right" hide-nav-bar="true">
   <ion-view view-title="注册" hide-nav-bar="true">
     <ion-content class="backgroundRes">
-
-      <div style="width: 100%;min-height: 35px;margin-top:-1px;background: #14191f;text-align: left;">
-        <div style="height: 15px;">
-        </div>
-        <span style="font-size: 2.4em;width: 20%;display: inline-block;color:#fff;"
-              ng-click="go_back()"
-        >
-          <i class="ion-chevron-left"></i>
-        </span>
-        <span style="width: 60%;display: inline-block; color:#fff;text-align: center;font-size: 1.6em;">
-          注册
-        </span>
-        <span style="width: 18%;display: inline-block;">
-        </span>
-      </div>
-
-
-
       <div class="list list-inset" style="margin-top:40%;background: transparent;">
         <ng-form name="registerForm">
 
@@ -56,7 +38,7 @@
                   ng-value="userInfo.email" ng-model="userInfo.email">
           </label>
 
-          <label class="item item-input" style="background: transparent;margin-bottom: 20px;">
+          <div class="item item-input" style="background: transparent;margin-bottom: 20px;">
             <span style="font-size: 2em;color:#fff;width: 10%;text-align: center">
               <i class="icon ion-iphone placeholder-icon"></i>
             </span>
@@ -70,7 +52,7 @@
             </div>
             <div style="display: inline-block;width:5%;">
             </div>
-          </label>
+          </div>
 
         </ng-form>
 

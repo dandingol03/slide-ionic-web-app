@@ -80,7 +80,7 @@
                        ng-if="carInfo.licenseCard2_img==undefined||carInfo.licenseCard2_img==null"
                        ng-click="addAttachment(carInfo,'licenseCard2_img')"
                           >
-                     <span style="font-size: 10em;">
+                     <span style="font-size: 10em;" ng-click="addAttachment(carInfo,'licenseCard2_img')">
                          <i class="ion-android-camera"></i>
                      </span>
                   </div>
@@ -118,7 +118,7 @@
                        ng-if="carInfo.licenseCard3_img==undefined||carInfo.licenseCard3_img==null"
                        ng-click="addAttachment(carInfo,'licenseCard3_img')"
                           >
-                     <span style="font-size: 10em;">
+                     <span style="font-size: 10em;"  ng-click="addAttachment(carInfo,'licenseCard3_img')">
                          <i class="ion-android-camera"></i>
                      </span>
                   </div>
