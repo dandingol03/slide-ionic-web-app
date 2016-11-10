@@ -69,9 +69,7 @@
               姓名:
             </span>
 
-            <span
-              style="width: 55%;display: inline-block;text-align: left;"
-              >
+            <span style="width: 55%;display: inline-block;text-align: left;">
              <input type="text" placeholder="输入亲属姓名"
                     ng-value="order.benefiter.perName"
                     ng-model="order.benefiter.perName"/>
@@ -92,31 +90,27 @@
 
 
           <div class="item"  ng-click="checkLegal()">
-
             <div style="display:inline-block;width:70%">
                <span>
                 {{legal.perName}}
                </span>
             </div>
-
             <i ng-if="legal.checked!=true" class="ion-ios-checkmark-outline" ></i>
             <i ng-if="legal.checked==true" class="ion-ios-checkmark" ></i>
-
           </div>
 
 
           <div class="item" ng-repeat="person in relativePersons" ng-click="mutex(person,relativePersons)">
-
             <div style="display:inline-block;width:70%">
                <span>
                 {{person.perName}}
                </span>
             </div>
-
             <i ng-if="person.checked!=true" class="ion-ios-checkmark-outline" ></i>
             <i ng-if="person.checked==true" class="ion-ios-checkmark" ></i>
-
           </div>
+
+
           <div style="height: 20px;">
           </div>
         </ion-scroll>

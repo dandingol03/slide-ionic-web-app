@@ -297,34 +297,57 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                   });
                   break;
 
-                case 'from-background':
-                  var order=message.order;
-                  var servicePersonId=message.servicePersonId;
+                  case 'from-background':
 
-                  var tem='';
-                  var mobilePhone=null;
-                  //仅限于服务订单
-                  if(message.mobilePhone!==undefined&&message.mobilePhone!==null)
-                    mobilePhone=message.mobilePhone;
-                  else
-                    mobilePhone='';
-                  tem='<div>'+message.unitName+ mobilePhone+'</div>'
+                      var orderState=message.orderState;
+                      switch (orderState) {
+                          case 3:
+                              //报价完成
+                              var order=message.order;
+                              var confirmPopup = $ionicPopup.confirm({
+                                  title: '您的订单'+order.orderNum,
+                                  template:'已报价完成'
+                              });
+
+                              confirmPopup.then(function(res) {
+                                  if(res) {
+                                      $state.go('car_orders');
+                                  } else {}
+
+                              })
+                              break;
+                          default:
+                              var order=message.order;
+                              var servicePersonId=message.servicePersonId;
+
+                              var tem='';
+                              var mobilePhone=null;
+                              //仅限于服务订单
+                              if(message.mobilePhone!==undefined&&message.mobilePhone!==null)
+                                  mobilePhone=message.mobilePhone;
+                              else
+                                  mobilePhone='';
+                              tem='<div>'+message.unitName+ mobilePhone+'</div>'
 
 
-                  var confirmPopup = $ionicPopup.confirm({
-                    title: '您的订单'+message.order.orderNum,
-                    template:'已经指派工作人员接单'+ tem
-                  });
+                              var confirmPopup = $ionicPopup.confirm({
+                                  title: '您的订单'+message.order.orderNum,
+                                  template:'已经指派工作人员接单'+ tem
+                              });
 
-                  confirmPopup.then(function(res) {
-                    if(res) {
-                      console.log('You are sure');
-                      $state.go('service_orders');
-                    } else {
-                      console.log('You are not sure');
-                    }
+                              confirmPopup.then(function(res) {
+                                  if(res) {
+                                      console.log('You are sure');
+                                      $state.go('service_orders');
+                                  } else {
+                                      console.log('You are not sure');
+                                  }
 
-                  })
+                              })
+                              break;
+                      }
+
+
 
                     break;
 
@@ -776,7 +799,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
+
             return "http://192.168.1.110:3000";
+
           else
             return "/proxy/node_server";
             
