@@ -311,7 +311,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                               confirmPopup.then(function(res) {
                                   if(res) {
-                                      $state.go('car_orders');
+                                      $rootScope.lifeInsurance=null;
+                                      $state.go('life_insurance_orders',{tabIndex:1});
                                   } else {}
 
                               })
