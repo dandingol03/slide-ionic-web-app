@@ -3,11 +3,15 @@
  */
 angular.module('starter')
   .controller('myController',function($scope,$state,$http,$rootScope,
-                                Proxy){
+                                Proxy,$ionicSideMenuDelegate){
 
     $scope.go_back=function(){
       window.history.back();
     };
+
+    $scope.toggleLeft=function () {
+        $ionicSideMenuDelegate.toggleLeft();
+    }
 
     $scope.go_to=function(state){
       $state.go(state);

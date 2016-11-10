@@ -726,6 +726,31 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/car_order_pay/car_order_pay.html'
           })
 
+          .state('my_menus',{
+              url:'/my_menus',
+              abstract:true,
+              templateUrl:'views/my_menus/my_menus.html',
+              controller:'myMenusController'
+          })
+
+          .state('my_menus.search', {
+              url: '/search',
+              views: {
+                  'menuContent': {
+                      templateUrl: 'views/search/search.html'
+                  }
+              }
+          })
+
+          .state('my_menus.browse', {
+              url: '/browse',
+              views: {
+                  'menuContent': {
+                      templateUrl: 'views/browse/browse.html'
+                  }
+              }
+          })
+
 
 
       // if none of the above states are matched, use this as the fallback
@@ -751,7 +776,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.138:3000";
+            return "http://192.168.3.2:3000";
           else
             return "/proxy/node_server";
         },

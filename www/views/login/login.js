@@ -13,6 +13,9 @@ angular.module('starter')
 
       $scope.user={};
 
+
+
+
       $WebSocket.registeCallback(function(msg) {
         console.log('//-----ws\r\n' + msg);
       });
@@ -123,6 +126,9 @@ angular.module('starter')
 
       //登录
       $scope.login = function(){
+
+
+
 
         $http({
           method:"POST",
@@ -389,37 +395,6 @@ angular.module('starter')
       $scope.goFetchPassword=function(){
           $state.go('passwordForget');
       }
-
-
-
-
-        $scope.optData = [{
-            id: 10001,
-            MainCategory: '男',
-            ProductName: '水洗T恤',
-            ProductColor: '白'
-        },{
-            id: 10002,
-            MainCategory: '女',
-            ProductName: '圓領短袖',
-            ProductColor: '黃'
-        },{
-            id: 10003,
-            MainCategory: '女',
-            ProductName: '圓領短袖',
-            ProductColor: '黃'
-        }];
-
-      $scope.select={
-      };
-
-
-      $scope.selectChanged=function () {
-          var optData=$scope.optData;
-          var item=$scope.select.item;
-          console.log('...');
-      }
-
 
 
     });
