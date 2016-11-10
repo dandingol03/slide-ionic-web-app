@@ -14,6 +14,7 @@ angular.module('starter')
     $scope.userInfo={};
     $scope.code=0;
 
+
       $scope.go_back=function(){
           window.history.back();
       }
@@ -70,8 +71,22 @@ angular.module('starter')
         }).then(function(res) {
           var json = res.data;
           if(json.re==1){
-            alert('注册成功');
-            $state.go('login');
+              var alertPopup = $ionicPopup.alert({
+                  title: '信息',
+                  template: '用户信息注册成功'
+              });
+              alertPopup.then(function(res) {
+                  $state.go('login');
+              });
+              $timeout(function() {
+                  var state=alertPopup.$$state;
+                  if(state==0)
+                  {
+                      alertPopup.close();
+                      $state.go('login');
+                  }
+              }, 3000);
+
           }
           else{
             alert('注册失败');
