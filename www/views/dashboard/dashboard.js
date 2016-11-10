@@ -1713,7 +1713,7 @@ angular.module('starter')
 
 
     //寿险意向保留
-    $scope.saveLifeInsuranceIntend=function()
+    $scope.saveLifeInsuranceIntend = function()
     {
 
       if($scope.life_insurance.order.insuranceder.personId!=undefined&&$scope.life_insurance.order.insuranceder.personId!=null
