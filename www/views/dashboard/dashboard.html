@@ -47,7 +47,7 @@
       <div ng-if="tabIndex==1" scroll="true" style="background-color:rgba(255,255,255,0);">
 
         <div class="item item-divider"
-                style="background: transparent;border-top:0px;border-left:0px;border-right:0px;">
+             style="background: transparent;border-top:0px;border-left:0px;border-right:0px;">
           填写寿险意向
         </div>
 
@@ -143,7 +143,7 @@
             <span
                     style="width: 55%;display: inline-block;text-align: left;font-size: 0.8em;color:#aaa;"
                     ng-if='(life_insurance.order.benefiter.perName==undefined||life_insurance.order.benefiter.perName==null)
-            &&(life_insurance.order.isLegalBenefiter==undefined||life_insurance.order.isLegalBenefiter==null)'s
+            &&(life_insurance.order.isLegalBenefiter==undefined||life_insurance.order.isLegalBenefiter==null)' s
             >
             请选择受益人
           </span>
@@ -228,8 +228,10 @@
           </span>
 
             <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;">
-            <i ng-if="life_insurance.order.hasSocietyInsurance!=true" class="ion-ios-checkmark-outline" style="font-size: 1.6em;"></i>
-            <i ng-if="life_insurance.order.hasSocietyInsurance==true" class="ion-ios-checkmark" style="font-size: 1.6em;"></i>
+            <i ng-if="life_insurance.order.hasSocietyInsurance!=true" class="ion-ios-checkmark-outline"
+               style="font-size: 1.6em;"></i>
+            <i ng-if="life_insurance.order.hasSocietyInsurance==true" class="ion-ios-checkmark"
+               style="font-size: 1.6em;"></i>
           </span>
           </div>
 
@@ -253,8 +255,10 @@
           </span>
 
             <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;">
-            <i ng-if="life_insurance.order.hasCommerceInsurance!=true" class="ion-ios-checkmark-outline" style="font-size: 1.6em;"></i>
-            <i ng-if="life_insurance.order.hasCommerceInsurance==true" class="ion-ios-checkmark" style="font-size: 1.6em;"></i>
+            <i ng-if="life_insurance.order.hasCommerceInsurance!=true" class="ion-ios-checkmark-outline"
+               style="font-size: 1.6em;"></i>
+            <i ng-if="life_insurance.order.hasCommerceInsurance==true" class="ion-ios-checkmark"
+               style="font-size: 1.6em;"></i>
           </span>
           </div>
 
@@ -267,11 +271,10 @@
             <!--{{life_insurance.order.hasCommerceInsurance==true?'有':'无'}}-->
             <!--</div>-->
             <input type="text" placeholder="请输入...."
-                   style="display: inline-block;width:65%;background-color:transparent" ng-value="life_insurance.order.planInsuranceFee"
+                   style="display: inline-block;width:65%;background-color:transparent"
+                   ng-value="life_insurance.order.planInsuranceFee"
                    ng-model="life_insurance.order.planInsuranceFee"/>
           </div>
-
-
 
 
           <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="saveLifeInsuranceIntend()">

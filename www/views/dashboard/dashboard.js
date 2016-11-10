@@ -2981,11 +2981,10 @@ $scope.carService=function(){
 
 
 
-
     $scope.lifeInsuranceder_insuranceType_select=function()
     {
 
-        var buttons=[{text:'重疾'},{text:'健康'},{text:'理财'}];
+        var buttons=[{text:'重疾'},{text:'健康'},{text:'理财'},{text:'意外'}];
         $ionicActionSheet.show({
           buttons:buttons,
           titleText: '选择你需要的保障',
