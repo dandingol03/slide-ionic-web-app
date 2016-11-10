@@ -41,6 +41,12 @@
         </span>
         </div>
 
+        <div style="padding-right:35%;padding-top:3%;" ng-click="isremember()">
+          <i class="ion-android-checkbox-outline-blank" ng-if="rememberPsd==true"></i>
+          <i class="ion-android-checkbox-outline" ng-if="rememberPsd!=true"></i>
+          <span>记住密码</span>
+        </div>
+
         <button class="button button-block  button-balanced"
                 ng-click="doLogin()"
                 style="width: 60%;margin-left:20%;margin-top:30px;border-radius: 24px;background: #2b984a"

@@ -12,8 +12,26 @@ angular.module('starter')
       $scope.formUser = {};
 
       $scope.user={};
+      $scope.rememberPsd=true;
+      $scope.isremember = function(){
+          if($scope.rememberPsd==true){
+              $scope.rememberPsd=false;
+          }else{
+              $scope.rememberPsd=true;
+          }
+      }
 
-      $WebSocket.registeCallback(function(msg) {
+      if(localStorage.userName!=undefined&&localStorage.userName!=null){
+          var userName=localStorage.userName;
+          $scope.user.username = userName;
+      }
+
+      if(localStorage.password!=undefined&&localStorage.password!=null){
+          var password=localStorage.password;
+          $scope.user.password=password;
+      }
+
+        $WebSocket.registeCallback(function(msg) {
         console.log('//-----ws\r\n' + msg);
       });
 
@@ -136,7 +154,15 @@ angular.module('starter')
 
           var json=res.data;
           var access_token=json.access_token;
-          //send login message to server
+
+          if(localStorage.userName==undefined||localStorage.userName==null){
+              localStorage.userName=$scope.user.username;
+          }
+
+          if(localStorage.password==undefined||localStorage.password==null){
+              localStorage.password=$scope.user.password;
+          }
+            //send login message to server
           //$WebSocket.send({
           //  action:'login',
           //  msgid:$WebSocket.getMsgId(),
