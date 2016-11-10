@@ -16,7 +16,7 @@ angular.module('starter')
     //for contrast....
     $scope.backup=$scope.item;
 
-    $scope.title=$scope.item.main.name;
+   // $scope.title=$scope.item.main.name;
 
       var insurancederId = null;
 
@@ -124,9 +124,9 @@ angular.module('starter')
       }).then(function(res) {
         var json = res.data;
         if(json.re==1){
-          var insuranceFee=json.data.feeItem.insuranceFee;
-          var baseInsuranceQuota=json.data.feeItem.insuranceQuota;
-          $scope.item.insuranceFeeTotal=
+          var insuranceFee=json.data.insuranceFee;
+          var baseInsuranceQuota=json.data.insuranceQuota;
+          $scope.item.main.insuranceFee=
             $scope.item.insuranceQuota/baseInsuranceQuota*insuranceFee*$scope.item.main.feeYear
 
         }
