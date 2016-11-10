@@ -31,11 +31,19 @@ angular.module('starter')
 
     $scope.benefiter={};
     $scope.legal={perName:'法定',checked:false};
+
     $scope.checkLegal=function(){
       if($scope.legal.checked==false){
         $scope.legal.checked=true;
+        $scope.order.benefiter.perName=$scope.legal.perName;
+        if($scope.relativePersons!==undefined&&$scope.relativePersons!==null){
+            $scope.relativePersons.map(function(person,i) {
+                person.checked=false;
+            });
+        }
       }else{
         $scope.legal.checked=false;
+        $scope.order.benefiter.perName=null;
       }
     }
 
