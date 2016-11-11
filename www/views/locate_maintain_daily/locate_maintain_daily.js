@@ -18,6 +18,7 @@ angular.module('starter')
       if(Object.prototype.toString.call($scope.locate)=='[object String]')
         $scope.locate=JSON.parse($scope.locate);
       $scope.locateType = $scope.locate.locateType;
+      $scope.locateIndex=$scope.locate.locateIndex;
     }
 
 
@@ -459,6 +460,8 @@ angular.module('starter')
       }
 
       $scope.go_back = function () {
+        $rootScope.dashboard.tabIndex=2;
+        $rootScope.dashboard.subTabIndex=$scope.locateIndex;
         window.history.back();
       }
 

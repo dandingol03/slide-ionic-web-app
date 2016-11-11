@@ -1956,7 +1956,10 @@ $scope.openAirportTransfer=function(){
     $scope.accident = {};
     $scope.accidant_check=function(type)
     {
-      $scope.accident.type=type;
+        if($scope.accident.type==type)
+            $scope.accident.type=null;
+        else
+            $scope.accident.type=type;
     }
 
     $scope.audioCheck = function (orderId) {
