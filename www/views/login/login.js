@@ -158,13 +158,10 @@ angular.module('starter')
           var json=res.data;
           var access_token=json.access_token;
 
-          if(localStorage.userName==undefined||localStorage.userName==null){
-              localStorage.userName=$scope.user.username;
-          }
+            localStorage.userName=$scope.user.username;
 
-          if(localStorage.password==undefined||localStorage.password==null){
-              localStorage.password=$scope.user.password;
-          }
+            localStorage.password=$scope.user.password;
+
             //send login message to server
           //$WebSocket.send({
           //  action:'login',
