@@ -18,8 +18,8 @@ angular.module('starter')
       if(Object.prototype.toString.call($scope.locate)=='[object String]')
         $scope.locate=JSON.parse($scope.locate);
       $scope.locateType = $scope.locate.locateType;
-      $scope.locateType = $scope.locate.locateType;
       $scope.carInfo=$scope.locate.carInfo;
+      $scope.locateIndex=$scope.locate.locateIndex;
     }
 
 
@@ -109,6 +109,8 @@ angular.module('starter')
           str+=err[field];
         console.error('error=\r\n' + str);
       });
+
+
     }
 
 
@@ -550,6 +552,8 @@ angular.module('starter')
       }
 
       $scope.go_back = function () {
+        $rootScope.dashboard.tabIndex=2;
+        $rootScope.dashboard.subTabIndex=$scope.locateIndex;
         window.history.back();
       }
 

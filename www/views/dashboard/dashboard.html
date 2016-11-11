@@ -301,30 +301,24 @@
                style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
              padding:10px;background-color:transparent;overflow:initial">
 
-          <span
-                  class="input-label"
-                  style="display: inline-block;width: 25%;text-align: left"
-          >
-            车牌:
-          </span>
+            <span class="input-label"
+                    style="display: inline-block;width: 25%;text-align: left">
+              车牌:
+            </span>
 
             <span style="width: 55%;display: inline-block;text-align: left;">
-            <input type="text"
-                   style="display:inline-block;background-color: transparent;"
-                   ng-value="carInfo.carNum"
-                   ng-model="carInfo.carNum"
-            />
-          </span>
+              <input type="text"
+                     style="display:inline-block;background-color: transparent;"
+                     ng-value="carInfo.carNum"
+                     ng-model="carInfo.carNum"/>
+            </span>
 
 
-            <span
-                    style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
-                    ng-click="selectCarInfoByCarNum()"
-            >
+            <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
+                    ng-click="selectCarInfoByCarNum()">
               <button
                       class="button button-small button-assertive"
-                      style="padding:0px 10px;"
-              >
+                      style="padding:0px 10px;">
                 查询
               </button>
             </span>
@@ -769,72 +763,92 @@
             </ion-slide-box>
 
 
-            <div class="item"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background: transparent">
-            <span class="input-label" style="display: inline-block;">
-              选择维修厂:
-            </span>
-              <span>
-              {{maintain.unit!==undefined&&maintain.unit!==null?maintain.unit.unitName:''}}
-            </span>
-              <span ng-click="pickMaintain('maintain',1)" style="font-size: 150%;">
-                <i class="ion-ios-arrow-down" ></i>
-            </span>
-            </div>
+            <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
+                    ng-click="pickMaintainDaily('maintain',1)">
+              选择附近的维修厂
+            </button>
 
 
-            <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="open_maintenanceTAModal()">
-              <h1 class="title">确认故障维修</h1>
-            </div>
+            <!--<div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background: transparent">-->
+              <!--<span class="input-label" style="display: inline-block;">-->
+                <!--选择维修厂:-->
+              <!--</span>-->
+              <!--<span>-->
+                <!--{{maintain.unit!==undefined&&maintain.unit!==null?maintain.unit.unitName:''}}-->
+              <!--</span>-->
+              <!--<span ng-click="pickMaintain('maintain',1)" style="font-size: 150%;">-->
+                <!--<i class="ion-ios-arrow-down" ></i>-->
+              <!--</span>-->
+            <!--</div>-->
+
+
+            <!--<div class="bar bar-footer  bar-assertive" style="position: static" ng-click="open_maintenanceTAModal()">-->
+              <!--<h1 class="title">确认故障维修</h1>-->
+            <!--</div>-->
           </div>
 
           <!-- 事故维修 -->
           <div ng-if="subTabIndex==2">
-            <div class="item item-divider" style="background-color:transparent;">
+            <div class="item item-divider" style="background-color:transparent;border-bottom: 0px;">
               事故状况
             </div>
 
-            <div class="list">
+            <div class="list padding">
 
-              <div class="item" style="background-color: transparent;">
-                <div class="row" ng-click="accidant_check('已报案')">
-                  <div class="col-80">
-                    <span>已报案</span>
-                  </div>
-                  <div class="col-20" style="position: relative;font-size: 2em;">
-                    <i ng-if="accident.type!='已报案'" class="ion-ios-checkmark-outline"></i>
+              <div class="item"
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial"
+                   ng-click="accidant_check('已报案')">
+                <span class="input-label"
+                      style="display: inline-block;width: 45%;text-align: center">
+                  已报案:
+                </span>
+                <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
+                              font-size: 2em;">
+                     <i ng-if="accident.type!='已报案'" class="ion-ios-checkmark-outline"></i>
                     <i ng-if="accident.type=='已报案'" class="ion-ios-checkmark"></i>
-                  </div>
-                </div>
+                </span>
               </div>
 
-              <div class="item" style="background-color: transparent;">
-                <div class="row" ng-click="accidant_check('未报案')">
-                  <div class="col-80">
-                    <span>未报案</span>
-                  </div>
-                  <div class="col-20" style="position: relative;font-size: 2em;">
-                    <i ng-if="accident.type!='未报案'" class="ion-ios-checkmark-outline"></i>
+              <div class="item"
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial"
+                   ng-click="accidant_check('未报案')">
+                <span class="input-label"
+                      style="display: inline-block;width: 45%;text-align: center">
+                  未报案:
+                </span>
+                <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
+                              font-size: 2em;">
+                     <i ng-if="accident.type!='未报案'" class="ion-ios-checkmark-outline"></i>
                     <i ng-if="accident.type=='未报案'" class="ion-ios-checkmark"></i>
-                  </div>
-                </div>
+                </span>
               </div>
 
-              <div class="item" style="background-color: transparent;">
-                <div class="row" ng-click="accidant_check('代索赔')">
-                  <div class="col-80">
-                    <span>代索赔</span>
-                  </div>
-                  <div class="col-20" style="position: relative;font-size: 2em;">
-                    <i ng-if="accident.type!='代索赔'" class="ion-ios-checkmark-outline"></i>
+              <div class="item"
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial"
+                   ng-click="accidant_check('代索赔')">
+                <span class="input-label"
+                      style="display: inline-block;width: 45%;text-align: center">
+                  代索赔:
+                </span>
+                <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
+                              font-size: 2em;">
+                     <i ng-if="accident.type!='代索赔'" class="ion-ios-checkmark-outline"></i>
                     <i ng-if="accident.type=='代索赔'" class="ion-ios-checkmark"></i>
-                  </div>
-                </div>
+                </span>
               </div>
 
-              <button class="button button-block button-assertive" ng-click="open_maintenanceTAModal()">
-                确认事故状况
+
+
+
+              <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
+                      ng-click="pickMaintainDaily('maintain',2)">
+                选择附近的维修厂
               </button>
+
+
             </div>
 
           </div>
