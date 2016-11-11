@@ -68,6 +68,65 @@ angular.module('starter')
           }
       };
 
+      $scope.selectDestination=function () {
+          $http({
+              method: "POST",
+              url: Proxy.local() + "/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data: {
+                  request: 'selectDestinationByPersonId'
+              }
+          }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                  var destinations=json.data;
+                  if(destinations!==undefined&&destinations!==null&&destinations.length>0) {
+                      var buttons=[];
+                      destinations.map(function (destination) {
+                          var item=destination;
+                          item.text=destination.address;
+                          buttons.push(item);
+                      })
+                      var destinationSheet = $ionicActionSheet.show({
+                          buttons: buttons,
+                          titleText: '<b>选择目的地</b>',
+                          cancelText: 'Cancel',
+                          cancel: function() {
+                              // add cancel code..
+                          },
+                          buttonClicked: function(index) {
+                              $scope.carManage.customerPlace=buttons[index];
+                              return true;
+                          },
+                          cssClass:'center'
+                      });
+                  }
+              }else if(json.re==2)
+              {
+                  var confirmPopup = $ionicPopup.confirm({
+                      title: '信息',
+                      template: '<strong>没有可供选择的地址</strong><br/><strong>是否创建住址</strong>',
+                      subTitle: '',
+                      scope: $scope
+                  });
+
+                  confirmPopup.then(function(res) {
+                      if(res) {
+                          $scope.go_to('create_new_customerPlace')
+                      } else {}
+                  });
+
+
+              }else{}
+
+
+          })
+      }
+
+
+
 
       //提交车驾管服务订单
       $scope.generateServiceOrder=function(){
@@ -662,6 +721,11 @@ angular.module('starter')
       $rootScope.dashboard.service='取送车';
       window.history.back();
     }
+
+    $scope.go_to=function (state) {
+        $state.go(state);
+    }
+
   })
 
 
