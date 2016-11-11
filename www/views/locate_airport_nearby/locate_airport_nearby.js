@@ -471,7 +471,7 @@ angular.module('starter')
 
 
         $scope.$apply(function(){
-            scope.unit = unit;
+            $scope.unit = unit;
         });
 
         $scope.labels.map(function (item, i) {
