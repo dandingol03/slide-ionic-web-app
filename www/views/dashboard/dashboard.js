@@ -3898,8 +3898,8 @@ $scope.carService=function(){
       $state.go('locate_maintain_daily',{locate:JSON.stringify({locateType: locateType,locateIndex:index})});
     };
 
-    $scope.pickAirportNearby=function(locateType) {
-      $state.go('locate_airport_nearby', {locateType: locateType});
+    $scope.pickAirportNearby=function() {
+      $state.go('locate_airport_nearby');
     };
 
     $scope.pickParkCarNearby=function(locateType) {

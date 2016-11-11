@@ -8,7 +8,7 @@ angular.module('starter')
   .controller('locateAirportNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
                                                         Proxy,$stateParams,$ionicLoading,ionicDatePicker,
-                                                       $ionicPopup) {
+                                                       $ionicPopup,$ionicActionSheet) {
       $scope.datepick = function(item,field){
           var ipObj1 = {
               callback: function (val) {  //Mandatory
@@ -37,13 +37,16 @@ angular.module('starter')
           ionicDatePicker.openDatePicker(ipObj1);
       };
 
+      $scope.go_to=function (state) {
+          $state.go(state);
+      }
+
+
       $scope.airTransfer = {
           airTransfers: {}
       };
 
-      if($stateParams.locateType !== undefined && $stateParams.locateType !== null) {
-          $scope.locateType = $stateParams.locateType;
-      }
+
 
       $scope.filterType={
           pickUp:true,
@@ -65,10 +68,11 @@ angular.module('starter')
 
 
 
+
+
+
     //提交车驾管服务订单
     $scope.generateServiceOrder=function(){
-
-
         //$scope.carManage.carId=$scope.carInfo.carId;
 
         //TODO:servicePlaceId is unknown
@@ -265,6 +269,61 @@ angular.module('starter')
     }
 
 
+    $scope.selectDestination=function () {
+        $http({
+            method: "POST",
+            url: Proxy.local() + "/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data: {
+                request: 'selectDestinationByPersonId'
+            }
+        }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+                var destinations=json.data;
+                if(destinations!==undefined&&destinations!==null&&destinations.length>0) {
+                    var buttons=[];
+                    destinations.map(function (destination) {
+                        var item=destination;
+                        item.text=destination.address;
+                        buttons.push(item);
+                    })
+                    var destinationSheet = $ionicActionSheet.show({
+                        buttons: buttons,
+                        titleText: '<b>选择目的地</b>',
+                        cancelText: 'Cancel',
+                        cancel: function() {
+                            // add cancel code..
+                        },
+                        buttonClicked: function(index) {
+                            $scope.carManage.destination=buttons[index];
+                            return true;
+                        },
+                        cssClass:'center'
+                    });
+                }
+            }else if(json.re==2)
+            {
+                var myPopup = $ionicPopup.alert({
+                    title: '信息',
+                    template: '<strong>没有可供选择的地址</strong><br/><strong>请点击左方按钮进行添加</strong>',
+                    subTitle: '',
+                    scope: $scope
+                });
+
+                $timeout(function(){
+                    console.log('...');
+                    console.log('...');
+                    console.log('...');
+                },2000);
+
+            }else{}
+
+
+        })
+    }
 
 
 

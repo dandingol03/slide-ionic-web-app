@@ -8,7 +8,7 @@ angular.module('starter')
  */
   .controller('carOrderPricesController',function($scope,$state,$http,
                                             $location,$rootScope,$stateParams,
-                                            $ionicPopup,Proxy,$ionicModal){
+                                            Proxy,$ionicModal){
 
     $scope.insuranceder={};
 
@@ -28,7 +28,7 @@ angular.module('starter')
     }
 
     $scope.goDetail=function(price){
-        $state.go('car_price_detail',{price:JSON.stringify(price)});
+        $state.go('car_price_detail',{info:JSON.stringify({price:price,order:$scope.order})});
     }
 
     $scope.setterPrice=function(i,item) {
