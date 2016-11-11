@@ -306,18 +306,18 @@ angular.module('starter')
                 }
             }else if(json.re==2)
             {
-                var myPopup = $ionicPopup.alert({
+                var confirmPopup = $ionicPopup.confirm({
                     title: '信息',
-                    template: '<strong>没有可供选择的地址</strong><br/><strong>请点击左方按钮进行添加</strong>',
+                    template: '<strong>没有可供选择的地址</strong><br/><strong>是否创建住址</strong>',
                     subTitle: '',
                     scope: $scope
                 });
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        $scope.go_to('create_new_customerPlace')
+                    } else {}
+                });
 
-                $timeout(function(){
-                    console.log('...');
-                    console.log('...');
-                    console.log('...');
-                },2000);
 
             }else{}
 
