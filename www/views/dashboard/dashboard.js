@@ -3905,7 +3905,7 @@ $scope.carService=function(){
     };
 
     $scope.pickParkCarNearby=function(locateType) {
-      $state.go('locate_parkCar_nearby', {locateType: locateType});
+      $state.go('locate_parkCar_nearby', {locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType})});
     }
 
     $scope.pickPaperValidate=function(locateType) {
