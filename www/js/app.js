@@ -776,9 +776,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_price_detail',{
-              url:'/car_price_detail/:price',
+              url:'/car_price_detail/:info',
               controller:'carPriceDetailController',
               templateUrl:'views/car_price_detail/car_price_detail.html'
+          })
+
+          .state('create_new_customerPlace',{
+              url:'/create_new_customerPlace',
+              controller:'createNewCustomerPlaceController',
+              templateUrl:'views/create_new_customerPlace/create_new_customerPlace.html'
           })
 
 

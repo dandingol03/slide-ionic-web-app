@@ -105,7 +105,9 @@ angular.module('starter')
                         request:'createMailAddress',
                         info:{
                             address:$scope.mail.address,
-                            postcode:$scope.mail.postcode
+                            postcode:$scope.mail.postcode,
+                            perName:$scope.mail.perName,
+                            phone:$scope.mail.phone
                         }
                     }
             }).then(function (res) {
@@ -142,7 +144,7 @@ angular.module('starter')
             }).then(function (res) {
                 var json = res.data;
                 if (json.re == 1) {
-                    alert("dicount="+selected_price.discount);
+                    alert("discount="+selected_price.discount);
                     return $http({
                         method: "POST",
                         url: Proxy.local() + "/svr/request",

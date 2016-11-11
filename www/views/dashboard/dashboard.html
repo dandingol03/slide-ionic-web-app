@@ -526,8 +526,9 @@
 
         <div style="height: 100%;margin-top:2px;">
           <!-- 日常保养 -->
-          <div ng-if="subTabIndex==0">
-            <div class="item item-divider" style="background-color: transparent;border-top:0px;">
+          <div ng-if="subTabIndex==0" style="">
+            <div class="item item-divider"
+                 style="background-color: transparent;border-top:0px;border-bottom:0px;">
               服务项目列表
             </div>
 
@@ -554,6 +555,9 @@
                   </div>
                   <span>检查制动系统</span>
                   <span>更换刹车片</span>
+                  <div ng-if="dailys[1].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
 
                 <div class="col"
@@ -563,6 +567,9 @@
                     <i class="ion-ios-cloud"></i>
                   </div>
                   <span>雨刷片更换</span>
+                  <div ng-if="dailys[2].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
 
               </div>
@@ -575,6 +582,9 @@
                     <i class="ion-wrench"></i>
                   </div>
                   <span>轮胎更换</span>
+                  <div ng-if="dailys[3].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
                 <div class="col"
                      style="padding: 16px;border:1px solid;border-bottom: 0px;border-right:0px;"
@@ -583,6 +593,9 @@
                     <i class="ion-wrench"></i>
                   </div>
                   <span>燃油添加剂</span>
+                  <div ng-if="dailys[4].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
                 <div class="col"
                      style="padding: 16px;border:1px solid;border-bottom:0px;"
@@ -591,6 +604,9 @@
                     <i class="ion-wrench"></i>
                   </div>
                   <span>空气滤清器</span>
+                  <div ng-if="dailys[5].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
               </div>
 
@@ -602,6 +618,9 @@
                     <i class="ion-wrench"></i>
                   </div>
                   <span>检查火花塞</span>
+                  <div ng-if="dailys[6].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
                 <div class="col"
                      style="padding: 16px;border:1px solid;border-right:0px;border-left:0px;"
@@ -610,6 +629,9 @@
                     <i class="ion-wrench"></i>
                   </div>
                   <span>检查驱动皮带</span>
+                  <div ng-if="dailys[7].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
                 <div class="col"
                      style="padding: 16px;border:1px solid"
@@ -618,6 +640,9 @@
                     <i class="ion-wrench"></i>
                   </div>
                   <span>更换空调滤芯</span>
+                  <div ng-if="dailys[8].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
+                  </div>
                 </div>
               </div>
 
@@ -629,39 +654,22 @@
                   </div>
                   <div>更换蓄电池</div>
                   <div>防冻液</div>
-                </div>
-              </div>
-
-            </div>
-
-
-
-
-
-            <div class="list" style="background-color: transparent;">
-              <div class="item" ng-repeat="item in dailys" style="background-color: transparent;padding: 0;">
-
-                <div class="row" ng-click="daily_check(item)">
-                  <div class="col-80" style="padding-top: 1%;">
-                    <span>{{item.subServiceTypes}}</span>
+                  <div ng-if="dailys[9].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                    <i class="ion-checkmark"></i>
                   </div>
-                  <div class="col-20" style="position: relative;font-size: 2em;">
-                    <i ng-if="item.checked!=true" class="ion-ios-checkmark-outline"></i>
-                    <i ng-if="item.checked==true" class="ion-ios-checkmark"></i>
-                  </div>
-
-
-
                 </div>
               </div>
             </div>
 
-            <div>
+
+
+            <div class="list" style="padding:10px;">
               <div class="item"
-                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;background-color: transparent;">
-              <span class="input-label" style="display: inline-block;width:20%;padding-left: 3%;max-width: 150px;">
-                里程:
-              </span>
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                   padding:10px;background-color: transparent;">
+                <span class="input-label" style="display: inline-block;width:20%;padding-left: 3%;max-width: 150px;">
+                  里程:
+                </span>
                 <input type="text" placeholder="请输入您的里程"
                        style="display: inline-block;background-color: transparent;width:35%"
                        ng-model="miles"
@@ -672,11 +680,13 @@
               </div>
 
 
-              <button class="button button-block button-positive" ng-click="pickMaintainDaily('maintain',0)">
+              <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
+                      ng-click="pickMaintainDaily('maintain',0)">
                 选择附近的维修厂
               </button>
               <a id="maintenance_anchor"></a>
-              <button class="button button-block button-positive" ng-click="open_maintenanceTAModal()">
+              <button class="button button-block button-assertive" style="width: 70%;margin-left:15%;"
+                      ng-click="open_maintenanceTAModal()">
                 提交服务项目
               </button>
             </div>
@@ -1013,7 +1023,7 @@
             >
             请选择目的地
           </span>
-            <span ng-click="pickAirportNearby('destiny')"
+            <span ng-click="pickAirportNearby()"
                   style="font-size: 1.6em;width: 30%;display: inline-block;text-align: center;">
             <i class="ion-ios-arrow-down" ></i>
           </span>
