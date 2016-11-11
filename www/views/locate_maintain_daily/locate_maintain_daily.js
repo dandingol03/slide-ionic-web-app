@@ -7,7 +7,7 @@ angular.module('starter')
 
   .controller('locateMaintainDailyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                        Proxy,$stateParams) {
+                                                        Proxy,$stateParams,ionicDatePicker,$ionicActionSheet) {
 
     $scope.maintain = {
       maintenance: {}
@@ -18,6 +18,97 @@ angular.module('starter')
       if(Object.prototype.toString.call($scope.locate)=='[object String]')
         $scope.locate=JSON.parse($scope.locate);
       $scope.locateType = $scope.locate.locateType;
+      $scope.locateType = $scope.locate.locateType;
+      $scope.carInfo=$scope.locate.carInfo;
+    }
+
+
+    $scope.datepick = function(item,field){
+      var ipObj1 = {
+        callback: function (val) {  //Mandatory
+
+          var date=new Date(val);
+          var month=parseInt(date.getMonth())+1;
+          item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
+        },
+        disabledDates: [            //Optional
+          new Date(2016, 2, 16),
+          new Date(2015, 3, 16),
+          new Date(2015, 4, 16),
+          new Date(2015, 5, 16),
+          new Date('Wednesday, August 12, 2015'),
+          new Date("08-16-2016"),
+          new Date(1439676000000)
+        ],
+        from: new Date(1949, 10, 1), //Optional
+        to: new Date(2040, 10, 30), //Optional
+        inputDate: new Date(),      //Optional
+        mondayFirst: false,          //Optional
+        disableWeekdays: [0],       //Optional
+        closeOnSelect: false,       //Optional
+        templateType: 'popup'     //Optional
+      };
+      ionicDatePicker.openDatePicker(ipObj1);
+    };
+
+
+    //查询已绑定车辆,并显示车牌信息
+    $scope.selectCarInfoByCarNum=function(item,modal){
+
+      var data={
+        request:'fetchInsuranceCarInfoByCustomerId'
+      };
+      if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
+        data.carNum=$scope.carInfo.carNum;
+
+
+      $http({
+        method: "POST",
+        url: Proxy.local()+"/svr/request",
+        headers: {
+          'Authorization': "Bearer " + $rootScope.access_token
+        },
+        data:data
+      }).then(function(res) {
+        var json=res.data;
+        if(json.re==1) {
+          var cars=json.data;
+          var buttons=[];
+          buttons.push({text: "<b>创建新车</b>"});
+          cars.map(function(car,i) {
+            var ele=car;
+            ele.text='<b>'+car.carNum+'</b>';
+            buttons.push(ele);
+          });
+          var carSheet = $ionicActionSheet.show({
+            buttons: buttons,
+            titleText: '<b>选择车辆信息</b>',
+            cancelText: 'Cancel',
+            cancel: function() {
+              // add cancel code..
+            },
+            buttonClicked: function(index) {
+              if(index==0) {
+                //TODO:create new car info
+                if(modal!==undefined&&modal!==null)
+                  modal.hide();
+                $state.go('update_car_info');
+              }else{
+                var car=cars[index-1];
+                $scope.carInfo=car;
+
+              }
+              return true;
+            },
+            cssClass:'center'
+          });
+        }
+      }).catch(function(err) {
+        var str='';
+        for(var field in err)
+          str+=err[field];
+        console.error('error=\r\n' + str);
+      });
     }
 
 

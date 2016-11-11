@@ -3894,7 +3894,7 @@ $scope.carService=function(){
       {
         $rootScope.maintain.dailys=$scope.dailys;
       }
-      $state.go('locate_maintain_daily',{locate:JSON.stringify({locateType: locateType,locateIndex:index})});
+      $state.go('locate_maintain_daily',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
     };
 
     $scope.pickAirportNearby=function() {
