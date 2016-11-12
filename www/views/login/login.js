@@ -21,28 +21,22 @@ angular.module('starter')
           if($scope.pwdPersisted==true){
               localStorage.pwdPersisted=false;
               $scope.pwdPersisted=false;
-              alert('set pwdPersisted = false');
           }else{
               localStorage.pwdPersisted=true;
               $scope.pwdPersisted=true;
-              alert('set pwdPersisted =true');
           }
       }
 
 
-      alert('pwdPersisted='+$scope.pwdPersisted);
-      alert('equal?   '+$scope.pwdPersisted==true);
       if($scope.pwdPersisted)
       {
-          alert('pwdPersisted == true');
+
           if(localStorage.userName!=undefined&&localStorage.userName!=null){
-              alert('username is not null');
               var userName=localStorage.userName;
               $scope.user.username = userName;
           }
 
           if(localStorage.password!=undefined&&localStorage.password!=null){
-              alert('password is not null');
               var password=localStorage.password;
               $scope.user.password=password;
           }
