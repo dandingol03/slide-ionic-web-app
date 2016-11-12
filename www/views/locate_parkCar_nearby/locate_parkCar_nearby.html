@@ -147,6 +147,27 @@ ionic serve<ion-view view-title="选择取送车">
 
       </div>
 
+      <div class="item"
+           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+           padding:10px;background-color:transparent;">
+        <span class="input-label" style="display: inline-block;width: 35%;text-align: left">
+            车牌:
+        </span>
+        <span style="width: 49%;display: inline-block;text-align: left;">
+            <input type="text" placeholder="请输入您的车牌"
+                   style="display:inline-block;background-color: transparent;"
+                   ng-value="carInfo.carNum"
+                   ng-model="carInfo.carNum"
+            />
+        </span>
+        <span class="camera"
+              style="width:16%;font-size: 1.5em;"
+              ng-click="selectCarInfoByCarNum(carManage,carManage_t_a_modal)"
+        >
+          <i class="ion-chevron-down"></i>
+        </span>
+      </div>
+
       <div class="item" style="margin:1px;border-left:0px;border-right:0px;border-bottom: 1px solid #222;
       padding:10px;background: transparent">
         <span class="input-label" style="display: inline-block;width: 35%;text-align: left;">

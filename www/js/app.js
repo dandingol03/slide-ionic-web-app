@@ -679,7 +679,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('locate_parkCar_nearby',{
-            url:'/locate_parkCar_nearby/:locateType',
+            url:'/locate_parkCar_nearby/:locate',
             controller:'locateParkCarNearbyController',
             templateUrl:'views/locate_parkCar_nearby/locate_parkCar_nearby.html'
           })

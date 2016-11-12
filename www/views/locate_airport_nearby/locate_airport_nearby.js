@@ -93,6 +93,16 @@ angular.module('starter')
             unit=$scope.unit;
             units=$scope.units;
 
+            $scope.serviceTypeMap={
+                11:'维修-日常保养',
+                12:'维修-故障维修',
+                13:'维修-事故维修',
+                21:'车驾管-审车',
+                22:'车驾管-审证',
+                23:'车驾管-接送机',
+                24:'车驾管-取送车',
+                31:'鈑喷'};
+
             $scope.carManage.serviceType='23';
             if(unit!==undefined&&unit!==null)//已选维修厂
             {
@@ -285,6 +295,7 @@ angular.module('starter')
                 var destinations=json.data;
                 if(destinations!==undefined&&destinations!==null&&destinations.length>0) {
                     var buttons=[];
+                    buttons.push({text:"创建新地址"});
                     destinations.map(function (destination) {
                         var item=destination;
                         item.text=destination.address;
@@ -297,8 +308,14 @@ angular.module('starter')
                         cancel: function() {
                             // add cancel code..
                         },
+
                         buttonClicked: function(index) {
-                            $scope.carManage.destination=buttons[index];
+                            if(index==0){
+                                $scope.go_to('create_new_customerPlace');
+                            }else{
+                                $scope.carManage.destination=buttons[index];
+                            }
+
                             return true;
                         },
                         cssClass:'center'

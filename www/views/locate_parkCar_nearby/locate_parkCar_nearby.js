@@ -13,8 +13,14 @@ angular.module('starter')
 
 
 
-      if($stateParams.locateType !== undefined && $stateParams.locateType !== null) {
-          $scope.locateType = $stateParams.locateType;
+      if($stateParams.locate !== undefined && $stateParams.locate !== null) {
+          $scope.locate= $stateParams.locate;
+          if(Object.prototype.toString.call($scope.locate)=='[object String]')
+              $scope.locate=JSON.parse($scope.locate);
+          $scope.locateType = $scope.locate.locateType;
+          $scope.carInfo=$scope.locate.carInfo;
+
+
       }
 
       $scope.datepick = function(item,field){
@@ -44,6 +50,67 @@ angular.module('starter')
           };
           ionicDatePicker.openDatePicker(ipObj1);
       };
+
+
+      //查询已绑定车辆,并显示车牌信息
+      $scope.selectCarInfoByCarNum=function(item,modal){
+
+          var data={
+              request:'fetchInsuranceCarInfoByCustomerId'
+          };
+          if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
+              data.carNum=$scope.carInfo.carNum;
+
+
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data:data
+          }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                  var cars=json.data;
+                  var buttons=[];
+                  buttons.push({text: "<b>创建新车</b>"});
+                  cars.map(function(car,i) {
+                      var ele=car;
+                      ele.text='<b>'+car.carNum+'</b>';
+                      buttons.push(ele);
+                  });
+                  var carSheet = $ionicActionSheet.show({
+                      buttons: buttons,
+                      titleText: '<b>选择车辆信息</b>',
+                      cancelText: 'Cancel',
+                      cancel: function() {
+                          // add cancel code..
+                      },
+                      buttonClicked: function(index) {
+                          if(index==0) {
+                              //TODO:create new car info
+                              if(modal!==undefined&&modal!==null)
+                                  modal.hide();
+                              $state.go('update_car_info');
+                          }else{
+                              var car=cars[index-1];
+                              $scope.carInfo=car;
+
+                          }
+                          return true;
+                      },
+                      cssClass:'center'
+                  });
+              }
+          }).catch(function(err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('error=\r\n' + str);
+          });
+
+      }
 
       $scope.trainMarkers=[];
 
