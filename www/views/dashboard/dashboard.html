@@ -370,14 +370,19 @@
           <div class="item"
                style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
              padding:10px;background-color:transparent;"
-               ng-click="datepick(carInfo,'issueDate')"
+               ng-click="datetimepicker(carInfo,'issueDate')"
           >
             <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
                 发证日期:
             </span>
 
-            <span style="display: inline-block;width: 55%;color:#888;font-size: .9em;text-align: left;">
-                {{carInfo.issueDate!==undefined&&carInfo.issueDate!==null?carInfo.issueDate:'点击选择发证日期'}}
+            <span style="display: inline-block;width: 55%;color:#888;font-size: .9em;text-align: center;"
+              ng-if="carInfo.issueDate==undefined||carInfo.issueDate==null||carInfo.issueDate==''">
+                点击选择发证日期
+            </span>
+            <span style="display: inline-block;width: 55%;color:#888;font-size: .9em;text-align: center;"
+              ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
+                {{carInfo.issueDate|date:'yyyy-MM-dd HH:mm'}}
             </span>
 
             <span style="display: inline-block;width: 20%;">
@@ -458,12 +463,6 @@
                   style="position: static;width: 40%;display: inline-block;"
                   ng-click="select_type()">
             <h1 class="title">下一步</h1>
-          </div>
-
-          <div class="bar bar-footer  bar-assertive"
-               style="position: static;width: 40%;display: inline-block;"
-               ng-click="datetimepicker()">
-            <h1 class="title">get datetime picker</h1>
           </div>
 
         </div>
@@ -675,7 +674,7 @@
 
 
               <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
-                      ng-click="pickMaintain Daily('maintain',0)">
+                      ng-click="pickMaintainDaily('maintain',0)">
                 选择附近的维修厂
               </button>
               <a id="maintenance_anchor"></a>

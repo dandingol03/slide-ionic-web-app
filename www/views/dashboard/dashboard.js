@@ -1543,56 +1543,6 @@ angular.module('starter')
       }else{
       }
       $scope.life_insurances=life_insurance_products;
-      return  $http.get("http://202.194.14.106:9030/insurance/project_provide");
-    }).then(function (res) {
-      if(res.data!==undefined&&res.data!==null)
-      {
-        var data=res.data;
-        var projects=data.projects;
-        if(Object.prototype.toString.call(projects)!='[object Array]')
-          projects=JSON.parse(projects);
-        $scope.motor_specials=projects;
-        return true;
-      }
-      else
-        return false;
-
-    }).then(function(re) {
-      if(re==true)
-      {
-        $scope.tabs=[
-          {type:'车险',insurances:$scope.motor_specials},
-          {type:'寿险',insurances:$scope.life_insurances},
-          {type:'维修'},
-          {type:'车驾管',
-            services:[
-              {name:'代办车辆年审',href:''},
-              {name:'代办驾驶证年审',href:''},
-              {name:'取送车',href:''},
-              {name:'接送机',href:''},
-              {name:'违章查询',href:''}
-            ]
-          }
-        ];
-        return ({re: 1});
-      }
-    }).then(function(json) {
-
-      if(json.re==1) {
-        return  [
-          {routineId:'1',routineName:'机油,机滤',routineType:'日常保养'},
-          {routineId:'2',routineName:'机油,三滤',routineType:'日常保养'},
-          {routineId:'3',routineName:'更换刹车片',routineType:'日常保养'},
-          {routineId:'4',routineName:'雨刷片更换',routineType:'日常保养'},
-          {routineId:'5',routineName:'轮胎更换',routineType:'日常保养'}
-        ];
-      }
-    }).then(function(res){
-      var json=res.data;
-      //if(json.re==1) {
-      //  $scope.routines=json.data;
-      //  $scope.dailys = json.data['日常保养'];
-      //}
     }).catch(function (err) {
       console.log('server fetch error');
     });
@@ -4156,7 +4106,7 @@ $scope.carService=function(){
     }
     
     
-    $scope.datetimepicker=function () {
+    $scope.datetimepicker=function (item,field) {
         var options = {
             date: new Date(),
             mode: 'datetime',
@@ -4164,8 +4114,9 @@ $scope.carService=function(){
         };
         $cordovaDatePicker.show(options).then(function(date){
             alert(date);
-        });
+            item[field]=date;
 
+        });
     }
 
   })

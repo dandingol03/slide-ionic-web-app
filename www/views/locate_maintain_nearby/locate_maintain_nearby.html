@@ -41,7 +41,8 @@
       <div class="item"
            style="margin:1px;
            border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;"
-           ng-click="datepick(carManage,'estimateTime')">
+           ng-click="datetimepicker(carManage,'estimateTime')"
+      >
 
         <span class="input-label" style="display: inline-block;width: 35%;">
           服务时间:
@@ -55,7 +56,7 @@
 
           <span style="display: inline-block;width: 49%;font-size: 0.85em;"
                   ng-if="carManage.estimateTime!=undefined&&carManage.estimateTime!==null">
-          {{carManage.estimateTime}}
+            {{carInfo.estimateTime|date:'yyyy-MM-dd HH:mm'}}
           </span>
 
 

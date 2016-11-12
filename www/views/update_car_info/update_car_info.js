@@ -6,7 +6,7 @@ angular.module('starter')
                                                    $cordovaFileTransfer,$cordovaFile,
                                                    $cordovaCamera,$cordovaImagePicker,Proxy,
                                                    $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate,
-                                                   $timeout,$ionicPopup){
+                                                   $timeout,$ionicPopup,$cordovaDatePicker){
 
 
         $scope.licenseIndexChange=function(i) {
@@ -852,6 +852,19 @@ angular.module('starter')
                     template: '请同时上传行驶证3面'
                 });
             }
+        }
+
+        $scope.datetimepicker=function (item,field) {
+            var options = {
+                date: new Date(),
+                mode: 'datetime',
+                locale:'zh_cn'
+            };
+            $cordovaDatePicker.show(options).then(function(date){
+                alert(date);
+                item[field]=date;
+
+            });
         }
 
 

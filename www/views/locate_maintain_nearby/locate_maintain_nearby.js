@@ -7,36 +7,24 @@ angular.module('starter')
 
   .controller('locateMaintainNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                        Proxy,$stateParams,ionicDatePicker,
-                                                        $ionicActionSheet) {
+                                                        Proxy,$stateParams,
+                                                        $ionicActionSheet,$cordovaDatePicker) {
 
-      $scope.datepick = function(item,field){
-        var ipObj1 = {
-          callback: function (val) {  //Mandatory
+      $scope.datetimepicker=function (item,field) {
+          var options = {
+              date: new Date(),
+              mode: 'datetime',
+              locale:'zh_cn'
+          };
+          $cordovaDatePicker.show(options).then(function(date){
+              alert(date);
+              item[field]=date;
 
-            var date=new Date(val);
-            var month=parseInt(date.getMonth())+1;
-            item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
-          },
-          disabledDates: [            //Optional
-            new Date(2016, 2, 16),
-            new Date(2015, 3, 16),
-            new Date(2015, 4, 16),
-            new Date(2015, 5, 16),
-            new Date('Wednesday, August 12, 2015'),
-            new Date("08-16-2016"),
-            new Date(1439676000000)
-          ],
-          from: new Date(1949, 10, 1), //Optional
-          to: new Date(2040, 10, 30), //Optional
-          inputDate: new Date(),      //Optional
-          mondayFirst: false,          //Optional
-          disableWeekdays: [0],       //Optional
-          closeOnSelect: false,       //Optional
-          templateType: 'popup'     //Optional
-        };
-        ionicDatePicker.openDatePicker(ipObj1);
-      };
+          });
+      }
+
+
+
 
       $scope.maintain = {
         maintenance: {}
