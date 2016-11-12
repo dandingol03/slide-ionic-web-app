@@ -5,7 +5,7 @@ angular.module('starter')
 
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover){
+        ,$WebSocket,$ionicPopover,$cordovaDatePicker){
 
 
 
@@ -41,6 +41,24 @@ angular.module('starter')
       //$WebSocket.connect();
 
 
+
+
+      $scope.datetimepicker=function () {
+          var options = {
+              date: new Date(),
+              mode: 'datetime',
+          };
+          $cordovaDatePicker.show(options).then(function(date){
+              alert(date);
+          });
+
+      }
+
+
+      var options = {
+            date: new Date(),
+            mode: 'datetime',
+        };
 
 //*******************测试百悟短信验证码*********************//
 
