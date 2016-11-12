@@ -140,76 +140,69 @@ angular.module('starter')
 
 
       //登录
-      $scope.login = function(){
+      $scope.login = function() {
 
 
+          $http({
+              method: "POST",
+              data: "grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
+              url: Proxy.local() + '/login',
+              headers: {
+                  'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                  'Content-Type': 'application/x-www-form-urlencoded'
+              }
+          }).then(function (res) {
 
+              var json = res.data;
+              var access_token = json.access_token;
 
-        $http({
-          method:"POST",
-          data:"grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
-          url:Proxy.local()+'/login',
-          headers: {
-            'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }).then(function(res){
+              localStorage.userName = $scope.user.username;
 
-          var json=res.data;
-          var access_token=json.access_token;
+              localStorage.password = $scope.user.password;
 
-            localStorage.userName=$scope.user.username;
-
-            localStorage.password=$scope.user.password;
-
-            //send login message to server
-          //$WebSocket.send({
-          //  action:'login',
-          //  msgid:$WebSocket.getMsgId(),
-          //  timems:new Date(),
-          //  token:access_token
-          //  });
-          if(access_token!==undefined&&access_token!==null)
-          {
-            $rootScope.access_token=access_token;
-            alert('registrationId=\r\n' + $rootScope.registrationId);
-            //手机环境
-            if(window.cordova!==undefined&&window.cordova!==null)
-            {
-                return  $http({
-                    method: "POST",
-                    url: Proxy.local()+"/svr/request",
-                    headers: {
-                        'Authorization': "Bearer " + $rootScope.access_token
-                    },
-                    data: {
-                        request: 'activatePersonOnline',
-                        info:{
-                            registrationId:$rootScope.registrationId!==undefined&&$rootScope.registrationId!==null?$rootScope.registrationId:''
-                        }
-                    }
-                });
-            }else{
-                $state.go('tabs.dashboard');
-            }
-          }
-          else
-            return ({re: -1});
-        }).then(function(res) {
-          var json=res.data;
-          if(json.re==1||json.result=='ok')
-          {
-            $state.go('tabs.dashboard');
-          }
-        }).catch(function(err){
-          var error='';
-          for(var field in err)
-          {
-            error+=err[field]+'\r\n';
-          }
-          alert('error=' + error);
-        });
-
+              //send login message to server
+              //$WebSocket.send({
+              //  action:'login',
+              //  msgid:$WebSocket.getMsgId(),
+              //  timems:new Date(),
+              //  token:access_token
+              //  });
+              if (access_token !== undefined && access_token !== null) {
+                  $rootScope.access_token = access_token;
+                  alert('registrationId=\r\n' + $rootScope.registrationId);
+                  //手机环境
+                  if (window.cordova !== undefined && window.cordova !== null) {
+                      $http({
+                          method: "POST",
+                          url: Proxy.local() + "/svr/request",
+                          headers: {
+                              'Authorization': "Bearer " + $rootScope.access_token
+                          },
+                          data: {
+                              request: 'activatePersonOnline',
+                              info: {
+                                  registrationId: $rootScope.registrationId !== undefined && $rootScope.registrationId !== null ? $rootScope.registrationId : ''
+                              }
+                          }
+                      }).then(function (res) {
+                          var json = res.data;
+                          if (json.re == 1 || json.result == 'ok') {
+                              $state.go('tabs.dashboard');
+                          }
+                      }).catch(function (err) {
+                          var error = '';
+                          for (var field in err) {
+                              error += err[field] + '\r\n';
+                          }
+                          alert('error=' + error);
+                      });
+                  } else {
+                      $state.go('tabs.dashboard');
+                  }
+              }
+              else
+                  console.log('cannot get access_token');
+          });
       }
 
       $scope.doSend=function(){
