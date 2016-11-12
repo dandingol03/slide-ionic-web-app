@@ -172,22 +172,26 @@ angular.module('starter')
           if(access_token!==undefined&&access_token!==null)
           {
             $rootScope.access_token=access_token;
-            if(window.cordova!=undefined && window.cordova!=null) {
-            }
             alert('registrationId=\r\n' + $rootScope.registrationId);
-            return  $http({
-              method: "POST",
-              url: Proxy.local()+"/svr/request",
-              headers: {
-                'Authorization': "Bearer " + $rootScope.access_token
-              },
-              data: {
-                request: 'activatePersonOnline',
-                info:{
-                  registrationId:$rootScope.registrationId!==undefined&&$rootScope.registrationId!==null?$rootScope.registrationId:''
-                }
-              }
-            });
+            //手机环境
+            if(window.cordova!==undefined&&window.cordova!==null)
+            {
+                return  $http({
+                    method: "POST",
+                    url: Proxy.local()+"/svr/request",
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                    },
+                    data: {
+                        request: 'activatePersonOnline',
+                        info:{
+                            registrationId:$rootScope.registrationId!==undefined&&$rootScope.registrationId!==null?$rootScope.registrationId:''
+                        }
+                    }
+                });
+            }else{
+                $state.go('tabs.dashboard');
+            }
           }
           else
             return ({re: -1});
