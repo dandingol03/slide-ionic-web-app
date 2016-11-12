@@ -12,23 +12,40 @@ angular.module('starter')
       $scope.formUser = {};
 
       $scope.user={};
-      $scope.rememberPsd=true;
-      $scope.isremember = function(){
-          if($scope.rememberPsd==true){
-              $scope.rememberPsd=false;
+      if(localStorage.pwdPersisted==true)
+          $scope.pwdPersisted=true;
+      else
+        $scope.pwdPersisted=false;
+
+      $scope.togglePwdPersistent = function(){
+          if($scope.pwdPersisted==true){
+              localStorage.pwdPersisted=false;
+              $scope.pwdPersisted=false;
+              alert('set pwdPersisted = false');
           }else{
-              $scope.rememberPsd=true;
+              localStorage.pwdPersisted=true;
+              $scope.pwdPersisted=true;
+              alert('set pwdPersisted =true');
           }
       }
 
-      if(localStorage.userName!=undefined&&localStorage.userName!=null){
-          var userName=localStorage.userName;
-          $scope.user.username = userName;
-      }
 
-      if(localStorage.password!=undefined&&localStorage.password!=null){
-          var password=localStorage.password;
-          $scope.user.password=password;
+      alert('pwdPersisted='+$scope.pwdPersisted);
+      alert('equal?   '+$scope.pwdPersisted==true);
+      if($scope.pwdPersisted)
+      {
+          alert('pwdPersisted == true');
+          if(localStorage.userName!=undefined&&localStorage.userName!=null){
+              alert('username is not null');
+              var userName=localStorage.userName;
+              $scope.user.username = userName;
+          }
+
+          if(localStorage.password!=undefined&&localStorage.password!=null){
+              alert('password is not null');
+              var password=localStorage.password;
+              $scope.user.password=password;
+          }
       }
 
         $WebSocket.registeCallback(function(msg) {
