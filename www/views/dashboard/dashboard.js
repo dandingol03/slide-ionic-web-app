@@ -2742,7 +2742,6 @@ $scope.carService=function(){
       if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
         data.carNum=$scope.carInfo.carNum;
 
-
       $http({
         method: "POST",
         url: Proxy.local()+"/svr/request",
@@ -2830,7 +2829,6 @@ $scope.carService=function(){
         cssClass:'center'
       });
     };
-
 
 
 

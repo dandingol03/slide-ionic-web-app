@@ -262,7 +262,6 @@ angular.module('starter')
 
         $scope.postCarInfo=function(){
 
-
             var engineNum=$scope.carInfo.engineNum;
             //validate engineNum
 
@@ -274,8 +273,6 @@ angular.module('starter')
                         $scope.carInfo.engineNum!==undefined&&$scope.carInfo.engineNum!==null&&
                         $scope.carInfo.frameNum!==undefined&&$scope.carInfo.frameNum!==null)
                     {
-
-
                         //车牌
                         var carNum=$scope.carInfo.carNum;
 
@@ -321,11 +318,21 @@ angular.module('starter')
                                 }).then(function(res) {
                                     var json=res.data;
                                     if(json.re==1){
-                                        $ionicPopup.alert({
+                                        var carInfo = json.data;
+                                        var popup = $ionicPopup.alert({
                                             title: '信息',
                                             template: '车辆信息保存成功'
                                         });
-                                        $state.go('tabs.dashboard');
+                                        popup.then(function(res) {
+                                            $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                        })
+                                        $timeout(function(){
+                                          if(popup.$$state==0){
+                                              popup.close();
+                                              $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                          }
+                                        },300);
+
                                     }
 
                                 }).catch(function(err) {
