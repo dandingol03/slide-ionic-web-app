@@ -448,20 +448,22 @@
 
 
         <div class="list list-inset padding" style="margin-bottom:40px;background-color:transparent;">
-          <div
-                  class="bar bar-footer bar-balanced"
+          <div class="bar bar-footer bar-balanced"
                   style="position: static;width: 40%;display: inline-block"
-                  ng-click="goto('/update_car_info')"
-          >
+                  ng-click="goto('/update_car_info')">
             <h1 class="title">创建新车</h1>
           </div>
           <div style="position: static;width: 10%;display: inline-block"></div>
-          <div
-                  class="bar bar-footer  bar-assertive"
+          <div class="bar bar-footer  bar-assertive"
                   style="position: static;width: 40%;display: inline-block;"
-                  ng-click="select_type()"
-          >
+                  ng-click="select_type()">
             <h1 class="title">下一步</h1>
+          </div>
+
+          <div class="bar bar-footer  bar-assertive"
+               style="position: static;width: 40%;display: inline-block;"
+               ng-click="datetimepicker()">
+            <h1 class="title">get datetime picker</h1>
           </div>
 
         </div>
