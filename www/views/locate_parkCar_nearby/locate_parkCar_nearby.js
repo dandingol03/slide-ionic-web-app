@@ -151,6 +151,7 @@ angular.module('starter')
                   var destinations=json.data;
                   if(destinations!==undefined&&destinations!==null&&destinations.length>0) {
                       var buttons=[];
+                      buttons.push({text: '创建新住址'});
                       destinations.map(function (destination) {
                           var item=destination;
                           item.text=destination.address;
@@ -164,7 +165,10 @@ angular.module('starter')
                               // add cancel code..
                           },
                           buttonClicked: function(index) {
-                              $scope.carManage.customerPlace=buttons[index];
+                              if(index==0)
+                                  $scope.go_to('create_new_customerPlace');
+                              else
+                                $scope.carManage.customerPlace=buttons[index];
                               return true;
                           },
                           cssClass:'center'

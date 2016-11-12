@@ -7,7 +7,7 @@ angular.module('starter')
                                              BaiduMapService,$ionicLoading,$cordovaMedia,$cordovaCapture,
                                               Proxy,$stateParams,$anchorScroll,
                                              $cordovaFileTransfer,$ionicPopover,$ionicSlideBoxDelegate,
-                                             $cordovaImagePicker){
+                                             $cordovaImagePicker,$cordovaDatePicker){
 
 
 
@@ -4102,7 +4102,7 @@ $scope.carService=function(){
         }else if(ionic.Platform.isAndroid()){
 
           $scope.media.stopRecord();
-          $scope.media.media.getAudioFullPath(function(path){
+          $scope.media.getAudioFullPath(function(path){
             if(path!==undefined&&path!==null)
             {
               $scope.maintain.description.audio=path;
@@ -4151,6 +4151,19 @@ $scope.carService=function(){
       {
         alert('error=\r\n' + e.toString());
       }
+    }
+    
+    
+    $scope.datetimepicker=function () {
+        var options = {
+            date: new Date(),
+            mode: 'datetime',
+            locale:'zh_cn'
+        };
+        $cordovaDatePicker.show(options).then(function(date){
+            alert(date);
+        });
+
     }
 
   })

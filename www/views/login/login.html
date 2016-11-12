@@ -41,9 +41,9 @@
         </span>
         </div>
 
-        <div style="padding-right:35%;padding-top:3%;" ng-click="isremember()">
-          <i class="ion-android-checkbox-outline-blank" ng-if="rememberPsd==true"></i>
-          <i class="ion-android-checkbox-outline" ng-if="rememberPsd!=true"></i>
+        <div style="padding-right:35%;padding-top:3%;" ng-click="togglePwdPersistent()">
+          <i class="ion-android-checkbox-outline" ng-if="pwdPersisted==true"></i>
+          <i class="ion-android-checkbox-outline-blank" ng-if="pwdPersisted!=true"></i>
           <span>记住密码</span>
         </div>
 
@@ -79,6 +79,16 @@
             忘记密码
           </span>
         </div>
+
+
+        <div class="item"
+             style="margin:1px;border:0px;
+             padding:4px;background-color:transparent;overflow:initial;width: 65%;margin-left:16%;">
+          <select ng-model="select.item" ng-options="o.id for o in optData" ng-change="selectChanged()">
+            <option value="">-- 请选择 --</option>
+          </select>
+        </div>
+
 
       </div>
 

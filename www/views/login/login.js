@@ -12,23 +12,34 @@ angular.module('starter')
       $scope.formUser = {};
 
       $scope.user={};
-      $scope.rememberPsd=true;
-      $scope.isremember = function(){
-          if($scope.rememberPsd==true){
-              $scope.rememberPsd=false;
+      if(localStorage.pwdPersisted==true)
+          $scope.pwdPersisted=true;
+      else
+        $scope.pwdPersisted=false;
+
+      $scope.togglePwdPersistent = function(){
+          if($scope.pwdPersisted==true){
+              localStorage.pwdPersisted=false;
+              $scope.pwdPersisted=false;
           }else{
-              $scope.rememberPsd=true;
+              localStorage.pwdPersisted=true;
+              $scope.pwdPersisted=true;
           }
       }
 
-      if(localStorage.userName!=undefined&&localStorage.userName!=null){
-          var userName=localStorage.userName;
-          $scope.user.username = userName;
-      }
 
-      if(localStorage.password!=undefined&&localStorage.password!=null){
-          var password=localStorage.password;
-          $scope.user.password=password;
+      if($scope.pwdPersisted)
+      {
+
+          if(localStorage.userName!=undefined&&localStorage.userName!=null){
+              var userName=localStorage.userName;
+              $scope.user.username = userName;
+          }
+
+          if(localStorage.password!=undefined&&localStorage.password!=null){
+              var password=localStorage.password;
+              $scope.user.password=password;
+          }
       }
 
         $WebSocket.registeCallback(function(msg) {
@@ -158,72 +169,69 @@ angular.module('starter')
 
 
       //登录
-      $scope.login = function(){
+      $scope.login = function() {
 
 
-
-
-        $http({
-          method:"POST",
-          data:"grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
-          url:Proxy.local()+'/login',
-          headers: {
-            'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }).then(function(res){
-
-          var json=res.data;
-          var access_token=json.access_token;
-
-            localStorage.userName=$scope.user.username;
-
-            localStorage.password=$scope.user.password;
-
-            //send login message to server
-          //$WebSocket.send({
-          //  action:'login',
-          //  msgid:$WebSocket.getMsgId(),
-          //  timems:new Date(),
-          //  token:access_token
-          //  });
-          if(access_token!==undefined&&access_token!==null)
-          {
-            $rootScope.access_token=access_token;
-            if(window.cordova!=undefined && window.cordova!=null) {
-            }
-            alert('registrationId=\r\n' + $rootScope.registrationId);
-            return  $http({
+          $http({
               method: "POST",
-              url: Proxy.local()+"/svr/request",
+              data: "grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
+              url: Proxy.local() + '/login',
               headers: {
-                'Authorization': "Bearer " + $rootScope.access_token
-              },
-              data: {
-                request: 'activatePersonOnline',
-                info:{
-                  registrationId:$rootScope.registrationId!==undefined&&$rootScope.registrationId!==null?$rootScope.registrationId:''
-                }
+                  'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                  'Content-Type': 'application/x-www-form-urlencoded'
               }
-            });
-          }
-          else
-            return ({re: -1});
-        }).then(function(res) {
-          var json=res.data;
-          if(json.re==1||json.result=='ok')
-          {
-            $state.go('tabs.dashboard');
-          }
-        }).catch(function(err){
-          var error='';
-          for(var field in err)
-          {
-            error+=err[field]+'\r\n';
-          }
-          alert('error=' + error);
-        });
+          }).then(function (res) {
 
+              var json = res.data;
+              var access_token = json.access_token;
+
+              localStorage.userName = $scope.user.username;
+
+              localStorage.password = $scope.user.password;
+
+              //send login message to server
+              //$WebSocket.send({
+              //  action:'login',
+              //  msgid:$WebSocket.getMsgId(),
+              //  timems:new Date(),
+              //  token:access_token
+              //  });
+              if (access_token !== undefined && access_token !== null) {
+                  $rootScope.access_token = access_token;
+                  alert('registrationId=\r\n' + $rootScope.registrationId);
+                  //手机环境
+                  if (window.cordova !== undefined && window.cordova !== null) {
+                      $http({
+                          method: "POST",
+                          url: Proxy.local() + "/svr/request",
+                          headers: {
+                              'Authorization': "Bearer " + $rootScope.access_token
+                          },
+                          data: {
+                              request: 'activatePersonOnline',
+                              info: {
+                                  registrationId: $rootScope.registrationId !== undefined && $rootScope.registrationId !== null ? $rootScope.registrationId : ''
+                              }
+                          }
+                      }).then(function (res) {
+                          var json = res.data;
+                          if (json.re == 1 || json.result == 'ok') {
+                              $state.go('tabs.dashboard');
+                          }
+                      }).catch(function (err) {
+                          var error = '';
+                          for (var field in err) {
+                              error += err[field] + '\r\n';
+                          }
+                          alert('error=' + error);
+                      });
+                  } else {
+                      $state.go('tabs.dashboard');
+                  }
+              }
+              else
+                  console.log('cannot get access_token');
+          });
       }
 
       $scope.doSend=function(){
@@ -433,6 +441,31 @@ angular.module('starter')
       $scope.goFetchPassword=function(){
           $state.go('passwordForget');
       }
+
+        $scope.select={
+        };
+        $scope.selectChanged=function () {
+            var item=$scope.select.item;
+            console.log('...');
+        }
+
+        $scope.optData = [{
+            id: 10001,
+            MainCategory: '男',
+            ProductName: '水洗T恤',
+            ProductColor: '白'
+        },{
+            id: 10002,
+            MainCategory: '女',
+            ProductName: '圓領短袖',
+            ProductColor: '黃'
+        },{
+            id: 10003,
+            MainCategory: '女',
+            ProductName: '圓領短袖',
+            ProductColor: '黃'
+        }];
+
 
 
     });
