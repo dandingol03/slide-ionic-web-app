@@ -25,6 +25,19 @@ angular.module('starter')
 
         $scope.carInfo={};
 
+        $scope.Toggle=function(type,item,field)
+        {
+            switch(type)
+            {
+                case 'boolean':
+                    if(item[field]!=true)
+                        item[field]=true;
+                    else
+                        item[field]=false;
+                    break;
+            }
+        }
+
         $scope.fetchRelative=function(item,field,matched) {
             $http({
                 method: "POST",
@@ -867,6 +880,7 @@ angular.module('starter')
                 mode: 'datetime',
                 locale:'zh_cn'
             };
+
             $cordovaDatePicker.show(options).then(function(date){
                 alert(date);
                 item[field]=date;

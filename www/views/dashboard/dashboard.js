@@ -4052,7 +4052,7 @@ $scope.carService=function(){
         }else if(ionic.Platform.isAndroid()){
 
           $scope.media.stopRecord();
-          $scope.media.getAudioFullPath(function(path){
+          $scope.media.media.getAudioFullPath(function(path){
             if(path!==undefined&&path!==null)
             {
               $scope.maintain.description.audio=path;
