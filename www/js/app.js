@@ -715,6 +715,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('locate_maintain_daily',{
+            cache:false,
             url:'/locate_maintain_daily/:locate',
             controller:'locateMaintainDailyController',
             templateUrl:'views/locate_maintain_daily/locate_maintain_daily.html'

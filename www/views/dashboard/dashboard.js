@@ -3,10 +3,10 @@ angular.module('starter')
   .controller('dashboardController',function($scope,$state,$http, $location,
                                              $rootScope,$ionicModal,$timeout,
                                              $cordovaCamera,ionicDatePicker,
-                                             $ionicActionSheet,$ionicPopup,$q,$cordovaFile,
+                                             $ionicActionSheet,$q,$cordovaFile,
                                              BaiduMapService,$ionicLoading,$cordovaMedia,$cordovaCapture,
                                               Proxy,$stateParams,$anchorScroll,
-                                             $cordovaFileTransfer,$ionicPopover,$ionicSlideBoxDelegate,
+                                             $cordovaFileTransfer,$ionicPopup,$ionicSlideBoxDelegate,
                                              $cordovaImagePicker,$cordovaDatePicker){
 
 
@@ -2061,110 +2061,110 @@ $scope.openAirportTransfer=function(){
     }
 
     //车驾管服务
-$scope.carService=function(){
-
-  var order = null;
-  var servicePersonIds = [];
-  var personIds = [];
-  $http({
-    method: "POST",
-    url: Proxy.local() + "/svr/request",
-    headers: {
-      'Authorization': "Bearer " + $rootScope.access_token
-    },
-    data: {
-      request: 'generateCarServiceOrder',
-      info: {
-        carManager: $scope.carManage
-      }
-    }
-  }).then(function (res) {
-    var json = res.data;
-    alert(json.re);
-    if (json.re == 1) {
-      order = json.data;
-      return $http({
-        method: "POST",
-        url: Proxy.local() + "/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data: {
-          request: 'getServicePersonsByUnits',
-          info: {
-            units: $rootScope.carManage.units
-          }
-        }
-      });
-    }
-  }).then(function(res) {
-    var json=res.data;
-    if(json.re==1) {
-      json.data.map(function(servicePerson,i) {
-        servicePersonIds.push(servicePerson.servicePersonId);
-        personIds.push(servicePerson.personId);
-      });
-
-      return $http({
-        method: "POST",
-        url: Proxy.local() + "/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data: {
-          request: 'updateCandidateState',
-          info: {
-            orderId: order.orderId,
-            servicePersonIds: servicePersonIds
-          }
-        }
-      });
-    }
-  }).then(function (res) {
-    var json = res.data;
-    if (json.re == 1) {
-      //TODO:append address and serviceType and serviceTime
-      var serviceName = $scope.serviceTypeMap[$scope.carManage.serviceType];
-      return $http({
-        method: "POST",
-        url: Proxy.local() + "/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data: {
-          request: 'sendCustomMessage',
-          info: {
-            order: order,
-            servicePersonIds: servicePersonIds,
-            serviceName: serviceName,
-            type: 'to-servicePerson',
-            category:'carManage'
-          }
-        }
-      });
-    } else {
-      return ({re: -1});
-    }
-  }).then(function (res) {
-    var json = res.data;
-    if (json.re == 1) {
-      $scope.videoCheck(order.orderId).then(function (json) {
-        alert('result of videocheck=\r\n' + json);
-        if (json.re == 1) {
-          alert('附件上传成功');
-        }
-        else
-        {}
-      });
-    }
-  }).catch(function (err) {
-    var str = '';
-    for (var field in err)
-      str += err[field];
-    console.error('error=\r\n' + str);
-  });
-
-}
+// $scope.carService=function(){
+//
+//   var order = null;
+//   var servicePersonIds = [];
+//   var personIds = [];
+//   $http({
+//     method: "POST",
+//     url: Proxy.local() + "/svr/request",
+//     headers: {
+//       'Authorization': "Bearer " + $rootScope.access_token
+//     },
+//     data: {
+//       request: 'generateCarServiceOrder',
+//       info: {
+//         carManager: $scope.carManage
+//       }
+//     }
+//   }).then(function (res) {
+//     var json = res.data;
+//     alert(json.re);
+//     if (json.re == 1) {
+//       order = json.data;
+//       return $http({
+//         method: "POST",
+//         url: Proxy.local() + "/svr/request",
+//         headers: {
+//           'Authorization': "Bearer " + $rootScope.access_token
+//         },
+//         data: {
+//           request: 'getServicePersonsByUnits',
+//           info: {
+//             units: $rootScope.carManage.units
+//           }
+//         }
+//       });
+//     }
+//   }).then(function(res) {
+//     var json=res.data;
+//     if(json.re==1) {
+//       json.data.map(function(servicePerson,i) {
+//         servicePersonIds.push(servicePerson.servicePersonId);
+//         personIds.push(servicePerson.personId);
+//       });
+//
+//       return $http({
+//         method: "POST",
+//         url: Proxy.local() + "/svr/request",
+//         headers: {
+//           'Authorization': "Bearer " + $rootScope.access_token
+//         },
+//         data: {
+//           request: 'updateCandidateState',
+//           info: {
+//             orderId: order.orderId,
+//             servicePersonIds: servicePersonIds
+//           }
+//         }
+//       });
+//     }
+//   }).then(function (res) {
+//     var json = res.data;
+//     if (json.re == 1) {
+//       //TODO:append address and serviceType and serviceTime
+//       var serviceName = $scope.serviceTypeMap[$scope.carManage.serviceType];
+//       return $http({
+//         method: "POST",
+//         url: Proxy.local() + "/svr/request",
+//         headers: {
+//           'Authorization': "Bearer " + $rootScope.access_token
+//         },
+//         data: {
+//           request: 'sendCustomMessage',
+//           info: {
+//             order: order,
+//             servicePersonIds: servicePersonIds,
+//             serviceName: serviceName,
+//             type: 'to-servicePerson',
+//             category:'carManage'
+//           }
+//         }
+//       });
+//     } else {
+//       return ({re: -1});
+//     }
+//   }).then(function (res) {
+//     var json = res.data;
+//     if (json.re == 1) {
+//       $scope.videoCheck(order.orderId).then(function (json) {
+//         alert('result of videocheck=\r\n' + json);
+//         if (json.re == 1) {
+//           alert('附件上传成功');
+//         }
+//         else
+//         {}
+//       });
+//     }
+//   }).catch(function (err) {
+//     var str = '';
+//     for (var field in err)
+//       str += err[field];
+//     console.error('error=\r\n' + str);
+//   });
+//
+// }
 
 
 
@@ -3839,13 +3839,49 @@ $scope.carService=function(){
       $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
     }
 
+    //维修页面跳转
     $scope.pickMaintainDaily=function(locateType,index) {
+
 
       if($scope.dailys!==undefined&&$scope.dailys!==null)
       {
         $rootScope.maintain.dailys=$scope.dailys;
       }
-      $state.go('locate_maintain_daily',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
+
+      console.log('subTabIndex='+$scope.subTabIndex);
+      var serviceType=null;
+      var maintain=$scope.maintain;
+      switch($scope.subTabIndex){
+          case 0:
+              serviceType='11';
+              var subServiceTypes=[];
+              $scope.dailys.map(function (daily, i) {
+                  if (daily.checked == true)
+                      subServiceTypes.push(daily.subServiceId);
+              });
+              maintain.serviceType=serviceType;
+              maintain.subServiceTypes=subServiceTypes;
+              maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+              break;
+          case 1:
+              serviceType='12';
+              maintain.serviceType=serviceType;
+              maintain.description=$scope.maintain.description;
+              maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+              break;
+          case 2:
+              serviceType='13';
+              maintain.serviceType=serviceType;
+              maintain.subServiceTypes=$scope.accident.type;
+              console.log('subServiceTypes='+$scope.accident.type);
+              maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+              break;
+          default:
+              break;
+      }
+      $state.go('locate_maintain_daily',
+          {locate:JSON.stringify({carInfo:$scope.carInfo,
+              locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
     };
 
     $scope.pickAirportNearby=function() {

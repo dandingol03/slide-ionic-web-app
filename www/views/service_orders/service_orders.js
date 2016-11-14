@@ -51,12 +51,16 @@ angular.module('starter')
           order.serviceName=$scope.serviceTypeMap[order.serviceType];
 
           var subServiceTypes=order.subServiceTypes;
-          var types=subServiceTypes.split(',');
-          var serviceContent='';
-          types.map(function(type,i) {
-            serviceContent+=$scope.subServiceTypeMap[type];;
-          });
-          order.subServiceContent=serviceContent;
+            var serviceContent='';
+          if(subServiceTypes!==undefined&&subServiceTypes!==null)
+          {
+              var types=subServiceTypes.split(',');
+              types.map(function(type,i) {
+                  serviceContent+=$scope.subServiceTypeMap[type];;
+              });
+              order.subServiceContent=serviceContent;
+          }
+
           var date=new Date(order.estimateTime);
           order.time=date.getFullYear().toString()+'-'
             +date.getMonth().toString()+'-'+date.getDate().toString();
