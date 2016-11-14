@@ -7,7 +7,8 @@ angular.module('starter')
 
   .controller('locateMaintainDailyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                        Proxy,$stateParams,ionicDatePicker,$ionicActionSheet) {
+                                                        Proxy,$stateParams,ionicDatePicker,$ionicActionSheet,
+                                                       $cordovaDatePicker,$q,$cordovaFileTransfer) {
 
     $scope.maintain = {
       maintenance: {}
@@ -20,36 +21,22 @@ angular.module('starter')
       $scope.locateType = $scope.locate.locateType;
       $scope.carInfo=$scope.locate.carInfo;
       $scope.locateIndex=$scope.locate.locateIndex;
+      $scope.maintain=$scope.locate.maintain;
     }
 
 
-    $scope.datepick = function(item,field){
-      var ipObj1 = {
-        callback: function (val) {  //Mandatory
+      $scope.datetimepicker=function (item,field) {
+          var options = {
+              date: new Date(),
+              mode: 'datetime',
+              locale:'zh_cn'
+          };
+          $cordovaDatePicker.show(options).then(function(date){
+              alert(date);
+              item[field]=date;
 
-          var date=new Date(val);
-          var month=parseInt(date.getMonth())+1;
-          item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
-        },
-        disabledDates: [            //Optional
-          new Date(2016, 2, 16),
-          new Date(2015, 3, 16),
-          new Date(2015, 4, 16),
-          new Date(2015, 5, 16),
-          new Date('Wednesday, August 12, 2015'),
-          new Date("08-16-2016"),
-          new Date(1439676000000)
-        ],
-        from: new Date(1949, 10, 1), //Optional
-        to: new Date(2040, 10, 30), //Optional
-        inputDate: new Date(),      //Optional
-        mondayFirst: false,          //Optional
-        disableWeekdays: [0],       //Optional
-        closeOnSelect: false,       //Optional
-        templateType: 'popup'     //Optional
-      };
-      ionicDatePicker.openDatePicker(ipObj1);
-    };
+          });
+      }
 
 
     //查询已绑定车辆,并显示车牌信息
@@ -58,8 +45,6 @@ angular.module('starter')
       var data={
         request:'fetchInsuranceCarInfoByCustomerId'
       };
-      if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
-        data.carNum=$scope.carInfo.carNum;
 
 
       $http({
@@ -96,7 +81,6 @@ angular.module('starter')
               }else{
                 var car=cars[index-1];
                 $scope.carInfo=car;
-
               }
               return true;
             },
@@ -129,15 +113,16 @@ angular.module('starter')
       $scope.tpMarkers=[];
       $scope.dragF=false;
       //map添加拖拽结束事件
+
       map.addEventListener("dragend", function(){
         //中心点渲染
-        var center = map.getCenter();
+         var center = map.getCenter();
         console.log("地图中心点变更为：" + center.lng + ", " + center.lat);
-        map.clearOverlays();
+         map.clearOverlays();
         var point=center;
         //设置地图中心点覆盖物
         var mkCenter = new BMap.Marker(point);
-        map.addOverlay(mkCenter);
+        //map.addOverlay(mkCenter);
         var label = new BMap.Label('中心', {offset: new BMap.Size(20, -10)});
         label.setStyle({
           color: '#fff',
@@ -193,7 +178,6 @@ angular.module('starter')
             $scope.labels.push(label);
           });
         }
-
       });
 
 
@@ -223,7 +207,36 @@ angular.module('starter')
           label.setStyle({
             color: '#00f'
           });
-          $scope.unit = unit;
+
+          $scope.$apply(function(){
+              $scope.unit = unit;
+              $http({
+                  method: "POST",
+                  url: Proxy.local() + "/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token,
+                  },
+                  data: {
+                      request: 'getServicePersonByUnitId',
+                      info:{
+                        unitId:unit.unitId
+                      }
+                  }
+              }).then(function(res) {
+                  var json=res.data;
+                  if(json.re==1) {
+                      var servicePerson=json.data;
+                      $scope.maintain.servicePerson=servicePerson;
+                  }
+              }).catch(function(err) {
+                  var str='';
+                  for(var field in err)
+                    str+=err[field];
+                  console.error('err=\r\n'+str);
+              })
+
+          });
+
 
           $scope.labels.map(function (item, i) {
             if (item.getContent().trim() != label.getContent().trim())
@@ -547,15 +560,393 @@ angular.module('starter')
           default:
             break;
         }
-
-
       }
+
 
       $scope.go_back = function () {
         $rootScope.dashboard.tabIndex=2;
         $rootScope.dashboard.subTabIndex=$scope.locateIndex;
         window.history.back();
       }
+
+
+      //音频检查
+      $scope.audioCheck = function (orderId) {
+            var deferred = $q.defer();
+            alert('audiochecking.....');
+            alert('resourceulr=' + $scope.maintain.description.audio);
+            if($scope.maintain.description.audio!=null&&$scope.maintain.description.audio!=undefined)
+            {
+                var server=Proxy.local()+'/svr/request?' +
+                    'request=uploadAudio&orderId='+orderId+'&fileName='+$scope.maintain.description.audio+'&audioType=serviceAudio';
+                var options = {
+                    fileKey:'file',
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                    }
+                };
+                alert('go into upload audio');
+                $cordovaFileTransfer.upload(server, $scope.maintain.description.audio, options)
+                    .then(function(res) {
+                        var json=res.response;
+                        json=JSON.parse(json);
+                        if(json.re==1){
+
+                            return   $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'createAudioAttachment',
+                                    info: {
+                                        orderId: orderId,
+                                        docType:'I6',
+                                        path:json.data
+                                    }
+                                }
+                            });
+                        }
+                    }).then(function(res) {
+                    var json=res.data;
+                    var audioAttachId=json.data;
+                    if(json.re==1){
+                        $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data: {
+                                request: 'updateServiceAudioAttachment',
+                                info: {
+                                    orderId: orderId,
+                                    audioAttachId:audioAttachId
+                                }
+                            }
+                        });
+                    }
+                }).then(function(res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        deferred.resolve({re: 1, data: ''});
+                    }
+                }).catch(function(err) {
+                    var str='';
+                    for(var field in err)
+                        str+=err[field];
+                    console.error('error=' + str);
+                })
+            }
+            else{
+                deferred.resolve({re:1});
+            }
+            return deferred.promise;
+      }
+
+      //视频检查
+      $scope.videoCheck = function (orderId) {
+            var deferred = $q.defer();
+            if($scope.maintain.description.video!=null&&$scope.maintain.description.video!=undefined)
+            {
+                var server=Proxy.local()+'/svr/request?' +
+                    'request=uploadVideo&orderId='+orderId+'&fileName='+$scope.maintain.description.video+'&videoType=serviceVideo';
+                var options = {
+                    fileKey:'file',
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                    }
+                };
+                $cordovaFileTransfer.upload(server, $scope.maintain.description.video, options).then(function(res) {
+                    var json=res.response;
+                    json=JSON.parse(json);
+                    if(json.re==1){
+                        return   $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data: {
+                                request: 'createVideoAttachment',
+                                info: {
+                                    orderId: orderId,
+                                    docType:'I7',
+                                    path:json.data
+                                }
+                            }
+                        });
+                    }else{
+                        deferred.reject({re:-1});
+                    }
+                }).then(function(res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        var videoAttachId=json.data;
+                        if(json.re==1){
+                            return  $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'updateServiceVideoAttachment',
+                                    info: {
+                                        orderId: orderId,
+                                        videoAttachId:videoAttachId
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }).then(function(res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        deferred.resolve({re: 1, data: ''});
+                    }
+                }).catch(function(err) {
+                    var str='';
+                    for(var feild in err)
+                        str+=err[field];
+                    console.error('error=\r\n' + str);
+                })
+            }
+            else{
+                deferred.resolve({re:1});
+            }
+            return deferred.promise;
+        }
+
+
+
+
+
+      $scope.applyMaintainDailyOrder=function() {
+        if ($scope.maintain.estimateTime !== undefined && $scope.maintain.estimateTime !== null) {
+
+                var orderId = null;
+
+                //已选维修厂
+                if ($scope.unit !== undefined && $scope.unit !== null) {
+
+                    var order=null;
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'getServicePersonByMaintenance',
+                            info: {
+                                maintenance: $scope.unit
+                            }
+                        }
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+                            var servicePerson = json.data;
+                            $scope.maintain.servicePersonId = servicePerson.servicePersonId;
+                            var maintain=$scope.maintain;
+                            maintain.carId=$scope.carInfo.carId;
+                            return $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'generateCarServiceOrder',
+                                    info: {
+                                        maintain:maintain
+                                    }
+                                }
+                            });
+                        } else {
+                            return {re: -1};
+                        }
+                    }).then(function(res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+                            orderId=json.data.orderId;
+                            var serviceName = $scope.maintain.serviceName;
+                            order=json.data;
+                            var servicePersonId = [];
+                            servicePersonId.push(order.servicePersonId);
+                            return $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'sendCustomMessage',
+                                    info: {
+                                        order: order,
+                                        serviceItems: $scope.maintain.subServiceTypes,
+                                        servicePersonIds: servicePersonId,
+                                        serviceName: serviceName,
+                                        type: 'to-servicePerson'
+                                    }
+                                }
+                            });
+                        } else {
+                            return ({re: -1});
+                        }
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {}
+                        else if(json.re==2) {
+                            console.error(json.data);
+                        }else{}
+                        alert('service order has been generated');
+                        //检查是否需要上传附件信息
+                        $scope.audioCheck(order.orderId).then(function(json) {
+                            alert('result of audiocheck=\r\n' + json);
+                            if (json.re == 1) {
+                                console.log('音频附件上传成功')
+                            }
+                            else
+                            {}
+                            return $scope.videoCheck(order.orderId);
+                        }).then(function(json) {
+                            alert('result of videocheck=\r\n' + json);
+                            if (json.re == 1) {
+                                console.log('视频附件上传成功')
+                            }
+                            else
+                            {}
+                        });
+
+                    }).catch(function (err) {
+                        var str = '';
+                        for (var field in err)
+                            str += err[field];
+
+                    });
+                }
+                else//未选定服务人员
+                {
+                    var order = null;
+                    var servicePersonIds = [];
+                    var personIds = [];
+                    var maintain=$scope.maintain;
+                    maintain.carId=$scope.carInfo.carId;
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'generateCarServiceOrder',
+                            info: {
+                                maintain: maintain
+                            }
+                        }
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+                            order = json.data;
+                            return $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'getServicePersonsByUnits',
+                                    info: {
+                                        units: $rootScope.maintain.units
+                                    }
+                                }
+                            });
+                        }
+                    }).then(function(res) {
+                        var json=res.data;
+                        if(json.re==1) {
+                            json.data.map(function(servicePerson,i) {
+                                servicePersonIds.push(servicePerson.servicePersonId);
+                                personIds.push(servicePerson.personId);
+                            });
+
+                            return $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'updateCandidateState',
+                                    info: {
+                                        orderId: order.orderId,
+                                        servicePersonIds: servicePersonIds,
+                                        candidate:1
+                                    }
+                                }
+                            });
+                        }
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+                            //TODO:append address and serviceType and serviceTime
+                            var serviceName = $scope.serviceTypeMap[$scope.maintain.serviceType];
+                            return $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'sendCustomMessage',
+                                    info: {
+                                        order: order,
+                                        serviceItems: $scope.maintain.subServiceTypes,
+                                        servicePersonIds: servicePersonIds,
+                                        serviceName: serviceName,
+                                        type: 'to-servicePerson'
+                                    }
+                                }
+                            });
+                        } else {
+                            return ({re: -1});
+                        }
+                    }).then(function (res) {
+                        var json = res.data;
+                        console.log('**************go into media check*****************');
+                        $scope.videoCheck(order.orderId).then(function (json) {
+                            alert('result of videocheck=\r\n' + json);
+                            if (json.re == 1) {
+                                alert('附件上传成功');
+                            }
+                            else
+                            {}
+                        });
+                        $scope.audioCheck(order.orderId).then(function(json) {
+                            alert('result of audioCheck=\r\n' + json);
+                            if(json.re==1) {
+                                alert('音频附件上传成功');
+                            }else{}
+                        });
+
+                    }).catch(function (err) {
+                        var str = '';
+                        for (var field in err)
+                            str += err[field];
+                        alert('error=\r\n' + str);
+                    });
+
+                }
+            }else{
+            var alertPopup = $ionicPopup.alert({
+                title: '警告',
+                template: '请填写预约时间'
+            });
+            }
+        }
+
 
       //var geolocation = new BMap.Geolocation();
       //geolocation.getCurrentPosition(function(r){
