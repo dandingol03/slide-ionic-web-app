@@ -5,7 +5,7 @@ angular.module('starter')
 
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover,$cordovaDatePicker){
+        ,$WebSocket,$ionicPopover){
 
 
 
@@ -50,20 +50,6 @@ angular.module('starter')
        * websocket测试
        */
       //$WebSocket.connect();
-
-
-
-
-      $scope.datetimepicker=function () {
-          var options = {
-              date: new Date(),
-              mode: 'datetime',
-          };
-          $cordovaDatePicker.show(options).then(function(date){
-              alert(date);
-          });
-
-      }
 
 
       var options = {
@@ -150,7 +136,6 @@ angular.module('starter')
             try {
 
                 window.plugins.jPushPlugin.getRegistrationID(function(data) {
-                    alert('fluid request callback');
                     alert('registrationId=\r\n'+data);
                     $rootScope.registrationId=data;
                     $scope.login();
@@ -441,31 +426,5 @@ angular.module('starter')
       $scope.goFetchPassword=function(){
           $state.go('passwordForget');
       }
-
-        $scope.select={
-        };
-        $scope.selectChanged=function () {
-            var item=$scope.select.item;
-            console.log('...');
-        }
-
-        $scope.optData = [{
-            id: 10001,
-            MainCategory: '男',
-            ProductName: '水洗T恤',
-            ProductColor: '白'
-        },{
-            id: 10002,
-            MainCategory: '女',
-            ProductName: '圓領短袖',
-            ProductColor: '黃'
-        },{
-            id: 10003,
-            MainCategory: '女',
-            ProductName: '圓領短袖',
-            ProductColor: '黃'
-        }];
-
-
-
+        
     });

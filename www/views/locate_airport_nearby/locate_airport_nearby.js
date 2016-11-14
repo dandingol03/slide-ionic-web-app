@@ -7,35 +7,24 @@ angular.module('starter')
 
   .controller('locateAirportNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                        Proxy,$stateParams,$ionicLoading,ionicDatePicker,
+                                                        Proxy,$stateParams,$ionicLoading,$cordovaDatePicker,
                                                        $ionicPopup,$ionicActionSheet) {
-      $scope.datepick = function(item,field){
-          var ipObj1 = {
-              callback: function (val) {  //Mandatory
 
-                  var date=new Date(val);
-                  var month=parseInt(date.getMonth())+1;
-                  item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
-              },
-              disabledDates: [            //Optional
-                  new Date(2016, 2, 16),
-                  new Date(2015, 3, 16),
-                  new Date(2015, 4, 16),
-                  new Date(2015, 5, 16),
-                  new Date('Wednesday, August 12, 2015'),
-                  new Date("08-16-2016"),
-                  new Date(1439676000000)
-              ],
-              from: new Date(1949, 10, 1), //Optional
-              to: new Date(2040, 10, 30), //Optional
-              inputDate: new Date(),      //Optional
-              mondayFirst: false,          //Optional
-              disableWeekdays: [0],       //Optional
-              closeOnSelect: false,       //Optional
-              templateType: 'popup'     //Optional
+      $scope.datetimepicker=function (item,field) {
+          var options = {
+              date: new Date(),
+              mode: 'datetime',
+              locale:'zh_cn'
           };
-          ionicDatePicker.openDatePicker(ipObj1);
-      };
+          $cordovaDatePicker.show(options).then(function(date){
+              alert(date);
+              item[field]=date;
+
+          });
+      }
+
+
+
 
       $scope.go_to=function (state) {
           $state.go(state);
@@ -629,6 +618,8 @@ angular.module('starter')
       $rootScope.dashboard.service='接送机'
       window.history.back();
     }
+
+
 
   })
 

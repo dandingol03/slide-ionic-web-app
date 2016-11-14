@@ -116,7 +116,7 @@
 
         <span style="display: inline-block;width: 49%;font-size: 0.85em;"
               ng-if="carManage.estimateTime!=undefined&&carManage.estimateTime!==null">
-          {{carManage.estimateTime}}
+           {{carManage.estimateTime|date:'yyyy-MM-dd HH:mm'}}
         </span>
 
         <span style="display: inline-block;width: 16%;">
