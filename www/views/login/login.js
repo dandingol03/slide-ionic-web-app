@@ -5,7 +5,7 @@ angular.module('starter')
 
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover,$cordovaDatePicker){
+        ,$WebSocket,$ionicPopover){
 
 
 
@@ -50,20 +50,6 @@ angular.module('starter')
        * websocket测试
        */
       //$WebSocket.connect();
-
-
-
-
-      $scope.datetimepicker=function () {
-          var options = {
-              date: new Date(),
-              mode: 'datetime',
-          };
-          $cordovaDatePicker.show(options).then(function(date){
-              alert(date);
-          });
-
-      }
 
 
       var options = {
@@ -150,7 +136,6 @@ angular.module('starter')
             try {
 
                 window.plugins.jPushPlugin.getRegistrationID(function(data) {
-                    alert('fluid request callback');
                     alert('registrationId=\r\n'+data);
                     $rootScope.registrationId=data;
                     $scope.login();
