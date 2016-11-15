@@ -4091,6 +4091,7 @@ $scope.openAirportTransfer=function(){
           $scope.media.media.getAudioFullPath(function(path){
             if(path!==undefined&&path!==null)
             {
+                alert('path=  '+$scope.maintain.description.audio);
               $scope.maintain.description.audio=path;
               console.log('path='+$scope.maintain.description.audio);
             }
