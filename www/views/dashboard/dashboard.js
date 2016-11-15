@@ -4061,7 +4061,7 @@ $scope.openAirportTransfer=function(){
             alert('data=\r\n'+data);
           })
         } else if(ionic.Platform.isAndroid()) {
-          var src = "audio.mp3";
+          var src = "danding.mp3";
           var media = $cordovaMedia.newMedia(src);
           media.startRecord();
           $scope.media=media;
@@ -4091,10 +4091,10 @@ $scope.openAirportTransfer=function(){
           $scope.media.media.getAudioFullPath(function(path){
             if(path!==undefined&&path!==null)
             {
-              $scope.maintain.description.audio=path;
               console.log('path='+$scope.maintain.description.audio);
             }
           });
+          $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.mp3';
         }
 
       }catch(e)
