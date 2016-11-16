@@ -16,7 +16,7 @@ angular.module('starter')
         }
 
         $scope.city_confirm=function () {
-
+            $scope.city_confirmed=$scope.city;
         }
 
         $scope.plainStyle={width: '30%',display: 'inline-block',
@@ -747,24 +747,16 @@ angular.module('starter')
 
 
         $scope.showDemoPicture = function() {
-            if ($scope.isShowPicture == true) {
-                $scope.openDemoModal();
-            };
+            $scope.openDemoModal();
         };
         $scope.showDemoPicture1 = function() {
-            if ($scope.isShowPicture1 == true) {
-                $scope.openDemoModal1();
-            };
+            $scope.openDemoModal1();
         };
         $scope.showDemoPicture2 = function() {
-            if ($scope.isShowPicture2 == true) {
                 $scope.openDemoModal2();
-            };
         };
         $scope.showDemoPicture3 = function() {
-            if ($scope.isShowPicture3 == true) {
                 $scope.openDemoModal3();
-            };
         };
         $scope.isShowPicture = false;
         $scope.isShowPicture1 = false;
