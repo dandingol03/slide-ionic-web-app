@@ -17,6 +17,7 @@ angular.module('starter')
 
         $scope.city_confirm=function () {
             $scope.city_confirmed=$scope.city;
+            $scope.close_append_carNumPrefixModal();
         }
 
         $scope.plainStyle={width: '30%',display: 'inline-block',
@@ -648,6 +649,14 @@ angular.module('starter')
             $scope.show_demo_modal3.hide();
         };
         /*** show demo modal3 ***/
+
+
+        $scope.$on('$destroy', function() {
+            $scope.show_demo_modal.remove();
+            $scope.show_demo_modal1.remove();
+            $scope.show_demo_modal2.remove();
+            $scope.show_demo_modal3.remove();
+        });
 
 
         /*** bind upload_licenseCard_modal***/
