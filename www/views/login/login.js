@@ -11,19 +11,24 @@ angular.module('starter')
 
       $scope.formUser = {};
 
+
       $scope.user={};
-      if(localStorage.pwdPersisted==true)
+
+
+      if(localStorage.pwdPersisted=='true')
           $scope.pwdPersisted=true;
       else
         $scope.pwdPersisted=false;
 
       $scope.togglePwdPersistent = function(){
           if($scope.pwdPersisted==true){
-              localStorage.pwdPersisted=false;
+              localStorage.pwdPersisted='false';
               $scope.pwdPersisted=false;
+              alert('make pwdPersisted false');
           }else{
-              localStorage.pwdPersisted=true;
+              localStorage.pwdPersisted='true';
               $scope.pwdPersisted=true;
+              alert('make pwdPersisted true');
           }
       }
 
