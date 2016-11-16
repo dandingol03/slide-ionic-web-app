@@ -24,11 +24,9 @@ angular.module('starter')
           if($scope.pwdPersisted==true){
               localStorage.pwdPersisted='false';
               $scope.pwdPersisted=false;
-              alert('make pwdPersisted false');
           }else{
               localStorage.pwdPersisted='true';
               $scope.pwdPersisted=true;
-              alert('make pwdPersisted true');
           }
       }
 
@@ -39,7 +37,6 @@ angular.module('starter')
           if(localStorage.userName!=undefined&&localStorage.userName!=null){
               var userName=localStorage.userName;
               $scope.user.username = userName;
-              alert('');
           }
 
           if(localStorage.password!=undefined&&localStorage.password!=null){
