@@ -12,6 +12,7 @@ angular.module('starter')
       $scope.formUser = {};
 
       $scope.user={};
+
       if(localStorage.pwdPersisted==true)
           $scope.pwdPersisted=true;
       else
@@ -34,6 +35,7 @@ angular.module('starter')
           if(localStorage.userName!=undefined&&localStorage.userName!=null){
               var userName=localStorage.userName;
               $scope.user.username = userName;
+              alert('');
           }
 
           if(localStorage.password!=undefined&&localStorage.password!=null){
@@ -172,15 +174,10 @@ angular.module('starter')
 
               localStorage.userName = $scope.user.username;
 
+              alert('localStorage.userName='+localStorage.userName);
+
               localStorage.password = $scope.user.password;
 
-              //send login message to server
-              //$WebSocket.send({
-              //  action:'login',
-              //  msgid:$WebSocket.getMsgId(),
-              //  timems:new Date(),
-              //  token:access_token
-              //  });
               if (access_token !== undefined && access_token !== null) {
                   $rootScope.access_token = access_token;
                   alert('registrationId=\r\n' + $rootScope.registrationId);

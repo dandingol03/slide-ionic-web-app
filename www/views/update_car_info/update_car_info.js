@@ -364,6 +364,8 @@ angular.module('starter')
                         &&$scope.carInfo.licenseCard3_img!==undefined&&$scope.carInfo.licenseCard3_img!==null)
                     {
 
+                        var carInfo = null;
+
                         var licenseAttachId1 = null;
                         var licenseAttachId2 = null;
                         var licenseAttachId3 = null;
@@ -391,7 +393,7 @@ angular.module('starter')
                             var json=res.data;
                             if(json.re==1) {
 
-                                var carInfo = json.data;
+                                carInfo = json.data;
                                 carId = carInfo.carId;
                                 //TODO:update licenseCard
                                 var suffix = '';
@@ -523,7 +525,22 @@ angular.module('starter')
                             if(json.re==1){
                                 $scope.carInfo.licenseAttachId3=json.data;
                                 alert('licenseAttachId3='+$scope.carInfo.licenseAttachId3)
-                                $state.go('tabs.dashboard');
+
+                                var popup = $ionicPopup.alert({
+                                    title: '信息',
+                                    template: '车辆信息保存成功'
+                                });
+                                popup.then(function(res) {
+                                    $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                })
+                                $timeout(function(){
+                                    if(popup.$$state==0){
+                                        popup.close();
+                                        $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                    }
+                                },300);
+
+
                             }
 
                         }).catch(function(err) {
@@ -874,18 +891,26 @@ angular.module('starter')
             }
         }
 
+        $scope.selectTime=true;
         $scope.datetimepicker=function (item,field) {
+
             var options = {
                 date: new Date(),
                 mode: 'datetime',
                 locale:'zh_cn'
             };
 
-            $cordovaDatePicker.show(options).then(function(date){
-                alert(date);
-                item[field]=date;
+            if($scope.selectTime==true){
+                $scope.selectTime=false;
+                $cordovaDatePicker.show(options).then(function(date){
+                    alert(date);
+                    item[field]=date;
+                    $scope.selectTime=true;
 
-            });
+                }).catch(function(err) {
+                    $scope.selectTime=true;
+                });
+            }
         }
 
 
