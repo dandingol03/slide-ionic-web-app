@@ -24,19 +24,27 @@ angular.module('starter')
       $scope.maintain=$scope.locate.maintain;
     }
 
+    $scope.selectTime=true;
+    $scope.datetimepicker=function (item,field) {
 
-      $scope.datetimepicker=function (item,field) {
-          var options = {
-              date: new Date(),
-              mode: 'datetime',
-              locale:'zh_cn'
-          };
-          $cordovaDatePicker.show(options).then(function(date){
-              alert(date);
-              item[field]=date;
+      var options = {
+        date: new Date(),
+        mode: 'datetime',
+        locale:'zh_cn'
+      };
 
-          });
+      if($scope.selectTime==true){
+        $scope.selectTime=false;
+        $cordovaDatePicker.show(options).then(function(date){
+          alert(date);
+          item[field]=date;
+          $scope.selectTime=true;
+
+        }).catch(function(err) {
+          $scope.selectTime=true;
+        });
       }
+    }
 
 
     //查询已绑定车辆,并显示车牌信息

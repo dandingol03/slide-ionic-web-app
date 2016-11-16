@@ -65,32 +65,83 @@
               </span>
           </div>
 
-          <div class="item"
-               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;"
-               ng-click="datetimepicker(carInfo,'issueDate')"
+            <div class="item"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;"
+                 ng-click="datetimepicker(carInfo,'issueDate')"
             >
 
               <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
                   发证日期:
               </span>
 
-              <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
-                    ng-if="carInfo.issueDate==null||carInfo.issueDate==undefined||carInfo.issueDate==''">
+                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
+                      ng-if="carInfo.issueDate==null||carInfo.issueDate==undefined||carInfo.issueDate==''">
                   点击选择发证日期
               </span>
 
-              <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
-                    ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
+                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
+                      ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
                        {{carInfo.issueDate|date:'yyyy-MM-dd HH:mm'}}
               </span>
 
 
-            <span
-              style="position: absolute;right: 5%;top:30%;font-size: 1.5em;"
-              >
+                <span
+                        style="position: absolute;right: 5%;top:30%;font-size: 1.5em;"
+                >
                 <i class="ion-calendar"></i>
             </span>
-          </div>
+            </div>
+
+
+            <!-- 是否过户 -->
+            <div class="item"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+             padding:10px;background-color:transparent;overflow:initial"
+                 ng-click="Toggle('boolean',carInfo,'isTransfer')"
+            >
+
+                <span style="display: inline-block;width: 35%;text-align: left">
+                  是否过户:
+               </span>
+
+                <span style="width: 45%;display: inline-block;text-align: left;font-size: 0.8em;color:#aaa;">
+                  {{carInfo.isTransfer==true?'是':'否'}}
+                </span>
+
+
+                <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;">
+                   <i ng-if="carInfo.isTransfer!=true" class="ion-ios-checkmark-outline"
+               style="font-size: 1.6em;"></i>
+                   <i ng-if="carInfo.isTransfer==true" class="ion-ios-checkmark"
+               style="font-size: 1.6em;"></i>
+                </span>
+            </div>
+
+
+            <div class="item"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;"
+                 ng-click="datetimepicker(carInfo,'firstRegisterDate')"
+                 ng-if="carInfo.isTransfer==true"
+            >
+
+              <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
+                  过户日期:
+              </span>
+
+                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
+                      ng-if="carInfo.firstRegisterDate==null||carInfo.firstRegisterDate==undefined||carInfo.firstRegisterDate==''">
+                  点击选择过户日期
+                </span>
+
+                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
+                      ng-if="carInfo.firstRegisterDate!==undefined&&carInfo.firstRegisterDate!==null">
+                       {{carInfo.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}
+              </span>
+
+                <span style="position: absolute;right: 5%;top:30%;font-size: 1.5em;">
+                   <i class="ion-calendar"></i>
+                </span>
+            </div>
 
 
           <div

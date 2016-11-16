@@ -10,17 +10,26 @@ angular.module('starter')
                                                         Proxy,$stateParams,$ionicLoading,$cordovaDatePicker,
                                                        $ionicPopup,$ionicActionSheet) {
 
+      $scope.selectTime=true;
       $scope.datetimepicker=function (item,field) {
+
           var options = {
               date: new Date(),
               mode: 'datetime',
               locale:'zh_cn'
           };
-          $cordovaDatePicker.show(options).then(function(date){
-              alert(date);
-              item[field]=date;
 
-          });
+          if($scope.selectTime==true){
+              $scope.selectTime=false;
+              $cordovaDatePicker.show(options).then(function(date){
+                  alert(date);
+                  item[field]=date;
+                  $scope.selectTime=true;
+
+              }).catch(function(err) {
+                  $scope.selectTime=true;
+              });
+          }
       }
 
 
