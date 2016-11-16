@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../lib/jquery/dist/jquery.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("button").click(function(){
+                $("#slider").animate({left:'-100%'});
+            });
+        });
+    </script>
+</head>
+<body style="width: 100%;height: 100%;margin:0px;">
+<button>开始动画</button>
+<p>默认情况下，所有 HTML 元素的位置都是静态的，并且无法移动。如需对位置进行操作，记得首先把元素的 CSS position 属性设置为 relative、fixed 或 absolute。</p>
+<div id="slider" style="width: 100%;height: 100%;position: relative;">
+    <div id="order_list" style="background:#98bf21;height:100px;width:100%;">
+        <ul style="list-style: none;color:#fff;padding-left:5px;">
+            <li>
+                order1
+            </li>
+            <li>
+                order2
+            </li>
+            <li>
+                order3
+            </li>
+            <li>
+                order4
+            </li>
+        </ul>
+    </div>
+    <div id="order_detail" style="display: inline-block;width: 100%;position: absolute;left:100%;">
+        <h3>order1</h3>
+        <span>generated in 2016-07-24</span>
+        <span>cost $1000</span>
+    </div>
+</div>
+
+</body>
+</html>

@@ -5,7 +5,8 @@ angular.module('starter')
 
   .controller('carInsuranceController',function($scope,$state,$http, $location,
                                                 $rootScope,$ionicActionSheet,
-                                                $ionicModal,Proxy,$stateParams,$ionicPopup){
+                                                $ionicModal,Proxy,$stateParams,$ionicPopup,
+                                                $ionicScrollDelegate){
     if($stateParams.carInfo!==undefined&&$stateParams.carInfo!==null)
     {
       var carInfo=$stateParams.carInfo;
@@ -198,12 +199,11 @@ angular.module('starter')
           {
             if(products[product.productName].productIds!==undefined&&products[product.productName].productIds!==null)
             {}else{
+                //新创建productIds和insuranceTypes,默认选中第一个
               products[product.productName].productIds=[];
               products[product.productName].insuranceTypes=[];
               products[product.productName].productIds.push(products[product.productName].productId);
               products[product.productName].insuranceTypes.push(products[product.productName].insuranceType);
-              products[product.productName].productId=null;
-              products[product.productName].insuranceType=null;
             }
             products[product.productName].productIds.push(product.productId);
             products[product.productName].insuranceTypes.push(product.insuranceType);
@@ -505,7 +505,16 @@ angular.module('starter')
 
     }
 
-
+      
+    //向上滚动
+    $scope.scrollUpStep=function () {
+        $ionicScrollDelegate.$getByHandle('products_scroll').scrollTop(true);
+    }
+    //向下滚动
+    $scope.scrollDownStep=function () {
+        $ionicScrollDelegate.$getByHandle('products_scroll').scrollBottom(true);
+    }  
+    
     $scope.previou_page=function(){
       var curIndex=($scope.companyIndex-1)*$scope.page_size;
       if(curIndex>=0) {
