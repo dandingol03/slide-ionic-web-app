@@ -9,6 +9,22 @@ angular.module('starter')
                                                    $timeout,$ionicPopup,$cordovaDatePicker){
 
 
+        $scope.city=null;
+
+        $scope.city_select=function (city) {
+            $scope.city=city;
+        }
+
+        $scope.city_confirm=function () {
+
+        }
+
+        $scope.plainStyle={width: '30%',display: 'inline-block',
+            'text-align': 'center',background: '#fff',padding: '10px','border-radius': '5px'};
+        $scope.selectedStyle={width: '30%',display: 'inline-block',color:'#fff',
+            'text-align': 'center',background: 'rgba(0, 235, 255, 0.74)',padding: '10px','border-radius': '5px','font-size':'1.2em','font-weight':'bolder'};
+
+
         $scope.licenseIndexChange=function(i) {
             $scope.licenseIndex=i;
             $ionicSlideBoxDelegate.$getByHandle('carInfo-slide').slide(i);
@@ -633,6 +649,7 @@ angular.module('starter')
         };
         /*** show demo modal3 ***/
 
+
         /*** bind upload_licenseCard_modal***/
         $ionicModal.fromTemplateUrl('views/modal/upload_licenseCard_modal.html',{
             scope:  $scope,
@@ -703,6 +720,29 @@ angular.module('starter')
         };
         /*** ShowLicenseCard3 ***/
 
+
+
+        /*** bind append_carNumPrefix_modal***/
+        $ionicModal.fromTemplateUrl('views/modal/append_carNumPrefix_modal.html',{
+            scope:  $scope,
+            animation: 'animated '+' bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.append_carNumPrefix_modal = modal;
+        });
+
+        $scope.open_append_carNumPrefixModal= function(){
+            $scope.append_carNumPrefix_modal.show();
+        };
+
+        $scope.close_append_carNumPrefixModal= function() {
+            $scope.append_carNumPrefix_modal.hide();
+        };
+        /*** bind append_carNumPrefix_modal ***/
+
+        $scope.selectCarNumPrefixByCity=function () {
+            $scope.open_append_carNumPrefixModal();
+        }
 
 
 

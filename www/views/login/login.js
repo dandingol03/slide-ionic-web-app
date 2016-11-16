@@ -175,13 +175,12 @@ angular.module('starter')
 
               localStorage.userName = $scope.user.username;
 
-              alert('localStorage.userName='+localStorage.userName);
 
               localStorage.password = $scope.user.password;
 
               if (access_token !== undefined && access_token !== null) {
                   $rootScope.access_token = access_token;
-                  alert('registrationId=\r\n' + $rootScope.registrationId);
+                  console.log('registrationId=\r\n' + $rootScope.registrationId);
                   //手机环境
                   if (window.cordova !== undefined && window.cordova !== null) {
                       $http({

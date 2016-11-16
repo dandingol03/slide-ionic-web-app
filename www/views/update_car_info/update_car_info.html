@@ -8,11 +8,6 @@
         <i class="ion-chevron-left"></i>
       </button>
     </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-        <i class="ion-ios-search-strong"></i>
-      </button>
-    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
@@ -22,27 +17,29 @@
 
         <div class="list list-inset padding" style="margin-bottom:40px;background-color: transparent;">
           <div class="item"
-               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
-
-            <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
-              车牌:
-            </span>
-            <span style="width: 65%;display: inline-block;text-align: left;">
-              <input type="text" placeholder="请输入您的车牌"
-                     style="display:inline-block;background-color: transparent;"
-                     ng-value="carInfo.carNum"
-                     ng-model="carInfo.carNum"
-                     ng-focus="focusInCarNum()"
-                     ng-blur="blurCarNum()"
-                />
-            </span>
-            <span
-              class="camera"
-              style="position: absolute;right:5%;top:30%;font-size: 1.5em;"
-              ng-click="selectCarInfoByCarNum()"
-              >
-            <i class="ion-chevron-down"></i>
-          </span>
+               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+               padding:10px;background-color:transparent;">
+              <span class="input-label" style="display: inline-block;width: 15%;text-align: left">
+                  车牌:
+              </span>
+              <span style="width: 20%;display: inline-block;text-align: left;vertical-align: middle">
+                  <button class="button button-calm button-small" style="width: 80%;"
+                        ng-click="selectCarNumPrefixByCity()">
+                      选择城市
+                  </button>
+              </span>
+              <span style="width: 65%;display: inline-block;text-align: left;">
+                  <input type="text" placeholder="请输入您的车牌"
+                         style="display:inline-block;background-color: transparent;"
+                         ng-value="carInfo.carNum"
+                         ng-model="carInfo.carNum"
+                    />
+              </span>
+              <span class="camera"
+                  style="position: absolute;right:5%;top:30%;font-size: 1.5em;"
+                  ng-click="selectCarInfoByCarNum()">
+                <i class="ion-chevron-down"></i>
+              </span>
           </div>
 
           <!-- 车主姓名 -->
