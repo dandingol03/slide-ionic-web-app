@@ -298,7 +298,10 @@ angular.module('starter')
                             data:
                                 {
                                     request:'getCarInfoByCarNum',
-                                    carNum:carNum
+                                    info:{
+                                        carNum:carNum,
+                                        ownerName:$scope.carInfo.ownerName
+                                    }
                                 }
                         }).then(function(res) {
                             var json=res.data;
@@ -308,13 +311,7 @@ angular.module('starter')
                                     title: '警告',
                                     template: '你提交的车牌号重复,请重新填入后提交'
                                 });
-                            }else if(json.re==2)
-                            {
-                                $ionicPopup.alert({
-                                    title: '警告',
-                                    template: '你所填的车牌号未绑定至您的名下，请重新填入后提交'
-                                });
-                            } else if(json.re==-1) {
+                            }else if(json.re==-1) {
 
 
                                 $http({
@@ -354,7 +351,7 @@ angular.module('starter')
                                         str+=err[field];
                                     alert('error=================\r\n' + str);
                                 })
-                            }
+                            }else{}
                         });
 
 
@@ -870,6 +867,23 @@ angular.module('starter')
                 }
             });
         }
+
+        $scope.carInfo['ownerName_error']==true;
+
+        $scope.validate=function(item,field,pattern) {
+            if(pattern!==undefined&&pattern!==null)
+            {
+                var reg=eval(pattern);
+                var re=reg.exec(item[field]);
+                if(re!==undefined&&re!==null)
+                {
+                    item[field+'_error']=false;
+                }
+                else{
+                    item[field+'_error']=true;
+                }
+            }
+        };
 
 
         $scope.uploadLicenseCardPhotoConfirm=function(){

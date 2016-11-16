@@ -3,21 +3,11 @@
 
   <ion-nav-bar class="bar-stable" align-title="center" >
 
-
     <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
+      <button class="button button-icon button-clear bar_arr"
+              style="font-size: 1.4em;"
+              ng-click="go_back()">
         <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-title>
-
-    </ion-nav-title>
-
-
-    <ion-nav-buttons side="right">
-
-      <button class="button button-icon button-clear" >
-        <i class="ion-plus"></i>
       </button>
     </ion-nav-buttons>
 
@@ -25,6 +15,8 @@
 
 
   <ion-content scroll="false">
+
+
 
 
     <div class="list" style="margin-bottom: 0px;">
@@ -42,10 +34,22 @@
       </ul>
     </div>
 
-    <div style="height: 80%;">
-      <ion-scroll style="height: 92%;">
-        <!-- 基础套餐 -->
+    <div style="height: 75%;">
+      <!--向上滑动箭头 -->
+      <div class="row"
+           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;"
+           ng-if="tabIndex!=0"
+      >
+        <div class="item" style="border:0px;width: 100%;text-align: center;padding: 4px;"
+             ng-click="scrollUpStep()">
+              <span style="font-size: 2em;color:#00c9ff">
+                <i class="ion-chevron-up"></i>
+              </span>
+        </div>
+      </div>
+      <ion-scroll style="height: 92%;" delegate-handle="products_scroll">
         <div>
+
           <div class="row"
                ng-repeat="(key, product)  in tabs[tabIndex].products"
                style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;">
@@ -103,17 +107,31 @@
 
             </div>
           </div>
+
+        </div>
+      </ion-scroll>
+      <!-- 向下滑动箭头 -->
+      <div class="row"
+           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;"
+           ng-if="tabIndex!=0"
+      >
+        <div class="item" style="border:0px;width: 100%;text-align: center;padding: 4px;"
+             ng-click="scrollDownStep()">
+          <span style="font-size: 2em;color:#00c9ff">
+            <i class="ion-chevron-down"></i>
+          </span>
         </div>
       </div>
 
-      <div style="height: 15%;position: relative"
-           ng-click="openCompanyModal();"
-        >
-        <button style="position: absolute;bottom:30%;" class="button button-block button-positive">
-          确认套餐选择
-        </button>
-      </div>
     </div>
+
+    <div style="height: 25%;position: relative"
+           ng-click="openCompanyModal();">
+      <button style="position: absolute;bottom:30%;" class="button button-block button-positive">
+        确认套餐选择
+      </button>
+    </div>
+
 
 
   </ion-content>
