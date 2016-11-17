@@ -4,74 +4,66 @@
 
         <ion-content scroll="false" >
 
-            <div style="height:10%;width:100%;background-color:rgba(88, 73, 58, 0.95);">
+            <div style="height:15%;width:100%;background-color:rgba(88, 73, 58, 0.95);position: relative">
 
-            </div>
+                <div style="position: absolute;left:5%;top:20%;">
+                <span style="font-size: 2em;color:#fff;">
+                    <i class="ion-arrow-left-c"></i>
+                </span>
+                </div>
 
-            <div style="padding: 3%;">
-                <ion-scroll style="height: 45%;">
-                    <div class="list list-inset padding"
-                         style="margin-bottom: 10%;
-                    margin-left: 0;
-                    margin-right: 0;
-                    padding: 0;">
-                        <div class="item"  ng-repeat="car in relativeCars">
-                            <div ng-click="Mutex(car,'checked',relativeCars)">
+                <div style="position: absolute;left:20%;width: 60%;text-align: center;height: 100%;padding-top: 8%;">
+                <span style="color:#fff;font-size: 1.6em;">
+                    车辆管理
+                </span>
+                </div>
 
-                                <div  display="inline-block"
-                                      style="width:25%;float:left;margin-right:5%;">
-                                    <i ng-if="car.checked!=true" class="ion-ios-information-outline" style="font-size:200%"></i>
-                                    <i ng-if="car.checked==true" class="ion-ios-information" style="font-size:200%"></i>
 
-                                </div>
-
-                            </div>
-
-                            <div style="display:inline-block;width:65%;float:left;margin-right:5%;">
-                                <div>
-                                    <span>{{car.carNum}}</span>
-                                </div>
-                                <div>
-                                    <span>{{car.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </ion-scroll>
-            </div>
-
-            <div style="heigh:15%; margin-bottom:40px;">
-                <div style="margin-left: 75%;">
+                <div ng-click="openBindCarModal()"
+                     style="display: inline-block;width:40%;text-align: right;position: absolute;bottom:10%;
+                 margin-top: 7%;right:10%;">
                     <button class="button button-small button-dark"
-                            style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;"
-                            ng-click="changeBindCarFlag()">
+                            style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;padding-left:10%;padding-right:10%;">
                         绑定新车
                     </button>
                 </div>
-
-                <div ng-if="bindCarFlag==true">
-                    <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-             padding:10px;background-color:transparent;overflow:initial">
-                      <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
-                          车牌:
-                      </span>
-                        <span style="width: 55%;display: inline-block;text-align: left;">
-                       <input type="text" style="display:inline-block;background-color: transparent;" ng-value="carInfo.carNum" ng-model="carInfo.carNum"/>
-                        </span>
-
-                      <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
-                            ng-click="goto('car_manage')">
-                          <button class="button button-small button-dark"
-                                  style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;">
-                            绑定
-                          </button>
-                      </span>
-
-                    </div>
-                </div>
-
             </div>
 
-    </ion-content>
 
-</ion-view>
+            <ion-scroll style="height: 80%;">
+                <div class="list list-inset padding"
+                     style="margin-bottom: 10%;margin-left: 0;margin-right: 0;padding: 0;">
+                    <div class="item"
+                         style="position:relative"
+                         ng-repeat="car in relativeCars"
+                         ng-click="Mutex(car,'checked',relativeCars)">
+
+                        <div style="display:inline-block;width:15%;float:left;margin-right:5%;">
+                            <i ng-if="car.checked!=true" class="ion-ios-information-outline" style="font-size:200%"></i>
+                            <i ng-if="car.checked==true" class="ion-ios-information" style="font-size:200%"></i>
+                        </div>
+
+                        <div style="display:inline-block;width:55%;float:left;margin-right:5%;">
+                            <div>
+                                <span>{{car.carNum}}</span>
+                            </div>
+                            <div>
+                                <span>{{car.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}</span>
+                            </div>
+                        </div>
+
+                        <div style="position:absolute;right:10%;float:left;margin-right:5%;">
+                            <span ng-if="car.idle==true">
+                                可选
+                            </span>
+                            <span ng-if="car.idle!=true" >
+                                不可选
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </ion-scroll>
+
+        </ion-content>
+
+    </ion-view>
