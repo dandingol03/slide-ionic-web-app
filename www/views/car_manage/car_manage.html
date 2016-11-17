@@ -1,33 +1,23 @@
-<ion-view view-title="车辆管理">
-
-    <ion-nav-bar class="bar-stable" align-title="center" >
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
-                <i class="ion-chevron-left"></i>
-            </button>
-        </ion-nav-buttons>
-        <ion-nav-buttons side="right">
-            <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-                <i class="ion-ios-search-strong"></i>
-            </button>
-        </ion-nav-buttons>
-
-    </ion-nav-bar>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+ <ion-view view-title="车辆管理" hide-nav-bar="true">
 
     <ion-content scroll="false" >
 
+        <
 
-        <div ng-click="goto('update_car_info')" style="display: inline-block; width:60%;text-align: right;">
-            <button class="button button-small button-dark"
-                    style="margin-left:30%;background-color: #795e41;border-radius:10px">
-                创建新车
-            </button>
-        </div>
-        <div ng-click="goto('bindNewCar')" style="display: inline-block;width:30%">
-            <button class="button button-small button-dark"
-                    style="margin-left:30%;background-color: #795e41;border-radius:10px">
-                绑定新车
-            </button>
+        <div style="height:10%;width:100%;background-color:#845626;">
+            <div ng-click="goto('update_car_info')" style="display: inline-block; width:60%;text-align: right;margin-top: 7%;margin-left: 8%;">
+                <button class="button button-small button-dark"
+                        style="margin-left:30%;background-color: #795e41;border-radius:10px">
+                    创建新车
+                </button>
+            </div>
+            <div ng-click="goto('bindNewCar')" style="display: inline-block;width:30%;margin-top: 7%;">
+                <button class="button button-small button-dark"
+                        style="margin-left:30%;background-color: #795e41;border-radius:10px">
+                    绑定新车
+                </button>
+            </div>
         </div>
 
         <div class="list list-inset padding"
@@ -35,9 +25,9 @@
                     margin-left: 0;
                     margin-right: 0;
                     padding: 0;">
-            <div class="item"  ng-repeat="car in relativeCars">
+            <div class="item"  ng-repeat="car in relativeCars" ng-click="Mutex(car,'checked',relativeCars)">
 
-                <div ng-click="Mutex(car,'checked',relativeCars)">
+                <div>
 
                     <div  display="inline-block"
                           style="width:25%;float:left;margin-right:5%;">

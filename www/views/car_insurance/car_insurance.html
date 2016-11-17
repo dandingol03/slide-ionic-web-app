@@ -1,11 +1,9 @@
 <ion-view >
-
-
   <ion-nav-bar class="bar-stable" align-title="center" >
 
     <ion-nav-buttons side="left">
       <button class="button button-icon button-clear bar_arr"
-              style="font-size: 1.4em;"
+              style="font-size: 2.4em;"
               ng-click="goto('tabs.dashboard')">
         <i class="ion-chevron-left"></i>
       </button>
@@ -57,11 +55,11 @@
               <label class="item"
                      style="border:0px;display: inline-block;width: 100%;position: relative"
                      ng-click="toggle(product,'checked')"
-                >
+              >
                 {{product.productName}}
                 <div
-                  style="font-size: 2.5em;display: inline-block;position: absolute;right: 10%;top:0%;"
-                  >
+                        style="font-size: 2.5em;display: inline-block;position: absolute;right: 10%;top:0%;"
+                >
                   <i ng-if="product.checked!=true" class="ion-ios-checkmark-outline"></i>
                   <i ng-if="product.checked==true" class="ion-ios-checkmark"></i>
                 </div>
@@ -70,9 +68,9 @@
               <label class="item" style="border:0px;display: inline-block;width: 100%;"
                      ng-if="product.insuranceTypes!==undefined&&product.insuranceTypes!==null"
                      ng-click="actionSheet(product,'insuranceTypes',['insuranceTypes=>insuranceType','productIds=>productId'])"
-                >
+              >
                 保额:
-              <span style="position: absolute;right: 50%;">
+                <span style="position: absolute;right: 50%;">
                   {{product.insuranceType}}
                   <i class="ion-ios-arrow-down"></i>
                 </span>
@@ -82,9 +80,9 @@
               <label class="item" style="border:0px;display: inline-block;width: 100%;"
                      ng-if="(product.insuranceTypes==undefined||product.insuranceTypes==null)&&
                      (product.insuranceType!=null||product.insuranceType!=undefined)"
-                >
+              >
                 保额:
-              <span style="position: absolute;right:50%;">
+                <span style="position: absolute;right:50%;">
                   {{product.insuranceType}}
                 </span>
               </label>
@@ -125,7 +123,7 @@
     </div>
 
     <div style="height: 25%;position: relative"
-           ng-click="openCompanyModal();">
+         ng-click="openCompanyModal();">
       <button style="position: absolute;bottom:30%;" class="button button-block button-positive">
         确认套餐选择
       </button>

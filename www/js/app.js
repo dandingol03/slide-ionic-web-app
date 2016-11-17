@@ -147,6 +147,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           ]}
         ];
 
+        $rootScope.car_orders_tabIndex=1;
+
         //获取自定义消息的回调
         $rootScope.onReceiveMessage = function(event) {
           try{
@@ -800,6 +802,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/create_new_customerPlace/create_new_customerPlace.html'
           })
 
+          .state('applied_car_order_detail',{
+                url:'/applied_car_order_detail/:orderId',
+                controller:'appliedCarOrderDetailController',
+                templateUrl:'views/applied_car_order_detail/applied_car_order_detail.html'
+          })
+
 
 
 
@@ -828,7 +836,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://139.129.96.231:3000";
+            return "http://192.168.1.138:3000";
           else
             return "/proxy/node_server";
             

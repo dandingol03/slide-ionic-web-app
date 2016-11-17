@@ -174,42 +174,57 @@ angular.module('starter')
               var access_token = json.access_token;
 
               localStorage.userName = $scope.user.username;
-
-
               localStorage.password = $scope.user.password;
 
               if (access_token !== undefined && access_token !== null) {
                   $rootScope.access_token = access_token;
                   console.log('registrationId=\r\n' + $rootScope.registrationId);
-                  //手机环境
-                  if (window.cordova !== undefined && window.cordova !== null) {
-                      $http({
-                          method: "POST",
-                          url: Proxy.local() + "/svr/request",
-                          headers: {
-                              'Authorization': "Bearer " + $rootScope.access_token
-                          },
-                          data: {
-                              request: 'activatePersonOnline',
-                              info: {
-                                  registrationId: $rootScope.registrationId !== undefined && $rootScope.registrationId !== null ? $rootScope.registrationId : ''
-                              }
-                          }
-                      }).then(function (res) {
-                          var json = res.data;
-                          if (json.re == 1 || json.result == 'ok') {
+
+                  //获取个人信息
+                  $http({
+                      method: "POST",
+                      url: Proxy.local() + "/svr/request",
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token
+                      },
+                      data: {
+                          request: 'getPersonInfoByPersonId'
+                      }
+                  }).then(function(res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          $rootScope.userInfo=json.data;
+                          //手机环境
+                          if (window.cordova !== undefined && window.cordova !== null) {
+                              $http({
+                                  method: "POST",
+                                  url: Proxy.local() + "/svr/request",
+                                  headers: {
+                                      'Authorization': "Bearer " + $rootScope.access_token
+                                  },
+                                  data: {
+                                      request: 'activatePersonOnline',
+                                      info: {
+                                          registrationId: $rootScope.registrationId !== undefined && $rootScope.registrationId !== null ? $rootScope.registrationId : ''
+                                      }
+                                  }
+                              }).then(function (res) {
+                                  var json = res.data;
+                                  if (json.re == 1 || json.result == 'ok') {
+                                      $state.go('tabs.dashboard');
+                                  }
+                              }).catch(function (err) {
+                                  var error = '';
+                                  for (var field in err) {
+                                      error += err[field] + '\r\n';
+                                  }
+                                  alert('error=' + error);
+                              });
+                          } else {
                               $state.go('tabs.dashboard');
                           }
-                      }).catch(function (err) {
-                          var error = '';
-                          for (var field in err) {
-                              error += err[field] + '\r\n';
-                          }
-                          alert('error=' + error);
-                      });
-                  } else {
-                      $state.go('tabs.dashboard');
-                  }
+                      }
+                  })
               }
               else
                   console.log('cannot get access_token');

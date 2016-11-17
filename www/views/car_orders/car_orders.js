@@ -1,8 +1,8 @@
 angular.module('starter')
 
   .controller('carOrdersController',function($scope,$state,$http,
-                                             $location, $rootScope,Proxy,
-                                             $stateParams){
+                                             $location, $rootScope,Proxy
+                                            ){
 
 
 
@@ -55,10 +55,33 @@ angular.module('starter')
       console.error('error=\r\n' + str);
     });
 
+    //获取已申请订单
+      $http({
+          method: "POST",
+          url: Proxy.local()+"/svr/request",
+          headers: {
+              'Authorization': "Bearer " + $rootScope.access_token
+          },
+          data:
+              {
+                  request:'getApplyedCarOrders'
+              }
+      }).then(function(res) {
+          var json=res.data;
+          if(json.re==1) {
+              $scope.applyedList=json.data;
+          }
+      }).catch(function(err) {
+          var str='';
+          for(var field in err)
+              str+=err[field];
+          console.error('error=\r\n' + str);
+      });
 
 
-    //车险订单  0.已生成;1.待支付
-    $scope.tabIndex=1;
+
+    //车险订单  0.已完成;1.估价列表;2.已申请
+    $scope.tabIndex=$rootScope.car_orders_tabIndex;
 
     $scope.priceIndex=-1;
 
@@ -115,9 +138,17 @@ angular.module('starter')
       $state.go('car_order_detail',{order:JSON.stringify(order)});
     }
 
+    //估价列表详情
     $scope.goOrderPrices=function(order){
       $state.go('car_order_prices', {order: JSON.stringify(order)});
     }
+
+    $scope.goAppliedOrderDetail=function(order)
+    {
+        $state.go('applied_car_order_detail',{orderId:order.orderId});
+    }
+
+
 
     //提交已选方案
     $scope.apply=function(){

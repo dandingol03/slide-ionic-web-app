@@ -3,7 +3,7 @@
  */
 angular.module('starter')
   .controller('myController',function($scope,$state,$http,$rootScope,
-                                Proxy,$ionicSideMenuDelegate){
+                                Proxy,$ionicSideMenuDelegate,$ionicHistory){
 
     $scope.go_back=function(){
       window.history.back();
@@ -21,14 +21,14 @@ angular.module('starter')
         localStorage.pwdPersisted='false';
         localStorage.userName='';
         localStorage.password='';
+        $ionicHistory.clearHistory();
+        $ionicHistory.clearCache();
         $state.go('login');
     }
 
     $scope.infos=[];
 
-    $scope.user={
-      phone:17865135730
-    };
+    $scope.userInfo=$rootScope.userInfo;
 
     //获取个人信息的抽屉面板
 

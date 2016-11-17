@@ -10,6 +10,11 @@ angular.module('starter')
             $state.go(url);
         };
 
+        $scope.go_back=function () {
+            window.history.back();
+        }
+
+
         $scope.relativeCars=[];
 
         //查询已绑定车辆,并显示车牌信息

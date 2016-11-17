@@ -2,51 +2,100 @@
 
   <ion-nav-bar class="bar-stable" align-title="center" >
     <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
+      <button class="button button-icon button-clear bar_arr"
+              style="font-size: 2.4em;"
+              ng-click="go_back()">
         <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-        <i class="ion-ios-search-strong"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
 
 
-  <ion-content class="padding cart_detail" >
-    <ul class="list">
-    <li class="item item-icon-right"
-        style="padding-top:0px;padding-left:0px;padding-bottom:0px;border: 0px;">
-           <div style="width: 30%;float:left;">
-           <span style="display: inline-block">
-             <img src="img/iverson.jpg" style="width:65px;"/>
-           </span>
-      </div>
-      <div style="width:70%;float:left;padding-top:2%;">
-        <h2 style="margin-bottom: 5%;">
-          <span>用户:</span>
-          <span>alon iverson</span>
-        </h2>
-      </div>
+  <ion-content class=" cart_detail" >
 
-    </li>
-  </ul>
-    <div>
-    <div class="content has-header ionic-pseudo"ng-repeat="item in contactions">
-      <div class="list">
-        <div class="item item-divider">
-          {{item.type}}
-        </div>
-        <div class="item  row">
-        <a class="item col-80" style="border: none">
-          {{item.name}}
-        </a>
-          <a class="button button-assertive col-20" ng-click="updateInfo(item.type)">修改</a>
-      </div>
-        </div>
+
+    <!-- 昵称区 -->
+    <div class="list" style="margin-bottom:0px;">
+      <div class="item item-divider" style="padding-top:18px;padding-bottom:18px;">
+        <span style="width: 20%;display: inline-block;color:#f1c300;font-size: 1.4em;">
+          昵称:
+        </span>
+        <span style="width: 80%;display: inline-block;color:#f1c300;font-size: 1.4em;">
+          {{contactInfo.perName}}
+        </span>
       </div>
     </div>
+
+
+    <!-- 可编辑内容区 -->
+    <div class="list" style="padding-top:0px;">
+
+      <!-- 电话 -->
+      <div class="item"
+           style="margin:1px;border:1px solid #aaa;border-bottom:0px;border-top:0px;border-left:0px;border-right:0px;
+             padding:10px;background-color:transparent;overflow:initial">
+        <span class="input-label"
+                  style="display: inline-block;width: 15%;text-align: left;border-right:1px solid #aaa;">
+          电话 :
+        </span>
+        <span style="width: 5%;display: inline-block;"></span>
+        <span style="width: 70%;display: inline-block;text-align: left;">
+          <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
+                     ng-value="contactInfo.mobilePhone"
+                     ng-model="contactInfo.mobilePhone"/>
+        </span>
+        <span style="display: inline-block;width: 10%;"></span>
+      </div>
+
+      <!-- 邮箱 -->
+      <div class="item"
+           style="margin:1px;border:1px solid #aaa;border-bottom:0px;border-left:0px;border-right:0px;
+             padding:10px;background-color:transparent;overflow:initial">
+        <span class="input-label"
+              style="display: inline-block;width: 15%;text-align: left;border-right:1px solid #aaa;">
+          邮箱:
+        </span>
+
+        <span style="width: 5%;display: inline-block"></span>
+
+        <span style="width: 70%;display: inline-block;text-align: left;">
+          <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
+                 ng-value="contactInfo.EMAIL"
+                 ng-model="contactInfo.EMAIL"/>
+        </span>
+        <span style="display: inline-block;width: 10%;"></span>
+      </div>
+
+      <!-- 地址 -->
+      <div class="item"
+           style="margin:1px;border:1px solid #aaa;border-left:0px;border-right:0px;
+             padding:10px;background-color:transparent;overflow:initial;">
+        <span class="input-label"
+              style="display: inline-block;width: 15%;text-align: left;border-right:1px solid #aaa;">
+          地址:
+        </span>
+
+        <span style="width: 5%;display: inline-block;"></span>
+        <span style="width: 70%;display: inline-block;text-align: left;">
+          <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
+                 ng-value="contactInfo.perAddress"
+                 ng-model="contactInfo.perAddress"/>
+        </span>
+        <span style="display: inline-block;width: 10%;"></span>
+      </div>
+
+      <div class="item"
+           style="margin:1px;border:1px solid #222;padding:10px;background-color:transparent;border:0px;">
+          <button class="button button-calm" style="width: 60%;margin-left:20%;"
+            ng-click="saveContactInfo()">
+            保存提交
+          </button>
+      </div>
+
+
+    </div>
+
+
 
   </ion-content>
 
