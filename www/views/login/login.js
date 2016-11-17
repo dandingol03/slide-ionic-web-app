@@ -11,19 +11,21 @@ angular.module('starter')
 
       $scope.formUser = {};
 
+
       $scope.user={};
 
-      if(localStorage.pwdPersisted==true)
+
+      if(localStorage.pwdPersisted=='true')
           $scope.pwdPersisted=true;
       else
         $scope.pwdPersisted=false;
 
       $scope.togglePwdPersistent = function(){
           if($scope.pwdPersisted==true){
-              localStorage.pwdPersisted=false;
+              localStorage.pwdPersisted='false';
               $scope.pwdPersisted=false;
           }else{
-              localStorage.pwdPersisted=true;
+              localStorage.pwdPersisted='true';
               $scope.pwdPersisted=true;
           }
       }
@@ -35,7 +37,6 @@ angular.module('starter')
           if(localStorage.userName!=undefined&&localStorage.userName!=null){
               var userName=localStorage.userName;
               $scope.user.username = userName;
-              alert('');
           }
 
           if(localStorage.password!=undefined&&localStorage.password!=null){
@@ -174,13 +175,12 @@ angular.module('starter')
 
               localStorage.userName = $scope.user.username;
 
-              alert('localStorage.userName='+localStorage.userName);
 
               localStorage.password = $scope.user.password;
 
               if (access_token !== undefined && access_token !== null) {
                   $rootScope.access_token = access_token;
-                  alert('registrationId=\r\n' + $rootScope.registrationId);
+                  console.log('registrationId=\r\n' + $rootScope.registrationId);
                   //手机环境
                   if (window.cordova !== undefined && window.cordova !== null) {
                       $http({
