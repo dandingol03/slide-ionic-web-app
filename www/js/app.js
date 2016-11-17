@@ -120,8 +120,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             //app 是否处于正在运行状态
             var isActive = notification.notification;
 
-            // here add your code
-
 
             //ios
             if (ionic.Platform.isIOS()) {
