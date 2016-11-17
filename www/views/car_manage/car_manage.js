@@ -3,12 +3,12 @@
  */
 angular.module('starter')
     .controller('carManageController',function($scope,$state,$http,
-                                                $rootScope,$cordovaFileTransfer,Proxy){
+                                                $rootScope,$cordovaFileTransfer,Proxy,$ionicModal){
 
 
         $scope.selectButton1=false;
         $scope.selectButton2=false;
-
+        $scope.bindCarFlag=false
         $scope.goUpdate=function(url){
             $state.go(url);
             if($scope.selectButton1==false){
@@ -25,12 +25,38 @@ angular.module('starter')
                 $scope.selectButton2=false;
             }
         }
-
-
-
+        $scope.changeBindCarFlag = function(){
+            if($scope.bindCarFlag==false){
+                $scope.bindCarFlag=true;
+            }else{
+                $scope.bindCarFlag=false;
+            }
+        }
         $scope.go_back=function () {
             window.history.back();
         }
+
+        /*** 绑定新车模态框 ***/
+        $ionicModal.fromTemplateUrl('views/modal/bind_car_modal.html',{
+            scope:  $scope,
+            animation: 'slide-in-bottom'
+        }).then(function(modal) {
+            $scope.bind_car_modal = modal;
+        });
+
+        $scope.openBindCarModal= function(){
+            try{
+                $scope.bind_car_modal.show();
+            }catch(e){
+                alert('error=\r\n'+ e.toString());
+            }
+
+        };
+
+        $scope.closeBindCarModal= function() {
+            $scope.bind_car_modal.hide();
+        };
+        /*** 绑定新车模态框 ***/
 
 
         $scope.relativeCars=[];
