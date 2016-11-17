@@ -25,10 +25,10 @@
                 <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
                     用车城市:
                 </span>
-                <span style="width: 60%;display: inline-block;text-align: left;">
+                <span style="width: 50%;display: inline-block;text-align: left;">
                     {{city_confirmed!==undefined&&city_confirmed!==null?city_confirmed:''}}
                 </span>
-                <span style="width: 10%;display: inline-block;text-align: center;font-size: 1.4em;"
+                <span style="width: 20%;display: inline-block;text-align: center;font-size: 1.4em;"
                     ng-click="selectCarNumPrefixByCity()">
                     <i class="ion-chevron-right"></i>
                 </span>
@@ -43,7 +43,7 @@
               <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
                   车牌:
               </span>
-              <span style="width: 60%;display: inline-block;text-align: left;">
+              <span style="width: 50%;display: inline-block;text-align: left;">
                   <input type="text" placeholder="请输入您的车牌"
                          style="display:inline-block;background-color: transparent;"
                          ng-value="carInfo.carNum"
@@ -51,7 +51,7 @@
                     />
               </span>
               <span class="camera"
-                  style="width: 10%;display:inline-block;font-size: 1.5em;text-align: center"
+                  style="width: 20%;display:inline-block;font-size: 1.5em;text-align: center"
                   ng-click="selectCarInfoByCarNum()">
                 <i class="ion-chevron-down"></i>
               </span>
@@ -82,7 +82,8 @@
             </div>
 
             <div class="item"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                 padding:10px;background-color:transparent;"
                  ng-click="datetimepicker(carInfo,'issueDate')">
 
                 <span style="display: inline-block;width: 5%;text-align: center">
@@ -92,17 +93,17 @@
                     发证日期:
                 </span>
 
-                <span style="display: inline-block;width: 60%;color:#888;font-size: .9em;text-align: left;"
+                <span style="display: inline-block;width: 50%;color:#888;font-size: .9em;text-align: left;"
                       ng-if="carInfo.issueDate==null||carInfo.issueDate==undefined||carInfo.issueDate==''">
                   点击选择发证日期
                 </span>
 
-                <span style="display: inline-block;width: 60%;color:#888;font-size: .9em;text-align: center;"
+                <span style="display: inline-block;width: 50%;color:#888;font-size: .9em;text-align: center;"
                       ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
                        {{carInfo.issueDate|date:'yyyy-MM-dd HH:mm'}}
                 </span>
 
-                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.5em;">
+                <span style="display: inline-block;width: 20%;text-align: center;font-size: 1.5em;">
                     <i class="ion-calendar"></i>
                 </span>
             </div>
@@ -111,21 +112,20 @@
             <!-- 是否过户 -->
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:0px;
-             padding:10px;background-color:transparent;overflow:initial"
+                padding:10px;background-color:transparent;"
                  ng-click="Toggle('boolean',carInfo,'isTransfer')">
 
                 <span style="display: inline-block;width: 55%;text-align: left">
                     是一年内过户的二手车吗:
                 </span>
-
-                <span style="display: inline-block;width: 35%;">
+                <span style="display: inline-block;width: 25%;">
                 </span>
 
-                <span style="display: inline-block;width: 10%;text-align: center;vertical-align: middle;">
-                   <i ng-if="carInfo.isTransfer!=true" class="ion-ios-checkmark-outline"
-                      style="font-size: 1.6em;"></i>
-                   <i ng-if="carInfo.isTransfer==true" class="ion-ios-checkmark"
-                      style="font-size: 1.6em;"></i>
+                <span style="display: inline-block;width: 20%;text-align: center;margin-left:4px;">
+                   <i ng-if="carInfo.isTransfer!=true" class="fa fa-square"
+                      style="font-size: 1.5em;font-weight: bolder"></i>
+                   <i ng-if="carInfo.isTransfer==true" class="fa fa-check-square"
+                      style="font-size: 1.5em;font-weight: bolder"></i>
                 </span>
             </div>
 

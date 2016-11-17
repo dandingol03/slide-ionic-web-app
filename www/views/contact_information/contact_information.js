@@ -5,99 +5,56 @@ angular.module('starter')
   .controller('contact_informationController',function($scope,$state,$http,
                                                        $rootScope,$ionicPopup,Proxy){
 
+      //获取个人联系方式
+      $http({
+          method: "POST",
+          url: Proxy.local()+"/svr/request",
+          headers: {
+              'Authorization': "Bearer " + $rootScope.access_token
+          },
+          data: {
+              request: 'getPersonalContactInfo',
+              info:{
+                  data:$scope.data
+              }
+          }
+      }).then(function(res) {
+          var json=res.data;
+          if(json.re==1) {
+              $scope.contactInfo=json.data;
+          }
+      }).catch(function(err) {
+          var str='';
+          for(var field in err)
+            str+=err[field];
+          console.error('error=\r\n'+str);
+      })
 
-  $scope.search=function() {
-  $http({
-    method: "POST",
-    url: Proxy.local()+"/svr/request",
-    headers: {
-      'Authorization': "Bearer " + $rootScope.access_token
-    },
-    data: {
-      request: 'getPersonInfo',
-      info: {
-        personId: $scope.personId
-      }
-    }
-  }).then(function (res) {
-    var json=res.data;
-    if(json.re==1) {
-      $scope.data=json;
-      return true;
-    }
-  }).then(function (res) {
-
-    $scope.contactions[0].name = $scope.data.data.mobilePhone;
-    $scope.contactions[1].name = $scope.data.data.EMAIL;
-    $scope.contactions[2].name = $scope.data.data.perAddress;
-  }).catch(function (err) {
-    console.log('server fetch error');
-  });
-}
-    $scope.search();
-
-    $scope.updateInfo=function(type) {
-      $scope.data = {};
-      switch (type){
-        case 'telephone':
-          $scope.data.type='mobilePhone';
-          break;
-        case 'address':
-          $scope.data.type='perAddress';
-          break;
-        case 'email':
-          $scope.data.type='EMAIL';
-          break;
-
-        default :
-          break;
-
-      }
-      var myPopup = $ionicPopup.show({
-        template: '<input type="text" ng-model="data.info">',
-        title: '请输入修改信息：',
-        subTitle: 'Please input your new message!',
-        scope: $scope,
-        buttons: [
-          { text: '取消' },
-          {
-            text: '<b>保存</b>',
-            type: 'button-positive',
-            onTap: function(e) {
-              if (!$scope.data.info) {
-                //不允许用户关闭，除非他键入wifi密码
-                e.preventDefault();
-              } else {
-
-                $http({
-                  method: "POST",
-                  url: Proxy.local()+"/svr/request",
-                  headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data: {
-                    request: 'updatePersonInfo',
-                    info:{
-                      data:$scope.data
-                    }
-                  }
-                }).then(function (res) {
-                  $scope.search();
-                  return true;
-                }).catch(function (err) {
-                  console.log('server fetch error');
+    $scope.saveContactInfo=function() {
+        var contactInfo=$scope.contactInfo;
+        $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data: {
+                request: 'saveContactInfo',
+                info:{
+                    contactInfo:contactInfo
+                }
+            }
+        }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+                var myPopup = $ionicPopup.show({
+                    template: '信息',
+                    title: '<strong>保存联系方式成功</strong>',
+                    scope: $scope
                 });
 
-              }
             }
-          },
-        ]
-      });
-
-      myPopup.then(function(res) {
-        console.log('Tapped!', res);
-      });
-
+        })
     };
 
     $scope.go_back=function(){

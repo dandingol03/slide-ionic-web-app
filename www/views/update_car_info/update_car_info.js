@@ -18,6 +18,55 @@ angular.module('starter')
         $scope.city_confirm=function () {
 
             $scope.city_confirmed=$scope.city;
+            switch ($scope.city) {
+                case '北京':
+                    $scope.carInfo.carNum='京';
+                    break;
+                case '上海':
+                    $scope.carInfo.carNum='沪';
+                    break;
+                case '广州':
+                    $scope.carInfo.carNum='粤A';
+                    break;
+                case '深圳':
+                    $scope.carInfo.carNum='粤B';
+                    break;
+                case '苏州':
+                    $scope.carInfo.carNum='苏E';
+                    break;
+                case '杭州':
+                    $scope.carInfo.carNum='浙A';
+                    break;
+                case '南京':
+                    $scope.carInfo.carNum='苏A';
+                    break;
+                case '天津':
+                    $scope.carInfo.carNum='津';
+                    break;
+                case '济南':
+                    $scope.carInfo.carNum='鲁A';
+                    break;
+                case '青岛':
+                    $scope.carInfo.carNum='鲁B';
+                    break;
+                case '武汉':
+                    $scope.carInfo.carNum='鄂A';
+                    break;
+                case '长沙':
+                    $scope.carInfo.carNum='湘A';
+                    break;
+                case '沈阳':
+                    $scope.carInfo.carNum='辽A';
+                    break;
+                case '成都':
+                    $scope.carInfo.carNum='川';
+                    break;
+                case '重庆':
+                    $scope.carInfo.carNum='渝';
+                    break;
+                default:
+                    break;
+            }
             $scope.close_append_carNumPrefixModal();
 
         }

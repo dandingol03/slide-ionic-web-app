@@ -2,7 +2,7 @@
   <ion-view hide-nav-bar="true">
 
 
-        <ion-content scroll="true"  lazy-scroll style="position: relative">
+        <ion-content scroll="false"  lazy-scroll style="position: relative">
 
           <!--<div class="list padding">-->
             <!--<div class="item"-->
@@ -16,9 +16,13 @@
 
             <div class="my-info-bk" style="width: 100%;min-height: 140px;position: relative;">
                 <div style="position: absolute;bottom:10px;left: 8px;">
-                    <div style="width: 95px;">
-                        <img src="img/cbr600.jpg" style="max-height: 95px;max-width: 95px;"/>
-                        <h5 style="width: 100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;">cbr600</h5>
+                    <div style="width: 95px;text-align: center;">
+                        <span style="max-height: 95px;max-width: 95px;font-size: 6em;color:#fff;">
+                            <i class="fa fa-user-circle-o"></i>
+                        </span>
+                        <h5 style="width: 100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;">
+                            {{userInfo.perName}}
+                        </h5>
                     </div>
                 </div>
 
@@ -28,131 +32,146 @@
                 </div>
             </div>
 
-            <div class="item" style="padding: 4px;border-bottom:0px;">
-                <ul>
-                    <li style="width: 20%;float: right;text-align: center"
-                        ng-click="go_to('passwordModify')">
-                        <div style="font-size: 2em;">
-                            <i class="ion-locked"></i>
-                        </div>
-                        <div>
-                            密码修改
-                        </div>
-                    </li>
-                    <li style="width: 20%;float:right;text-align: center;">
-                        <div style="font-size: 2em;">
-                            <i class="ion-power"></i>
-                        </div>
-                        <div>
-                            退出
-                        </div>
-                    </li>
 
-                </ul>
+            <div style="height: 90%;">
+
+                <ion-scroll style="height: 90%;">
+                    <div class="item" style="padding: 4px;border-bottom:0px;">
+                        <ul>
+                            <li style="width: 20%;float: right;text-align: center"
+                                ng-click="go_to('passwordModify')">
+                                <div style="font-size: 2em;">
+                                    <i class="ion-locked"></i>
+                                </div>
+                                <div>
+                                    密码修改
+                                </div>
+                            </li>
+                            <li style="width: 20%;float:right;text-align: center;" ng-click="quit()">
+                                <div style="font-size: 2em;">
+                                    <i class="ion-power"></i>
+                                </div>
+                                <div>
+                                    退出
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+                    <div class="item" style="padding: 9px;padding-left:4px;padding-right:11px;margin-top:2px;background: transparent;width: 100%;border:0px;">
+                        <ul style="margin-bottom:6px;">
+                            <li style="width: 33.333%;min-height:104px;display: inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('contact_information')">
+                                <div style="font-size: 2em;margin-top:14%;color:rgba(255, 0, 0, 0.52);">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <div>
+                                    联系方式
+                                </div>
+                            </li>
+
+                            <li style="width: 33.3333%;min-height:104px;display: inline-block;
+                            text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('myWallet')">
+                                <div style="font-size: 2em;margin-top:14%;color:#f1c300">
+                                    <i class="fa fa-dollar"></i>
+                                </div>
+                                <div>
+                                    我的红包
+                                </div>
+                            </li>
+
+                            <li style="width: 33.333%;min-height:104px;display:inline-block;
+                            text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('integration')">
+                                <div style="font-size: 2em;margin-top:14%;color:rgba(187, 110, 50, 0.94);">
+                                    <i class="ion-ribbon-b"></i>
+                                </div>
+                                <div>
+                                    我的积分
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul style="margin-bottom:6px;">
+                            <li style="width: 33.3%;min-height:104px;display: inline-block;
+                            text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('car_orders')">
+                                <div style="font-size: 2em;margin-top:14%;color:#6f357b">
+                                    <i class="fa fa-car"></i>
+                                </div>
+                                <div>
+                                    车险订单
+                                </div>
+                            </li>
+                            <li style="width: 33.3%;min-height:104px;display: inline-block;
+                            text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('life_insurance_orders')">
+                                <div style="font-size: 2em;margin-top:14%;color:rgba(255, 116, 116, 0.81);">
+                                    <i class="fa fa-heart-o"></i>
+                                </div>
+                                <div>
+                                    寿险订单
+                                </div>
+                            </li>
+
+                            <li style="width: 33.3%;min-height:104px;
+                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('service_orders')">
+                                <div style="font-size: 2em;margin-top:14%;color:#0023f1">
+                                    <i class="fa fa-handshake-o"></i>
+                                </div>
+                                <div>
+                                    服务订单
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li style="width: 33.3%;min-height:104px;
+                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('advise_gift')">
+                                <div style="font-size: 2em;margin-top:14%;color:#85bb32">
+                                    <i class="fa fa-gift"></i>
+                                </div>
+                                <div>
+                                    推荐有礼
+                                </div>
+                            </li>
+                            <li style="width: 33.3%;min-height:104px;
+                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('about_us')">
+                                <div style="font-size: 2em;margin-top:14%;color:#111">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <div>
+                                    关于我们
+                                </div>
+                            </li>
+                            <li style="width: 33.3%;min-height:104px;
+                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
+                                ng-click="go_to('car_manage')">
+                                <div style="font-size: 2em;margin-top:14%;color:#ef70ff">
+                                    <i class="fa fa-gear"></i>
+                                </div>
+                                <div>
+                                    车辆管理
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div style="min-height: 80px;">
+                        </div>
+
+                    </div>
+                </ion-scroll>
+
             </div>
 
-            <div class="item" style="padding: 9px;margin-top:2px;background: transparent;position: absolute;bottom: 10%;width: 100%;border:0px;">
-                <ul>
-                    <li style="width: 33.333%;min-height:104px;
-                    display: inline-block;text-align: center;border:1px solid #aaa;background: #fff;border-bottom:0px;"
-                        ng-click="go_to('contact_information')">
-                        <div style="font-size: 2em;margin-top:14%;color:rgba(255, 0, 0, 0.52);">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                        <div>
-                            联系方式
-                        </div>
-                    </li>
-                    <li style="width: 33.3333%;min-height:104px;
-                    display: inline-block;text-align: center;border:1px solid #aaa;background: #fff;border-bottom: 0px;"
-                        ng-click="go_to('myWallet')">
-                        <div style="font-size: 2em;margin-top:14%;color:#f1c300">
-                            <i class="fa fa-dollar"></i>
-                        </div>
-                        <div>
-                            我的红包
-                        </div>
-                    </li>
 
-                    <li style="width: 33.333%;min-height:104px;
-                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;border-bottom: 0px;"
-                        ng-click="go_to('integration')">
-                        <div style="font-size: 2em;margin-top:14%;color:#85bb32">
-                            <i class="ion-ribbon-b"></i>
-                        </div>
-                        <div>
-                            我的积分
-                        </div>
-                    </li>
-                </ul>
 
-                <ul>
-                    <li style="width: 33.3%;min-height:104px;
-                    display: inline-block;text-align: center;border:1px solid #aaa;background: #fff;border-bottom:0px;"
-                        ng-click="go_to('car_orders')">
-                        <div style="font-size: 2em;margin-top:14%;color:#f1c300">
-                            <i class="ion-document"></i>
-                        </div>
-                        <div>
-                            车险订单
-                        </div>
-                    </li>
-                    <li style="width: 33.3%;min-height:104px;
-                    display: inline-block;text-align: center;border:1px solid #aaa;background: #fff;border-bottom:0px;"
-                        ng-click="go_to('life_insurance_orders')">
-                        <div style="font-size: 2em;margin-top:14%;color:#f1c300">
-                            <i class="ion-clipboard"></i>
-                        </div>
-                        <div>
-                            寿险订单
-                        </div>
-                    </li>
-
-                    <li style="width: 33.3%;min-height:104px;
-                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
-                        ng-click="go_to('service_orders')">
-                        <div style="font-size: 2em;margin-top:14%;color:#f1c300">
-                            <i class="ion-document-text"></i>
-                        </div>
-                        <div>
-                            服务订单
-                        </div>
-                    </li>
-                </ul>
-
-                <ul>
-                    <li style="width: 33.3%;min-height:104px;
-                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
-                        ng-click="go_to('advise_gift')">
-                        <div style="font-size: 2em;margin-top:14%;color:#85bb32">
-                            <i class="fa fa-gift"></i>
-                        </div>
-                        <div>
-                            推荐有礼
-                        </div>
-                    </li>
-                    <li style="width: 33.3%;min-height:104px;
-                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
-                        ng-click="go_to('about_us')">
-                        <div style="font-size: 2em;margin-top:14%;color:#85bb32">
-                            <i class="fa fa-users"></i>
-                        </div>
-                        <div>
-                            关于我们
-                        </div>
-                    </li>
-                    <li style="width: 33.3%;min-height:104px;
-                    display:inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
-                        ng-click="go_to('car_manage')">
-                        <div style="font-size: 2em;margin-top:14%;color:#85bb32">
-                            <i class="ion-person-stalker"></i>
-                        </div>
-                        <div>
-                            车辆管理
-                        </div>
-                    </li>
-                </ul>
-            </div>
         </ion-content>
 
   </ion-view>
