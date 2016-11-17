@@ -17,6 +17,13 @@ angular.module('starter')
       $state.go(state);
     };
 
+    $scope.quit=function () {
+        localStorage.pwdPersisted='false';
+        localStorage.userName='';
+        localStorage.password='';
+        $state.go('login');
+    }
+
     $scope.infos=[];
 
     $scope.user={

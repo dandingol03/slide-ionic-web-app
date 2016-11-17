@@ -3,7 +3,7 @@
  */
 angular.module('starter')
 
-  .controller('carInsuranceController',function($scope,$state,$http, $location,
+  .controller('carInsuranceController',function($scope,$state,$http,
                                                 $rootScope,$ionicActionSheet,
                                                 $ionicModal,Proxy,$stateParams,$ionicPopup,
                                                 $ionicScrollDelegate){
@@ -39,7 +39,7 @@ angular.module('starter')
     }
 
     $scope.goto=function(url){
-      $location.path(url);
+        $state.go(url);
     };
 
 
