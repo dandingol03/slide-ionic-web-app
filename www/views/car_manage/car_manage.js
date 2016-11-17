@@ -6,9 +6,27 @@ angular.module('starter')
                                                 $rootScope,$cordovaFileTransfer,Proxy){
 
 
-        $scope.goto=function(url){
+        $scope.selectButton1=false;
+        $scope.selectButton2=false;
+
+        $scope.goUpdate=function(url){
             $state.go(url);
-        };
+            if($scope.selectButton1==false){
+                $scope.selectButton1=true;
+            }else{
+                $scope.selectButton1=false;
+            }
+        }
+        $scope.goBind=function(url){
+            $state.go(url);
+            if($scope.selectButton2==false){
+                $scope.selectButton2=true;
+            }else{
+                $scope.selectButton2=false;
+            }
+        }
+
+
 
         $scope.relativeCars=[];
 

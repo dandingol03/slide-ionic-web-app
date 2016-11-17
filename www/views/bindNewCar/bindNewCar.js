@@ -3,7 +3,7 @@
  */
 angular.module('starter')
     .controller('bindNewCarController',function($scope,$state,$http,
-                                               $rootScope,$cordovaFileTransfer,Proxy,$timeout){
+                                               $rootScope,$cordovaFileTransfer,Proxy,$timeout,$ionicPopup){
 
         $scope.carInfo={};
 
@@ -19,8 +19,8 @@ angular.module('starter')
                 {
                     request:'rebindCarInfo',
                     info:{
-                        carNum:carInfo.carNum,
-                        ownerName:carInfo.ownerName
+                        carNum:$scope.carInfo.carNum,
+                        ownerName:$scope.carInfo.ownerName
                     }
                 }
             }).then(function(res) {
@@ -30,6 +30,7 @@ angular.module('starter')
                         template:'绑定车辆成功',
                         title: '信息',
                         scope: $scope,
+
                     });
 
                     myPopup.then(function(res) {

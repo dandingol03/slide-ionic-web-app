@@ -2733,6 +2733,37 @@ $scope.openAirportTransfer=function(){
       {}
     }
 
+    //查询输入的车牌号是否可以买保险
+      $scope.checkCarNum = function(carNum){
+          var carNum = carNum;
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data:{
+                  request:'getCarIdByCarNum',
+                  info:{
+                      carNum:carNum
+                  }
+              }
+          }).then(
+
+
+          )
+
+
+
+
+
+      }
+
+
+
+
+
+
     //查询已绑定车辆,并显示车牌信息
     $scope.selectCarInfoByCarNum=function(item,modal){
 

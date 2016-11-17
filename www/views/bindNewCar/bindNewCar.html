@@ -3,48 +3,40 @@
     <ion-content>
 
         <div class="list list-inset padding" style="margin-bottom:40px;background-color: transparent;">
-
             <!-- 车牌号 -->
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
 
-            <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
-              车牌:
-            </span>
+               <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
+                 车牌:
+               </span>
                 <span style="width: 65%;display: inline-block;text-align: left;">
-              <input type="text" placeholder="请输入您的车牌"
+                   <input type="text" placeholder="请输入您的车牌"
                      style="display:inline-block;background-color: transparent;"
                      ng-value="carInfo.carNum"
                      ng-model="carInfo.carNum"
-              />
-            </span>
-                <span
-                        class="camera"
-                        style="position: absolute;right:5%;top:30%;font-size: 1.5em;"
-                        ng-click="selectCarInfoByCarNum()"
-                >
-            <i class="ion-chevron-down"></i>
-          </span>
+                   />
+                </span>
             </div>
 
             <!-- 车主姓名 -->
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
-            <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
-                姓名:
-            </span>
+                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
+                    姓名:
+                </span>
                 <span style="width: 35%;display: inline-block;text-align: left;">
-               <input type="text" placeholder="请输入车主姓名"
+                <input type="text" placeholder="请输入车主姓名"
                       style="display:inline-block;background-color: transparent;"
                       ng-value="carInfo.ownerName"
                       ng-model="carInfo.ownerName"
                       ng-change="validate(carInfo,'ownerName','/\\w|\\d/')"
-               />
-            </span>
+                />
+                </span>
                 <span style="display: inline-block;width: 40%;text-align: left;color:#ff3b30;font-size: 0.8em;"
                       ng-if="carInfo['ownerName_error']==false">
-                  姓名不能含有数字和字母
-              </span>
+                    姓名不能含有数字和字母
+                </span>
             </div>
 
         </div>
