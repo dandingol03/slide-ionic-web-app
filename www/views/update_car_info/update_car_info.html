@@ -1,4 +1,4 @@
-<ion-view view-title="更改车辆信息">
+<ion-view view-title="创建车辆">
   <ion-nav-bar class="bar-stable" align-title="center" >
     <ion-nav-buttons side="left">
       <button class="button button-icon button-clear bar_arr"
@@ -10,25 +10,40 @@
     </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content>
+  <ion-content style="padding:0px;">
     <!-- 车险 -->
 
     <div style="height: 100%;">
+        <div class="list list-inset"
+             style="margin-bottom:40px;background-color: transparent;margin-left:0px;margin-right:0px;">
+            <!-- 用车城市 -->
+            <div class="item"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
+                <span style="display: inline-block;width: 5%;text-align: center">
+                    <i class="fa fa-map-marker"></i>
+                </span>
+                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
+                    用车城市:
+                </span>
+                <span style="width: 60%;display: inline-block;text-align: left;">
+                    {{city_confirmed!==undefined&&city_confirmed!==null?city_confirmed:''}}
+                </span>
+                <span style="width: 10%;display: inline-block;text-align: center;font-size: 1.4em;"
+                    ng-click="selectCarNumPrefixByCity()">
+                    <i class="ion-chevron-right"></i>
+                </span>
+            </div>
 
-        <div class="list list-inset padding" style="margin-bottom:40px;background-color: transparent;">
-          <div class="item"
+            <div class="item"
                style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
                padding:10px;background-color:transparent;">
-              <span class="input-label" style="display: inline-block;width: 15%;text-align: left">
+              <span style="display: inline-block;width: 5%;text-align: center">
+                  <i class="fa fa-automobile"></i>
+              </span>
+              <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
                   车牌:
               </span>
-              <span style="width: 20%;display: inline-block;text-align: left;vertical-align: middle">
-                  <button class="button button-calm button-small" style="width: 80%;"
-                        ng-click="selectCarNumPrefixByCity()">
-                      选择城市
-                  </button>
-              </span>
-              <span style="width: 65%;display: inline-block;text-align: left;">
+              <span style="width: 60%;display: inline-block;text-align: left;">
                   <input type="text" placeholder="请输入您的车牌"
                          style="display:inline-block;background-color: transparent;"
                          ng-value="carInfo.carNum"
@@ -36,81 +51,81 @@
                     />
               </span>
               <span class="camera"
-                  style="position: absolute;right:5%;top:30%;font-size: 1.5em;"
+                  style="width: 10%;display:inline-block;font-size: 1.5em;text-align: center"
                   ng-click="selectCarInfoByCarNum()">
                 <i class="ion-chevron-down"></i>
               </span>
-          </div>
+            </div>
 
-          <!-- 车主姓名 -->
-          <div class="item"
-               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
-            <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
-                姓名:
-            </span>
-            <span style="width: 35%;display: inline-block;text-align: left;">
-               <input type="text" placeholder="请输入车主姓名"
-                      style="display:inline-block;background-color: transparent;"
-                      ng-value="carInfo.ownerName"
-                      ng-model="carInfo.ownerName"
-                      ng-change="validate(carInfo,'ownerName','/\\w|\\d/')"
-                 />
-            </span>
-              <span style="display: inline-block;width: 40%;text-align: left;color:#ff3b30;font-size: 0.8em;"
-                ng-if="carInfo['ownerName_error']==false">
-                  姓名不能含有数字和字母
-              </span>
-          </div>
+            <!-- 车主姓名 -->
+            <div class="item"
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
+
+                  <span style="display: inline-block;width: 5%;text-align: center">
+                      <i class="fa fa-user"></i>
+                  </span>
+                  <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
+                      姓名:
+                  </span>
+                  <span style="width: 25%;display: inline-block;text-align: left;">
+                      <input type="text" placeholder="请输入车主姓名"
+                              style="display:inline-block;background-color: transparent;"
+                              ng-value="carInfo.ownerName"
+                              ng-model="carInfo.ownerName"
+                              ng-change="validate(carInfo,'ownerName','/\\w|\\d/')"
+                         />
+                  </span>
+                  <span style="display: inline-block;width: 40%;text-align: left;color:#ff3b30;font-size: 0.8em;"
+                    ng-if="carInfo['ownerName_error']==false">
+                      姓名不能含有数字和字母
+                  </span>
+            </div>
 
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;"
-                 ng-click="datetimepicker(carInfo,'issueDate')"
-            >
+                 ng-click="datetimepicker(carInfo,'issueDate')">
 
-              <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
-                  发证日期:
-              </span>
+                <span style="display: inline-block;width: 5%;text-align: center">
+                    <i class="fa fa-calendar-minus-o"></i>
+                </span>
+                <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
+                    发证日期:
+                </span>
 
-                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
+                <span style="display: inline-block;width: 60%;color:#888;font-size: .9em;text-align: left;"
                       ng-if="carInfo.issueDate==null||carInfo.issueDate==undefined||carInfo.issueDate==''">
                   点击选择发证日期
-              </span>
+                </span>
 
-                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: center;"
+                <span style="display: inline-block;width: 60%;color:#888;font-size: .9em;text-align: center;"
                       ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
                        {{carInfo.issueDate|date:'yyyy-MM-dd HH:mm'}}
-              </span>
+                </span>
 
-
-                <span
-                        style="position: absolute;right: 5%;top:30%;font-size: 1.5em;"
-                >
-                <i class="ion-calendar"></i>
-            </span>
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.5em;">
+                    <i class="ion-calendar"></i>
+                </span>
             </div>
 
 
             <!-- 是否过户 -->
             <div class="item"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:0px;
              padding:10px;background-color:transparent;overflow:initial"
-                 ng-click="Toggle('boolean',carInfo,'isTransfer')"
-            >
+                 ng-click="Toggle('boolean',carInfo,'isTransfer')">
 
-                <span style="display: inline-block;width: 35%;text-align: left">
-                  是否过户:
-               </span>
-
-                <span style="width: 45%;display: inline-block;text-align: left;font-size: 0.8em;color:#aaa;">
-                  {{carInfo.isTransfer==true?'是':'否'}}
+                <span style="display: inline-block;width: 55%;text-align: left">
+                    是一年内过户的二手车吗:
                 </span>
 
+                <span style="display: inline-block;width: 35%;">
+                </span>
 
-                <span style="display: inline-block;width: 20%;text-align: center;vertical-align: middle;">
+                <span style="display: inline-block;width: 10%;text-align: center;vertical-align: middle;">
                    <i ng-if="carInfo.isTransfer!=true" class="ion-ios-checkmark-outline"
-               style="font-size: 1.6em;"></i>
+                      style="font-size: 1.6em;"></i>
                    <i ng-if="carInfo.isTransfer==true" class="ion-ios-checkmark"
-               style="font-size: 1.6em;"></i>
+                      style="font-size: 1.6em;"></i>
                 </span>
             </div>
 
@@ -140,16 +155,19 @@
                 </span>
             </div>
 
-
-          <div
-            class="item item-divider"
-            style="margin:1px;border:0px;padding:10px;position: relative;background-color:transparent;"
-            >
-            <span>绑定车辆信息</span>
+            <div class="item item-divider"
+            style="border:0px;padding:10px;padding-top:16px;padding-bottom:16px;border-bottom:1px solid #aaa;border-top:1px solid #aaa;
+            position: relative;margin-bottom:30px;margin-top:0px;">
+              <span style="width: 40%;display: inline-block;">绑定车辆信息</span>
+              <span style="width: 25%;display: inline-block"></span>
+              <span style="width:35%;display: inline-block;color:#00c9ff;text-align: center"
+                ng-click="showDemoPicture1()">
+                  如何填写?
+              </span>
           </div>
 
-          <!-- 车辆信息tab -->
-          <div class="list" style="margin-bottom: 20px;">
+            <!-- 车辆信息tab -->
+            <div class="list" style="margin-bottom: 20px;">
             <ul class="ul-tabs transparent"
                 style="background: rgb(203,203,203);background-color: transparent;border-bottom: 0px;">
 
@@ -212,7 +230,7 @@
             </ul>
           </div>
 
-          <ion-slide-box
+            <ion-slide-box
             on-slide-changed="licenseSlideChanged($index)"
             style="background-color: transparent;"
             delegate-handle="carInfo-slide">
@@ -314,16 +332,14 @@
 
           </ion-slide-box>
 
-          <div class="list list-inset padding" style="margin-bottom:40px;background-color:transparent;">
-            <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="postCarInfo()">
-              <h1 class="title">保存车辆信息</h1>
+            <div class="list list-inset padding" style="margin-bottom:40px;background-color:transparent;">
+                <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="postCarInfo()">
+                  <h1 class="title">保存车辆信息</h1>
+                </div>
             </div>
-          </div>
 
         </div>
-
     </div>
-
 
 
   </ion-content>

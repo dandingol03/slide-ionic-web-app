@@ -17,6 +17,9 @@ angular.module('starter')
 
         $scope.city_confirm=function () {
 
+            $scope.city_confirmed=$scope.city;
+            $scope.close_append_carNumPrefixModal();
+
         }
 
         $scope.plainStyle={width: '30%',display: 'inline-block',
@@ -649,6 +652,12 @@ angular.module('starter')
         };
         /*** show demo modal3 ***/
 
+        $scope.$on('$destroy', function() {
+            $scope.show_demo_modal.remove();
+            $scope.show_demo_modal1.remove();
+            $scope.show_demo_modal2.remove();
+            $scope.show_demo_modal3.remove();
+        });
 
         /*** bind upload_licenseCard_modal***/
         $ionicModal.fromTemplateUrl('views/modal/upload_licenseCard_modal.html',{
@@ -747,24 +756,16 @@ angular.module('starter')
 
 
         $scope.showDemoPicture = function() {
-            if ($scope.isShowPicture == true) {
-                $scope.openDemoModal();
-            };
+            $scope.openDemoModal();
         };
         $scope.showDemoPicture1 = function() {
-            if ($scope.isShowPicture1 == true) {
-                $scope.openDemoModal1();
-            };
+            $scope.openDemoModal1();
         };
         $scope.showDemoPicture2 = function() {
-            if ($scope.isShowPicture2 == true) {
                 $scope.openDemoModal2();
-            };
         };
         $scope.showDemoPicture3 = function() {
-            if ($scope.isShowPicture3 == true) {
                 $scope.openDemoModal3();
-            };
         };
         $scope.isShowPicture = false;
         $scope.isShowPicture1 = false;
