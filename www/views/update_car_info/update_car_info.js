@@ -16,6 +16,7 @@ angular.module('starter')
         }
 
         $scope.city_confirm=function () {
+
             $scope.city_confirmed=$scope.city;
             switch ($scope.city) {
                 case '北京':
@@ -67,6 +68,7 @@ angular.module('starter')
                     break;
             }
             $scope.close_append_carNumPrefixModal();
+
         }
 
         $scope.plainStyle={width: '30%',display: 'inline-block',
@@ -699,14 +701,12 @@ angular.module('starter')
         };
         /*** show demo modal3 ***/
 
-
         $scope.$on('$destroy', function() {
             $scope.show_demo_modal.remove();
             $scope.show_demo_modal1.remove();
             $scope.show_demo_modal2.remove();
             $scope.show_demo_modal3.remove();
         });
-
 
         /*** bind upload_licenseCard_modal***/
         $ionicModal.fromTemplateUrl('views/modal/upload_licenseCard_modal.html',{

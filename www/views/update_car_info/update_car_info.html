@@ -14,9 +14,6 @@
     <!-- 车险 -->
 
     <div style="height: 100%;">
-
-
-
         <div class="list list-inset"
              style="margin-bottom:40px;background-color: transparent;margin-left:0px;margin-right:0px;">
             <!-- 用车城市 -->
@@ -37,7 +34,7 @@
                 </span>
             </div>
 
-          <div class="item"
+            <div class="item"
                style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
                padding:10px;background-color:transparent;">
               <span style="display: inline-block;width: 5%;text-align: center">
@@ -58,31 +55,31 @@
                   ng-click="selectCarInfoByCarNum()">
                 <i class="ion-chevron-down"></i>
               </span>
-          </div>
+            </div>
 
-          <!-- 车主姓名 -->
-          <div class="item"
-               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
+            <!-- 车主姓名 -->
+            <div class="item"
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
 
-              <span style="display: inline-block;width: 5%;text-align: center">
-                  <i class="fa fa-user"></i>
-              </span>
-              <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
-                  姓名:
-              </span>
-              <span style="width: 25%;display: inline-block;text-align: left;">
-                  <input type="text" placeholder="请输入车主姓名"
-                          style="display:inline-block;background-color: transparent;"
-                          ng-value="carInfo.ownerName"
-                          ng-model="carInfo.ownerName"
-                          ng-change="validate(carInfo,'ownerName','/\\w|\\d/')"
-                     />
-              </span>
-              <span style="display: inline-block;width: 40%;text-align: left;color:#ff3b30;font-size: 0.8em;"
-                ng-if="carInfo['ownerName_error']==false">
-                  姓名不能含有数字和字母
-              </span>
-          </div>
+                  <span style="display: inline-block;width: 5%;text-align: center">
+                      <i class="fa fa-user"></i>
+                  </span>
+                  <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
+                      姓名:
+                  </span>
+                  <span style="width: 25%;display: inline-block;text-align: left;">
+                      <input type="text" placeholder="请输入车主姓名"
+                              style="display:inline-block;background-color: transparent;"
+                              ng-value="carInfo.ownerName"
+                              ng-model="carInfo.ownerName"
+                              ng-change="validate(carInfo,'ownerName','/\\w|\\d/')"
+                         />
+                  </span>
+                  <span style="display: inline-block;width: 40%;text-align: left;color:#ff3b30;font-size: 0.8em;"
+                    ng-if="carInfo['ownerName_error']==false">
+                      姓名不能含有数字和字母
+                  </span>
+            </div>
 
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
@@ -158,8 +155,7 @@
                 </span>
             </div>
 
-
-          <div class="item item-divider"
+            <div class="item item-divider"
             style="border:0px;padding:10px;padding-top:16px;padding-bottom:16px;border-bottom:1px solid #aaa;border-top:1px solid #aaa;
             position: relative;margin-bottom:30px;margin-top:0px;">
               <span style="width: 40%;display: inline-block;">绑定车辆信息</span>
@@ -170,8 +166,8 @@
               </span>
           </div>
 
-          <!-- 车辆信息tab -->
-          <div class="list" style="margin-bottom: 20px;">
+            <!-- 车辆信息tab -->
+            <div class="list" style="margin-bottom: 20px;">
             <ul class="ul-tabs transparent"
                 style="background: rgb(203,203,203);background-color: transparent;border-bottom: 0px;">
 
@@ -234,7 +230,7 @@
             </ul>
           </div>
 
-          <ion-slide-box
+            <ion-slide-box
             on-slide-changed="licenseSlideChanged($index)"
             style="background-color: transparent;"
             delegate-handle="carInfo-slide">
@@ -336,16 +332,14 @@
 
           </ion-slide-box>
 
-          <div class="list list-inset padding" style="margin-bottom:40px;background-color:transparent;">
-            <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="postCarInfo()">
-              <h1 class="title">保存车辆信息</h1>
+            <div class="list list-inset padding" style="margin-bottom:40px;background-color:transparent;">
+                <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="postCarInfo()">
+                  <h1 class="title">保存车辆信息</h1>
+                </div>
             </div>
-          </div>
 
         </div>
-
     </div>
-
 
 
   </ion-content>

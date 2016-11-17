@@ -648,6 +648,18 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             templateUrl:'views/advise_gift/advise_gift.html'
           })
 
+          .state('car_manage',{
+              url:'/car_manage',
+              controller:'carManageController',
+              templateUrl:'views/car_manage/car_manage.html'
+          })
+
+          .state('bindNewCar',{
+              url:'/bindNewCar',
+              controller:'bindNewCarController',
+              templateUrl:'views/bindNewCar/bindNewCar.html'
+          })
+
           .state('car_order_detail',{
             url:'/car_order_detail/:order',
             controller:'carOrderDetailController',
