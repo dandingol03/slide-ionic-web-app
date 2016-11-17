@@ -1,23 +1,10 @@
-<ion-view >
-  <ion-nav-bar class="bar-stable" align-title="center" >
 
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr"
-              style="font-size: 2.4em;"
-              ng-click="goto('tabs.dashboard')">
-        <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view  hide-nav-bar="true">
 
-  </ion-nav-bar>
+   <ion-content scroll="false">
 
-
-  <ion-content scroll="false">
-
-
-
-
-    <div class="list" style="margin-bottom: 0px;">
+     <div class="list" style="margin-bottom: 0px;">
       <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
         <li style="width:33.3%;" ng-repeat="tab in tabs">
           <div class="cell"
@@ -30,7 +17,7 @@
         </li>
 
       </ul>
-    </div>
+     </div>
 
     <div style="height: 75%;">
       <!--向上滑动箭头 -->
