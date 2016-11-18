@@ -6,7 +6,7 @@ angular.module('starter')
   .controller('appendCarInsurancederController',function($scope,$state,$http, $location,
                                                 $rootScope,$ionicActionSheet,$cordovaCamera,$cordovaImagePicker,
                                                 $ionicModal,Proxy,$stateParams,$cordovaFileTransfer,
-                                                $q){
+                                                $q,$ionicPopup){
 
     $scope.go_back=function(){
       window.history.back();
@@ -179,8 +179,10 @@ angular.module('starter')
     //提交车险意向
     $scope.confirm=function(){
 
+        alert('img=' + $scope.car_insurance.insuranceder.perIdCard_img);
       //已有照片
-        if($scope.car_insurance.insuranceder.perIdCard_img!==undefined&&$scope.car_insurance.insuranceder.perIdCard_img!==null)
+        if($scope.car_insurance.insuranceder.perIdCard1_img!==undefined&&$scope.car_insurance.insuranceder.perIdCard1_img!==null
+          &&$scope.car_insurance.insuranceder.perIdCard2_img!==undefined&&$scope.car_insurance.insuranceder.perIdCard2_img!==null)
         {
             //提交照片
             $scope.upload('createRelativePerson',$scope.car_insurance.insuranceder,'perIdCard_img').then(function(json) {
@@ -246,7 +248,8 @@ angular.module('starter')
 
         var perIdAttachId1 = null;
         var perIdAttachId2 = null;
-
+        var imageType = '';
+        var options='';
       var personId=null;
       $http({
         method: "POST",
@@ -280,7 +283,7 @@ angular.module('starter')
               server = Proxy.local() + '/svr/request?request=uploadPhoto' +
                   '&imageType=' + imageType + '&suffix=' + suffix +
                   '&filename=' + 'perIdCard1_img' + '&personId=' + personId;
-              var options = {
+              options = {
                   fileKey: 'file',
                   headers: {
                       'Authorization': "Bearer " + $rootScope.access_token
@@ -337,9 +340,11 @@ angular.module('starter')
           }
       }).then(function (res) {
             alert('upload perIdCard2 success');
-            for (var field in res) {
-                alert('field=' + field + '\r\n' + res[field]);
-            }
+          var su = null;
+          if ($scope.car_insurance.insuranceder.perIdCard2_img.indexOf('.jpg') != -1)
+              su = 'jpg';
+          else if ($scope.car_insurance.insuranceder.perIdCard2_img.indexOf('.png') != -1)
+              su = 'png';
 
             return $http({
                   method: "POST",
