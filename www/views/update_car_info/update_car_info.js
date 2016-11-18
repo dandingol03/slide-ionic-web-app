@@ -87,6 +87,10 @@ angular.module('starter')
 
         }
 
+        $scope.photoIndex=0;
+
+
+
         $scope.go_back=function(){
             window.history.back();
         };
@@ -402,12 +406,12 @@ angular.module('starter')
                                             template: '车辆信息保存成功'
                                         });
                                         popup.then(function(res) {
-                                            $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                            $state.go('car_manage');
                                         })
                                         $timeout(function(){
                                           if(popup.$$state==0){
                                               popup.close();
-                                              $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                              $state.go('car_manage');
                                           }
                                         },300);
 
@@ -596,12 +600,15 @@ angular.module('starter')
                                     template: '车辆信息保存成功'
                                 });
                                 popup.then(function(res) {
-                                    $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                   // $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                    $state.go('car_manage');
+
                                 })
                                 $timeout(function(){
                                     if(popup.$$state==0){
                                         popup.close();
-                                        $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                        //$state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                                        $state.go('car_manage');
                                     }
                                 },300);
 
