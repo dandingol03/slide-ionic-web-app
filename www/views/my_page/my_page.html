@@ -14,23 +14,113 @@
             <!--</div>-->
             <!--</div>-->
 
-            <div class="my-info-bk" style="width: 100%;height: 30%;position: relative;">
-                <div style="position: absolute;bottom:10px;left: 8px;">
-                    <div style="width: 95px;text-align: center;">
-                        <span style="max-height: 95px;max-width: 95px;font-size: 6em;color:#fff;">
-                            <i class="fa fa-user-circle-o"></i>
+            <div class="my-info-bk" style="width: 100%;height: 45%;position: relative;">
+
+                <!-- 返回键 -->
+                <div style="position: absolute;left:1%;width: 10%;text-align: center;height: 100%;"
+                        ng-click="go_back()">
+                    <div style="width: 100%;height: 100%;text-align: center">
+                        <span style="position: absolute;top:7%;vertical-align: middle;font-size:4em;color:#fff;">
+                            <i class="ion-chevron-left"></i>
                         </span>
-                        <h5 style="width: 100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;">
-                            {{userInfo.perName}}
-                        </h5>
                     </div>
                 </div>
 
-                <div style="position: absolute;right: 10%;bottom: 10%;">
-                    <span style="color:#fff;">积分</span>
-                    <span style="color:#fff;font-size: 2em;">$386.000</span>
+
+                <div style="position: absolute;top:16%;left: 20%;width: 60%;text-align: center">
+                    <div style="width: 100%;text-align: center;">
+                        <span style="max-height: 65px;max-width: 65px;font-size: 6em;color:#fff;">
+                            <i class="fa fa-user-circle-o"></i>
+                        </span>
+                        <h5 style="width: 100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;font-size: 1.2em;margin-top:10px;">
+                            {{userInfo.perName}}
+                        </h5>
+                        <div style="margin-top:2px;">
+                            <span style="color:#fff;font-size: 1.1em;color:rgba(17, 243, 207, 0.67);">积分</span>
+                            <span style="color:#fff;font-size: 1.2em;color:rgba(17, 243, 207, 0.67);">$386.000</span>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- 顶部底端功能按钮 -->
+                <div style="width: 100%;position: absolute;bottom:0px;background: rgba(9, 45, 105, 0.29);padding-top:10px;padding-bottom:10px;">
+                    <ul style="list-style: none;width: 100%;height: 55px;">
+                        <li style="float:left;min-height: 55px;width: 25%;"></li>
+                        <li style="float:left;min-height: 55px;width: 25%;"></li>
+                        <li style="float:left;min-height: 55px;width: 25%;">
+                            <div style="width: 100%;height: 100%;">
+                                <div style="width: 100%;display: table">
+                                    <span style="color:#fff;display:table-cell;vertical-align: middle;text-align: center;
+                                        font-size: 2.4em;width: 100%;">
+                                        <i class="ion-locked"></i>
+                                    </span>
+                                </div>
+                                <div style="display: block;color:#fff;font-size: 1.2em;width: 100%;text-align: center;margin-top:10px;">
+                                    密码修改
+                                </div>
+                            </div>
+                        </li>
+                        <li style="float:left;min-height: 55px;width: 25%;">
+                            <div style="width: 100%;height: 100%;">
+                                <div style="width: 100%;display: table">
+                                       <span style="color:#fff;display: table-cell;vertical-align: middle;text-align: center;
+                                        font-size: 2.4em;">
+                                           <i class="ion-power"></i>
+                                       </span>
+                                </div>
+                                <div style="display: block;color:#fff;font-size: 1.2em;width: 100%;text-align: center;margin-top:10px;">
+                                    退出登录
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
+
+            <!-- 个人界面菜单 -->
+            <div style="width: 100%;height: 55%;background: rgba(170, 170, 170, 0.22);">
+                <div class="list" style="margin-bottom: 0px;">
+                    <div class="item item-divider" style="padding-top: 15px;padding-bottom: 15px;">
+                        <span style="font-size: 1.2em;margin-left:5%;color:#555;">订单</span>
+                    </div>
+                </div>
+
+                <div class="list" style="background:transparent;">
+                    <div class="item" style="background: transparent;border-left:0px;border-right:0px;padding-top: 0px;padding-bottom: 0px;">
+                        <ul style="list-style: none;width: 100%;height: 110px;background: transparent;">
+                            <li style="float:left;width: 4%;"></li>
+                            <li style="float:left;width: 30%;margin-right: 2%;height: 100%;background: #fff;">
+                                <div style="width: 100%;height: 100%;display:table;text-align: center">
+                                    <span style="display: table-cell;vertical-align: middle;font-size: 2em;color:#1f26a9">
+                                        <i class="fa fa-car"></i>
+                                    </span>
+                                </div>
+                            </li>
+                            <li style="float:left;width: 30%;margin-right: 2%;height: 100%;background: #fff;">
+                                <div style="width: 100%;height: 100%;display:table;text-align: center">
+                                    <span style="display: table-cell;vertical-align: middle;font-size: 2em;">
+                                        <i class="fa fa-heart-o"></i>
+                                    </span>
+                                </div>
+                            </li>
+                            <li style="float:left;width: 30%;height: 100%;background: #fff;">
+                                <div style="width: 100%;height: 100%;display:table;text-align: center">
+                                    <span style="display: table-cell;vertical-align: middle;font-size: 2em;">
+                                        <i class="fa fa-handshake-o"></i>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
 
 
         </ion-content>
