@@ -91,13 +91,11 @@ angular.module('starter')
         $scope.photoIndex=1;
 
         $scope.changePhotoIndex = function(i){
-            alert(i);
-            if($scope.photoIndex<1){
-                alert('当前页为第一页');
+
+            if(i<1){
                 $scope.photoIndex=1;
             }else{
-                if($scope.photoIndex>3) {
-                    alert('当前页已是最后一页');
+                if(i>3) {
                     $scope.photoIndex=3;
                 }else{
                     $scope.photoIndex=i;
