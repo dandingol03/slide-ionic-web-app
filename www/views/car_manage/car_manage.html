@@ -6,18 +6,21 @@
 
             <div style="height:15%;width:100%;background-color:rgba(88, 73, 58, 0.95);position: relative">
 
-                <div style="position: absolute;left:5%;top:20%;">
-                <span style="font-size: 2em;color:#fff;">
-                    <i class="ion-arrow-left-c"></i>
-                </span>
+
+                <div style="position: absolute;left:5%;top:20%;"
+                    ng-click="go_back()">
+
+                    <span style="font-size: 2em;color:#fff;">
+                        <i class="ion-arrow-left-c"></i>
+                    </span>
                 </div>
 
-                <div style="position: absolute;left:20%;width: 60%;text-align: center;height: 100%;padding-top: 8%;">
-                <span style="color:#fff;font-size: 1.6em;">
-                    车辆管理
-                </span>
-                </div>
 
+                <div style="position: absolute;left:20%;width: 60%;text-align: center;height: 100%;padding-top: 8%;display: table">
+                    <span style="color:#fff;font-size: 1.6em;display: table-cell">
+                        车辆管理
+                    </span>
+                </div>
 
                 <div ng-click="openBindCarModal()"
                      style="display: inline-block;width:40%;text-align: right;position: absolute;bottom:10%;
