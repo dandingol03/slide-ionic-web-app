@@ -14,8 +14,9 @@ angular.module('starter')
             $state.go(url);
         }
 
-        $scope.carNum=null;
+        $scope.carInfo={
 
+        };
 
         /*** 绑定新车模态框 ***/
         $ionicModal.fromTemplateUrl('views/modal/bind_car_modal.html',{
@@ -108,11 +109,12 @@ angular.module('starter')
                 {
                     request:'bindNewCar',
                     info:{
-                        carNum:$scope.carNum
+                        carNum:$scope.carInfo.carNum
                     }
                 }
             }).then(function(res) {
-                var result = res.re;
+                var json=res.data;
+                var result = json.re;
                 switch (result){
                     case -1:
                         var confirmPopup = $ionicPopup.confirm({
@@ -121,6 +123,7 @@ angular.module('starter')
                         });
                         confirmPopup.then(function(res) {
                             if(res) {
+                                $scope.closeBindCarModal();
                                 $state.go('update_car_info');
                             } else {
                                 $scope.closeBindCarModal();
@@ -134,6 +137,7 @@ angular.module('starter')
                         });
                         confirmPopup.then(function(res) {
                             if(res) {
+                                $scope.closeBindCarModal();
                                 $state.go('update_car_info');
                             } else {
                                 $scope.closeBindCarModal();
@@ -147,6 +151,7 @@ angular.module('starter')
                         });
                         confirmPopup.then(function(res) {
                             if(res) {
+                                $scope.closeBindCarModal();
                                 $state.go('update_car_info');
                             } else {
                                 $scope.closeBindCarModal();
