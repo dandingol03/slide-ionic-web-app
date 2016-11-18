@@ -17,15 +17,15 @@
               <i class="icon ion-locked placeholder-icon"></i>
             </span>
 
-            <div style="width: 50%;">
+            <div style="width: 40%;">
               <input name="password" type="password" style="background: transparent;font-size: 1.2em;color:#fff;"
                      placeholder="********"
                      ng-model="userInfo.password"
                      ng-change="validate(userInfo,'password','/^\\w{6,8}$/')"
               />
             </div>
-            <div class="assertive" style="width: 40%;display: inline-block" ng-if="userInfo.password_error==true">
-              必须为6-8个字母
+            <div class="assertive" style="width: 50%;display: inline-block" ng-if="userInfo.password_error==true">
+              必须为6-8个字母或数字
             </div>
           </label>
 
