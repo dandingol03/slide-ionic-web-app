@@ -87,7 +87,10 @@ angular.module('starter')
 
         }
 
-        $scope.photoIndex=0;
+        $scope.photoIndex=1
+        $scope.changePhotoIndex = function(){
+
+        }
 
 
 
