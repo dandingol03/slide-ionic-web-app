@@ -10,12 +10,18 @@ angular.module('starter')
             window.history.back();
         }
 
+        $scope.go_to=function (url) {
+            $state.go(url);
+        }
+
         $scope.carNum=null;
+
 
         /*** 绑定新车模态框 ***/
         $ionicModal.fromTemplateUrl('views/modal/bind_car_modal.html',{
             scope:  $scope,
-            animation: 'slide-in-bottom'
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
         }).then(function(modal) {
             $scope.bind_car_modal = modal;
         });
@@ -52,6 +58,13 @@ angular.module('starter')
                 var json=res.data;
                 if(json.re==1) {
                     $scope.relativeCars=json.data;
+                    if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+                    {
+                        $scope.relativeCars.map(function(car,i) {
+                            if(car.carId==$rootScope.carInfo.carId)
+                                car.checked=true;
+                        })
+                    }
                 }
             }).catch(function(err) {
                 var str='';
@@ -63,21 +76,23 @@ angular.module('starter')
 
         $scope.fetchRelativeCars();
         $scope.Mutex=function(item,field,cluster) {
-            item[field]=true;
-            cluster.map(function(cell,i) {
-                if(item.carId!=cell.carId)
-                    cell[field]=false;
-            })
-            if(item.idle==false){
-                item[field]=false;
+
+            if(item.idle)
+            {
+                item[field]=true;
+                $rootScope.carInfo=item;
+                cluster.map(function(cell,i) {
+                    if(item.carId!=cell.carId&&cell.idle==true)
+                        cell[field]=false;
+                })
+                $scope.relativeCars.map(function(car,i){
+                    if(car.checked==true){
+                        $scope.factoryNum = car.factoryNum;
+                        $scope.engineNum = car.engineNum;
+                        $scope.frameNum = car.frameNum;
+                    }
+                })
             }
-            $scope.relativeCars.map(function(car,i){
-                if(car.checked==true){
-                    $scope.factoryNum = car.factoryNum;
-                    $scope.engineNum = car.engineNum;
-                    $scope.frameNum = car.frameNum;
-                }
-            })
         };
 
 

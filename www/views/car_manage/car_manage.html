@@ -10,8 +10,8 @@
                 <div style="position: absolute;left:5%;top:20%;"
                     ng-click="go_back()">
 
-                    <span style="font-size: 2em;color:#fff;">
-                        <i class="ion-arrow-left-c"></i>
+                    <span style="font-size: 2.4em;color:#fff;">
+                        <i class="ion-chevron-left"></i>
                     </span>
                 </div>
 
@@ -22,9 +22,16 @@
                     </span>
                 </div>
 
+                <div style="display: inline-block;position: absolute;text-align: center;right: 0%;top:10%;width: 20%;"
+                    ng-click="go_to('tabs.dashboard')">
+                    <button class="button button-small button-calm" style="border-radius: 6px;padding-left:10%;padding-right: 10%;">
+                        返回主页
+                    </button>
+                </div>
+
+
                 <div ng-click="openBindCarModal()"
-                     style="display: inline-block;width:40%;text-align: right;position: absolute;bottom:10%;
-                 margin-top: 7%;right:10%;">
+                     style="display: inline-block;width:20%;text-align: right;position: absolute;bottom:10%;right:0%;text-align: center">
                     <button class="button button-small button-dark"
                             style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;padding-left:10%;padding-right:10%;">
                         绑定新车
@@ -41,12 +48,12 @@
                          ng-repeat="car in relativeCars"
                          ng-click="Mutex(car,'checked',relativeCars)">
 
-                        <div style="display:inline-block;width:15%;float:left;margin-right:5%;">
+                        <div style="display:inline-block;width:15%;">
                             <i ng-if="car.checked!=true" class="ion-ios-information-outline" style="font-size:200%"></i>
                             <i ng-if="car.checked==true" class="ion-ios-information" style="font-size:200%"></i>
                         </div>
 
-                        <div style="display:inline-block;width:55%;float:left;margin-right:5%;">
+                        <div style="display:inline-block;width:55%;">
                             <div>
                                 <span>{{car.carNum}}</span>
                             </div>
@@ -55,11 +62,11 @@
                             </div>
                         </div>
 
-                        <div style="position:absolute;right:10%;float:left;margin-right:5%;">
-                            <span ng-if="car.idle==true">
+                        <div style="display: inline-block;width: 30%;">
+                            <span ng-if="car.idle==true" style="color:#e45d23;font-size: 1.3em;">
                                 可选
                             </span>
-                            <span ng-if="car.idle!=true" >
+                            <span ng-if="car.idle!=true" style="color:#e45d23;font-size: 1.3em;">
                                 不可选
                             </span>
                         </div>

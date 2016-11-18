@@ -218,26 +218,30 @@ angular.module('starter')
 
 
 
-
-    $http({
-      method: "post",
-      url: Proxy.local()+"/svr/request",
-      headers: {
-        'Authorization': "Bearer " + $rootScope.access_token,
-      },
-      data:
+    //同步车辆信息
+      if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
       {
-        request:'getCarAndOwnerInfo'
+          $scope.carInfo=$rootScope.carInfo;
+      }else{
+          // $http({
+          //     method: "post",
+          //     url: Proxy.local()+"/svr/request",
+          //     headers: {
+          //         'Authorization': "Bearer " + $rootScope.access_token,
+          //     },
+          //     data:
+          //         {
+          //             request:'getCarAndOwnerInfo'
+          //         }
+          // }).success(function (res) {
+          //         var json=res.carInfo;
+          //         if(json.re==1) {
+          //             var carInfo=json.data[0];
+          //             $scope.carInfo=carInfo;
+          //         }
+          //         console.log('success');
+          // });
       }
-    })
-      .success(function (res) {
-        var json=res.carInfo;
-        if(json.re==1) {
-          var carInfo=json.data[0];
-          $scope.carInfo=carInfo;
-        }
-        console.log('success');
-      })
 
 
 
