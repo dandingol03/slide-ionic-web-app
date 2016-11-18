@@ -14,7 +14,19 @@ angular.module('starter')
         carInfo = JSON.parse(carInfo);
       $scope.carInfo=carInfo;
     }
-    $scope.tabIndex=0;
+
+      $scope.tabIndex=0;
+
+      $scope.selectedTabStyle={
+          display: 'table',width: '100%',height:'100%',position: 'relative',
+      'text-align': 'center',border: '1px solid #fff9df','border-bottom':'0px',background:'cadetblue'
+      };
+
+      $scope.unSelectedTabStyle={
+          display: 'table',width: '100%',height:'100%',
+          'text-align': 'center',border: '1px solid rgba(255, 249, 223, 0.32)','border-bottom':'0px',background:'rgba(95, 158, 160, 0.39)'
+      }
+
 
     //当前页数
     $scope.companyIndex=0;

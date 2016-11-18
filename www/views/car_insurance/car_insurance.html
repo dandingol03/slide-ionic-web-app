@@ -4,54 +4,63 @@
 
    <ion-content scroll="false">
 
-     <div style="width: 100%;height: 56px;background: darkcyan">
-       <div style="display: inline-block;width: 13%;"></div>
-       <div style="display: inline-block;width: 35%;height: 100%;">
-          <div style="width: 100%;height: 100%;padding-top:10px;">
-              <div style="display: table;width: 100%;height:100%;position: relative;
-              text-align: center;border: 1px solid #fff9df;border-bottom:0px;background:cadetblue">
+     <div style="width: 100%;height: 70px;background: darkcyan">
+       <div style="display: inline-block;width: 12%;height: 100%;">
+         <div style="width: 100%;height: 100%;display: table;margin-left:10%;"
+              ng-click="go_back()">
+           <span style="display: table-cell;vertical-align: middle;color:#fff;font-size: 2.4em;">
+             <i class="ion-arrow-left-c"></i>
+           </span>
+         </div>
+       </div>
+       <div style="display: inline-block;width: 24%;height: 100%;">
+          <div style="width: 100%;height: 100%;padding-top:20px;">
+              <div ng-style="tabIndex==0?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(0)">
                 <span style="display: table-cell;vertical-align: middle;color:#fff;">
                   基础套餐
                 </span>
-                <span style="position: absolute;top:80%;color:darkcyan;left:45%;font-size: 2em;z-index:999;">
+                <span style="position: absolute;top:80%;color:darkcyan;left:45%;font-size: 2em;z-index:999;"
+                    ng-if="tabIndex==0">
                   <i class="ion-arrow-down-b"></i>
                 </span>
               </div>
           </div>
        </div>
-       <div style="display: inline-block;width: 35%;height: 100%;">
-          <div style="width: 100%;height: 100%;padding-top:10px;">
-              <div style="display: table;width: 100%;height: 100%;
-              text-align: center;border:1px solid rgba(255, 249, 223, 0.32);border-bottom:0px;background:rgba(95, 158, 160, 0.39);">
+       <div style="display: inline-block;width: 24%;height: 100%;">
+          <div style="width: 100%;height: 100%;padding-top:20px;">
+              <div ng-style="tabIndex==1?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(1)">
                 <span style="display: table-cell;vertical-align:middle;color:#fff;">
                   建议套餐
+                </span>
+                <span style="position: absolute;top:80%;color:darkcyan;left:43%;font-size: 2em;z-index:999;"
+                      ng-if="tabIndex==1">
+                  <i class="ion-arrow-down-b"></i>
                 </span>
               </div>
           </div>
        </div>
-       <div style="display: inline-block;width: 13%;"></div>
+       <div style="display: inline-block;width: 24%;height: 100%;">
+         <div style="width: 100%;height: 100%;padding-top:20px;">
+           <div ng-style="tabIndex==2?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(2)">
+             <span style="display: table-cell;vertical-align:middle;color:#fff;">
+               自定义套餐
+             </span>
+             <span style="position: absolute;top:80%;color:darkcyan;left:45%;font-size: 2em;z-index:999;"
+                   ng-if="tabIndex==2">
+               <i class="ion-arrow-down-b"></i>
+             </span>
+           </div>
+         </div>
+       </div>
+       <div style="display: inline-block;width: 18%;"></div>
      </div>
 
 
-
-
-
-     <div class="list" style="margin-bottom: 0px;">
-      <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
-        <li style="width:33.3%;" ng-repeat="tab in tabs">
-          <div class="cell"
-               ng-class="{true: 'selected', false: ''}[tabIndex==$index]"
-               ng-click="tab_change($index)">
-            <span style="position:absolute;left: 20%;top:40%;">
-              {{tab.mealName}}
-            </span>
-          </div>
-        </li>
-
-      </ul>
-     </div>
 
     <div style="height: 75%;">
+      <div class="row"
+           style="display: block;height: 10px;margin-bottom:6px;">
+      </div>
       <!--向上滑动箭头 -->
       <div class="row"
            style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;"
@@ -143,7 +152,7 @@
 
     <div style="height: 25%;position: relative"
          ng-click="openCompanyModal();">
-      <button style="position: absolute;bottom:30%;" class="button button-block button-positive">
+      <button style="position: absolute;bottom:38%;min-height:40px;width: 60%;margin-left:20%;" class="button button-block button-positive">
         确认套餐选择
       </button>
     </div>
