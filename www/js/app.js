@@ -807,6 +807,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
+          .state('my_page',{
+                url:'/my_page',
+                controller:'myPageController',
+                templateUrl:'views/my_page/my_page.html'
+          })
 
 
 

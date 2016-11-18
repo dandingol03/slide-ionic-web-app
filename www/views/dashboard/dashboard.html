@@ -350,13 +350,13 @@
                ng-click="datetimepicker(carInfo,'issueDate')"
           >
             <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
-                发证日期:
+                注册日期:
             </span>
 
 
             <span style="display: inline-block;width: 55%;color:#888;font-size: .9em;text-align: center;"
               ng-if="carInfo.issueDate==undefined||carInfo.issueDate==null||carInfo.issueDate==''">
-                点击选择发证日期
+                点击选择注册日期
             </span>
             <span style="display: inline-block;width: 55%;color:#888;font-size: .9em;text-align: center;"
               ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
@@ -410,16 +410,12 @@
 
 
         <div class="list list-inset padding" style="margin-bottom:40px;background-color:transparent;">
-          <div class="bar bar-footer bar-balanced"
-                  style="position: static;width: 40%;display: inline-block"
-                  ng-click="goto('/update_car_info')">
-            <h1 class="title">创建新车</h1>
-          </div>
-          <div style="position: static;width: 10%;display: inline-block"></div>
+
+
           <div class="bar bar-footer  bar-assertive"
-                  style="position: static;width: 40%;display: inline-block;"
+                  style="position: static;width: 60%;display: inline-block;"
                   ng-click="select_type()">
-            <h1 class="title">下一步</h1>
+            <h1 class="title" style="width: 100%;">下一步</h1>
           </div>
 
         </div>
