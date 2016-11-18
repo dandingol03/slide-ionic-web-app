@@ -66,7 +66,19 @@ angular.module('starter')
                                 car.checked=true;
                         })
                     }
-                }
+                }else if(json.re==2)
+                {
+                    //询问用户是否需要创建新车
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: '您未有已绑定的车辆',
+                        template: '请问是否现在创建新车\r\n您也可以通过点击右上反的\'绑定车辆完成此步骤\''
+                    });
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            $scope.openBindCarModal();
+                        } else {}
+                    });
+                }else{}
             }).catch(function(err) {
                 var str='';
                 for(var field in err)
