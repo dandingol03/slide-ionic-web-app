@@ -9,8 +9,6 @@ angular.module('starter')
             window.history.back();
         };
 
-
-
         $scope.go_to=function(state){
             $state.go(state);
         };
@@ -23,6 +21,7 @@ angular.module('starter')
             $ionicHistory.clearCache();
             $state.go('login');
         }
+
 
         $scope.infos=[];
 
