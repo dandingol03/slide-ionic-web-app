@@ -89,6 +89,7 @@ angular.module('starter')
         }
 
         $scope.photoIndex=1;
+
         $scope.changePhotoIndex = function(i){
             alert(i);
             if($scope.photoIndex<1){
