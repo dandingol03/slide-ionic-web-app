@@ -1,14 +1,9 @@
-<ion-view view-title="我的积分">
+<ion-view view-title="我的积分" >
 
   <ion-nav-bar class="bar-stable" align-title="center" >
     <ion-nav-buttons side="left">
       <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
         <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-        <i class="ion-ios-search-strong"></i>
       </button>
     </ion-nav-buttons>
 
@@ -22,20 +17,22 @@
       <li class="item item-icon-right"
           style="padding-top:0px;padding-left:0px;padding-bottom:0px;border: 0px;"
           >
-        <div style="width: 30%;float:left;">
+        <div style="width: 25%;float:left;">
            <span style="display: inline-block">
-             <img src="img/iverson.jpg" style="width:65px;"/>
+             <img src="img/person.jpg" style="width:65px;height: 65px;border-radius: 20px;"/>
            </span>
         </div>
-        <div style="width:70%;float:left;padding-top:2%;">
+        <div style="width:75%;float:left;padding-top:2%;">
           <h2 style="margin-bottom: 5%;">
             <span>用户:</span>
-            <span>alon iverson</span>
+            <span ng-if="userInfo!==undefined&&userInfo!==null">{{userInfo.perName}}</span>
           </h2>
 
           <h2>
             <span>手机:</span>
-            <span>17865135730</span>
+            <span ng-if="userInfo!==undefined&&userInfo!==null">
+              {{userInfo.mobilePhone}}
+            </span>
           </h2>
 
           <!--<i class="icon ion-chevron-right" style="font-size: 1.2em;"></i>-->
@@ -55,7 +52,7 @@
                  style="text-align: center"
               >
             <span style="position:absolute;left: 20%;right:20%;top:30%;">
-              积分余额
+              积分收入
             </span>
             </div>
           </li>
@@ -67,7 +64,7 @@
                  style="text-align: center"
               >
             <span style="position:absolute;left: 20%;right:20%;top:30%;">
-              今日积分
+              积分支出
             </span>
 
             </div>
@@ -77,12 +74,15 @@
       </div>
     </div>
 
-    <div class="list" ng-if="score_tab==0">
-      <div class="item" style="border: 0px;">
-        <span>您已积累积分</span>
-        {{score_total}}
-      </div>
 
+    <div class="item" style="border: 0px;">
+      <span>您已积累积分</span>
+      {{scoreTotal}}
+    </div>
+
+
+
+    <div class="list" ng-if="score_tab==0">
 
       <div class="item item-divider" style="background:#CBCBCB;border-top-left-radius: 10px;border-top-right-radius: 10px;">
         <div style="display: inline-block;width: 33%;text-align: center">
@@ -97,45 +97,61 @@
       </div>
 
 
-      <div class="item">
+      <div class="item" ng-repeat="order in carOrders">
         <div style="display: inline-block;width: 33%;text-align: center">
-          订单购买
+          车险订单购买
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          2014-07-29
+          {{order.orderDate}}
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          2
-        </div>
-      </div>
-
-      <div class="item">
-        <div style="display: inline-block;width: 33%;text-align: center">
-          订单购买
-        </div>
-        <div style="display: inline-block;width: 33%;text-align: center">
-          2014-07-29
-        </div>
-        <div style="display: inline-block;width: 33%;text-align: center">
-          2
+          {{order.score}}
         </div>
       </div>
 
-      <div class="item">
+      <div class="item" ng-repeat="order in lifeOrders">
         <div style="display: inline-block;width: 33%;text-align: center">
-          订单购买
+          寿险订单购买
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          2014-07-29
+          {{order.insuranceEndDate}}
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          2
+          {{}}
         </div>
       </div>
-
-
-
     </div>
+
+    <div class="list" ng-if="score_tab==1">
+
+      <div class="item item-divider" style="background:#CBCBCB;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+        <div style="display: inline-block;width: 33%;text-align: center">
+          积分支出
+        </div>
+        <div style="display: inline-block;width: 33%;text-align: center">
+          支出日期
+        </div>
+        <div style="display: inline-block;width: 33%;text-align: center">
+          支出数量
+        </div>
+      </div>
+
+
+      <div class="item" ng-repeat="order in serviceOrders">
+        <div style="display: inline-block;width: 33%;text-align: center">
+          服务订单支出
+        </div>
+        <div style="display: inline-block;width: 33%;text-align: center">
+          {{order.orderFinishDate}}
+        </div>
+        <div style="display: inline-block;width: 33%;text-align: center">
+          {{order.fee}}
+        </div>
+      </div>
+    </div>
+
+
+
 
   </ion-content>
 

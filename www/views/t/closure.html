@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../lib/jquery/dist/jquery.js"></script>
+    <script>
+        $(document).ready(function() {
+           function constfuncs(){
+               var funcs=[];
+               for(var i=0;i<10;i++) {
+                   funcs[i]=function () {
+                       return i;
+                   }
+               }
+               return funcs;
+           }
+           var funcs=constfuncs();
+           funcs[5]();
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
