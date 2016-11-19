@@ -687,39 +687,8 @@ angular.module('starter')
         };
         /*** show demo modal1 ***/
 
-        /*** show demo modal2 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_demo_modal2.html',{
-            scope:  $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.show_demo_modal2 = modal;
-        });
 
-        $scope.openDemoModal2= function(){
-            $scope.show_demo_modal2.show();
-        };
 
-        $scope.closeDemoModal2= function() {
-            $scope.show_demo_modal2.hide();
-        };
-        /*** show demo modal2 ***/
-
-        /*** show demo modal3 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_demo_modal3.html',{
-            scope:  $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.show_demo_modal3 = modal;
-        });
-
-        $scope.openDemoModal3= function(){
-            $scope.show_demo_modal3.show();
-        };
-
-        $scope.closeDemoModal3= function() {
-            $scope.show_demo_modal3.hide();
-        };
-        /*** show demo modal3 ***/
 
         $scope.$on('$destroy', function() {
             $scope.show_demo_modal.remove();

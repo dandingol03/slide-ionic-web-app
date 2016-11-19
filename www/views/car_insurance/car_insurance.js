@@ -344,6 +344,7 @@ angular.module('starter')
       }
     };
 
+
     /*** bind append_car_insuranceder_modal 选择被保险人模态框(车险)***/
     $ionicModal.fromTemplateUrl('views/modal/append_car_insuranceder_modal.html',{
       scope:  $scope,
