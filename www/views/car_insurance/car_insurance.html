@@ -57,15 +57,13 @@
 
 
 
-    <div style="height: 75%;">
+    <div style="height: 70%;">
       <div class="row"
            style="display: block;height: 10px;margin-bottom:6px;">
       </div>
       <!--向上滑动箭头 -->
       <div class="row"
-           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;"
-           ng-if="tabIndex!=0"
-      >
+           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;">
         <div class="item" style="border:0px;width: 100%;text-align: center;padding: 4px;"
              ng-click="scrollUpStep()">
               <span style="font-size: 2em;color:#00c9ff">
@@ -73,7 +71,7 @@
               </span>
         </div>
       </div>
-      <ion-scroll style="height: 92%;" delegate-handle="products_scroll">
+      <ion-scroll style="height: 83%;" delegate-handle="products_scroll">
         <div>
 
           <div class="row"
@@ -137,9 +135,7 @@
       </ion-scroll>
       <!-- 向下滑动箭头 -->
       <div class="row"
-           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;"
-           ng-if="tabIndex!=0"
-      >
+           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;">
         <div class="item" style="border:0px;width: 100%;text-align: center;padding: 4px;"
              ng-click="scrollDownStep()">
           <span style="font-size: 2em;color:#00c9ff">
@@ -150,11 +146,19 @@
 
     </div>
 
-    <div style="height: 25%;position: relative"
+
+
+    <div style="height: 30%;width: 100%"
          ng-click="openCompanyModal();">
-      <button style="position: absolute;bottom:38%;min-height:40px;width: 60%;margin-left:20%;" class="button button-block button-positive">
-        确认套餐选择
-      </button>
+      <div class="row" style="display:table;height: 100%;">
+        <div style="width: 100%;display: table-cell;vertical-align: middle;">
+          <button style="display: table-cell;min-height:35px;width: 60%;margin-left:20%;" class="button button-block button-positive">
+            确认套餐选择
+          </button>
+          <div style="width: 100%;height: 15px;">
+          </div>
+        </div>
+      </div>
     </div>
 
 
