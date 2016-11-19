@@ -1026,3 +1026,15 @@ ion-header-bar.dashboard-nav {
   background: url('../img/myPage_bg.jpg') no-repeat;
   background-size:100% 100%;
 }
+
+.pages ul li.selected{
+  background: #aaaaaa;
+}
+
+.pages ul li span{
+  color:cyan;
+}
+
+.pages ul li.selected span{
+  color:#fff;
+}

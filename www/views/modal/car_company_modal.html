@@ -20,7 +20,7 @@
 
     <!-- card 组件 -->
     <div class="card"
-         style="width: 90%;height: 35px;bottom: 10px;margin-left: 5%;">
+         style="width: 90%;height: 35px;bottom: 10px;margin-left: 5%;margin-bottom: 0px;">
       <div class="item item-text-wrap" style="padding-top: 4px;padding-bottom: 4px;width: 100%;">
 
           <div ng-click="previou_page()"
@@ -47,28 +47,9 @@
 
 
 
-    <!--&lt;!&ndash; 分页组件 &ndash;&gt;-->
-    <!--<div class="list">-->
-      <!--<div class="item item-divider">-->
-        <!--<span-->
-          <!--style="width: 20%;display: inline-block;text-align: center"-->
-          <!--ng-click="previou_page()"-->
-          <!--&gt;-->
-          <!--<i class="ion-chevron-left"></i>-->
-        <!--</span>-->
-        <!--<span style="width: 60%;display: inline-block;text-align: center">-->
-          <!--{{'第'+(companyIndex+1)+'页'}}-->
-        <!--</span>-->
-        <!--<span-->
-          <!--style="width: 20%;display: inline-block;text-align: center"-->
-          <!--ng-click="next_page()"-->
-          <!--&gt;-->
-          <!--<i class="ion-chevron-right"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-    <!--</div>-->
 
-    <ion-scroll style="height: 75%;">
+
+    <ion-scroll style="height: 60%;">
       <div class="list" style="border:1px solid #eee;border-bottom:0px;width: 90%;margin-left:5%;">
 
         <div class="item"
@@ -92,6 +73,30 @@
       </div>
     </ion-scroll>
 
+    <div style="width: 100%;height: 40px;padding-left: 16px;" class="pages">
+      <ul style="list-style: none;width: 100%;">
+        <li style="float:left;width: 35px;height: 35px;border:1px solid #aaa;
+        border-top-left-radius: 4px;border-bottom-left-radius: 4px;">
+          <div style="width: 100%;height: 100%;text-align: center;display: table;">
+            <span style="color:#444;display: table-cell;vertical-align: middle;"><i class="fa fa-angle-double-left"></i></span>
+          </div>
+        </li>
+        <li ng-repeat="page in pages"
+            style="float:left;width: 35px;height: 35px;border:1px solid #aaa;"
+            ng-class="{true: 'selected', false: ''}[companyIndex==page]"
+            ng-click="pageSelect(page)" >
+          <div style="width: 100%;height: 100%;display: table;text-align: center;">
+            <span style="display: table-cell;vertical-align: middle;">{{page+1}}</span>
+          </div>
+        </li>
+        <li style="float:left;width: 35px;height: 35px;border:1px solid #aaa;
+        border-top-right-radius: 4px;border-bottom-right-radius: 4px;">
+          <div style="width: 100%;height: 100%;text-align: center;display: table;">
+            <span style="color:#444;display: table-cell;vertical-align: middle;"><i class="fa fa-angle-double-right"></i></span>
+          </div>
+        </li>
+      </ul>
+    </div>
 
     <div
       class="bar bar-footer bar-assertive"

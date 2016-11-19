@@ -567,6 +567,51 @@ angular.module('starter')
       }
     }
 
+    //分页footer
+    $scope.pageSpan=5;
+    $scope.pages=[0,1,2,3,4];
+    //分页按钮选中
+    $scope.pageSelect=function (i) {
+        $scope.companyIndex=i;
+        //页面列表渲染
+        var curIndex=($scope.companyIndex)*$scope.page_size;
+        if(curIndex>=0) {
+            var j=0;
+            $scope.page_companys=[];
+            for(var k=curIndex;k<$scope.companys.length;k++)
+            {
+                if(j<$scope.page_size)
+                {
+                    $scope.page_companys.push($scope.companys[k]);
+                    j++;
+                }
+                else
+                    break;
+            }
+        }
+
+
+        //页脚渲染
+        var capacity= $scope.companys.length;
+        var pageSize=$scope.page_size;
+        var pageMax=parseInt(capacity/pageSize);
+        var remainder=capacity%pageSize;
+        if(remainder==0)
+        {
+            pageMax--;
+        }
+        else{}
+
+        if(i-2>=0&&i+2<=pageMax)
+        {
+            $scope.pages=[];
+            for(var j=i-2;j<=i+2;j++)
+            {
+                $scope.pages.push(j);
+            }
+        }else{}
+    }
+
 
 
 //提交统一函数
