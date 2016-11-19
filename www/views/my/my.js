@@ -45,7 +45,9 @@ angular.module('starter')
       }).then(function(res) {
          var json=res.data;
          if(json.re==1) {
-             var infos=json.data;
+             var ob=json.data;
+             var infos=ob.infos;
+             $scope.score=ob.score;
              if(Object.prototype.toString.call(infos)!='[object Array]')
                  infos=JSON.parse(infos);
              $scope.infos=infos;

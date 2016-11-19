@@ -2,7 +2,7 @@
   <ion-view hide-nav-bar="true">
 
 
-        <ion-content scroll="false"  lazy-scroll style="position: relative">
+        <ion-content   lazy-scroll style="position: relative">
 
           <!--<div class="list padding">-->
             <!--<div class="item"-->
@@ -14,28 +14,28 @@
             <!--</div>-->
           <!--</div>-->
 
-            <div class="my-info-bk" style="width: 100%;min-height: 140px;position: relative;">
-                <div style="position: absolute;bottom:10px;left: 8px;">
-                    <div style="width: 95px;text-align: center;">
+            <div style="width: 100%;height: 100%;">
+                <div class="my-info-bk" style="width: 100%;height:20%;position: relative;">
+                    <div style="position: absolute;bottom:10px;left: 8px;">
+                        <div style="width: 95px;text-align: center;">
                         <span style="max-height: 95px;max-width: 95px;font-size: 6em;color:#fff;">
                             <i class="fa fa-user-circle-o"></i>
                         </span>
-                        <h5 style="width: 100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;">
-                            {{userInfo.perName}}
-                        </h5>
+                            <h5 style="width: 100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;">
+                                {{userInfo.perName}}
+                            </h5>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute;right: 10%;bottom: 10%;">
+                        <span style="color:#fff;">积分</span>
+                        <span style="color:#fff;font-size: 2em;">${{score}}</span>
                     </div>
                 </div>
 
-                <div style="position: absolute;right: 10%;bottom: 10%;">
-                    <span style="color:#fff;">积分</span>
-                    <span style="color:#fff;font-size: 2em;">$386.000</span>
-                </div>
-            </div>
+                <div style="height: 10%;width: 100%;">
 
 
-            <div style="height: 90%;">
-
-                <ion-scroll style="height: 90%;">
                     <div class="item" style="padding: 4px;border-bottom:0px;">
                         <ul>
                             <li style="width: 20%;float: right;text-align: center"
@@ -59,8 +59,11 @@
                         </ul>
                     </div>
 
+                </div>
 
-                    <div class="item" style="padding: 9px;padding-left:4px;padding-right:11px;margin-top:2px;background: transparent;width: 100%;border:0px;">
+                <div style="height: 70%;width: 100%;">
+                    <div class="item" style="padding: 9px;padding-left:4px;padding-right:11px;margin-top:2px;background: transparent;
+                        width: 100%;border:0px;">
                         <ul style="margin-bottom:6px;">
                             <li style="width: 33.333%;min-height:104px;display: inline-block;text-align: center;border:1px solid #aaa;background: #fff;"
                                 ng-click="go_to('contact_information')">
@@ -166,7 +169,8 @@
                         </div>
 
                     </div>
-                </ion-scroll>
+
+                </div>
 
             </div>
 
