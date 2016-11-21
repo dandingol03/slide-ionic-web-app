@@ -5,7 +5,7 @@ angular.module('starter')
  */
   .controller('lifeInsuranceOrdersController',function($scope,$state,$http,
                                                        $location,$rootScope,$stateParams,
-                                                       $ionicPopup,Proxy){
+                                                       $ionicPopup,Proxy,$ionicLoading){
 
     $scope.changedState= false;
 
@@ -91,6 +91,12 @@ angular.module('starter')
       $scope.pricingOrders = $rootScope.lifeInsurance.pricingOrders;
       $scope.finishOrders = $rootScope.lifeInsurance.finishOrders;
     }else{
+
+
+        $ionicLoading.show({
+            template:'<p class="item-icon-left">Loading stuff...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+        });
+
       $http({
         method: "POST",
         url: Proxy.local()+'/svr/request',
@@ -102,6 +108,10 @@ angular.module('starter')
           request:'getLifeOrders'
         }
       }).then(function(res) {
+
+          $ionicLoading.hide();
+
+
         var json=res.data;
         if(json.re==1){
           $scope.orders=json.data;
@@ -127,6 +137,11 @@ angular.module('starter')
           $rootScope.lifeInsurance.finishOrders = $scope.finishOrders;
 
         }
+      }).catch(function(err) {
+          var str='';
+          for(var field in err)
+            str+=err[field];
+          console.error('error=\r\n'+str);
       })
     }
 
