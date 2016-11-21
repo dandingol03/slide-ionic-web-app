@@ -490,31 +490,42 @@ angular.module('starter')
 
     //选用险种检查车险相关人员
     $scope.apply=function(){
-      //TODO:append insuranceder modal
-      //$scope.open_appendCarOrderModal();
-      var products=[];
-      var meal = $scope.tabs[$scope.tabIndex];
-      for(var productName in meal.products) {
-        var product=meal.products[productName];
-        if(product.checked==true)
-        {
-          products.push(product);
+
+        var companys=[];
+        $scope.companys.map(function(company,i) {
+            if(company.checked==true)
+                companys.push(company);
+        });
+
+        if(companys.length>0) {
+            //TODO:append insuranceder modal
+            //$scope.open_appendCarOrderModal();
+            var products=[];
+            var meal = $scope.tabs[$scope.tabIndex];
+            for(var productName in meal.products) {
+                var product=meal.products[productName];
+                if(product.checked==true)
+                {
+                    products.push(product);
+                }
+            }
+
+            var info={
+                products:products,
+                companys:companys,
+                carId:$scope.carInfo.carId
+            };
+
+            $state.go('append_car_insuranceder',{info:JSON.stringify(info)});
+            $scope.closeCompanyModal();
+        }else{
+            var alertPopup = $ionicPopup.alert({
+                title: '错误',
+                template: '请选择公司后点击确认'
+            });
         }
-      }
-      var companys=[];
-      $scope.companys.map(function(company,i) {
-        if(company.checked==true)
-          companys.push(company);
-      });
 
-      var info={
-        products:products,
-        companys:companys,
-        carId:$scope.carInfo.carId
-      };
 
-      $state.go('append_car_insuranceder',{info:JSON.stringify(info)});
-      $scope.closeCompanyModal();
 
     }
 
