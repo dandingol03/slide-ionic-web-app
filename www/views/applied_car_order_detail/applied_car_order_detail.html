@@ -1,4 +1,4 @@
-<ion-view view-title="已申请车险订单详情">
+<ion-view view-title="车险订单详情">
 
     <ion-nav-bar class="bar-stable" align-title="center" >
         <ion-nav-buttons side="left">
@@ -14,7 +14,6 @@
     <ion-content scroll="true" lazy-scroll>
 
 
-
         <!-- inset one -->
         <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
             <div class="item item-divider">
@@ -22,7 +21,7 @@
             </div>
             <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
                 车牌号:
-                <span style="position: absolute;right:20%;">{{order.carId}}</span>
+                <span style="position: absolute;right:20%;">{{order.carInfo.carNum}}</span>
             </div>
             <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
                 订单号:
