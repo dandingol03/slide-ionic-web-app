@@ -597,7 +597,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('service_orders',{
-            cache:false,
             url:'/service_orders',
             controller:'serviceOrdersController',
             templateUrl:'views/service_orders/service_orders.html'
