@@ -67,7 +67,7 @@ angular.module('starter')
       }
       else{
         item.checked=true;
-        $scope.insuranceder=item;
+        $scope.car_insurance.insuranceder=item;
         cluster.map(function(cell,i) {
           if(cell.personId!=item.personId)
             cell.checked=false;
