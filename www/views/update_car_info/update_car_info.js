@@ -989,7 +989,7 @@ angular.module('starter')
 
             var options = {
                 date: new Date(),
-                mode: 'datetime',
+                mode: 'date',
                 locale:'zh_cn'
             };
 
