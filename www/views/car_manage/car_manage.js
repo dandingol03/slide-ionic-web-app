@@ -145,7 +145,7 @@ angular.module('starter')
                     case -2:
                         var confirmPopup = $ionicPopup.confirm({
                             title: '绑定车辆',
-                            template: '该车已被保险订单绑定,是否要创建新车'
+                            template: '是否要创建新车'
                         });
                         confirmPopup.then(function(res) {
                             if(res) {

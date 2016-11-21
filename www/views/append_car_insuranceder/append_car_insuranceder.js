@@ -40,7 +40,7 @@ angular.module('starter')
       }
       else{
         item.checked=true;
-        $scope.insuranceder=item;
+        $scope.car_insurance.insuranceder=item;
         cluster.map(function(cell,i) {
           if(cell.personId!=item.personId)
             cell.checked=false;
@@ -179,62 +179,98 @@ angular.module('starter')
     //提交车险意向
     $scope.confirm=function(){
 
-        alert('img=' + $scope.car_insurance.insuranceder.perIdCard_img);
-      //已有照片
-        if($scope.car_insurance.insuranceder.perIdCard1_img!==undefined&&$scope.car_insurance.insuranceder.perIdCard1_img!==null
-          &&$scope.car_insurance.insuranceder.perIdCard2_img!==undefined&&$scope.car_insurance.insuranceder.perIdCard2_img!==null)
+        if($scope.tabIndex==0)
         {
-            //提交照片
-            $scope.upload('createRelativePerson',$scope.car_insurance.insuranceder,'perIdCard_img').then(function(json) {
-                if(json.re==1) {
-                    $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data:
+            //选择已有被保险人,提交车险订单
+
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data:
+                    {
+                        request:'generateCarInsuranceOrder',
+                        info:
                             {
-                                request:'generateCarInsuranceOrder',
-                                info:
-                                    {
-                                        products:$scope.info.products,
-                                        companys:$scope.info.companys,
-                                        carId:$scope.info.carId,
-                                        insurancederId:$scope.insuranceder.personId
-                                    }
+                                products:$scope.info.products,
+                                companys:$scope.info.companys,
+                                carId:$scope.info.carId,
+                                insurancederId:$scope.car_insurance.insuranceder.personId
                             }
-                    }).then(function(res) {
-                        var json=res.data;
-                        var orderId=json.data;
-                        if(orderId!==undefined&&orderId!==null)
-                        {
+                    }
+            }).then(function(res) {
+                var json=res.data;
+                var orderId=json.data;
+                if(orderId!==undefined&&orderId!==null)
+                {
 
-                            alert('订单已创建,请等待报价');
+                    alert('订单已创建,请等待报价');
 
-                            $state.go('car_orders');
-                        }
-                    }).catch(function(err) {
-                        var str='';
-                        for(var field in err)
-                            str+='field'+field+'\r\n'
-                                +err[field];
-                        console.error('error=\r\n' + str);
-                    });
+                    $state.go('car_orders');
                 }
             })
-        }else{
 
-            var confirmPopup = $ionicPopup.confirm({
-                title: '您还未上传身份证',
-                template: '是否现在进行拍照'
-            });
-            confirmPopup.then(function(res) {
-                if(res) {
-                    $scope.addAttachment($scope.car_insurance.insuranceder,'perIdCard1_img');
-                } else {}
-            });
+        }else{
+            //新建被保险人,提交车险订单
+            if($scope.car_insurance.insuranceder.perIdCard1_img!==undefined&&$scope.car_insurance.insuranceder.perIdCard1_img!==null
+                &&$scope.car_insurance.insuranceder.perIdCard2_img!==undefined&&$scope.car_insurance.insuranceder.perIdCard2_img!==null)
+            {
+                //提交照片
+                $scope.upload('createRelativePerson',$scope.car_insurance.insuranceder,'perIdCard_img').then(function(json) {
+                    if(json.re==1) {
+                        $http({
+                            method: "POST",
+                            url: Proxy.local()+"/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data:
+                                {
+                                    request:'generateCarInsuranceOrder',
+                                    info:
+                                        {
+                                            products:$scope.info.products,
+                                            companys:$scope.info.companys,
+                                            carId:$scope.info.carId,
+                                            insurancederId:$scope.insuranceder.personId
+                                        }
+                                }
+                        }).then(function(res) {
+                            var json=res.data;
+                            var orderId=json.data;
+                            if(orderId!==undefined&&orderId!==null)
+                            {
+
+                                alert('订单已创建,请等待报价');
+
+                                $state.go('car_orders');
+                            }
+                        }).catch(function(err) {
+                            var str='';
+                            for(var field in err)
+                                str+='field'+field+'\r\n'
+                                    +err[field];
+                            console.error('error=\r\n' + str);
+                        });
+                    }
+                })
+            }else{
+
+                var confirmPopup = $ionicPopup.confirm({
+                    title: '您还未上传身份证',
+                    template: '是否现在进行拍照'
+                });
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        $scope.addAttachment($scope.car_insurance.insuranceder,'perIdCard1_img');
+                    } else {}
+                });
+            }
+
         }
+
 
 
     }
