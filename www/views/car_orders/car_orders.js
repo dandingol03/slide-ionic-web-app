@@ -1,8 +1,8 @@
 angular.module('starter')
 
   .controller('carOrdersController',function($scope,$state,$http,
-                                             $location, $rootScope,Proxy
-                                            ){
+                                             $location, $rootScope,Proxy,
+                                             $ionicLoading){
 
 
 
@@ -55,28 +55,35 @@ angular.module('starter')
       console.error('error=\r\n' + str);
     });
 
-    //获取已申请订单
-      $http({
-          method: "POST",
-          url: Proxy.local()+"/svr/request",
-          headers: {
-              'Authorization': "Bearer " + $rootScope.access_token
-          },
-          data:
-              {
-                  request:'getApplyedCarOrders'
-              }
-      }).then(function(res) {
-          var json=res.data;
-          if(json.re==1) {
-              $scope.applyedList=json.data;
-          }
-      }).catch(function(err) {
-          var str='';
-          for(var field in err)
-              str+=err[field];
-          console.error('error=\r\n' + str);
-      });
+    $scope.getApplyedCarOrders=function () {
+        //获取已申请订单
+        $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data:
+                {
+                    request:'getApplyedCarOrders'
+                }
+        }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+                $scope.applyedList=json.data;
+            }
+        }).catch(function(err) {
+            var str='';
+            for(var field in err)
+                str+=err[field];
+            console.error('error=\r\n' + str);
+        });
+    }
+
+      $scope.getApplyedCarOrders();
+
+
+
 
 
 
