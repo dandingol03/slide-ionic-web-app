@@ -129,24 +129,24 @@
     </div>
 
 
-
-
-
-
-
-
   <div ng-if="tabIndex==1" style="height: 100%;">
 
     <ion-scroll style="height: 95%;">
-      <div class="list list-inset padding">
+      <div class="list list-inset padding" style="height:80%">
 
         <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
              <span class="input-label" style="display: inline-block;">
               姓名:
             </span>
           <input type="text" placeholder="输入被保险人姓名"
-                 style="display: inline-block"  ng-value="car_insurance.insuranceder.perName"
-                 ng-model="car_insurance.insuranceder.perName"/>
+                 style="display: inline-block"
+                 ng-value="car_insurance.insuranceder.perName"
+                 ng-model="car_insurance.insuranceder.perName"
+                 ng-change="validate(car_insurance.insuranceder,'perName','//')"/>
+
+          <div class="assertive" style="width: 50%;display: inline-block" ng-if="car_insurance.insuranceder.perName_error==true">
+            姓名不能为英文或数字
+          </div>
         </div>
 
         <!--<div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">-->
@@ -163,64 +163,123 @@
             <!--</div>-->
         <!--</div>-->
 
-        <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;position: relative">
+        <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;position: relative;height:70%">
 
-          <ion-slide-box on-slide-changed="slideChanged($index)" style="background-color:transparent;">
-            <ion-slide>
-              <div class="item"
-                   ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')"
-                   style="background-color:transparent;border: 0px;">
-                <div
-                  style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;"
-                  >
-                  <span class="input-label" style="display: inline-block;width: 80%;background-color:transparent;">
+          <div>
+            <div class="item"
+                 style="background-color:transparent;border: 0px;padding: 0px;"
+                 ng-if="photoIndex==0">
+              <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
+                <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
                     身份证正面:
-                  </span>
-                <span style="font-size: 2em;position: absolute;right: 15%;background-color:transparent;">
-                    <i class="ion-camera"></i>
-                  </span>
-                </div>
+                </span>
               </div>
-              <div class="item"
-                   style="position: relative;margin-bottom: 20px;background-color:transparent;border:1px solid #222;">
-                <div style="width:  100%;margin-left:0%;height:160px;border:1px dashed #9e9e9e">
-                  <img
-                    style="max-width: 100%;"
-                    ng-if="car_insurance.insuranceder.perIdCard1_img!==undefined&&car_insurance.insuranceder.perIdCard1_img!==null"
-                    ng-src="{{car_insurance.insuranceder.perIdCard1_img}}"/>
-
-                </div>
+            </div>
+            <div class="item"
+                 style="background-color:transparent;border: 0px;padding: 0px;"
+                 ng-if="photoIndex==1">
+              <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
+                <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
+                     身份证反面:
+                </span>
               </div>
-            </ion-slide>
+            </div>
+          </div>
 
-            <ion-slide>
-              <div class="item"
-                   ng-click="addAttachment(car_insurance.insuranceder,'perIdCard2_img')"
-                   style="background-color:transparent;border: 0px;">
-                <div
-                  style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;"
-                  >
-                  <span class="input-label" style="display: inline-block;width: 80%;background-color:transparent;">
-                    身份证反面:
-                  </span>
-                <span style="font-size: 2em;position: absolute;right: 15%;background-color:transparent;">
-                    <i class="ion-camera"></i>
-                  </span>
-                </div>
+          <div style="height:90%;position: relative;">
+            <div>
+              <div style="width:100%;text-align:center;margin-left:0%;height:200px;border:1px dashed #9e9e9e"
+                   ng-if="car_insurance.insuranceder[imgArrs[photoIndex]]!==undefined&&car_insurance.insuranceder[imgArrs[photoIndex]]!==null">
+                <img style="width: 100%;max-height: 200px;"
+                     ng-src="{{car_insurance.insuranceder[imgArrs[photoIndex]]}}"/>
               </div>
 
-              <div class="item"
-                   style="position: relative;margin-bottom: 20px;background-color:transparent;border:1px solid #222;">
-                <div style="width:  100%;margin-left:0%;height:160px;border:1px dashed #9e9e9e">
-                  <img
-                    style="max-width: 100%;"
-                    ng-if="car_insurance.insuranceder.perIdCard2_img!==undefined&&car_insurance.insuranceder.perIdCard2_img!==null"
-                    ng-src="{{car_insurance.insuranceder.perIdCard2_img}}"/>
+              <div style="width: 100%;text-align:center;margin-left:0%;height:200px;"
+                   ng-if="car_insurance.insuranceder[imgArrs[photoIndex]]==undefined||car_insurance.insuranceder[imgArrs[photoIndex]]==null">
+                     <span style="font-size: 10em;" ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')">
+                         <i class="ion-android-camera"></i>
+                     </span>
+              </div>
+
+              <div class="card"
+                   style="position: absolute;width: 90%;height: 55px;bottom: 10px;margin-left: 5%;">
+                <div class="item item-text-wrap">
+                  <div style="position:absolute;bottom:10px;width:100%;top:0px;left:0px;">
+                    <div ng-click="changePhotoIndex(photoIndex)"
+                         style="display:inline-block;width: 20%;text-align:center;">
+                      <span>身份证正面</span>
+                    </div>
+
+                    <div ng-click="addAttachment(car_insurance.insuranceder,imgArrs[photoIndex])" style="display:inline-block;width: 50%;text-align: center;font-size: 3em;">
+                      <i class="ion-android-camera"></i>
+                    </div>
+
+                    <div ng-click="changePhotoIndex(photoIndex)"
+                         style="display:inline-block;width: 20%;text-align:center;">
+                      <span>身份证反面</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </ion-slide>
+            </div>
+          </div>
 
-          </ion-slide-box>
+          <!--<ion-slide-box on-slide-changed="slideChanged($index)" style="background-color:transparent;">-->
+            <!--<ion-slide>-->
+              <!--<div class="item"-->
+                   <!--ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')"-->
+                   <!--style="background-color:transparent;border: 0px;">-->
+                <!--<div-->
+                  <!--style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;"-->
+                  <!--&gt;-->
+                  <!--<span class="input-label" style="display: inline-block;width: 80%;background-color:transparent;">-->
+                    <!--身份证正面:-->
+                  <!--</span>-->
+                <!--<span style="font-size: 2em;position: absolute;right: 15%;background-color:transparent;">-->
+                    <!--<i class="ion-camera"></i>-->
+                  <!--</span>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="item"-->
+                   <!--style="position: relative;margin-bottom: 20px;background-color:transparent;border:1px solid #222;">-->
+                <!--<div style="width:  100%;margin-left:0%;height:160px;border:1px dashed #9e9e9e">-->
+                  <!--<img-->
+                    <!--style="max-width: 100%;"-->
+                    <!--ng-if="car_insurance.insuranceder.perIdCard1_img!==undefined&&car_insurance.insuranceder.perIdCard1_img!==null"-->
+                    <!--ng-src="{{car_insurance.insuranceder.perIdCard1_img}}"/>-->
+
+                <!--</div>-->
+              <!--</div>-->
+            <!--</ion-slide>-->
+
+            <!--<ion-slide>-->
+              <!--<div class="item"-->
+                   <!--ng-click="addAttachment(car_insurance.insuranceder,'perIdCard2_img')"-->
+                   <!--style="background-color:transparent;border: 0px;">-->
+                <!--<div-->
+                  <!--style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;"-->
+                  <!--&gt;-->
+                  <!--<span class="input-label" style="display: inline-block;width: 80%;background-color:transparent;">-->
+                    <!--身份证反面:-->
+                  <!--</span>-->
+                <!--<span style="font-size: 2em;position: absolute;right: 15%;background-color:transparent;">-->
+                    <!--<i class="ion-camera"></i>-->
+                  <!--</span>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<div class="item"-->
+                   <!--style="position: relative;margin-bottom: 20px;background-color:transparent;border:1px solid #222;">-->
+                <!--<div style="width:  100%;margin-left:0%;height:160px;border:1px dashed #9e9e9e">-->
+                  <!--<img-->
+                    <!--style="max-width: 100%;"-->
+                    <!--ng-if="car_insurance.insuranceder.perIdCard2_img!==undefined&&car_insurance.insuranceder.perIdCard2_img!==null"-->
+                    <!--ng-src="{{car_insurance.insuranceder.perIdCard2_img}}"/>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</ion-slide>-->
+
+          <!--</ion-slide-box>-->
         </div>
 
 

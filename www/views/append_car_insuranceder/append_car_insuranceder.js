@@ -19,6 +19,33 @@ angular.module('starter')
 
     $scope.insuranceder={};
 
+    $scope.photoIndex=0;
+    $scope.imgArrs=['perIdCard1_img','perIdCard2_img'];
+
+      $scope.changePhotoIndex=function(photoIndex){
+          if(photoIndex==0){
+              $scope.photoIndex=0;
+          }else{
+              $scope.photoIndex=1;
+          }
+      }
+
+      $scope.validate=function(item,field,pattern) {
+          if(pattern!==undefined&&pattern!==null)
+          {
+              var reg=eval(pattern);
+              var re=reg.exec(item[field]);
+              if(re!==undefined&&re!==null)
+              {
+                  item[field+'_error']=true;
+              }
+              else{
+                  item[field+'_error']=false;
+              }
+          }
+      };
+
+
     if($stateParams.info!==undefined&&$stateParams.info!==null)
     {
       var info=$stateParams.info;
@@ -187,40 +214,57 @@ angular.module('starter')
             //提交照片
             $scope.upload('createRelativePerson',$scope.car_insurance.insuranceder,'perIdCard_img').then(function(json) {
                 if(json.re==1) {
-                    $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data:
+
+                    if(car_insurance.insuranceder.perName!=undefined&&car_insurance.insuranceder.perName!=null){
+
+                        $http({
+                            method: "POST",
+                            url: Proxy.local()+"/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data:
                             {
                                 request:'generateCarInsuranceOrder',
                                 info:
-                                    {
-                                        products:$scope.info.products,
-                                        companys:$scope.info.companys,
-                                        carId:$scope.info.carId,
-                                        insurancederId:$scope.insuranceder.personId
-                                    }
+                                {
+                                    products:$scope.info.products,
+                                    companys:$scope.info.companys,
+                                    carId:$scope.info.carId,
+                                    insurancederId:$scope.insuranceder.personId
+                                }
                             }
-                    }).then(function(res) {
-                        var json=res.data;
-                        var orderId=json.data;
-                        if(orderId!==undefined&&orderId!==null)
-                        {
+                        }).then(function(res) {
+                            var json=res.data;
+                            var orderId=json.data;
+                            if(orderId!==undefined&&orderId!==null)
+                            {
 
-                            alert('订单已创建,请等待报价');
+                                alert('订单已创建,请等待报价');
 
-                            $state.go('car_orders');
-                        }
-                    }).catch(function(err) {
-                        var str='';
-                        for(var field in err)
-                            str+='field'+field+'\r\n'
-                                +err[field];
-                        console.error('error=\r\n' + str);
-                    });
+                                $state.go('car_orders');
+                            }
+                        }).catch(function(err) {
+                            var str='';
+                            for(var field in err)
+                                str+='field'+field+'\r\n'
+                                    +err[field];
+                            console.error('error=\r\n' + str);
+                        });
+                    }else{
+
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '未填写姓名',
+                            template: '被保险人姓名不能为空!'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res) {
+
+                            } else {}
+                        });
+
+                    }
+
                 }
             })
         }else{
