@@ -22,10 +22,10 @@
                     </span>
                 </div>
 
-                <div style="display: inline-block;position: absolute;text-align: center;right: 0%;top:10%;width: 20%;"
+                <div style="display: inline-block;position: absolute;text-align: center;right: 0%;top:18%;width: 20%;"
                     ng-click="go_to('tabs.dashboard')">
                     <button class="button button-small button-calm" style="border-radius: 6px;padding-left:10%;padding-right: 10%;">
-                        返回主页
+                        确定选择
                     </button>
                 </div>
 
@@ -49,8 +49,8 @@
                          ng-click="Mutex(car,'checked',relativeCars)">
 
                         <div style="display:inline-block;width:15%;">
-                            <i ng-if="car.checked!=true" class="ion-ios-information-outline" style="font-size:200%"></i>
-                            <i ng-if="car.checked==true" class="ion-ios-information" style="font-size:200%"></i>
+                            <i ng-if="car.checked!=true" class="ion-ios-checkmark-outline" style="font-size:200%"></i>
+                            <i ng-if="car.checked==true" class="ion-ios-checkmark" style="font-size:200%"></i>
                         </div>
 
                         <div style="display:inline-block;width:55%;">
