@@ -5,82 +5,80 @@ angular.module('starter')
                                              $ionicLoading){
 
 
+      $scope.getOrders=function () {
 
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
 
-    //已完成订单
-    $http({
-      method: "POST",
-      url: Proxy.local()+"/svr/request",
-      headers: {
-        'Authorization': "Bearer " + $rootScope.access_token
-      },
-      data:
-      {
-        request:'getCarOrdersInHistory'
+          //获取已完成订单,估价列表
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data:
+                  {
+                      request:'getCarOrdersInHistory'
+                  }
+          }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                  $scope.historyOrders=json.data;
+              }
+            return   $http({
+                  method: "POST",
+                  url: Proxy.local()+"/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data:
+                      {
+                          request:'getCarOrderInPricedState'
+                      }
+              });
+          }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                  $scope.orderPricedList=json.data;
+                  if($scope.orderPricedList!==undefined&&$scope.orderPricedList!==null)
+                  {}
+              }
+              return  $http({
+                  method: "POST",
+                  url: Proxy.local()+"/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data:
+                      {
+                          request:'getApplyedCarOrders'
+                      }
+              });
+          }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                  $scope.applyedList=json.data;
+              }
+              $ionicLoading.hide();
+          }).catch(function(err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('err=\r\n'+str);
+              $ionicLoading.hide();
+          });
       }
-    }).then(function(res) {
-      var json=res.data;
-      if(json.re==1) {
-          $scope.historyOrders=json.data;
-      }
-    }).catch(function(err) {
-      var str='';
-      for(var field in err)
-        str+=err[field];
-      console.error('error=\r\n' + str);
-    });
 
-    //获取估价列表
-    $http({
-      method: "POST",
-      url: Proxy.local()+"/svr/request",
-      headers: {
-        'Authorization': "Bearer " + $rootScope.access_token
-      },
-      data:
-      {
-        request:'getCarOrderInPricedState'
-      }
-    }).then(function(res) {
-      var json=res.data;
-      if(json.re==1) {
-        $scope.orderPricedList=json.data;
-        if($scope.orderPricedList!==undefined&&$scope.orderPricedList!==null)
-        {}
-      }
-    }).catch(function(err) {
-      var str='';
-      for(var field in err)
-        str+=err[field];
-      console.error('error=\r\n' + str);
-    });
+      $scope.getOrders();
 
-    $scope.getApplyedCarOrders=function () {
-        //获取已申请订单
-        $http({
-            method: "POST",
-            url: Proxy.local()+"/svr/request",
-            headers: {
-                'Authorization': "Bearer " + $rootScope.access_token
-            },
-            data:
-                {
-                    request:'getApplyedCarOrders'
-                }
-        }).then(function(res) {
-            var json=res.data;
-            if(json.re==1) {
-                $scope.applyedList=json.data;
-            }
-        }).catch(function(err) {
-            var str='';
-            for(var field in err)
-                str+=err[field];
-            console.error('error=\r\n' + str);
-        });
-    }
 
-      $scope.getApplyedCarOrders();
+
+
+
+
+
 
 
 
