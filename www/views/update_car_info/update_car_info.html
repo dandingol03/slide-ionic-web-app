@@ -275,13 +275,13 @@
                              style="display:inline-block;background-color: transparent;"
                              ng-value="carInfo.engineNum"
                              ng-model="carInfo.engineNum"
-                             ng-change="validate(carInfo,'engineNum','/^\\d{6,8}$/')"
+                             ng-change="validate(carInfo,'engineNum','/^\\d{16}$/')"
                         />
                   </span>
-                  <span style="width: 45%;display: inline-block;text-align: left;font-size: 0.7em;color:#ff3b30"
+                  <div style="width: 100%;text-align: center;font-size: 0.7em;color:#ff3b30"
                         ng-if="carInfo['engineNum_error']==true">
-                      请输入6位至8位的发动机号
-                  </span>
+                      请输入16位的发动机号
+                  </div>
 
 
               </div>
