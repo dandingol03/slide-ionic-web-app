@@ -1,181 +1,182 @@
-<ion-view view-title="服务订单">
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view hide-nav-bar="true">
 
-  <ion-nav-bar class="bar-stable" align-title="center" >
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
-        <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-        <i class="ion-ios-search-strong"></i>
-      </button>
-    </ion-nav-buttons>
+    <ion-content scroll="true" lazy-scroll>
 
-  </ion-nav-bar>
+      <div style="width: 100%;height: 120px;background: darkcyan;position: relative">
+
+        <div style="width: 100%;height: 100%;position: absolute;top:20%;text-align: center;font-size: 1.6em;color:#fff;">
+          服务订单
+        </div>
 
 
-  <ion-content scroll="true" lazy-scroll>
-
-    <div class="list" style="margin-bottom: 0px;">
-      <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
-
-        <li style="width:33%;">
-          <div class="cell"
-               ng-class="{true: 'selected', false: ''}[tabIndex==0]"
-               ng-click="tab_change(0)"
-               style="text-align: center">
-            <div style="height: 100%">
-               <span style="position:absolute;top:30%;left: 20%;right:20%;">
+        <div style="display: inline-block;width: 12%;height: 100%;">
+          <div style="width: 100%;height: 70%;display: table;margin-left:10%;"
+               ng-click="go_back()">
+           <span style="display: table-cell;vertical-align: middle;color:#fff;font-size: 2.4em;">
+             <i class="ion-chevron-left"></i>
+           </span>
+          </div>
+        </div>
+        <div style="display: inline-block;width: 24%;height: 100%;">
+          <div style="width: 100%;height: 100%;padding-top:70px;">
+            <div ng-style="tabIndex==0?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(0)">
+                <span style="display: table-cell;vertical-align: middle;color:#fff;">
                   已下单
-               </span>
+                </span>
+              <span style="position: absolute;top:80%;color:darkcyan;left:45%;font-size: 2em;z-index:999;"
+                    ng-if="tabIndex==0">
+                  <i class="ion-arrow-down-b"></i>
+                </span>
             </div>
-          </div>
-        </li>
-
-        <li style="width:33%">
-          <div class="cell"
-               ng-class="{true: 'selected', false: ''}[tabIndex==1]"
-               ng-click="tab_change(1)"
-               style="text-align: center">
-            <div style="width: 100%;">
-              <span style="position:absolute;top: 30%;left:20%;right:20%;">
-                服务中
-              </span>
-            </div>
-
-          </div>
-        </li>
-
-        <li style="width:33%">
-          <div class="cell"
-               ng-class="{true: 'selected', false: ''}[tabIndex==2]"
-               ng-click="tab_change(2)"
-               style="text-align: center">
-            <div style="width: 100%;">
-              <span style="position:absolute;top: 30%;left:20%;right:20%;">
-                待评价
-              </span>
-            </div>
-          </div>
-        </li>
-
-      </ul>
-    </div>
-
-
-    <div class="list list-inset padding" style="" >
-
-      <!-- 已下单 -->
-      <div class="item"
-           ng-if="tabIndex==0"
-           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
-
-      >
-        <div class="list list-inset" style="margin-top:0px;">
-
-          <div ng-repeat="order in orders1" style="">
-            <ul class="list" style="margin-bottom:0px;">
-              <li class="item item-icon-right"
-                  style="padding-right:34px;position: relative;border:0px;">
-                <div style="display:inline-block;width:95%;">
-                  <div>订单号:{{order.orderNum}}</div>
-                </div>
-              </li>
-            </ul>
-            <ul class="list">
-              <li class="item item-icon-right" ng-click="showOrderDetail(order)"
-                  style="padding-right:34px;padding-top:4px;padding-bottom:4px;position: relative;border:0px;">
-                <div style="display:inline-block;width:95%;">
-                  <div style="margin-right:5%;">预计时间:{{order.time}}</div>
-                  <div style="margin-right:5%;">类型:{{order.serviceName}}</div>
-                </div>
-                <div style="display:inline-block;width:5%;align-items:center;position: absolute;top:20%;font-size: 2em;">
-                  <i class="ion-ios-arrow-forward"></i>
-                </div>
-              </li>
-            </ul>
           </div>
         </div>
+        <div style="display: inline-block;width: 24%;height: 100%;">
+          <div style="width: 100%;height: 100%;padding-top:70px;">
+            <div ng-style="tabIndex==1?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(1)">
+                <span style="display: table-cell;vertical-align:middle;color:#fff;">
+                  服务中
+                </span>
+              <span style="position: absolute;top:80%;color:darkcyan;left:43%;font-size: 2em;z-index:999;"
+                    ng-if="tabIndex==1">
+                  <i class="ion-arrow-down-b"></i>
+                </span>
+            </div>
+          </div>
+        </div>
+        <div style="display: inline-block;width: 24%;height: 100%;">
+          <div style="width: 100%;height: 100%;padding-top:70px;">
+            <div ng-style="tabIndex==2?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(2)">
+             <span style="display: table-cell;vertical-align:middle;color:#fff;">
+               待评价
+             </span>
+              <span style="position: absolute;top:80%;color:darkcyan;left:45%;font-size: 2em;z-index:999;"
+                    ng-if="tabIndex==2">
+               <i class="ion-arrow-down-b"></i>
+             </span>
+            </div>
+          </div>
+        </div>
+        <div style="display: inline-block;width: 18%;"></div>
       </div>
 
-      <!-- 服务中订单 -->
-      <div class="item"
-           ng-if="tabIndex==1"
-           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
 
-      >
 
-        <div class="list list-inset">
+      <div class="list list-inset padding" style="" >
 
-          <div ng-repeat="order in orders2" style="">
-            <ul class="list" style="margin-bottom:0px;">
-              <li class="item item-icon-right"
-                  style="padding-right:34px;position: relative;border:0px;">
-                <div style="display:inline-block;width:95%;">
-                  <div>订单号:{{order.orderNum}}</div>
-                </div>
-              </li>
-            </ul>
-            <ul class="list">
-              <li class="item item-icon-right" ng-click="showOrderDetail(order)"
-                  style="padding-right:34px;padding-top:4px;padding-bottom:4px;position: relative;
+        <!-- 已下单 -->
+        <div class="item"
+             ng-if="tabIndex==0"
+             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
+
+        >
+          <div class="list list-inset" style="margin-top:0px;">
+
+            <div ng-repeat="order in orders1" style="">
+              <ul class="list" style="margin-bottom:0px;">
+                <li class="item item-icon-right"
+                    style="padding-right:34px;position: relative;border:0px;">
+                  <div style="display:inline-block;width:95%;">
+                    <div>订单号:{{order.orderNum}}</div>
+                  </div>
+                </li>
+              </ul>
+              <ul class="list">
+                <li class="item item-icon-right" ng-click="showOrderDetail(order)"
+                    style="padding-right:34px;padding-top:4px;padding-bottom:4px;position: relative;border:0px;">
+                  <div style="display:inline-block;width:95%;">
+                    <div style="margin-right:5%;">预计时间:{{order.time}}</div>
+                    <div style="margin-right:5%;">类型:{{order.serviceName}}</div>
+                  </div>
+                  <div style="display:inline-block;width:5%;align-items:center;position: absolute;top:20%;font-size: 2em;">
+                    <i class="ion-ios-arrow-forward"></i>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 服务中订单 -->
+        <div class="item"
+             ng-if="tabIndex==1"
+             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
+
+        >
+
+          <div class="list list-inset">
+
+            <div ng-repeat="order in orders2" style="">
+              <ul class="list" style="margin-bottom:0px;">
+                <li class="item item-icon-right"
+                    style="padding-right:34px;position: relative;border:0px;">
+                  <div style="display:inline-block;width:95%;">
+                    <div>订单号:{{order.orderNum}}</div>
+                  </div>
+                </li>
+              </ul>
+              <ul class="list">
+                <li class="item item-icon-right" ng-click="showOrderDetail(order)"
+                    style="padding-right:34px;padding-top:4px;padding-bottom:4px;position: relative;
                   border:0px;">
-                <div style="display:inline-block;width:95%;">
-                  <div style="margin-right:5%;">预计时间:{{order.time}}</div>
-                  <div style="margin-right:5%;">类型:{{order.serviceName}}</div>
-                </div>
-                <div style="display:inline-block;width:5%;align-items:center;position: absolute;top:20%;font-size: 2em;">
-                  <i class="ion-ios-arrow-forward"></i>
-                </div>
-              </li>
-            </ul>
+                  <div style="display:inline-block;width:95%;">
+                    <div style="margin-right:5%;">预计时间:{{order.time}}</div>
+                    <div style="margin-right:5%;">类型:{{order.serviceName}}</div>
+                  </div>
+                  <div style="display:inline-block;width:5%;align-items:center;position: absolute;top:20%;font-size: 2em;">
+                    <i class="ion-ios-arrow-forward"></i>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
 
 
-      <!-- 待支付订单 -->
-      <div class="item"
-           ng-if="tabIndex==2"
-           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
+        <!-- 待支付订单 -->
+        <div class="item"
+             ng-if="tabIndex==2"
+             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
 
-      >
+        >
 
-        <div class="list list-inset" style="margin-top:0px;">
+          <div class="list list-inset" style="margin-top:0px;">
 
-          <div ng-repeat="order in orders3" style="">
-            <ul class="list" style="margin-bottom:0px;">
-              <li class="item item-icon-right"
-                  style="padding-right:34px;position: relative;border:0px;">
-                <div style="display:inline-block;width:95%;">
-                  <div>订单号:{{order.orderNum}}</div>
-                </div>
-              </li>
-            </ul>
-            <ul class="list">
-              <li class="item item-icon-right" ng-click="showOrderDetail(order)"
-                  style="padding-right:34px;padding-top:4px;padding-bottom:4px;position: relative;border:0px;">
-                <div style="display:inline-block;width:95%;">
-                  <div style="margin-right:5%;">预计时间:{{order.time}}</div>
-                  <div style="margin-right:5%;">类型:{{order.serviceName}}</div>
-                </div>
-                <div style="display:inline-block;width:5%;align-items:center;position: absolute;top:20%;font-size: 2em;">
-                  <i class="ion-ios-arrow-forward"></i>
-                </div>
-              </li>
-            </ul>
+            <div ng-repeat="order in orders3" style="">
+              <ul class="list" style="margin-bottom:0px;">
+                <li class="item item-icon-right"
+                    style="padding-right:34px;position: relative;border:0px;">
+                  <div style="display:inline-block;width:95%;">
+                    <div>订单号:{{order.orderNum}}</div>
+                  </div>
+                </li>
+              </ul>
+              <ul class="list">
+                <li class="item item-icon-right" ng-click="showOrderDetail(order)"
+                    style="padding-right:34px;padding-top:4px;padding-bottom:4px;position: relative;border:0px;">
+                  <div style="display:inline-block;width:95%;">
+                    <div style="margin-right:5%;">预计时间:{{order.time}}</div>
+                    <div style="margin-right:5%;">类型:{{order.serviceName}}</div>
+                  </div>
+                  <div style="display:inline-block;width:5%;align-items:center;position: absolute;top:20%;font-size: 2em;">
+                    <i class="ion-ios-arrow-forward"></i>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
+
+
       </div>
 
+    </ion-content>
 
-    </div>
+  </ion-view>
 
-  </ion-content>
-
-
+</ion-nav-view>
 
 
-</ion-view>
+
+
 

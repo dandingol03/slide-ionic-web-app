@@ -35,6 +35,7 @@ angular.module('starter')
       {
 
           if(localStorage.userName!=undefined&&localStorage.userName!=null){
+
               var userName=localStorage.userName;
               $scope.user.username = userName;
           }
