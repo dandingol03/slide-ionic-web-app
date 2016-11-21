@@ -159,6 +159,10 @@ angular.module('starter')
       //登录
       $scope.login = function() {
 
+          $ionicLoading.show({
+                  template:'<p class="item-icon-left">Loading stuff...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+
 
           $http({
               method: "POST",
@@ -169,6 +173,9 @@ angular.module('starter')
                   'Content-Type': 'application/x-www-form-urlencoded'
               }
           }).then(function (res) {
+
+              $ionicLoading.hide();
+
 
               var json = res.data;
               var access_token = json.access_token;
@@ -228,7 +235,14 @@ angular.module('starter')
               }
               else
                   console.log('cannot get access_token');
-          });
+          }).catch(function(err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('err=\r\n'+str);
+              $ionicLoading.hide();
+
+          })
       }
 
       $scope.doSend=function(){
