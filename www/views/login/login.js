@@ -30,12 +30,16 @@ angular.module('starter')
           }
       }
 
+      alert('pwdPersisted='+$scope.pwdPersisted);
+
 
       if($scope.pwdPersisted)
       {
 
           if(localStorage.userName!=undefined&&localStorage.userName!=null){
+
               var userName=localStorage.userName;
+              alert('username=' + userName);
               $scope.user.username = userName;
           }
 

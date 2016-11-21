@@ -25,6 +25,18 @@ angular.module('starter')
     $scope.orders2 = [];
     $scope.orders3 = [];
 
+
+      $scope.selectedTabStyle={
+          display: 'table',width: '100%',height:'100%',position: 'relative',
+          'text-align': 'center',border: '1px solid #fff9df','border-bottom':'0px',background:'cadetblue'
+      };
+
+      $scope.unSelectedTabStyle={
+          display: 'table',width: '100%',height:'100%',
+          'text-align': 'center',border: '1px solid rgba(255, 249, 223, 0.32)','border-bottom':'0px',background:'rgba(95, 158, 160, 0.39)'
+      }
+
+
     $scope.serviceTypeMap={11:'维修-日常保养',12:'维修-故障维修',13:'维修-事故维修',
       21:'车驾管-审车',22:'车驾管-审证',23:'车驾管-接送机',24:'车驾管-取送车',
       31:'鈑喷'};
@@ -34,9 +46,6 @@ angular.module('starter')
 
 
     $scope.fetchServiceOrders=function () {
-          $ionicLoading.show({
-              template:'<p class="item-icon-left">拉取数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-          });
           $http({
               method: "post",
               url: Proxy.local()+"/svr/request",
@@ -91,6 +100,9 @@ angular.module('starter')
 
       if($scope.orders!==undefined&&$scope.orders!==null&&$scope.orders.length>0) {
       }else{
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
           $scope.fetchServiceOrders();
       }
 
