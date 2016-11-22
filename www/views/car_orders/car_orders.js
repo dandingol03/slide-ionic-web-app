@@ -81,10 +81,6 @@ angular.module('starter')
 
 
 
-
-
-
-
     //车险订单  0.已完成;1.估价列表;2.已申请
     $scope.tabIndex=$rootScope.car_orders_tabIndex;
 
