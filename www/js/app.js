@@ -720,7 +720,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('update_car_info',{
+<<<<<<< HEAD
+            url:'/update_car_info/:carInfo',
+=======
             url:'/update_car_info/:carNum',
+>>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
             controller:'updateCarInfoController',
             templateUrl:'views/update_car_info/update_car_info.html'
           })

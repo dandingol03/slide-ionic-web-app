@@ -134,6 +134,58 @@
       <ion-scroll style="height: 80%;">
         <div class="list list-inset padding" style="height:100%">
 
+<<<<<<< HEAD
+        <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
+             <span class="input-label" style="display: inline-block;">
+              姓名:
+            </span>
+          <input type="text" placeholder="输入被保险人姓名"
+                 style="display: inline-block"
+                 ng-value="car_insurance.insuranceder.perName"
+                 ng-model="car_insurance.insuranceder.perName"
+                 ng-change="validate(car_insurance.insuranceder,'perName','/^[\da-z]+$/')"/>
+
+          <div class="assertive" style="width: 50%;display: inline-block" ng-if="car_insurance.insuranceder.perName_error==true">
+            姓名不能为英文或数字
+          </div>
+        </div>
+
+        <!--<div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">-->
+            <!--<span class="input-label" style="display: inline-block;width:55%;">-->
+              <!--选择亲属关系:-->
+            <!--</span>-->
+            <!--<span class="input-label" style="display: inline-block;">-->
+                  <!--{{car_insurance.insuranceder.relation}}-->
+            <!--</span>-->
+            <!--<div style="position: absolute;right: 15%;top:30%;bottom: 30%;">-->
+                <!--<span ng-click="ActionSheet(['父母','子女','配偶','其它'],car_insurance.insuranceder,'relation','relType')">-->
+                  <!--<i class="ion-chevron-down"></i>-->
+                <!--</span>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;
+        padding:10px;position: relative;height:70%;height:300px">
+
+          <div>
+            <div class="item"
+                 style="background-color:transparent;border: 0px;padding: 0px;"
+                 ng-if="photoIndex==0">
+              <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
+                <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
+                    身份证正面:
+                </span>
+              </div>
+            </div>
+            <div class="item"
+                 style="background-color:transparent;border: 0px;padding: 0px;"
+                 ng-if="photoIndex==1">
+              <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
+                <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
+                     身份证反面:
+                </span>
+              </div>
+=======
           <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px; ">
                <span class="input-label" style="display: inline-block;">
                 姓名:
@@ -146,6 +198,7 @@
 
             <div class="assertive" style="width: 50%;display: inline-block" ng-if="car_insurance.insuranceder.perName_error==true">
               姓名不能为英文或数字
+>>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
             </div>
           </div>
 
