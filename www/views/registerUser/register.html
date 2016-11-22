@@ -1,0 +1,118 @@
+<ion-view class="passwordForget-view" view-title="注册用户">
+
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    ng-click="go_back()"
+                    style="font-size: 2em;color:#bf530c"
+            >
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+
+    </ion-nav-bar>
+
+
+    <ion-content scroll="true" class="padding" lazy-scroll>
+
+        <div class="list list-inset padding" style="margin-bottom:40px;">
+
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="fa fa-user-o"></i>
+                </span>
+                <input type="text" placeholder="请输入昵称,该项选填"
+                       style="display: inline-block;width:80%;vertical-align: super"
+                       ng-model="info.username"
+                       ng-value="info.username"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                    <i class="fa fa-lock"></i>
+                </span>
+                <input type="text" placeholder="请输入密码"
+                       style="display: inline-block;width:45%;vertical-align: super"
+                       ng-model="info.password"
+                       ng-value="info.password"/>
+
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="fa fa-envelope-o"></i>
+                </span>
+                <input type="text" placeholder="请输入邮箱地址,本项选填"
+                       style="display: inline-block;width:80%;vertical-align: super"
+                       ng-model="info.mail"
+                       ng-value="info.mail"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="fa fa-mobile-phone"></i>
+                </span>
+                <input type="text" placeholder="请输入手机号"
+                       style="display: inline-block;width:45%;vertical-align: super"
+                       ng-model="info.mobilePhone"
+                       ng-value="info.mobilePhone"/>
+                <span class="input-label"
+                      style="display: inline-block;background:#f79916;color:#fff;width:30%;
+                      text-align: center;vertical-align: super;padding-right: 5px;"
+                      ng-click="getCode()">
+                    发送验证码
+                </span>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="fa fa-expeditedssl"></i>
+                </span>
+                <input type="text" placeholder="请输入验证码"
+                       style="display: inline-block;width:80%;vertical-align: super"
+                       ng-model="info.code"
+                       ng-value="info.code"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+
+            <div class="bar bar-footer  bar-assertive"
+                 style="position: static;margin-bottom:10px;" ng-click="register()">
+                <h1 class="title">用户注册</h1>
+            </div>
+
+
+        </div>
+    </ion-content>
+
+
+
+
+</ion-view>

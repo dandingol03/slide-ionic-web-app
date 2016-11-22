@@ -8,10 +8,25 @@
       </button>
     </ion-nav-buttons>
 
+
+    <ion-nav-buttons side="right">
+
+      <button class="button button-icon button-clear bar_arr"
+              ng-click="getOrders()">
+        <div style="color:#bf530c">
+          <span style="font-size: 0.9em;display: inline-block;">刷新</span>
+          <span  style="font-size: 1.8em;display: inline-block"> <i class="fa fa-refresh"></i></span>
+        </div>
+
+      </button>
+    </ion-nav-buttons>
+
   </ion-nav-bar>
 
 
   <ion-content scroll="false" >
+
+
 
     <div class="list" style="margin-bottom: 0px;">
       <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
@@ -134,7 +149,11 @@
 
     <!-- 已申请订单 -->
     <div class="list list-inset padding" style="margin-bottom: 0px;height: 100%;" ng-if="tabIndex==2">
+
       <ion-scroll style="height: 90%;">
+
+
+
         <div class="item"
              ng-if="tabIndex==2"
              style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"

@@ -22,17 +22,10 @@ angular.module('starter')
     $scope.photoIndex=0;
     $scope.imgArrs=['perIdCard1_img','perIdCard2_img'];
 
-<<<<<<< HEAD
-      $scope.changePhotoIndex=function(photoIndex){
-          if(photoIndex==0){
-              $scope.photoIndex=1;
-          }else{
-              $scope.photoIndex=0;
-          }
-=======
+
       $scope.changePhotoIndex=function(i){
               $scope.photoIndex=i;
->>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
+
       }
 
       $scope.validate=function(item,field,pattern) {
@@ -91,26 +84,39 @@ angular.module('starter')
     $scope.car_insurance.relativePersons={};
 
     $scope.selectCarInsuranceder=function(){
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
+
+        if($scope.sheild!==true)
         {
-          request:'getRelativePersonsWithinPerName',
-          info:
-          {
-            perName:$scope.car_insurance.insuranceder.perName
-          }
+            $scope.sheild=true;
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data:
+                    {
+                        request:'getRelativePersonsWithinPerName',
+                        info:
+                            {
+                                perName:$scope.car_insurance.insuranceder.perName
+                            }
+                    }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1){
+                    $scope.car_insurance.relativePersons=json.data;
+                }
+                $scope.sheild=false;
+            }).catch(function(err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+                $scope.sheild=false;
+            })
         }
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1){
-          $scope.car_insurance.relativePersons=json.data;
-        }
-      })
+
 
     }
 
