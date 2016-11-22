@@ -82,26 +82,39 @@ angular.module('starter')
     $scope.car_insurance.relativePersons={};
 
     $scope.selectCarInsuranceder=function(){
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
+
+        if($scope.sheild!==true)
         {
-          request:'getRelativePersonsWithinPerName',
-          info:
-          {
-            perName:$scope.car_insurance.insuranceder.perName
-          }
+            $scope.sheild=true;
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data:
+                    {
+                        request:'getRelativePersonsWithinPerName',
+                        info:
+                            {
+                                perName:$scope.car_insurance.insuranceder.perName
+                            }
+                    }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1){
+                    $scope.car_insurance.relativePersons=json.data;
+                }
+                $scope.sheild=false;
+            }).catch(function(err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+                $scope.sheild=false;
+            })
         }
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1){
-          $scope.car_insurance.relativePersons=json.data;
-        }
-      })
+
 
     }
 

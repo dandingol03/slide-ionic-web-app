@@ -37,24 +37,36 @@ angular.module('starter')
 
 
     $scope.getCode=function () {
-      $http({
-        method:"GET",
-        url:Proxy.local()+'/securityCode?'+"phoneNum=" + $scope.userInfo.mobile,
-        headers: {
-          'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
 
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1){
-          $scope.code=json.data;
-          alert('验证码='+$scope.code);
+        //TODO:校验手机号长度
+        var reg=/\d{11}/;
+        var mobilePhone=$scope.userInfo.mobile;
+        if(reg.exec(mobilePhone)!==null)
+        {
+            $http({
+                method:"GET",
+                url:Proxy.local()+'/securityCode?'+"phoneNum=" + $scope.userInfo.mobile,
+                headers: {
+                    'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1){
+                    $scope.code=json.data;
+                    alert('验证码='+$scope.code);
+                }
+                else{
+                    alert('error=\r\n'+json.data);
+                }
+            })
+        }else{
+            var myPopup = $ionicPopup.alert({
+                template: '请输入11位的数字作为手机号\r\n再点击获取验证码',
+                title: '<strong style="color:red">错误</strong>'
+            });
         }
-        else{
-          alert('error=\r\n'+json.data);
-        }
-      })
     }
 
 

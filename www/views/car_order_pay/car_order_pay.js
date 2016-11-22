@@ -61,8 +61,10 @@ angular.module('starter')
                 .then(function (results) {
                     item[field]=results[0];
                     alert('img url=' + results[0]);
+                    $scope.attachmentSheild=false;
                 }, function (error) {
                     alert("error="+error);
+                    $scope.attachmentSheild=false;
                     // error getting photos
                 });
         };
@@ -85,7 +87,9 @@ angular.module('starter')
             $cordovaCamera.getPicture(options).then(function(imageURI) {
                 item[field] = imageURI;
                 alert('image url=' + item[field]);
+                $scope.attachmentSheild=false;
             }, function(err) {
+                $scope.attachmentSheild=false;
                 // error
             });
         };
@@ -95,30 +99,35 @@ angular.module('starter')
         //添加附件
         $scope.addAttachment=function(item,field)
         {
-            $ionicActionSheet.show({
-                buttons: [
-                    {text:'图库'},
-                    {text:'拍照'}
-                ],
-                cancelText: '关闭',
-                cancel: function() {
-                    return true;
-                },
-                buttonClicked: function(index) {
+            //add attachment flag
+            if($scope.attachmentSheild!=true)
+            {
+                $ionicActionSheet.show({
+                    buttons: [
+                        {text:'图库'},
+                        {text:'拍照'}
+                    ],
+                    cancelText: '关闭',
+                    cancel: function() {
+                        return true;
+                    },
+                    buttonClicked: function(index) {
 
-                    switch (index){
-                        case 0:
-                            $scope.pickImage(item,field);
-                            break;
-                        case 1:
-                            $scope.takePhoto(item,field);
-                            break;
-                        default:
-                            break;
+                        switch (index){
+                            case 0:
+                                $scope.pickImage(item,field);
+                                break;
+                            case 1:
+                                $scope.takePhoto(item,field);
+                                break;
+                            default:
+                                break;
+                        }
+                        return true;
                     }
-                    return true;
-                }
-            });
+                });
+            }else{}
+
         }
 
 
