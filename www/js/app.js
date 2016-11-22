@@ -590,7 +590,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_orders',{
-            cache:false,
             url:'/car_orders/:selected',
             controller:'carOrdersController',
             templateUrl:'views/car_orders/car_orders.html'
@@ -721,7 +720,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('update_car_info',{
+<<<<<<< HEAD
             url:'/update_car_info/:carInfo',
+=======
+            url:'/update_car_info/:carNum',
+>>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
             controller:'updateCarInfoController',
             templateUrl:'views/update_car_info/update_car_info.html'
           })
@@ -839,7 +842,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://139.129.96.231:3000";
+            return "http://192.168.1.138:3000";
           else
             return "/proxy/node_server";
             

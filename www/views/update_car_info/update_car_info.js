@@ -6,7 +6,17 @@ angular.module('starter')
                                                    $cordovaFileTransfer,$cordovaFile,
                                                    $cordovaCamera,$cordovaImagePicker,Proxy,
                                                    $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate,
+<<<<<<< HEAD
                                                    $timeout,$ionicPopup,$cordovaDatePicker,$stateParams){
+=======
+                                                   $timeout,$ionicPopup,$cordovaDatePicker,
+                                                    $stateParams){
+
+        $scope.carInfo={};
+
+        if($stateParams.carNum!==undefined&&$stateParams.carNum!==null)
+            $scope.carInfo.carNum=$stateParams.carNum;
+>>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
 
         if($stateParams!==undefined&&$stateParams!==null&&$stateParams!==''){
             $scope.carInfo=$stateParams;
@@ -116,7 +126,7 @@ angular.module('starter')
             window.history.back();
         };
 
-        $scope.carInfo={};
+
 
         $scope.Toggle=function(type,item,field)
         {
@@ -997,7 +1007,7 @@ angular.module('starter')
 
             var options = {
                 date: new Date(),
-                mode: 'datetime',
+                mode: 'date',
                 locale:'zh_cn'
             };
 

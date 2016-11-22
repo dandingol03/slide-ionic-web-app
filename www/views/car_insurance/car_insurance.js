@@ -6,7 +6,7 @@ angular.module('starter')
   .controller('carInsuranceController',function($scope,$state,$http,
                                                 $rootScope,$ionicActionSheet,
                                                 $ionicModal,Proxy,$stateParams,$ionicPopup,
-                                                $ionicScrollDelegate){
+                                                $ionicScrollDelegate,$ionicLoading){
     if($stateParams.carInfo!==undefined&&$stateParams.carInfo!==null)
     {
       var carInfo=$stateParams.carInfo;
@@ -181,88 +181,103 @@ angular.module('starter')
 
 
 
-    /**
-     * 获得险种套餐
-     */
-    $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'getCarInsuranceMeals'
-        }
-      }).then(function(response) {
-      var data=response.data;
-      var meals=[];
-      data.data.map(function(meal,i) {
-        var products={};
-        meal.products.map(function(product,j) {
-          product.irrespective=true;
-          product.checked=true;
-          if(products[product.productName]==undefined||products[product.productName]==null)
-          {
-            products[product.productName]=product;
+    $scope.getInsuranceMeals=function () {
 
-          }
-          else
-          {
-            if(products[product.productName].productIds!==undefined&&products[product.productName].productIds!==null)
-            {}else{
-                //新创建productIds和insuranceTypes,默认选中第一个
-              products[product.productName].productIds=[];
-              products[product.productName].insuranceTypes=[];
-              products[product.productName].productIds.push(products[product.productName].productId);
-              products[product.productName].insuranceTypes.push(products[product.productName].insuranceType);
-            }
-            products[product.productName].productIds.push(product.productId);
-            products[product.productName].insuranceTypes.push(product.insuranceType);
-
-          }
+        $ionicLoading.show({
+            template:'<p class="item-icon-left">拉取车险套餐数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
         });
-        meals.push({mealName:meal.mealName,products:products});
-      });
-      $scope.tabs=meals;
 
-      return $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'getInsuranceCompany'
-        }
-      });
-    }).then(function(res) {
-      var data=res.data;
-      //选择公司
-      $scope.companys=data.data;
-      $scope.page_size=6;
-      $scope.companyIndex=0;
-      $scope.page_companys=[];
-      var curIndex=$scope.companyIndex*$scope.page_size;
-      var j=0;
-      for(var i=curIndex;i<$scope.companys.length;i++)
-      {
-          if(j<$scope.page_size)
-          {
-            $scope.page_companys.push($scope.companys[i]);
-            j++;
-          }
-          else
-            break;
-      }
+        /**
+         * 获得险种套餐
+         */
+        $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data:
+                {
+                    request:'getCarInsuranceMeals'
+                }
+        }).then(function(response) {
+            var data=response.data;
+            var meals=[];
+            data.data.map(function(meal,i) {
+                var products={};
+                meal.products.map(function(product,j) {
+                    product.irrespective=true;
+                    product.checked=true;
+                    if(products[product.productName]==undefined||products[product.productName]==null)
+                    {
+                        products[product.productName]=product;
 
-    }).catch(function(err) {
-      var str='';
-      for(var field in err)
-      str+=err[field];
-      console.log('error=\r\n'+str);
-    });
+                    }
+                    else
+                    {
+                        if(products[product.productName].productIds!==undefined&&products[product.productName].productIds!==null)
+                        {}else{
+                            //新创建productIds和insuranceTypes,默认选中第一个
+                            products[product.productName].productIds=[];
+                            products[product.productName].insuranceTypes=[];
+                            products[product.productName].productIds.push(products[product.productName].productId);
+                            products[product.productName].insuranceTypes.push(products[product.productName].insuranceType);
+                        }
+                        products[product.productName].productIds.push(product.productId);
+                        products[product.productName].insuranceTypes.push(product.insuranceType);
+
+                    }
+                });
+                meals.push({mealName:meal.mealName,products:products});
+            });
+
+
+            $scope.tabs=meals;
+
+            return $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data:
+                    {
+                        request:'getInsuranceCompany'
+                    }
+            });
+        }).then(function(res) {
+            var data=res.data;
+            //选择公司
+            $scope.companys=data.data;
+            $scope.page_size=6;
+            $scope.companyIndex=0;
+            $scope.page_companys=[];
+            var curIndex=$scope.companyIndex*$scope.page_size;
+            var j=0;
+            for(var i=curIndex;i<$scope.companys.length;i++)
+            {
+                if(j<$scope.page_size)
+                {
+                    $scope.page_companys.push($scope.companys[i]);
+                    j++;
+                }
+                else
+                    break;
+            }
+            $ionicLoading.hide();
+
+        }).catch(function(err) {
+            var str='';
+            for(var field in err)
+                str+=err[field];
+            console.log('error=\r\n'+str);
+            $ionicLoading.hide();
+        });
+    }
+
+    $scope.getInsuranceMeals();
+
+
 
     $scope.carorder={
       insuranceder:{}

@@ -94,7 +94,7 @@ angular.module('starter')
 
 
         $ionicLoading.show({
-            template:'<p class="item-icon-left">Loading stuff...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            template:'<p class="item-icon-left">拉取寿险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
         });
 
       $http({
@@ -118,21 +118,24 @@ angular.module('starter')
           if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
             $rootScope.lifeInsurance={};
           $rootScope.lifeInsurance.orders=$scope.orders;
-          $scope.orders.map(function(order,i) {
+          if($scope.orders!==undefined&&$scope.orders!==null&&$scope.orders.length>0)
+          {
+              $scope.orders.map(function(order,i) {
 
-            var date=new Date(order.applyTime);
-            order.applyTime=date.getFullYear().toString()+'-'
-              +date.getMonth().toString()+'-'+date.getDate().toString();
+                  var date=new Date(order.applyTime);
+                  order.applyTime=date.getFullYear().toString()+'-'
+                      +date.getMonth().toString()+'-'+date.getDate().toString();
 
-            if(order.orderState==3){
-              $scope.pricingOrders.push(order);
-            }
-            if(order.orderState==5){
-              $scope.finishOrders.push(order);
-            }
+                  if(order.orderState==3){
+                      $scope.pricingOrders.push(order);
+                  }
+                  if(order.orderState==5){
+                      $scope.finishOrders.push(order);
+                  }
 
 
-          })
+              })
+          }
           $rootScope.lifeInsurance.pricingOrders = $scope.pricingOrders;
           $rootScope.lifeInsurance.finishOrders = $scope.finishOrders;
 
