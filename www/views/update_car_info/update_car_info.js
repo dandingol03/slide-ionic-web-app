@@ -6,7 +6,13 @@ angular.module('starter')
                                                    $cordovaFileTransfer,$cordovaFile,
                                                    $cordovaCamera,$cordovaImagePicker,Proxy,
                                                    $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate,
-                                                   $timeout,$ionicPopup,$cordovaDatePicker){
+                                                   $timeout,$ionicPopup,$cordovaDatePicker,
+                                                    $stateParams){
+
+        $scope.carInfo={};
+
+        if($stateParams.carNum!==undefined&&$stateParams.carNum!==null)
+            $scope.carInfo.carNum=$stateParams.carNum;
 
         $scope.imgArrs=['licenseCard1_img','licenseCard2_img','licenseCard3_img'];
 
@@ -108,7 +114,7 @@ angular.module('starter')
             window.history.back();
         };
 
-        $scope.carInfo={};
+
 
         $scope.Toggle=function(type,item,field)
         {

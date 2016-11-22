@@ -221,26 +221,27 @@ angular.module('starter')
     //同步车辆信息
       if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
       {
-          $scope.carInfo=$rootScope.carInfo;
+          var carInfo=$rootScope.carInfo;
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token,
+              },
+              data:
+                  {
+                      request:'validateCarFree',
+                      info:{
+                          carId:carInfo.carId
+                      }
+                  }
+          }).then(function(res) {
+              var json=res.data;
+              if(json.data==true)
+                  $scope.carInfo=$rootScope.carInfo;
+          })
       }else{
-          // $http({
-          //     method: "post",
-          //     url: Proxy.local()+"/svr/request",
-          //     headers: {
-          //         'Authorization': "Bearer " + $rootScope.access_token,
-          //     },
-          //     data:
-          //         {
-          //             request:'getCarAndOwnerInfo'
-          //         }
-          // }).success(function (res) {
-          //         var json=res.carInfo;
-          //         if(json.re==1) {
-          //             var carInfo=json.data[0];
-          //             $scope.carInfo=carInfo;
-          //         }
-          //         console.log('success');
-          // });
+
       }
 
 

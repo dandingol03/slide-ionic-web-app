@@ -237,10 +237,17 @@ angular.module('starter')
               else
                   console.log('cannot get access_token');
           }).catch(function(err) {
-              var str='';
-              for(var field in err)
-                  str+=err[field];
-              console.error('err=\r\n'+str);
+              var msg=err.data;
+              if(msg.error=='invalid_grant')
+              {
+                  if(msg.error_description=='User credentials are invalid')
+                  {
+                      $ionicPopup.alert({
+                          title: '错误',
+                          template: '用户名或密码填写错误'
+                      });
+                  }
+              }
               $ionicLoading.hide();
 
           })
