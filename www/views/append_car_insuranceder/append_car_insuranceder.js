@@ -22,17 +22,10 @@ angular.module('starter')
     $scope.photoIndex=0;
     $scope.imgArrs=['perIdCard1_img','perIdCard2_img'];
 
-<<<<<<< HEAD
-      $scope.changePhotoIndex=function(photoIndex){
-          if(photoIndex==0){
-              $scope.photoIndex=1;
-          }else{
-              $scope.photoIndex=0;
-          }
-=======
+
       $scope.changePhotoIndex=function(i){
               $scope.photoIndex=i;
->>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
+
       }
 
       $scope.validate=function(item,field,pattern) {

@@ -3,7 +3,7 @@
  */
 angular.module('starter')
     .controller('carManageController',function($scope,$state,$http,
-                                                $rootScope,$cordovaFileTransfer,Proxy,$ionicModal,$ionicPopup){
+                                               $rootScope,$cordovaFileTransfer,Proxy,$ionicModal,$ionicPopup){
 
 
         $scope.go_back=function () {
@@ -52,9 +52,9 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token
                 },
                 data:
-                {
-                    request:'fetchInsuranceCarInfoByCustomerId'
-                }
+                    {
+                        request:'fetchInsuranceCarInfoByCustomerId'
+                    }
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
@@ -111,52 +111,6 @@ angular.module('starter')
 
         $scope.bindNewCar = function(){
 
-<<<<<<< HEAD
-            $http({
-                method: "POST",
-                url: Proxy.local()+"/svr/request",
-                headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token
-                },
-                data:
-                {
-                    request:'bindNewCar',
-                    info:{
-                        carNum:$scope.carInfo.carNum
-                    }
-                }
-            }).then(function(res) {
-                var json=res.data;
-                var result = json.re;
-                switch (result){
-                    case -1:
-                        var confirmPopup = $ionicPopup.confirm({
-                            title: '绑定车辆',
-                            template: '数据库中未保存此车,是否要创建新车'
-                        });
-                        confirmPopup.then(function(res) {
-                            if(res) {
-                                $scope.closeBindCarModal();
-
-                                $state.go('update_car_info',{carInfo:JSON.stringify($scope.carInfo)});
-
-                            } else {
-                                $scope.closeBindCarModal();
-                            }
-                        });
-                        break;
-                    case -2:
-                        var confirmPopup = $ionicPopup.confirm({
-                            title: '绑定车辆',
-                            template: '是否要创建新车'
-                        });
-                        confirmPopup.then(function(res) {
-                            if(res) {
-                                $scope.closeBindCarModal();
-                                $state.go('update_car_info',{carNum: JSON.stringify({carNum:carNum})});
-                            } else {
-                                $scope.closeBindCarModal();
-=======
             //车牌号限制
             var carNum=$scope.carInfo.carNum;
             if(carNum.length!=6)
@@ -177,7 +131,6 @@ angular.module('starter')
                             request:'bindNewCar',
                             info:{
                                 carNum:$scope.carInfo.carNum
->>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
                             }
                         }
                 }).then(function(res) {
@@ -235,30 +188,6 @@ angular.module('starter')
                             });
                             confirmPopup.then(function(res) {
                                 $scope.closeBindCarModal();
-<<<<<<< HEAD
-                                $state.go('update_car_info',{carNum: JSON.stringify({carNum:carNum})});
-                            } else {
-                                $scope.closeBindCarModal();
-                            }
-                        });
-                        break;
-                    case 1:
-                        var carInfo = res.data;
-                        $scope.relativeCars.push(carInfo);
-                        var confirmPopup = $ionicPopup.confirm({
-                            title: '绑定车辆',
-                            template: '绑定成功!'
-                        });
-                        confirmPopup.then(function(res) {
-                            $scope.closeBindCarModal();
-                            $scope.fetchRelativeCars();
-                            $state.go('car_manage');
-                        });
-                        break;
-                    default:
-                        break;
-                }
-=======
                                 $scope.fetchRelativeCars();
                                 $state.go('car_manage');
                             });
@@ -269,7 +198,6 @@ angular.module('starter')
                 });
             }
 
->>>>>>> 19545a9c04ba73376564c861e54a520d9c01fd40
 
 
         }
