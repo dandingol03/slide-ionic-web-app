@@ -721,7 +721,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('update_car_info',{
-            url:'/update_car_info',
+            url:'/update_car_info/:carInfo',
             controller:'updateCarInfoController',
             templateUrl:'views/update_car_info/update_car_info.html'
           })

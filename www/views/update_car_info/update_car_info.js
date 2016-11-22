@@ -6,9 +6,17 @@ angular.module('starter')
                                                    $cordovaFileTransfer,$cordovaFile,
                                                    $cordovaCamera,$cordovaImagePicker,Proxy,
                                                    $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate,
-                                                   $timeout,$ionicPopup,$cordovaDatePicker){
+                                                   $timeout,$ionicPopup,$cordovaDatePicker,$stateParams){
 
-        $scope.imgArrs=['licenseCard1_img','licenseCard2_img','licenseCard3_img'];
+        if($stateParams!==undefined&&$stateParams!==null&&$stateParams!==''){
+            $scope.carInfo=$stateParams;
+            if(Object.prototype.toString.call($scope.carInfo)=='[object String]')
+            {
+                $scope.carInfo=JSON.parse($scope.carInfo);
+            }
+        }
+
+            $scope.imgArrs=['licenseCard1_img','licenseCard2_img','licenseCard3_img'];
 
         $scope.city=null;
 

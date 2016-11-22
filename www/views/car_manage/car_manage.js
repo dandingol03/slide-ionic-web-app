@@ -136,7 +136,9 @@ angular.module('starter')
                         confirmPopup.then(function(res) {
                             if(res) {
                                 $scope.closeBindCarModal();
-                                $state.go('update_car_info');
+
+                                $state.go('update_car_info',{carInfo:JSON.stringify($scope.carInfo)});
+
                             } else {
                                 $scope.closeBindCarModal();
                             }
@@ -150,7 +152,7 @@ angular.module('starter')
                         confirmPopup.then(function(res) {
                             if(res) {
                                 $scope.closeBindCarModal();
-                                $state.go('update_car_info');
+                                $state.go('update_car_info',{carNum: JSON.stringify({carNum:carNum})});
                             } else {
                                 $scope.closeBindCarModal();
                             }
@@ -164,7 +166,7 @@ angular.module('starter')
                         confirmPopup.then(function(res) {
                             if(res) {
                                 $scope.closeBindCarModal();
-                                $state.go('update_car_info');
+                                $state.go('update_car_info',{carNum: JSON.stringify({carNum:carNum})});
                             } else {
                                 $scope.closeBindCarModal();
                             }

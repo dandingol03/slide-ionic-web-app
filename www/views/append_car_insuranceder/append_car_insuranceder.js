@@ -24,9 +24,9 @@ angular.module('starter')
 
       $scope.changePhotoIndex=function(photoIndex){
           if(photoIndex==0){
-              $scope.photoIndex=0;
-          }else{
               $scope.photoIndex=1;
+          }else{
+              $scope.photoIndex=0;
           }
       }
 
