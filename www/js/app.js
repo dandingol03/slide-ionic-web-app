@@ -306,9 +306,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               //报价完成
                               var orderId=message.orderId;
                               var orderNum=message.orderNum;
+                              var orderType=message.orderType;
+                              var msg=null;
+                              if(orderType==1)
+                                  msg='订单号为'+orderNum+'的车险订单已抱价完成\r\n'+'是否现在进入车险订单页面查看';
+                              else if(orderType==2)
+                                  msg='订单号为'+orderNum+'的寿险订单已抱价完成\r\n'+'是否现在进入寿险订单页面查看';
                               var confirmPopup = $ionicPopup.confirm({
                                   title: '信息',
-                                  template:'订单号为'+orderNum+'的订单已抱价完成\r\n'+'是否现在进入车险订单页面查看'
+                                  template:msg
                               });
 
                               confirmPopup.then(function(res) {

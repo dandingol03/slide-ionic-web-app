@@ -283,7 +283,7 @@ angular.module('starter')
                                   {
                                       $ionicLoading.hide();
                                       alert('订单已创建,请等待报价');
-
+                                      $rootScope.car_orders_tabIndex=2;
                                       $state.go('car_orders');
                                   }
                               }).catch(function(err) {
