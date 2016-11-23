@@ -150,23 +150,24 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         //获取自定义消息的回调
         $rootScope.onReceiveMessage = function(event) {
           try{
-            alert('got message');
-            var message=null;
-            if(device.platform == "Android") {
-              message = event.message;
-            } else {
-              message = event.content;
-            }
+              console('message receiving......');
+              var message=null;
+              if(device.platform == "Android") {
+                message = event.message;
+              } else {
+                message = event.content;
+              }
 
-            if(Object.prototype.toString.call(message)!='[object Object]')
-            {
-              message = JSON.parse(message);
+              if(Object.prototype.toString.call(message)!='[object Object]')
+              {
+                message = JSON.parse(message);
 
-            }else{}
-            alert('unitName=' + message.unitName);
+              }else{}
+
 
             if(message.type!=undefined&&message.type!=null){
               switch(message.type){
+
                 case 'from-service':
                   var order=message.order;
                   var servicePersonId=message.servicePersonId;
@@ -303,19 +304,19 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                       switch (orderState) {
                           case 3:
                               //报价完成
-                              var order=message.order;
+                              var orderId=message.orderId;
+                              var orderNum=message.orderNum;
                               var confirmPopup = $ionicPopup.confirm({
-                                  title: '您的订单'+order.orderNum,
-                                  template:'已报价完成'
+                                  title: '信息',
+                                  template:'订单号为'+orderNum+'的订单已抱价完成\r\n'+'是否现在进入车险订单页面查看'
                               });
 
                               confirmPopup.then(function(res) {
                                   if(res) {
-                                      $rootScope.lifeInsurance=null;
-                                      $state.go('life_insurance_orders',{tabIndex:1});
+                                      $rootScope.car_orders_tabIndex=1;
+                                      $state.go('car_orders');
                                   } else {}
-
-                              })
+                              });
                               break;
                           default:
                               var order=message.order;
