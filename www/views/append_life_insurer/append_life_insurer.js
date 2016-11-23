@@ -18,6 +18,14 @@ angular.module('starter')
       $scope.tabIndex=i;
     };
 
+     $scope.photoIndex=0;
+      $scope.imgArrs=['perIdCard1_img','perIdCard2_img'];
+
+      $scope.changePhotoIndex=function(i){
+          $scope.photoIndex=i;
+
+      }
+
     $scope.insurer={};
 
     if($stateParams.info!==undefined&&$stateParams.info!==null)

@@ -14,7 +14,7 @@ angular.module('starter')
     {
       var plans=$rootScope.lifeInsurance.plans;
       plans.map(function (plan, i){
-        if(plan.modified==true&plan.checked==true){
+        if(plan.modified==true&&plan.checked==true){
           $scope.changedState=true;
         }
       });
@@ -87,6 +87,8 @@ angular.module('starter')
     }
 
 
+
+
     //同步时机存在问题
     //获取寿险订单
     if($rootScope.lifeInsurance!==undefined&&$rootScope.lifeInsurance!==null)
@@ -116,40 +118,55 @@ angular.module('starter')
           $ionicLoading.hide();
 
 
-        var json=res.data;
-        if(json.re==1){
-          $scope.orders=json.data;
-          if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
-            $rootScope.lifeInsurance={};
-          $rootScope.lifeInsurance.orders=$scope.orders;
-          if($scope.orders!==undefined&&$scope.orders!==null&&$scope.orders.length>0)
-          {
-              $scope.orders.map(function(order,i) {
+          var json = res.data;
+          if (json.re == 1) {
+              $scope.orders = json.data;
+              if ($rootScope.lifeInsurance == undefined || $rootScope.lifeInsurance == null)
+                  $rootScope.lifeInsurance = {};
+              $rootScope.lifeInsurance.orders = $scope.orders;
+              if ($scope.orders !== undefined && $scope.orders !== null && $scope.orders.length > 0) {
+                  $scope.orders.map(function (order, i) {
 
-                  var date=new Date(order.applyTime);
-                  order.applyTime=date.getFullYear().toString()+'-'
-                      +date.getMonth().toString()+'-'+date.getDate().toString();
+                      var date = new Date(order.applyTime);
+                      order.applyTime = date.getFullYear().toString() + '-'
+                          + date.getMonth().toString() + '-' + date.getDate().toString();
 
-                  if(order.orderState==3){
-                      $scope.pricingOrders.push(order);
-                  }
-                  if(order.orderState==5){
-                      $scope.finishOrders.push(order);
-                  }
+                      if (order.orderState == 3) {
+                          $scope.pricingOrders.push(order);
+                      }
+                      if (order.orderState == 5) {
+                          $scope.finishOrders.push(order);
+                      }
 
 
-              })
+                  })
+              }
+              $rootScope.lifeInsurance.pricingOrders = $scope.pricingOrders;
+              $rootScope.lifeInsurance.finishOrders = $scope.finishOrders;
           }
-          $rootScope.lifeInsurance.pricingOrders = $scope.pricingOrders;
-          $rootScope.lifeInsurance.finishOrders = $scope.finishOrders;
 
-        }
-      }).catch(function(err) {
-          var str='';
-          for(var field in err)
-            str+=err[field];
-          console.error('error=\r\n'+str);
-      })
+          return $http({
+              method: "POST",
+              url: Proxy.local() + '/svr/request',
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data: {
+                  request: 'fetchLifeInsuranceAppliedOrders',
+              }
+          })
+      }).then(function(res) {
+            var json=res.data;
+            if(json.re==1) {
+                $scope.appliedOrders=json.data;
+            }
+        }).catch(function(err) {
+            var str='';
+            for(var field in err)
+                str+=err[field];
+            console.error('err=\r\n'+str);
+        });
+
     }
 
     //获取估价方案
@@ -157,72 +174,7 @@ angular.module('starter')
       &&$rootScope.lifeInsurance.plans!==undefined&&$rootScope.lifeInsurance.plans!==null)
     {
       $scope.plans=$rootScope.lifeInsurance.plans;
-    }else{
-      $http({
-        method: "POST",
-        url: Proxy.local()+'/svr/request',
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'getOrderPlan',
-          orderId:1
-        }
-      }).then(function(res) {
-        $scope.plans=res.data.data;
-        var data=res.data.data;
-        var plans=[];
-        data.map(function(plan,i) {
-          var main=null;
-          var additions=[];
-          plan.items.map(function(proj,j) {
-            if(proj.ownerId!==undefined&&proj.ownerId!==null)
-              additions.push(proj);
-            else
-              main=proj;
-          })
-          plan.main=main;
-          plan.additions=additions;
-          plans.push(plan);
-        });
-
-        $scope.plans=plans;
-        if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
-          $rootScope.lifeInsurance={};
-        $rootScope.lifeInsurance.plans=plans;
-      }).catch(function(err) {
-        var str='';
-        for(var field in err)
-          str+=err[field];
-        console.error('error=\r\n'+str);
-      });
-    }
-
-
-      $http({
-          method: "POST",
-          url: Proxy.local()+'/svr/request',
-          headers: {
-              'Authorization': "Bearer " + $rootScope.access_token
-          },
-          data:
-              {
-                  request:'fetchLifeInsuranceAppliedOrders',
-              }
-      }).then(function(res) {
-          var json=res.data;
-          if(json.re==1) {
-              $scope.appliedOrders=json.data;
-          }
-      }).catch(function(err) {
-          var str='';
-          for(var field in err)
-              str+=err[field];
-          console.error('err=\r\n'+str);
-      })
-
-
+    }else{}
 
 
 

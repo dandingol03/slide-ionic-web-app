@@ -1653,8 +1653,6 @@ angular.module('starter')
         var data=res.state;
         if(data==3)
         {
-
-
         }
       }).catch(function(err) {
         var str='';
@@ -1889,32 +1887,40 @@ $scope.openAirportTransfer=function(){
 
     $scope.miles=0;
 
-
-
     $scope.getMaintainPlan=function(miles){
-      var miles= parseInt(miles/5000)*5000;
 
-      $http({
-        method: "POST",
-        url: Proxy.local()+'/svr/request',
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token,
-        },
-        data:
-        {
-          request:'getMaintainPlan',
-          info:{
-            miles:miles
-          }
-        }
-      }).then(function(res) {
-        var json = res.data;
-        if(json.re==1){
-          $scope.routineName=json.data;
-          $scope.open_maintainPlanModal();
-        }
+      if(miles<5000||miles>200000){
+          var myPopup = $ionicPopup.alert({
+              template: '请输入5000至200000公里范围内的里程',
+              title: '<strong style="color:red">错误</strong>'
+          });
 
-      })
+      }else{
+          var miles= parseInt(miles/5000)*5000;
+
+          $http({
+              method: "POST",
+              url: Proxy.local()+'/svr/request',
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token,
+              },
+              data:
+              {
+                  request:'getMaintainPlan',
+                  info:{
+                      miles:miles
+                  }
+              }
+          }).then(function(res) {
+              var json = res.data;
+              if(json.re==1){
+                  $scope.routineName=json.data;
+                  $scope.open_maintainPlanModal();
+              }
+
+          })
+      }
+
     }
 
     /***  查看保养计划模态框***/
