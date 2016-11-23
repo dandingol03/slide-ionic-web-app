@@ -210,7 +210,7 @@ angular.module('starter')
       }
       if(person!==null)
       {
-          $scope.order.insurer=relative;
+          $scope.order.insurer=person;
           $rootScope.dashboard.tabIndex=1;
           $rootScope.life_insurance.insurer=person;
           $state.go('tabs.dashboard');
