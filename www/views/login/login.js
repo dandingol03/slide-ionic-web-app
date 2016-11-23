@@ -5,7 +5,7 @@ angular.module('starter')
 
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover){
+        ,$WebSocket,$ionicPopover,$cordovaPreferences,$ionicPlatform){
 
 
 
@@ -14,37 +14,73 @@ angular.module('starter')
 
       $scope.user={};
 
+      $scope.fetch = function() {
+        $cordovaPreferences.fetch('pwdPersisted')
+            .success(function(value) {
+                alert('pwdPersisted='+value);
+                $scope.pwdPersisted=value;
 
-      if(localStorage.pwdPersisted=='true')
-          $scope.pwdPersisted=true;
-      else
-        $scope.pwdPersisted=false;
+                if($scope.pwdPersisted)
+                {
+                    $cordovaPreferences.fetch('username')
+                        .success(function(value) {
+                            alert('username=' + value);
+                            if(value!==undefined&&value!==null&&value!='')
+                                $scope.user.username=value;
+                        })
+                        .error(function(error) {
+                            alert("Error: " + error);
+                        });
 
-      $scope.togglePwdPersistent = function(){
+                    $cordovaPreferences.fetch('password')
+                        .success(function(value) {
+                            alert('password=' + value);
+                            if(value!==undefined&&value!==null&&value!='')
+                                $scope.user.password=value;
+                        })
+                        .error(function(error) {
+                            alert("Error: " + error);
+                        });
+                }
+
+            })
+            .error(function(error) {
+                alert("Error: " + error);
+            })
+      };
+
+        $ionicPlatform.ready (function () {
+            $scope.fetch();
+        })
+
+
+
+
+
+
+        $scope.togglePwdPersistent = function(){
           if($scope.pwdPersisted==true){
-              localStorage.pwdPersisted='false';
               $scope.pwdPersisted=false;
+              $cordovaPreferences.store('pwdPersisted', false)
+                  .success(function(value) {
+                  })
+                  .error(function(error) {
+                      alert("Error: " + error);
+                  })
           }else{
               localStorage.pwdPersisted='true';
               $scope.pwdPersisted=true;
+              $cordovaPreferences.store('pwdPersisted', true)
+                  .success(function(value) {
+                  })
+                  .error(function(error) {
+                      console.error("Error: " + error);
+                  })
           }
       }
 
 
-      if($scope.pwdPersisted)
-      {
 
-          if(localStorage.userName!=undefined&&localStorage.userName!=null){
-
-              var userName=localStorage.userName;
-              $scope.user.username = userName;
-          }
-
-          if(localStorage.password!=undefined&&localStorage.password!=null){
-              var password=localStorage.password;
-              $scope.user.password=password;
-          }
-      }
 
         $WebSocket.registeCallback(function(msg) {
         console.log('//-----ws\r\n' + msg);
@@ -181,8 +217,20 @@ angular.module('starter')
               var json = res.data;
               var access_token = json.access_token;
 
-              localStorage.userName = $scope.user.username;
-              localStorage.password = $scope.user.password;
+
+              $cordovaPreferences.store('username', $scope.user.username)
+                  .success(function(value) {
+                  })
+                  .error(function(error) {
+                      alert("Error: " + error);
+                  });
+              $cordovaPreferences.store('password', $scope.user.password)
+                  .success(function(value) {
+                  })
+                  .error(function(error) {
+                      alert("Error: " + error);
+                  });
+
 
               if (access_token !== undefined && access_token !== null) {
                   $rootScope.access_token = access_token;
