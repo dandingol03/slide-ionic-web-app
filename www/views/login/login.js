@@ -49,9 +49,12 @@ angular.module('starter')
             })
       };
 
-        $ionicPlatform.ready (function () {
-            $scope.fetch();
-        })
+
+        if(window.plugins!==undefined&&window.plugins!==null) {
+            $ionicPlatform.ready (function () {
+                $scope.fetch();
+            })
+        }
 
 
 
@@ -218,18 +221,20 @@ angular.module('starter')
               var access_token = json.access_token;
 
 
-              $cordovaPreferences.store('username', $scope.user.username)
-                  .success(function(value) {
-                  })
-                  .error(function(error) {
-                      alert("Error: " + error);
-                  });
-              $cordovaPreferences.store('password', $scope.user.password)
-                  .success(function(value) {
-                  })
-                  .error(function(error) {
-                      alert("Error: " + error);
-                  });
+              if(window.plugins!==undefined&&window.plugins!==null) {
+                  $cordovaPreferences.store('username', $scope.user.username)
+                      .success(function(value) {
+                      })
+                      .error(function(error) {
+                          alert("Error: " + error);
+                      });
+                  $cordovaPreferences.store('password', $scope.user.password)
+                      .success(function(value) {
+                      })
+                      .error(function(error) {
+                          alert("Error: " + error);
+                      });
+              }
 
 
               if (access_token !== undefined && access_token !== null) {
@@ -290,10 +295,32 @@ angular.module('starter')
               {
                   if(msg.error_description=='User credentials are invalid')
                   {
-                      $ionicPopup.alert({
-                          title: '错误',
-                          template: '用户名或密码填写错误'
+
+                      $http({
+                          method: "POST",
+                          url: Proxy.local() + "/validateUser?username="+$scope.user.username+'&'+'password='+$scope.user.password,
+                          headers: {
+                              'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                              'Content-Type': 'application/x-www-form-urlencoded'
+                          }
+                      }).then(function(res) {
+                          var json=res.data;
+                          if(json.re==2)
+                          {
+                              $ionicPopup.alert({
+                                  title: '错误',
+                                  template: '密码无法匹配用户名'
+                              });
+                          }else if(json.re==-1)
+                          {
+                              $ionicPopup.alert({
+                                  title: '错误',
+                                  template: '用户名不存在'
+                              });
+                          }else{}
                       });
+
+
                   }
               }
               $ionicLoading.hide();

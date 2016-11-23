@@ -158,7 +158,8 @@
                                  style="background-color:transparent;border: 0px;padding: 0px;"
                                  ng-if="photoIndex==0">
                                 <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
-                  <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
+                  <span class="input-label"
+                        style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
                       身份证正面:
                   </span>
                                 </div>
@@ -167,7 +168,8 @@
                                  style="background-color:transparent;border: 0px;padding: 0px;"
                                  ng-if="photoIndex==1">
                                 <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
-                  <span class="input-label" style="display: inline-block;width: 65%;background-color:transparent;">
+                  <span class="input-label"
+                        style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
                        身份证反面:
                   </span>
                                 </div>
@@ -194,17 +196,22 @@
                                 <div class="item item-text-wrap">
                                     <div style="position:absolute;bottom:10px;width:100%;top:0px;left:0px;">
                                         <div ng-click="changePhotoIndex(0)"
-                                             style="display:inline-block;width: 20%;text-align:center;">
+                                             style="display:inline-block;width: 35%;text-align:center;">
+                                            <span>
+                                                <i class="fa fa-chevron-left"></i>
+                                            </span>
                                             <span>身份证正面</span>
                                         </div>
 
-                                        <div ng-click="addAttachment(car_insurance.insuranceder,imgArrs[photoIndex])" style="display:inline-block;width: 50%;text-align: center;font-size: 3em;">
+                                        <div ng-click="addAttachment(car_insurance.insuranceder,imgArrs[photoIndex])"
+                                             style="display:inline-block;width: 27%;text-align: center;font-size: 3em;">
                                             <i class="ion-android-camera"></i>
                                         </div>
 
                                         <div ng-click="changePhotoIndex(1)"
-                                             style="display:inline-block;width: 20%;text-align:center;">
+                                             style="display:inline-block;width: 35%;text-align:center;">
                                             <span>身份证反面</span>
+                                            <span><i class="fa fa-chevron-right"></i></span>
                                         </div>
                                     </div>
                                 </div>
