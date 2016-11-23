@@ -1,6 +1,6 @@
 angular.module('starter')
 
-    .controller('dashboardController',function($scope,$state,$http, $location,
+    .controller('dashboardBackUpController',function($scope,$state,$http, $location,
                                                $rootScope,$ionicModal,$timeout,
                                                $cordovaCamera,ionicDatePicker,
                                                $ionicActionSheet,$q,$cordovaFile,

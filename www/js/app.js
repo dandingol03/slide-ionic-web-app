@@ -812,6 +812,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 templateUrl:'views/my_page/my_page.html'
           })
 
+          .state('dashboard_backup',{
+            url:'/dashboard_backup',
+              controller:'dashboardBackUpController',
+              templateUrl:'views/dashboard_backup/dashboard_backup.html'
+          })
 
 
 
