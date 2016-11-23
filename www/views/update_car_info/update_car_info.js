@@ -699,8 +699,6 @@ angular.module('starter')
         $scope.$on('$destroy', function() {
             $scope.show_demo_modal.remove();
             $scope.show_demo_modal1.remove();
-            $scope.show_demo_modal2.remove();
-            $scope.show_demo_modal3.remove();
         });
 
         /*** bind upload_licenseCard_modal***/
