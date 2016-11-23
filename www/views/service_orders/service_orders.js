@@ -12,7 +12,8 @@ angular.module('starter')
       $location.path(url);
     };
 
-    $scope.go_back=function(){
+
+    $scope.historyBack=function(){
       window.history.back();
     };
 

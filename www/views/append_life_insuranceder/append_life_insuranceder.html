@@ -1,25 +1,19 @@
-<ion-view >
+<ion-view title='选择寿险被保险人'>
 
 
   <ion-nav-bar class="bar-stable" align-title="center" >
 
 
     <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
+      <button class="button button-icon button-clear bar_arr"
+              style="font-size: 2.4em;"
+              ng-click="go_back()"
+      >
         <i class="ion-chevron-left"></i>
       </button>
     </ion-nav-buttons>
-    <ion-nav-title>
-
-    </ion-nav-title>
 
 
-    <ion-nav-buttons side="right">
-
-      <button class="button button-icon button-clear" >
-        <i class="ion-plus"></i>
-      </button>
-    </ion-nav-buttons>
 
   </ion-nav-bar>
 
@@ -60,7 +54,7 @@
 
         <div class="item"
              style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-                 padding:10px;background-color:transparent;overflow:initial">
+                 padding:4px;background-color:transparent;overflow:initial">
 
             <span
               class="input-label"
@@ -133,10 +127,10 @@
 
     <div ng-if="tabIndex==1" style="height: 100%;">
 
-      <ion-scroll style="height: 90%;">
+
         <div class="list list-inset padding">
 
-          <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
+          <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:4px 10px 4px 10px;">
              <span class="input-label" style="display: inline-block;">
               姓名:
             </span>
@@ -145,7 +139,7 @@
                    ng-model="insuranceder.perName"/>
           </div>
 
-          <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
+          <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:4px 10px 4px 10px;">
             <span class="input-label" style="display: inline-block;width:55%;">
               选择亲属关系:
             </span>
@@ -160,7 +154,7 @@
           </div>
 
           <div class="item"
-               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;position: relative">
+               style="margin:1px;border:0px;padding:10px;padding-top:0px;padding-bottom: 0px;position: relative">
 
             <ion-slide-box on-slide-changed="slideChanged($index)" style="background-color:transparent;">
               <ion-slide>
@@ -228,7 +222,7 @@
 
         </div>
 
-      </ion-scroll>
+
 
     </div>
 

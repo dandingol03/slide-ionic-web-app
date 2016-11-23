@@ -1,0 +1,91 @@
+<ion-view view-title="寿险订单详情">
+
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2.4em;"
+                    ng-click="go_back()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+
+    <ion-content scroll="true" lazy-scroll>
+
+
+        <!-- inset one -->
+        <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
+            <div class="item item-divider">
+                编号
+            </div>
+            <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
+                订单号:
+                <span style="position: absolute;right:20%;">{{order.orderNum}}</span>
+            </div>
+
+        </div>
+
+        <!-- inset two -->
+        <div class="list list-inset"
+             style="margin-bottom:40px;margin-left:0px;margin-right:0px;">
+            <div class="item item-divider">
+                订单信息
+            </div>
+
+            <div class="item" style="padding: 16px;">
+                <span style="width: 45%;display: inline-block;text-align: left">投保人:</span>
+                <span style="width: 55%;display: inline-block;text-align: left;">
+                    {{order.insurer.perName}}
+                </span>
+            </div>
+
+            <div class="item" style="padding: 16px;">
+                <span style="width: 45%;display: inline-block;text-align: left">被保险人:</span>
+                <span style="width: 55%;display: inline-block;text-align: left;">
+                    {{order.insuranceder.perName}}
+                </span>
+            </div>
+
+            <div class="item" style="padding: 16px;" >
+                <span style="width: 45%;display: inline-block;text-align: left">受益人:</span>
+                <span style="width: 55%;display: inline-block;text-align: left;" >
+                    {{order.benefiter.perName}}
+                </span>
+            </div>
+
+            <div class="item" style="padding: 16px;">
+                <span style="width: 45%;display: inline-block;text-align: left">保障类型:</span>
+                <span style="width: 55%;display: inline-block;text-align: left;" >
+                    {{order.insuranceType}}
+                </span>
+            </div>
+
+            <div class="item" style="padding: 16px;">
+                <span style="width: 45%;display: inline-block;text-align: left">计划保费:</span>
+                <span style="width: 55%;display: inline-block;text-align: left;" >
+                    {{order.planInsuranceFee}}
+                </span>
+            </div>
+
+
+        </div>
+
+        <!-- inset three -->
+        <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
+            <div class="item" style="padding:16px;font-size: 1.4em;color:rgba(228, 93, 46, 0.87);">
+                申请日期:
+                <span style="position: absolute;right:20%;">
+                    {{order.applyTime|date:'yyyy-MM-dd HH:mm'}}
+                </span>
+            </div>
+        </div>
+
+
+
+    </ion-content>
+
+
+
+
+</ion-view>

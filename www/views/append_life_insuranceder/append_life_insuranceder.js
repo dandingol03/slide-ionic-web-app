@@ -260,10 +260,10 @@ angular.module('starter')
                  var json=res.data;
                  if(json.data==true) {
 
-                    var myPopup = $ionicPopup.alert({
+                   var myPopup = $ionicPopup.alert({
                         template: '您填入的被保人姓名已存在\r\n请重新填入后再次点击关联',
                         title: '<strong style="color:red">错误</strong>'
-                  });
+                   });
                 }else{
 
                    var personId=null;

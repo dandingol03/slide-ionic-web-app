@@ -82,6 +82,10 @@ angular.module('starter')
       $rootScope.lifeInsuranceOrder=order;
     }
 
+    $scope.goAppliedLifeOrderDetail=function (order) {
+        $state.go('applied_life_order_detail',{orderId:order.orderId});
+    }
+
 
     //同步时机存在问题
     //获取寿险订单
@@ -194,6 +198,33 @@ angular.module('starter')
         console.error('error=\r\n'+str);
       });
     }
+
+
+      $http({
+          method: "POST",
+          url: Proxy.local()+'/svr/request',
+          headers: {
+              'Authorization': "Bearer " + $rootScope.access_token
+          },
+          data:
+              {
+                  request:'fetchLifeInsuranceAppliedOrders',
+              }
+      }).then(function(res) {
+          var json=res.data;
+          if(json.re==1) {
+              $scope.appliedOrders=json.data;
+          }
+      }).catch(function(err) {
+          var str='';
+          for(var field in err)
+              str+=err[field];
+          console.error('err=\r\n'+str);
+      })
+
+
+
+
 
     //提交已选方案
     $scope.apply=function() {

@@ -819,6 +819,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/dashboard_backup/dashboard_backup.html'
           })
 
+          .state('applied_life_order_detail',{
+              url:'/applied_life_order_detail:orderId',
+              controller:'appliedLifeOrderDetailController',
+              templateUrl:'views/applied_life_order_detail/applied_life_order_detail.html'
+          })
 
 
       // if none of the above states are matched, use this as the fallback
@@ -844,7 +849,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.110:3000";
+            return "http://192.168.0.199:3000";
           else
             return "/proxy/node_server";
             

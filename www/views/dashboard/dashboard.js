@@ -1667,6 +1667,55 @@ angular.module('starter')
 
 
 
+    $scope.applyLifeInsuranceIntend=function () {
+        $http({
+            method: "POST",
+            url: Proxy.local()+'/svr/request',
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token,
+            },
+            data:
+                {
+                    request:'generateLifeInsuranceOrder',
+                    info:$scope.life_insurance.order
+                }
+        }).then(function(res) {
+            if(res.data!==undefined&&res.data!==null)
+            {
+                var orderId=res.data.data;
+                if(orderId!==undefined&&orderId!==null)
+                {
+                    if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
+                        $rootScope.lifeInsurance={};
+                    $rootScope.lifeInsurance.orderId=orderId;
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: '您的订单',
+                        template: '您的寿险意向已提交,请等待工作人员配置方案后在"我的寿险订单"中进行查询'
+                    });
+                    confirmPopup.then(function(res) {
+                        if(res){
+                            $state.go('life_insurance_orders',{tabIndex:2});
+                        }else {
+                            console.log('You are not sure');
+                        }
+                    });
+                    //清除寿险意向数据
+                    $rootScope.life_insurance={
+                    };
+                    $state.go('tabs.dashboard');
+
+                }
+            }
+
+        }).catch(function(err) {
+            var str='';
+            for(var field in err)
+                str += field + ':' + err[field];
+            alert('error=\r\n' + str);
+        });
+    }
+
+
     //寿险意向保留
     $scope.saveLifeInsuranceIntend = function()
     {
@@ -1678,52 +1727,52 @@ angular.module('starter')
         &&$scope.life_insurance.order.planInsuranceFee!=undefined&&$scope.life_insurance.order.planInsuranceFee!=null
       )
       {
-        $http({
-          method: "POST",
-          url: Proxy.local()+'/svr/request',
-          headers: {
-            'Authorization': "Bearer " + $rootScope.access_token,
-          },
-          data:
-          {
-            request:'generateLifeInsuranceOrder',
-            info:$scope.life_insurance.order
-          }
-        }).then(function(res) {
+          //TDOO:校验是否已有寿险订单
+          //受益人法定
 
-          if(res.data!==undefined&&res.data!==null)
-          {
-            var orderId=res.data.data;
-            if(orderId!==undefined&&orderId!==null)
-            {
-              if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
-                $rootScope.lifeInsurance={};
-              $rootScope.lifeInsurance.orderId=orderId;
+          $http({
+              method: "POST",
+              url: Proxy.local()+'/svr/request',
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token,
+              },
+              data:
+                  {
+                      request:'validateLifeInsuranceOrderApplyRedundancy',
+                      info:{
+                          insurancederId:$scope.life_insurance.order.insuranceder.personId,
+                          insurerId:$scope.life_insurance.order.insurer.personId,
+                          benefiterId:$scope.life_insurance.order.benefiter.personId
+                      }
+                  }
+          }).then(function(res) {
+              var json=res.data;
+              if(json.data==true) {
+                  var msg=null;
+                  if($scope.life_insurance.order.benefiter.personId!==undefined&&$scope.life_insurance.order.benefiter.personId!==null)
+                  {
+                      msg='已存在正在申请的相同投保人、被保险人的寿险订单,是否仍要提交';
+                  }
+                  else{
+                      msg='已存在正在申请的相同投保人、被保险人、受益人的寿险订单的寿险订单,是否仍要提交'
+                  }
+                  var confirmPopup = $ionicPopup.confirm({
+                      title: '信息',
+                      template: msg
+                  });
+                  confirmPopup.then(function(res) {
+                      if(res){
+                          $scope.applyLifeInsuranceIntend();
+                      }else {
+                      }
+                  })
+              }else{
+                  $scope.applyLifeInsuranceIntend();
+              }
+          })
 
 
-              var confirmPopup = $ionicPopup.confirm({
-                title: '您的订单',
-                template: '您的寿险意向已提交,请等待工作人员配置方案后在"我的寿险订单"中进行查询'
-              });
 
-              confirmPopup.then(function(res) {
-                if(res){
-                  console.log('You are sure');
-                }else {
-                  console.log('You are not sure');
-                }
-              })
-
-              // $state.go('life_insurance_orders',{tabIndex:2});
-            }
-          }
-
-        }).catch(function(err) {
-          var str='';
-          for(var field in err)
-            str += field + ':' + err[field];
-          alert('error=\r\n' + str);
-        });
       }else{
         var confirmPopup = $ionicPopup.confirm({
           title: '请填写完寿险意向后才选择提交',

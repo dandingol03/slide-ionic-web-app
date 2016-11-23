@@ -18,7 +18,7 @@
     <div class="list" style="margin-bottom: 0px;">
       <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
 
-        <li style="width:50%;">
+        <li style="width:33.3%;">
           <div class="cell"
                ng-class="{true: 'selected', false: ''}[tabIndex==0]"
                ng-click="tab_change(0)"
@@ -32,7 +32,7 @@
         </li>
 
 
-        <li style="width:50%">
+        <li style="width:33.3%">
           <div class="cell"
                ng-class="{true: 'selected', false: ''}[tabIndex==1]"
                ng-click="tab_change(1)"
@@ -41,6 +41,19 @@
               <span style="position:absolute;top: 30%;left:20%;right:20%;">
                 寿险方案
               </span>
+            </div>
+          </div>
+        </li>
+
+        <li style="width:33.3%;">
+          <div class="cell"
+               ng-class="{true: 'selected', false: ''}[tabIndex==2]"
+               ng-click="tab_change(2)"
+               style="text-align: center">
+            <div style="height: 100%">
+               <span style="position:absolute;top:30%;left: 20%;right:20%;">
+                  已申请
+               </span>
             </div>
           </div>
         </li>
@@ -55,8 +68,7 @@
       <div class="item"
            ng-if="tabIndex==0"
            style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
-           ng-repeat="order in finishOrders"
-      >
+           ng-repeat="order in finishOrders">
         <ul style="width: 100%;">
           <li style="float:left;width: 80%;"  ng-click="goDetail(order)">
             <div style="width: 70%;display: inline-block;margin-left:10%;">
@@ -84,8 +96,7 @@
       <div class="item"
            ng-if="tabIndex==1"
            style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
-           ng-repeat="order in pricingOrders"
-      >
+           ng-repeat="order in pricingOrders">
         <ul style="width: 100%;">
           <li style="float:left;width: 80%;"  ng-click="goDetail(order)">
             <div style="width: 70%;display: inline-block;margin-left:10%;">
@@ -109,7 +120,36 @@
         </ul>
       </div>
 
+
+      <!-- 已申请订单 -->
+      <div class="item"
+           ng-if="tabIndex==2"
+           style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
+           ng-repeat="order in appliedOrders">
+        <ul style="width: 100%;">
+          <li style="float:left;width: 80%;"  ng-click="goAppliedLifeOrderDetail(order)">
+            <div style="width: 70%;display: inline-block;margin-left:10%;">
+              <div style="width:100%;">
+                <div>
+                  订单编号:<span>{{order.orderNum}}</span>
+                </div>
+                <div>
+                  总金额:<span>{{order.insuranceFeeTotal}}</span>
+                </div>
+                <div>
+                  申请时间:
+                  <span>
+                    {{order.applyTime}}
+                  </span>
+                </div>
+              </div>
+              <i class="ion-ios-arrow-forward" style="position: absolute;right: 5%;bottom:30%;font-size: 1.4em;"></i>
+            </div>
+          </li>
+        </ul>
       </div>
+
+    </div>
 
 
 
