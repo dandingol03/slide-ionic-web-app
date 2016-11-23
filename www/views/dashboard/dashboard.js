@@ -1889,37 +1889,46 @@ $scope.openAirportTransfer=function(){
 
     $scope.getMaintainPlan=function(miles){
 
-      if(miles<5000||miles>200000){
-          var myPopup = $ionicPopup.alert({
-              template: '请输入5000至200000公里范围内的里程',
-              title: '<strong style="color:red">错误</strong>'
-          });
+        var reg=/\D/;
+        if(miles==undefined||miles==null||reg.exec(miles)!=null)
+        {
+            var myPopup = $ionicPopup.alert({
+                template: '您输入的公里数格式有误',
+                title: '<strong style="color:red">错误</strong>'
+            });
+        }else{
+            if(miles<5000||miles>200000){
+                var myPopup = $ionicPopup.alert({
+                    template: '请输入5000至200000公里范围内的里程',
+                    title: '<strong style="color:red">错误</strong>'
+                });
 
-      }else{
-          var miles= parseInt(miles/5000)*5000;
+            }else{
+                var miles= parseInt(miles/5000)*5000;
 
-          $http({
-              method: "POST",
-              url: Proxy.local()+'/svr/request',
-              headers: {
-                  'Authorization': "Bearer " + $rootScope.access_token,
-              },
-              data:
-              {
-                  request:'getMaintainPlan',
-                  info:{
-                      miles:miles
-                  }
-              }
-          }).then(function(res) {
-              var json = res.data;
-              if(json.re==1){
-                  $scope.routineName=json.data;
-                  $scope.open_maintainPlanModal();
-              }
+                $http({
+                    method: "POST",
+                    url: Proxy.local()+'/svr/request',
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token,
+                    },
+                    data:
+                        {
+                            request:'getMaintainPlan',
+                            info:{
+                                miles:miles
+                            }
+                        }
+                }).then(function(res) {
+                    var json = res.data;
+                    if(json.re==1){
+                        $scope.routineName=json.data;
+                        $scope.open_maintainPlanModal();
+                    }
 
-          })
-      }
+                })
+            }
+        }
 
     }
 
