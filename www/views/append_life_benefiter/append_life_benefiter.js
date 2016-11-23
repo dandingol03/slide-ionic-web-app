@@ -5,7 +5,8 @@ angular.module('starter')
 
   .controller('appendLifeBenefiterController',function($scope,$state,$http, $location,
                                                           $rootScope,$ionicActionSheet,$cordovaCamera,$cordovaImagePicker,
-                                                          $ionicModal,Proxy,$stateParams,$cordovaFileTransfer){
+                                                          $ionicModal,Proxy,$stateParams,$cordovaFileTransfer,
+                                                       $ionicPopup){
 
     $scope.go_back=function(){
       window.history.back();
@@ -85,26 +86,37 @@ angular.module('starter')
     $scope.car_insurance.relativePersons={};
 
     $scope.selectLifeBenefiter=function(){
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'getRelativePersonsWithinPerName',
-          info:
-          {
-            perName:$scope.order.benefiter.perName
-          }
-        }
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1){
-          $scope.relativePersons=json.data;
-        }
-      })
+
+      var reg=/\d|\w/;
+      if($scope.order.benefiter.perName!==undefined&&$scope.order.benefiter.perName!==null
+          &&$scope.order.benefiter.perName!==''&&reg.exec($scope.order.benefiter.perName)==null)
+      {
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data:
+                  {
+                      request:'getRelativePersonsWithinPerName',
+                      info:
+                          {
+                              perName:$scope.order.benefiter.perName
+                          }
+                  }
+          }).then(function(res) {
+              var json=res.data;
+              if(json.re==1){
+                  $scope.relativePersons=json.data;
+              }
+          })
+      }else{
+          var myPopup = $ionicPopup.alert({
+              template: '所填的关联人姓名有误\r\n'+'请填入关联人姓名后再点击查询',
+              title: '<strong style="color:red">错误</strong>'
+          });
+      }
 
     }
 
@@ -205,6 +217,17 @@ angular.module('starter')
     //确认寿险受益人
     $scope.confirm=function(){
 
+      var benefiter=null;
+      if($scope.relativePersons!==undefined&&$scope.relativePersons!==null)
+      {
+        $scope.relativePersons.map(function(relative,i) {
+            if(relative.checked==true)
+            {
+              benefiter=relative;
+            }
+        })
+      };
+
       if($scope.legal.checked==true){
         $scope.order.benefiter=null;
         $rootScope.dashboard.tabIndex=1;
@@ -213,15 +236,18 @@ angular.module('starter')
         $state.go('tabs.dashboard');
       }
       else{
-        $scope.relativePersons.map(function(relative,i) {
-          if(relative.checked==true)
+          if(benefiter!==null)
           {
-            $scope.order.benefiter=relative;
-            $rootScope.dashboard.tabIndex=1;
-            $rootScope.life_insurance.benefiter=relative;
-            $state.go('tabs.dashboard');
+              $scope.order.benefiter=benefiter;
+              $rootScope.dashboard.tabIndex=1;
+              $rootScope.life_insurance.benefiter=benefiter;
+              $state.go('tabs.dashboard');
+          }else{
+              var myPopup = $ionicPopup.alert({
+                  template: '请选择受益人后再点击确认',
+                  title: '<strong style="color:red">错误</strong>'
+              });
           }
-        });
       }
 
     }
@@ -230,180 +256,245 @@ angular.module('starter')
 //提交统一函数
     $scope.upload=function(cmd,item){
 
-      var personId=null;
-      $http({
-        method: "POST",
-        url: Proxy.local()+'/svr/request',
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token,
-        },
-        data:
-        {
-          request:cmd,
-          info:item
-        }
-      })
-        .then(function(res) {
-
-          var json =res.data;
-          alert(json.re);
-          if(json.re==1){
-
-            personId=json.data.personId;
-
-            $scope.benefiter.personId=personId;
-
-            alert('personid='+personId);
-            alert('personid='+$scope.benefiter.personId);
-            var suffix='';
-            var imageType='perIdCard';
-            alert('path='+$scope.benefiter.perIdCard1_img);
-            if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
-              suffix='jpg';
-            else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
-              suffix='png';
-            else{}
-            var server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-              '&imageType='+imageType+'&suffix='+suffix+
-              '&filename='+'perIdCard1_img'+'&personId='+personId;
-            var options = {
-              fileKey:'file',
-              headers: {
-                'Authorization': "Bearer " + $rootScope.access_token
-              }
-            };
-
-            var perIdAttachId1=null;
-            var perIdAttachId2=null;
-
-            $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard1_img, options)
-              .then(function(res) {
-                alert('upload perIdCard1 success');
-                for(var field in res) {
-                  alert('field=' + field + '\r\n' + res[field]);
-                }
-                var su=null
-                if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
-                  su='jpg';
-                else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
-                  su='png';
-                alert('suffix=' + su);
-                return $http({
-                  method: "POST",
-                  url: Proxy.local()+"/svr/request",
-                  headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token,
-                  },
-                  data:
+      var reg=/\d|\w/;
+      if($scope.benefiter.perName!==undefined&&$scope.benefiter.perName!==null&&reg.exec($scope.benefiter.perName)==null)
+      {
+          if($scope.benefiter.relation!==undefined&&$scope.benefiter.relation!==null)
+          {
+              if($scope.benefiter.perIdCard1_img!==undefined&&$scope.benefiter.perIdCard1_img!==null)
+              {
+                  if($scope.benefiter.perIdCard2_img!==undefined&&$scope.benefiter.perIdCard2_img!==null)
                   {
-                    request:'createPhotoAttachment',
-                    info:{
-                      imageType:'perIdCard',
-                      filename:'perIdAttachId1',
-                      suffix:su,
-                      docType:'I1' ,
-                      personId:personId
-                    }
-                  }
-                });
-              })
-              .then(function(res) {
-                var json=res.data;
-                if(json.re==1) {
-                  perIdAttachId1=json.data;
-                  alert('perIdAttachId1=' + perIdAttachId1);
-                  var su=null;
-                  if($scope.benefiter.perIdCard2_img.indexOf('.jpg')!=-1)
-                    su='jpg';
-                  else if($scope.benefiter.perIdCard2_img.indexOf('.png')!=-1)
-                    su='png';
-                  server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                    '&imageType='+imageType+'&suffix='+su+'&filename='+'perIdAttachId2'+'&personId='+personId;
-                  return  $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard2_img, options)
-                    .then(function(res) {
-                      alert('upload perIdCard2 success');
-                      for(var field in res) {
-                        alert('field=' + field + '\r\n' + res[field]);
-                      }
-                      return $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                          'Authorization': "Bearer " + $rootScope.access_token,
-                        },
-                        data:
-                        {
-                          request:'createPhotoAttachment',
-                          info:{
-                            imageType:'perIdCard',
-                            filename:'perIdAttachId2',
-                            suffix:su,
-                            docType:'I1' ,
-                            personId:personId
+                      //TODO:checkPerNameRedundancy
+                      $http({
+                          method: "POST",
+                          url: Proxy.local()+'/svr/request',
+                          headers: {
+                              'Authorization': "Bearer " + $rootScope.access_token,
+                          },
+                          data:
+                              {
+                                  request:'validatePerNameRedundancy',
+                                  info:{
+                                      perName:$scope.benefiter.perName
+                                  }
+                              }
+                      }).then(function(res) {
+                          var json=res.data;
+                          if(json.data==true)
+                          {
+                              var myPopup = $ionicPopup.alert({
+                                  template: '您新建的关联人姓名已存在,请重新输入关联人姓名',
+                                  title: '<strong style="color:red">错误</strong>'
+                              });
+                            return ;
                           }
-                        }
+
+
+                          var personId=null;
+                          $http({
+                              method: "POST",
+                              url: Proxy.local()+'/svr/request',
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token,
+                              },
+                              data:
+                                  {
+                                      request:cmd,
+                                      info:item
+                                  }
+                          })
+                              .then(function(res) {
+
+                                  var json =res.data;
+                                  alert(json.re);
+                                  if(json.re==1){
+
+                                      personId=json.data.personId;
+
+                                      $scope.benefiter.personId=personId;
+
+                                      alert('personid='+personId);
+                                      alert('personid='+$scope.benefiter.personId);
+                                      var suffix='';
+                                      var imageType='perIdCard';
+                                      alert('path='+$scope.benefiter.perIdCard1_img);
+                                      if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
+                                          suffix='jpg';
+                                      else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
+                                          suffix='png';
+                                      else{}
+                                      var server=Proxy.local()+'/svr/request?request=uploadPhoto' +
+                                          '&imageType='+imageType+'&suffix='+suffix+
+                                          '&filename='+'perIdCard1_img'+'&personId='+personId;
+                                      var options = {
+                                          fileKey:'file',
+                                          headers: {
+                                              'Authorization': "Bearer " + $rootScope.access_token
+                                          }
+                                      };
+
+                                      var perIdAttachId1=null;
+                                      var perIdAttachId2=null;
+
+                                      $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard1_img, options)
+                                          .then(function(res) {
+                                              alert('upload perIdCard1 success');
+                                              for(var field in res) {
+                                                  alert('field=' + field + '\r\n' + res[field]);
+                                              }
+                                              var su=null
+                                              if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
+                                                  su='jpg';
+                                              else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
+                                                  su='png';
+                                              alert('suffix=' + su);
+                                              return $http({
+                                                  method: "POST",
+                                                  url: Proxy.local()+"/svr/request",
+                                                  headers: {
+                                                      'Authorization': "Bearer " + $rootScope.access_token,
+                                                  },
+                                                  data:
+                                                      {
+                                                          request:'createPhotoAttachment',
+                                                          info:{
+                                                              imageType:'perIdCard',
+                                                              filename:'perIdAttachId1',
+                                                              suffix:su,
+                                                              docType:'I1' ,
+                                                              personId:personId
+                                                          }
+                                                      }
+                                              });
+                                          })
+                                          .then(function(res) {
+                                              var json=res.data;
+                                              if(json.re==1) {
+                                                  perIdAttachId1=json.data;
+                                                  alert('perIdAttachId1=' + perIdAttachId1);
+                                                  var su=null;
+                                                  if($scope.benefiter.perIdCard2_img.indexOf('.jpg')!=-1)
+                                                      su='jpg';
+                                                  else if($scope.benefiter.perIdCard2_img.indexOf('.png')!=-1)
+                                                      su='png';
+                                                  server=Proxy.local()+'/svr/request?request=uploadPhoto' +
+                                                      '&imageType='+imageType+'&suffix='+su+'&filename='+'perIdAttachId2'+'&personId='+personId;
+                                                  return  $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard2_img, options)
+                                                      .then(function(res) {
+                                                          alert('upload perIdCard2 success');
+                                                          for(var field in res) {
+                                                              alert('field=' + field + '\r\n' + res[field]);
+                                                          }
+                                                          return $http({
+                                                              method: "POST",
+                                                              url: Proxy.local()+"/svr/request",
+                                                              headers: {
+                                                                  'Authorization': "Bearer " + $rootScope.access_token,
+                                                              },
+                                                              data:
+                                                                  {
+                                                                      request:'createPhotoAttachment',
+                                                                      info:{
+                                                                          imageType:'perIdCard',
+                                                                          filename:'perIdAttachId2',
+                                                                          suffix:su,
+                                                                          docType:'I1' ,
+                                                                          personId:personId
+                                                                      }
+                                                                  }
+                                                          });
+                                                      }) .then(function(res) {
+                                                          var json=res.data;
+                                                          if(json.re==1){
+                                                              perIdAttachId2=json.data;
+                                                              return $http({
+                                                                  method: "POST",
+                                                                  url: Proxy.local()+"/svr/request",
+                                                                  headers: {
+                                                                      'Authorization': "Bearer " + $rootScope.access_token,
+                                                                  },
+                                                                  data:
+                                                                      {
+                                                                          request:'createInsuranceInfoPersonInfo',
+                                                                          info:{
+                                                                              perIdAttachId1:perIdAttachId1,
+                                                                              perIdAttachId2:perIdAttachId2,
+                                                                              personId:personId
+                                                                          }
+                                                                      }
+                                                              });
+                                                          }
+                                                      }).then(function(res) {
+                                                          var json=res.data;
+                                                          if(json.re==1) {
+                                                              return $http({
+                                                                  method: "POST",
+                                                                  url: Proxy.local()+"/svr/request",
+                                                                  headers: {
+                                                                      'Authorization': "Bearer " + $rootScope.access_token,
+                                                                  },
+                                                                  data:
+                                                                      {
+                                                                          request:'getInfoPersonInfoByPersonId',
+                                                                          info:{
+                                                                              personId:personId
+                                                                          }
+                                                                      }
+                                                              });
+                                                          }
+                                                      }).then(function(res) {
+                                                          var json=res.data;
+                                                          if(json.re==1) {
+                                                              $rootScope.life_insurance.benefiter=json.data;
+                                                              $rootScope.dashboard.tabIndex=1;
+                                                              $state.go('tabs.dashboard');
+                                                          }
+                                                      });
+                                              }
+                                          })
+                                  }else{}
+
+
+                              }).then(function(res) {
+                          })
+                              .catch(function(err) {
+                                  var str='';
+                                  for(var field in err)
+                                      str+=err[field];
+                                  alert('error=\r\n' + str);
+                              });
+
                       });
-                    }) .then(function(res) {
-                      var json=res.data;
-                      if(json.re==1){
-                        perIdAttachId2=json.data;
-                        return $http({
-                          method: "POST",
-                          url: Proxy.local()+"/svr/request",
-                          headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token,
-                          },
-                          data:
-                          {
-                            request:'createInsuranceInfoPersonInfo',
-                            info:{
-                              perIdAttachId1:perIdAttachId1,
-                              perIdAttachId2:perIdAttachId2,
-                              personId:personId
-                            }
-                          }
-                        });
-                      }
-                    }).then(function(res) {
-                      var json=res.data;
-                      if(json.re==1) {
-                        return $http({
-                          method: "POST",
-                          url: Proxy.local()+"/svr/request",
-                          headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token,
-                          },
-                          data:
-                          {
-                            request:'getInfoPersonInfoByPersonId',
-                            info:{
-                              personId:personId
-                            }
-                          }
-                        });
-                      }
-                    }).then(function(res) {
-                      var json=res.data;
-                      if(json.re==1) {
-                        $rootScope.life_insurance.benefiter=json.data;
-                        $rootScope.dashboard.tabIndex=1;
-                        $state.go('tabs.dashboard');
-                      }
-                    });
-                }
-              })
-          }else{}
 
 
-        }).then(function(res) {
+                  }else{
+                      var myPopup = $ionicPopup.alert({
+                          template: '请上传关联人的身份证反面后再点击关联',
+                          title: '<strong style="color:red">错误</strong>'
+                      });
+                  }
+              }else{
+                  var myPopup = $ionicPopup.alert({
+                      template: '请上传关联人的身份证正面后再点击关联',
+                      title: '<strong style="color:red">错误</strong>'
+                  });
+              }
+          }else{
+              var myPopup = $ionicPopup.alert({
+                  template: '请选择亲属关系后再点击关联',
+                  title: '<strong style="color:red">错误</strong>'
+              });
+          }
+      }else{
+          var myPopup = $ionicPopup.alert({
+              template: '所填的姓名格式有误\r\n'+'请填入关联人姓名后再点击关联',
+              title: '<strong style="color:red">错误</strong>'
+          });
+      }
 
-        })
-        .catch(function(err) {
-          var str='';
-          for(var field in err)
-            str+=err[field];
-          alert('error=\r\n' + str);
-        });
+
+
 
     }
 

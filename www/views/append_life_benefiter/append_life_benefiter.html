@@ -1,4 +1,4 @@
-<ion-view >
+<ion-view view-title="选择寿险受益人">
 
 
   <ion-nav-bar class="bar-stable" align-title="center" >
@@ -9,17 +9,8 @@
         <i class="ion-chevron-left"></i>
       </button>
     </ion-nav-buttons>
-    <ion-nav-title>
-
-    </ion-nav-title>
 
 
-    <ion-nav-buttons side="right">
-
-      <button class="button button-icon button-clear" >
-        <i class="ion-plus"></i>
-      </button>
-    </ion-nav-buttons>
 
   </ion-nav-bar>
 
@@ -89,7 +80,7 @@
         <ion-scroll style="height: 85%;">
 
 
-          <div class="item"  ng-click="checkLegal()">
+          <div class="item"  ng-click="checkLegal()" style="border:1px solid;">
             <div style="display:inline-block;width:70%">
                <span>
                 {{legal.perName}}
@@ -140,10 +131,11 @@
 
     <div ng-if="tabIndex==1" style="height: 100%;">
 
-      <ion-scroll style="height: 90%;">
-        <div class="list list-inset padding">
 
-          <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
+        <div class="list list-inset padding" style="margin-top:0px;">
+
+          <div class="item"
+               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:4px 10px 4px 10px;">
              <span class="input-label" style="display: inline-block;">
               姓名:
             </span>
@@ -153,7 +145,8 @@
                    ng-model="benefiter.perName"/>
           </div>
 
-          <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
+          <div class="item"
+               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:4px 10px 4px 10px;">
             <span class="input-label" style="display: inline-block;width:55%;">
               选择亲属关系:
             </span>
@@ -168,7 +161,7 @@
           </div>
 
           <div class="item"
-               style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;position: relative">
+               style="margin:1px;border:0px;padding:10px;padding-top:0px;padding-bottom:0px;position: relative">
 
             <ion-slide-box on-slide-changed="slideChanged($index)" style="background-color:transparent;">
               <ion-slide>
@@ -234,9 +227,13 @@
             关联亲属信息
           </button>
 
+          <div style="width: 10%;height: 20px;">
+
+          </div>
+
         </div>
 
-      </ion-scroll>
+
 
     </div>
 
