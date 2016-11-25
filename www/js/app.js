@@ -325,8 +325,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               });
                               break;
                           default:
-                              var order=message.order;
-                              var servicePersonId=message.servicePersonId;
 
                               var tem='';
                               var mobilePhone=null;
@@ -727,7 +725,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('update_car_info',{
-            url:'/update_car_info/:carNum',
+            url:'/update_car_info/:carNumInfo',
             controller:'updateCarInfoController',
             templateUrl:'views/update_car_info/update_car_info.html'
           })
@@ -829,6 +827,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               url:'/applied_life_order_detail:orderId',
               controller:'appliedLifeOrderDetailController',
               templateUrl:'views/applied_life_order_detail/applied_life_order_detail.html'
+          })
+
+          .state('car_info_detail',{
+              url:'/car_info_detail:carInfo',
+              controller:'carInfoDetailController',
+              templateUrl:'views/car_info_detail/car_info_detail.html'
           })
 
 

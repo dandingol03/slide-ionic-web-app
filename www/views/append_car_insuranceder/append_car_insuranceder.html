@@ -1,30 +1,23 @@
-<ion-view >
+<ion-view title="提交车险意向">
 
 
     <ion-nav-bar class="bar-stable" align-title="center" >
 
 
         <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2.4em;"
+                    ng-click="go_back()"
+            >
                 <i class="ion-chevron-left"></i>
             </button>
         </ion-nav-buttons>
-        <ion-nav-title>
 
-        </ion-nav-title>
-
-
-        <ion-nav-buttons side="right">
-
-            <button class="button button-icon button-clear" >
-                <i class="ion-plus"></i>
-            </button>
-        </ion-nav-buttons>
 
     </ion-nav-bar>
 
 
-    <ion-content scroll="false">
+    <ion-content >
 
         <div class="list" style="margin-bottom: 0px;">
             <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
@@ -53,38 +46,30 @@
 
         <div ng-if="tabIndex==0" style="height: 100%;">
 
-            <div
-                    class="list list-inset padding"
-                    style="height: 65%;"
-            >
+            <div class="list list-inset padding"
+                 style="height: 65%;">
 
                 <div class="item"
                      style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
                  padding:10px;background-color:transparent;overflow:initial">
 
-            <span
-                    class="input-label"
-                    style="display: inline-block;width: 25%;text-align: left"
-            >
-              姓名:
-            </span>
+                    <span class="input-label"
+                          style="display: inline-block;width: 25%;text-align: left">
+                        姓名:
+                    </span>
 
-                    <span
-                            style="width: 55%;display: inline-block;text-align: left;"
-                    >
-             <input type="text" placeholder="输入亲属姓名"
-                    ng-value="car_insurance.insuranceder.perName"
-                    ng-model="car_insurance.insuranceder.perName"/>
-            </span>
+                    <span style="width: 55%;display: inline-block;text-align: left;">
+                        <input type="text" placeholder="输入亲属姓名"
+                               ng-value="car_insurance.insuranceder.perName"
+                               ng-model="car_insurance.insuranceder.perName"/>
+                    </span>
 
-                    <span
-                            style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
-                            ng-click="selectCarInsuranceder()"
-                    >
-              <button class="button button-small button-assertive">
-                搜索
-              </button>
-            </span>
+                    <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
+                            ng-click="selectCarInsuranceder()">
+                        <button class="button button-small button-assertive">
+                            搜索
+                        </button>
+                    </span>
 
                 </div>
 
@@ -129,106 +114,280 @@
         </div>
 
 
-        <div ng-if="tabIndex==1" style="height: 90%;">
-
-            <ion-scroll style="height: 80%;">
-                <div class="list list-inset padding" style="height:100%">
-
-                    <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px; ">
-               <span class="input-label" style="display: inline-block;">
-                姓名:
-              </span>
-                        <input type="text" placeholder="输入被保险人姓名"
-                               style="display: inline-block"
-                               ng-value="car_insurance.insuranceder.perName"
-                               ng-model="car_insurance.insuranceder.perName"
-                               ng-change="validate(car_insurance.insuranceder,'perName','//')"/>
-
-                        <div class="assertive" style="width: 50%;display: inline-block" ng-if="car_insurance.insuranceder.perName_error==true">
-                            姓名不能为英文或数字
-                        </div>
-                    </div>
+        <div ng-if="tabIndex==1">
 
 
-                    <div class="item"
-                         style="margin:1px;border:0px;padding:10px;position: relative;">
+            <div class="list list-inset padding"
+                 style="height:100%;padding-left: 0px;padding-right: 0px;margin-left:0px;margin-right:0px;margin-top:10px;margin-bottom:10px;height: 80%;">
 
-                        <div>
-                            <div class="item"
-                                 style="background-color:transparent;border: 0px;padding: 0px;"
-                                 ng-if="photoIndex==0">
-                                <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
-                  <span class="input-label"
-                        style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
-                      身份证正面:
-                  </span>
-                                </div>
-                            </div>
-                            <div class="item"
-                                 style="background-color:transparent;border: 0px;padding: 0px;"
-                                 ng-if="photoIndex==1">
-                                <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
-                  <span class="input-label"
-                        style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
-                       身份证反面:
-                  </span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;padding-top:4px;padding-bottom: 4px; ">
+                    <span class="input-label" style="display: inline-block;width: 20%;">
+                        姓名:
+                    </span>
 
+                    <input type="text" placeholder="输入被保险人姓名"
+                           style="display: inline-block;width: 33%;"
+                           ng-value="car_insurance.insuranceder.perName"
+                           ng-model="car_insurance.insuranceder.perName"
+                           ng-change="validate(car_insurance.insuranceder,'perName','/\\d|\\w/')"/>
 
-                        <div>
-                            <div style="width:100%;text-align:center;margin-left:0%;height:180px;border:1px dashed #9e9e9e"
-                                 ng-if="car_insurance.insuranceder[imgArrs[photoIndex]]!==undefined&&car_insurance.insuranceder[imgArrs[photoIndex]]!==null">
-                                <img style="width: 100%;max-height: 180px;"
-                                     ng-src="{{car_insurance.insuranceder[imgArrs[photoIndex]]}}"/>
-                            </div>
-
-                            <div style="width: 100%;text-align:center;margin-left:0%;height:180px;"
-                                 ng-if="car_insurance.insuranceder[imgArrs[photoIndex]]==undefined||car_insurance.insuranceder[imgArrs[photoIndex]]==null">
-                       <span style="font-size: 10em;" ng-click="addAttachment(car_insurance.insuranceder,imgArrs[photoIndex])">
-                           <i class="ion-android-camera"></i>
-                       </span>
-                            </div>
-
-                            <div class="card"
-                                 style="width: 90%;height: 55px;margin-left: 5%;margin-top:0px;">
-                                <div class="item item-text-wrap">
-                                    <div style="position:absolute;bottom:10px;width:100%;top:0px;left:0px;">
-                                        <div ng-click="changePhotoIndex(0)"
-                                             style="display:inline-block;width: 35%;text-align:center;">
-                                            <span>
-                                                <i class="fa fa-chevron-left"></i>
-                                            </span>
-                                            <span>身份证正面</span>
-                                        </div>
-
-                                        <div ng-click="addAttachment(car_insurance.insuranceder,imgArrs[photoIndex])"
-                                             style="display:inline-block;width: 27%;text-align: center;font-size: 3em;">
-                                            <i class="ion-android-camera"></i>
-                                        </div>
-
-                                        <div ng-click="changePhotoIndex(1)"
-                                             style="display:inline-block;width: 35%;text-align:center;">
-                                            <span>身份证反面</span>
-                                            <span><i class="fa fa-chevron-right"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="assertive" style="width: 47%;display: inline-block" ng-if="car_insurance.insuranceder.perName_error==true">
+                        姓名不能为英文或数字
                     </div>
                 </div>
 
-            </ion-scroll>
+                <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:4px 10px 4px 10px;">
+                    <span class="input-label" style="display: inline-block;width:55%;">
+                      被保险人与车辆关系:
+                    </span>
+                    <span class="input-label" style="display: inline-block;">
+                        {{car_insurance.insuranceder.relation}}
+                    </span>
+                    <div style="position: absolute;right: 15%;top:30%;bottom: 30%;">
+                        <span ng-click="ActionSheet(['所有人','管理人','使用人'],car_insurance.insuranceder,'relation','relType')">
+                          <i class="ion-chevron-down"></i>
+                        </span>
+                    </div>
+                </div>
 
 
-            <div style="width: 100%;height: 20%;text-align: center;position: relative">
-                <button class="button button-block button-calm"
-                        style=";width: 70%;position: absolute;left:15%;bottom:10%;"
-                        ng-click="confirm()">
-                    提交车险意向
-                </button>
+
+                <!-- 手机拍照界面 正 -->
+                <div class="item"
+                     style="background-color:transparent;border: 0px;padding: 0px;">
+                    <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
+                        <span class="input-label"
+                            style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
+                            身份证正面:
+                        </span>
+                    </div>
+                </div>
+
+                <div class="item"
+                     style="margin:1px;border:0px;padding:10px;position: relative;">
+
+                    <div style="width: 60%;text-align:center;margin-left:20%;height:350px;border:1px solid;
+                        border-top-left-radius: 25px;border-top-right-radius: 25px;border-bottom-left-radius: 40px;border-bottom-right-radius: 40px;">
+                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:1px solid;
+                             border-radius: 10px;background: #666;"
+                             ng-if="car_insurance.insuranceder.perIdCard1_img==undefined||car_insurance.insuranceder.perIdCard1_img==null">
+                        </div>
+
+                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:0px;
+                             border-radius: 10px;"
+                             ng-if="car_insurance.insuranceder.perIdCard1_img!==undefined&&car_insurance.insuranceder.perIdCard1_img!==null">
+                            <img ng-src="{{car_insurance.insuranceder.perIdCard1_img}}"
+                                 style="max-width: 100%;max-height: 100%;border-radius:10px;">
+                        </div>
+
+                        <div style="height: 50px;width: 90%;margin-left:5%;margin-top:10px;border:1px solid;">
+                            <div style="width: 100%;height: 100%;">
+                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
+                                <span style="width: 30%;display: inline-block;height: 100%;">
+                                    <div style="width: 100%;height: 100%;display: table;position: relative">
+                                        <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;"
+                                              ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')">
+                                            <i class="fa fa-camera-retro"></i>
+                                        </span>
+
+                                        <!-- 文字提示 -->
+                                        <div ng-class="firstTabHint"
+                                               ng-style="firstTabStyle"
+                                               style="position: absolute;top:100%;left: -70%; ">
+
+                                            <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;" >
+                                                <span style="position: absolute;right: 10%;color: #444;font-size: 1.1em;top:0px;">
+                                                    <i class="ion-arrow-up-b"></i>
+                                                </span>
+                                            </div>
+                                            <div class="item"
+                                               style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;margin-left:20px;">
+                                                <span>
+                                                    点击进行拍照
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
+                                <span style="width: 30%;display: inline-block;height: 100%;">
+                                     <div style="width: 100%;height: 100%;display: table;position: relative">
+                                         <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;" ng-click="openPerIdCard1Modal()">
+                                             <i class="fa fa-info-circle"></i>
+                                         </span>
+                                         <!-- 文字提示 -->
+                                          <div ng-class="firstTabHint"
+                                               ng-style="firstTabStyle"
+                                               style="position: absolute;top:100%;left: 0%; ">
+                                              <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;">
+                                                  <span style="position: absolute;left: 14%;color: #444;font-size: 1.1em;top:0px;">
+                                                      <i class="ion-arrow-up-b"></i>
+                                                  </span>
+                                              </div>
+                                              <div class="item"
+                                                   style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;"
+                                                   ng-click="">
+                                                    点击'信息'查看身份证正面示例
+                                              </div>
+
+                                          </div>
+                                     </div>
+                                </span>
+                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 手机拍照界面 反 -->
+                <div class="item"
+                     style="background-color:transparent;border: 0px;padding: 0px;">
+                    <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
+                        <span class="input-label"
+                              style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
+                            身份证反面:
+                        </span>
+                    </div>
+                </div>
+
+                <div class="item"
+                     style="margin:1px;border:0px;padding:10px;position: relative;">
+
+                    <div style="width: 60%;text-align:center;margin-left:20%;height:350px;border:1px solid;
+                        border-top-left-radius: 25px;border-top-right-radius: 25px;border-bottom-left-radius: 40px;border-bottom-right-radius: 40px;">
+
+                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:1px solid;
+                             border-radius: 10px;background: #666;"
+                             ng-if="car_insurance.insuranceder.perIdCard2_img==undefined||car_insurance.insuranceder.perIdCard2_img==null">
+                        </div>
+
+                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:0px;
+                             border-radius: 10px;"
+                             ng-if="car_insurance.insuranceder.perIdCard2_img!==undefined&&car_insurance.insuranceder.perIdCard2_img!==null">
+                            <img ng-src="{{car_insurance.insuranceder.perIdCard2_img}}"
+                                 style="max-width: 100%;max-height: 100%;border-radius:10px;">
+                        </div>
+
+
+
+
+                        <div style="height: 50px;width: 90%;margin-left:5%;margin-top:10px;border:1px solid;">
+                            <div style="width: 100%;height: 100%;">
+                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
+                                <span style="width: 30%;display: inline-block;height: 100%;">
+                                    <div style="width: 100%;height: 100%;display: table;position: relative">
+                                        <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;"
+                                              ng-click="addAttachment(car_insurance.insuranceder,'perIdCard2_img')">
+                                            <i class="fa fa-camera-retro"></i>
+                                        </span>
+                                        <!-- 文字提示 -->
+                                          <div ng-class="firstTabHint"
+                                               ng-style="firstTabStyle"
+                                               style="position: absolute;top:100%;left: -70%; ">
+                                              <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;" >
+                                                  <span style="position: absolute;right: 8%;color: #444;font-size: 1.1em;top:0px;">
+                                                      <i class="ion-arrow-up-b"></i>
+                                                  </span>
+                                              </div>
+                                              <div class="item"
+                                                   style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;margin-left:20px;">
+                                                  <span>
+                                                      点击进行拍照
+                                                  </span>
+                                              </div>
+
+                                          </div>
+                                    </div>
+                                </span>
+                                <span style="width: 30%;display: inline-block;height: 100%;">
+                                     <div style="width: 100%;height: 100%;display: table;position: relative">
+                                         <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;"
+                                               ng-click="openPerIdCard2Modal()">
+                                             <i class="fa fa-info-circle"></i>
+                                         </span>
+                                         <!-- 文字提示 -->
+                                          <div ng-class="firstTabHint"
+                                               ng-style="firstTabStyle"
+                                               style="position: absolute;top:100%;left: 0%; ">
+                                              <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;" >
+                                                  <span style="position: absolute;left: 14%;color: #444;font-size: 1.1em;top:0px;">
+                                                      <i class="ion-arrow-up-b"></i>
+                                                  </span>
+                                              </div>
+                                              <div class="item"
+                                                   style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;"
+                                                   ng-click="">
+                                                    点击'信息'查看身份证反面示例
+                                              </div>
+
+                                          </div>
+                                     </div>
+                                </span>
+                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+                <!-- 原有拍照界面备份 -->
+                <!--<div class="item"-->
+                     <!--style="background-color:transparent;border: 0px;padding: 0px;"-->
+                     <!--&gt;-->
+                    <!--<div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">-->
+                              <!--<span class="input-label"-->
+                                    <!--style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">-->
+                                  <!--身份证反面:-->
+                              <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="item"-->
+                     <!--style="margin:1px;border:0px;padding:10px;position: relative;">-->
+                    <!--<div style="width: 90%;text-align:center;margin-left:5%;height:180px;"-->
+                         <!--ng-if="car_insurance.insuranceder[imgArrs[photoIndex]]==undefined||car_insurance.insuranceder[imgArrs[photoIndex]]==null">-->
+                           <!--<span style="font-size: 10em;" ng-click="addAttachment(car_insurance.insuranceder,imgArrs[photoIndex])">-->
+                               <!--<i class="ion-android-camera"></i>-->
+                           <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+
+
+
+            </div>
+
+            <div style="width: 100%;height: 40px;">
+                <!--<div class="switch_search">-->
+                    <!--<div class="switch_search_tab" on-swipe-right="activeSlideSearch(1)" ng-click="activeSlideSearch(0)" ng-class="(slideIndexSearch==0 ||slideIndexSearch==-1) ? '' : 'off_search_tab'">-->
+                        <!--on-->
+                    <!--</div>-->
+                    <!--<div class="switch_search_tab" on-swipe-left="activeSlideSearch(0)" ng-click="activeSlideSearch(1)" ng-class="(slideIndexSearch==1) ? '' : 'off_search_tab'">-->
+                        <!--off-->
+                    <!--</div>-->
+                    <!--<div class="switch_bg" ng-class="(slideIndexSearch==0 ||slideIndexSearch==-1) ? 'search_left' :'search_right'"></div>-->
+                <!--</div>-->
+            </div>
+
+
+            <div style="width: 100%;height: 20%;text-align: center;">
+                <div style="width: 100%;height: 100%;display: table;text-align:center;">
+                    <button class="button button-block button-calm"
+                            style=";width: 70%;display: table-cell;vertical-align:middle;"
+                            ng-click="confirm()">
+                        提交车险意向
+                    </button>
+                </div>
             </div>
         </div>
 

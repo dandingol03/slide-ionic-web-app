@@ -30,31 +30,81 @@ angular.module('starter')
           console.error('error=\r\n'+str);
       })
 
-    $scope.saveContactInfo=function() {
-        var contactInfo=$scope.contactInfo;
-        $http({
-            method: "POST",
-            url: Proxy.local()+"/svr/request",
-            headers: {
-                'Authorization': "Bearer " + $rootScope.access_token
-            },
-            data: {
-                request: 'saveContactInfo',
-                info:{
-                    contactInfo:contactInfo
-                }
-            }
-        }).then(function(res) {
-            var json=res.data;
-            if(json.re==1) {
-                var myPopup = $ionicPopup.show({
-                    template: '信息',
-                    title: '<strong>保存联系方式成功</strong>',
-                    scope: $scope
-                });
+      $scope.validate=function(item,field,pattern) {
+          if(pattern!==undefined&&pattern!==null)
+          {
+              var reg=eval(pattern);
+              var re=reg.exec(item[field]);
+              if(re!==undefined&&re!==null)
+              {
+                  item[field+'_error']=false;
+              }
+              else{
+                  item[field+'_error']=true;
+              }
+          }
+      };
 
+
+    $scope.saveContactInfo=function() {
+
+        var contactInfo=$scope.contactInfo;
+        if(contactInfo.mobilePhone_error!=true&&(contactInfo.mobilePhone_error!==undefined||contactInfo.mobilePhone_error!==null)
+            &&contactInfo.mobilePhone!=='')
+        {
+            if(contactInfo.EMAIL_error!=true&&(contactInfo.EMAIL_error==undefined||contactInfo.EMAIL_error!==null)
+                &&contactInfo.EMAIL!=='')
+            {
+                if(contactInfo.perAddress!==undefined&&contactInfo.perAddress!==null&&contactInfo.perAddress!='')
+                {
+                    $http({
+                        method: "POST",
+                        url: Proxy.local()+"/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'saveContactInfo',
+                            info:{
+                                info:contactInfo
+                            }
+                        }
+                    }).then(function(res) {
+                        var json=res.data;
+                        if(json.re==1) {
+
+                            var myPopup = $ionicPopup.alert({
+                                template: '保存联系方式成功',
+                                title: '<strong style="color:red">信息</strong>'
+                            });
+
+                        }else {
+                            var myPopup = $ionicPopup.alert({
+                                template: '保存联系方式错误',
+                                title: '<strong style="color:red">错误</strong>'
+                            });
+                        }
+                    })
+                }else{
+                    var myPopup = $ionicPopup.alert({
+                        template: '请填入地址后再点击保存',
+                        title: '<strong style="color:red">错误</strong>'
+                    });
+                }
+            }else{
+                var myPopup = $ionicPopup.alert({
+                    template: '请填入正确的邮箱地址后再点击保存',
+                    title: '<strong style="color:red">错误</strong>'
+                });
             }
-        })
+        }else{
+            var myPopup = $ionicPopup.alert({
+                template: '请填入正确的手机号再点击保存',
+                title: '<strong style="color:red">错误</strong>'
+            });
+        }
+
+
     };
 
     $scope.go_back=function(){

@@ -1038,3 +1038,41 @@ ion-header-bar.dashboard-nav {
 .pages ul li.selected span{
   color:#fff;
 }
+
+.switch_search{
+  position:relative;
+  display:flex;
+  width:120px;
+  height:28px;
+  border:solid 1px #eeeeee;
+  border-radius:16px;
+}
+.switch_search_tab{
+  flex:1;height:28px;width:60px;
+  line-height:28px;color:#aaa;z-index:12;
+  text-align: center;
+}
+.white_search_tab{
+  color:#fff;
+}
+
+.off_search_tab{
+  color:#222;
+}
+
+.switch_bg{
+  background:#aaa;border-radius:16px;position:absolute;
+  top:-1px;left:-1px;height:28px;width:60px;
+}
+.search_right{
+  transition: -webkit-transform,transform 0.6s ease;
+  -webkit-transform: translate3d(60px, 0, 0);
+  -moz-transform: translate3d(60px, 0, 0);
+  transform:translate3d(60px, 0, 0);
+}
+.search_left{
+  transition: -webkit-transform,transform 0.6s ease;
+  -webkit-transform: translate3d(0px, 0, 0);
+  -moz-transform: translate3d(0px, 0, 0);
+  transform:translate3d(0px, 0, 0);
+}
