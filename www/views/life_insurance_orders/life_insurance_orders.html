@@ -15,6 +15,11 @@
 
   <ion-content scroll="true" lazy-scroll>
 
+
+
+
+
+
     <div class="list" style="margin-bottom: 0px;">
       <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
 
@@ -25,7 +30,7 @@
                style="text-align: center">
             <div style="height: 100%">
                <span style="position:absolute;top:30%;left: 20%;right:20%;">
-                  已完成
+                  已申请
                </span>
             </div>
           </div>
@@ -52,7 +57,7 @@
                style="text-align: center">
             <div style="height: 100%">
                <span style="position:absolute;top:30%;left: 20%;right:20%;">
-                  已申请
+                  已完成
                </span>
             </div>
           </div>
@@ -64,13 +69,15 @@
 
     <div class="list list-inset padding" style="margin-bottom:40px;" >
 
-      <!-- 已完成 -->
+
+
+      <!-- 已申请订单 -->
       <div class="item"
            ng-if="tabIndex==0"
            style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
-           ng-repeat="order in finishOrders">
+           ng-repeat="order in appliedOrders">
         <ul style="width: 100%;">
-          <li style="float:left;width: 80%;"  ng-click="goDetail(order)">
+          <li style="float:left;width: 80%;"  ng-click="goAppliedLifeOrderDetail(order)">
             <div style="width: 70%;display: inline-block;margin-left:10%;">
               <div style="width:100%;">
                 <div>
@@ -121,13 +128,13 @@
       </div>
 
 
-      <!-- 已申请订单 -->
+      <!-- 已完成 -->
       <div class="item"
            ng-if="tabIndex==2"
            style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;"
-           ng-repeat="order in appliedOrders">
+           ng-repeat="order in finishOrders">
         <ul style="width: 100%;">
-          <li style="float:left;width: 80%;"  ng-click="goAppliedLifeOrderDetail(order)">
+          <li style="float:left;width: 80%;"  ng-click="goDetail(order)">
             <div style="width: 70%;display: inline-block;margin-left:10%;">
               <div style="width:100%;">
                 <div>
@@ -148,6 +155,7 @@
           </li>
         </ul>
       </div>
+
 
     </div>
 

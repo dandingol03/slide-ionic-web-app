@@ -17,6 +17,30 @@ angular.module('starter')
 
       $scope.tabIndex=0;
 
+      $scope.setter=function (item,field,val) {
+          item[field]=val;
+          //productId为1的车损
+          if(val==false&&item.productId==1)
+          {
+              for(var proName in $scope.tabs[tabIndex].products)
+              {
+                  var product= $scope.tabs[tabIndex].products[proName];
+                  if(product.productId==9||product.productId==10||product.productId==11||product.productId==27)
+                  {
+                      product.checked==false;
+                  }
+              }
+          }
+
+      }
+
+      $scope.slideIndexSearch=0;
+      $scope.activeSlideSearch = function(index) {
+          console.log('...');
+          $scope.slideIndexSearch=index;
+      };
+
+
       $scope.selectedTabStyle={
           display: 'table',width: '100%',height:'100%',position: 'relative',
       'text-align': 'center',border: '1px solid #fff9df','border-bottom':'0px',background:'cadetblue'
@@ -57,24 +81,28 @@ angular.module('starter')
 
     //选择车辆人员责任险模态框
 
-    /*** bind special_tab_modal ***/
-    $ionicModal.fromTemplateUrl('views/modal/special_tab_modal.html',{
-      scope:  $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.special_tab_modal = modal;
-    });
+      /*** bind special_tab_modal ***/
+        $ionicModal.fromTemplateUrl('views/modal/special_tab_modal.html',{
+          scope:  $scope,
+          animation: 'slide-in-up'
+        }).then(function(modal) {
+          $scope.special_tab_modal = modal;
+        });
 
-    //待定
-    $scope.openSpecialModal= function(){
-      $scope.special_tab_modal.show();
-    };
+        //待定
+        $scope.openSpecialModal= function(){
+          $scope.special_tab_modal.show();
+        };
 
 
-    $scope.closeSpecialModal= function() {
-      $scope.special_tab_modal.hide();
-    };
-    /*** bind special_tab_modal ***/
+        $scope.closeSpecialModal= function() {
+          $scope.special_tab_modal.hide();
+        };
+      /*** bind special_tab_modal ***/
+
+
+
+
 
     $scope.toggle=function(item,field,options)
     {
@@ -129,7 +157,6 @@ angular.module('starter')
 
 
 
-
     /**************方案详情模态框*************************/
     $ionicModal.fromTemplateUrl('views/modal/car_detail_modal.html', {
       scope: $scope,
@@ -154,7 +181,23 @@ angular.module('starter')
       $scope.car_company_modal = modal;
     });
     $scope.openCompanyModal = function() {
-      $scope.car_company_modal.show();
+        var products=$scope.tabs[$scope.tabIndex].products;
+        var selected=[];
+        for(var proName in products)
+        {
+            var product=products[proName];
+            if(product.checked==true)
+                selected.push(product);
+        }
+        if(selected.length>0)
+        {
+            $scope.car_company_modal.show();
+        }else{
+            var alertPopup = $ionicPopup.alert({
+                title: '信息',
+                template: '请勾选险种后确认套餐选择'
+            });
+        }
     };
     $scope.closeCompanyModal = function() {
       $scope.car_company_modal.hide();
@@ -206,7 +249,8 @@ angular.module('starter')
             data.data.map(function(meal,i) {
                 var products={};
                 meal.products.map(function(product,j) {
-                    product.irrespective=true;
+                    if(product.isIrrespectable==1)
+                        product.irrespective=true;
                     product.checked=true;
                     if(products[product.productName]==undefined||products[product.productName]==null)
                     {

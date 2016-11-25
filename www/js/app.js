@@ -325,8 +325,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               });
                               break;
                           default:
-                              var order=message.order;
-                              var servicePersonId=message.servicePersonId;
 
                               var tem='';
                               var mobilePhone=null;
@@ -831,6 +829,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/applied_life_order_detail/applied_life_order_detail.html'
           })
 
+          .state('car_info_detail',{
+              url:'/car_info_detail:carInfo',
+              controller:'carInfoDetailController',
+              templateUrl:'views/car_info_detail/car_info_detail.html'
+          })
+
 
       // if none of the above states are matched, use this as the fallback
 
@@ -855,7 +859,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.138:3000";
+            return "http://139.129.96.231:3000";
           else
             return "/proxy/node_server";
             

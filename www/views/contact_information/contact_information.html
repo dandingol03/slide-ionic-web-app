@@ -38,13 +38,17 @@
                   style="display: inline-block;width: 15%;text-align: left;border-right:1px solid #aaa;">
           电话 :
         </span>
-        <span style="width: 5%;display: inline-block;"></span>
-        <span style="width: 70%;display: inline-block;text-align: left;">
+        <span style="width: 40%;display: inline-block;text-align: left;">
           <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
-                     ng-value="contactInfo.mobilePhone"
-                     ng-model="contactInfo.mobilePhone"/>
+                 ng-value="contactInfo.mobilePhone"
+                 ng-model="contactInfo.mobilePhone"
+                 ng-change="validate(contactInfo,'mobilePhone','/^\\d{11}$/')"
+          />
         </span>
-        <span style="display: inline-block;width: 10%;"></span>
+        <span
+                style="display: inline-block;width: 45%;text-align: left;color:#ff3b30" ng-if="contactInfo.mobilePhone_error==true">
+          请输入11位的手机号
+        </span>
       </div>
 
       <!-- 邮箱 -->
@@ -56,14 +60,19 @@
           邮箱:
         </span>
 
-        <span style="width: 5%;display: inline-block"></span>
 
-        <span style="width: 70%;display: inline-block;text-align: left;">
+        <span style="width: 40%;display: inline-block;text-align: left;">
           <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
                  ng-value="contactInfo.EMAIL"
-                 ng-model="contactInfo.EMAIL"/>
+                 ng-model="contactInfo.EMAIL"
+                 ng-change="validate(contactInfo,'EMAIL','/^.*@.*\\.com$/')"
+          />
         </span>
-        <span style="display: inline-block;width: 10%;"></span>
+        <span style="display: inline-block;width: 45%;text-align: left;color:#ff3b30"
+              ng-if="contactInfo.EMAIL_error==true">
+          请输入正确格式的邮箱
+        </span>
+
       </div>
 
       <!-- 地址 -->
@@ -75,13 +84,12 @@
           地址:
         </span>
 
-        <span style="width: 5%;display: inline-block;"></span>
-        <span style="width: 70%;display: inline-block;text-align: left;">
+
+        <span style="width: 85%;display: inline-block;text-align: left;">
           <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
                  ng-value="contactInfo.perAddress"
                  ng-model="contactInfo.perAddress"/>
         </span>
-        <span style="display: inline-block;width: 10%;"></span>
       </div>
 
       <div class="item"

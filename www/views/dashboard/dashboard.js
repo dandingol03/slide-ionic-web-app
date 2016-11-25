@@ -1415,7 +1415,16 @@ angular.module('starter')
     }
 
     $scope.select_type=function(){
-      $state.go('car_insurance',{carInfo:JSON.stringify($scope.carInfo)});
+        //TODO:validat
+        if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+            $state.go('car_insurance',{carInfo:JSON.stringify($scope.carInfo)});
+        else{
+            var alertPopup = $ionicPopup.alert({
+                title: '信息',
+                template: '请通过点击'
+            });
+
+        }
     }
 
 

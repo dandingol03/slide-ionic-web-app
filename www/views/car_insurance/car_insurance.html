@@ -63,7 +63,7 @@
       </div>
       <!--向上滑动箭头 -->
       <div class="row"
-           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;">
+           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;" ng-if="tabIndex!=0">
         <div class="item" style="border:0px;width: 100%;text-align: center;padding: 4px;"
              ng-click="scrollUpStep()">
               <span style="font-size: 2em;color:#00c9ff">
@@ -76,25 +76,59 @@
 
           <div class="row"
                ng-repeat="(key, product)  in tabs[tabIndex].products"
-               style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;">
+               style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
             <div class="col-80" style="margin-left: 10%;">
+
+
+                <!--<div class="toggle toggle-assertive" style="position: absolute;right: 6%;">-->
+                  <!--<input type="checkbox" ng-model="product.checked">-->
+                  <!--<div class="track">-->
+                    <!--<div class="handle"></div>-->
+                  <!--</div>-->
+                <!--</div>-->
+
+              <div class="item" style="margin:1px;border:0px;padding:10px;padding-left: 16px;background-color:transparent;">
+
+                <div style="display: inline-block;width:45%;">
+                  {{product.productName}}
+                </div>
+                <div style="display: inline-block;width: 10%;"></div>
+                <div style="display: inline-block;width: 45%;">
+                  <div class="switch_search">
+                    <div class="switch_search_tab"
+                         ng-class="product.checked!=true ? '' : 'off_search_tab'"
+                         ng-click="setter(product,'checked',false);"
+                    >
+                      on
+                    </div>
+                    <div class="switch_search_tab"
+                         ng-class="(product.checked!=true) ? 'off_search_tab' : ''"
+                         ng-click="setter(product,'checked',true)"
+                    >
+                      off
+                    </div>
+                    <!-- the most import part -->
+                    <div class="switch_bg" ng-class="product.checked==true ? 'search_right' :'search_left'"></div>
+                  </div>
+                </div>
+
+              </div>
+
+
               <label class="item"
-                     style="border:0px;display: inline-block;width: 100%;position: relative"
-                     ng-click="toggle(product,'checked')"
-              >
-                {{product.productName}}
-                <div
-                        style="font-size: 2.5em;display: inline-block;position: absolute;right: 10%;top:0%;"
-                >
-                  <i ng-if="product.checked!=true" class="ion-ios-checkmark-outline"></i>
-                  <i ng-if="product.checked==true" class="ion-ios-checkmark"></i>
+                     style="border:0px;display: inline-block;width: 100%;position: relative;padding-top: 12px;padding-bottom: 12px;"
+                     ng-if="product.isIrrespectable==1"
+                     ng-click="toggle(product,'irrespective')">
+                不计免赔
+                <div style="font-size: 2.5em;display: inline-block;position: absolute;right: 10%;top:0%;">
+                  <i ng-if="product.irrespective!=true" class="ion-ios-circle-outline"></i>
+                  <i ng-if="product.irrespective==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
                 </div>
               </label>
 
-              <label class="item" style="border:0px;display: inline-block;width: 100%;"
+              <label class="item" style="border:0px;display: inline-block;width: 100%;padding-top: 4px;padding-bottom: 8px;"
                      ng-if="product.insuranceTypes!==undefined&&product.insuranceTypes!==null"
-                     ng-click="actionSheet(product,'insuranceTypes',['insuranceTypes=>insuranceType','productIds=>productId'])"
-              >
+                     ng-click="actionSheet(product,'insuranceTypes',['insuranceTypes=>insuranceType','productIds=>productId'])">
                 保额:
                 <span style="position: absolute;right: 50%;">
                   {{product.insuranceType}}
@@ -103,7 +137,7 @@
 
 
               </label>
-              <label class="item" style="border:0px;display: inline-block;width: 100%;"
+              <label class="item" style="border:0px;display: inline-block;width: 100%;padding-top: 4px;padding-bottom: 8px;"
                      ng-if="(product.insuranceTypes==undefined||product.insuranceTypes==null)&&
                      (product.insuranceType!=null||product.insuranceType!=undefined)"
               >
@@ -114,20 +148,6 @@
               </label>
 
 
-
-
-              <label class="item"
-                     style="border:0px;display: inline-block;width: 100%;position: relative">
-                不计免赔
-                <div class="toggle toggle-assertive" style="position: absolute;right: 6%;">
-                  <input type="checkbox" ng-model="product.irrespective">
-                  <div class="track">
-                    <div class="handle"></div>
-                  </div>
-                </div>
-              </label>
-
-
             </div>
           </div>
 
@@ -135,7 +155,9 @@
       </ion-scroll>
       <!-- 向下滑动箭头 -->
       <div class="row"
-           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;">
+           style="border-bottom:1px solid #eee;padding:0px;margin-bottom:6px;"
+           ng-if="tabIndex!=0"
+      >
         <div class="item" style="border:0px;width: 100%;text-align: center;padding: 4px;"
              ng-click="scrollDownStep()">
           <span style="font-size: 2em;color:#00c9ff">

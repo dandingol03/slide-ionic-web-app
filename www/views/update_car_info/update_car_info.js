@@ -30,61 +30,66 @@ angular.module('starter')
             $scope.city=city;
         }
 
+
         $scope.getCarNumPrefixByCity=function (city) {
             var carNum=null;
             switch (city) {
-                case '北京':
-                    carNum='京A';
-                    break;
-                case '上海':
-                    carNum='沪A';
-                    break;
-                case '广州':
-                    carNum='粤A';
-                    break;
-                case '深圳':
-                    carNum='粤B';
-                    break;
-                case '苏州':
-                    carNum='苏E';
-                    break;
-                case '杭州':
-                    carNum='浙A';
-                    break;
-                case '南京':
-                    carNum='苏A';
-                    break;
-                case '天津':
-                    carNum='津A';
-                    break;
                 case '济南':
                     carNum='鲁A';
                     break;
                 case '青岛':
                     carNum='鲁B';
                     break;
-                case '武汉':
-                    carNum='鄂A';
+                case '淄博':
+                    carNum='鲁C';
                     break;
-                case '长沙':
-                    carNum='湘A';
+                case '枣庄':
+                    carNum='鲁D';
                     break;
-                case '沈阳':
-                    carNum='辽A';
+                case '东营':
+                    carNum='鲁E';
                     break;
-                case '成都':
-                    carNum='川A';
+                case '烟台':
+                    carNum='鲁F';
                     break;
-                case '重庆':
-                    carNum='渝A';
+                case '潍坊':
+                    carNum='鲁G';
+                    break;
+                case '济宁':
+                    carNum='鲁H';
+                    break;
+                case '泰安':
+                    carNum='鲁J';
+                    break;
+                case '威海':
+                    carNum='鲁K';
+                    break;
+                case '日照':
+                    carNum='鲁L';
+                    break;
+                case '滨州':
+                    carNum='鲁M';
+                    break;
+                case '德州':
+                    carNum='鲁N';
+                    break;
+                case '聊城':
+                    carNum='鲁P';
+                    break;
+                case '临沂':
+                    carNum='鲁Q';
+                    break;
+                case '菏泽':
+                    carNum='鲁R';
+                    break;
+                case '莱芜':
+                    carNum='鲁S';
                     break;
                 default:
                     break;
             }
             return carNum;
         }
-
-
 
         $scope.city_confirm=function () {
 
@@ -1073,6 +1078,12 @@ angular.module('starter')
                 });
             }
         }
+
+        $scope.carNumChange=function () {
+            $scope.carInfo.carNum=$scope.carInfo.carNum.toString().toUpperCase();
+        }
+
+
 
         $scope.selectTime=true;
         $scope.datetimepicker=function (item,field) {

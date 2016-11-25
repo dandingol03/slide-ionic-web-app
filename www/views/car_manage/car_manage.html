@@ -23,56 +23,65 @@
                 </div>
 
                 <div style="display: inline-block;position: absolute;text-align: center;right: 0%;top:20%;width: 20%;"
-                    ng-click="go_to('tabs.dashboard')">
+                    ng-click="confirmCarInfo()">
                     <button class="button button-small button-calm" style="border-radius: 6px;padding-left:10%;padding-right: 10%;">
                         确定选择
                     </button>
                 </div>
 
 
-                <div ng-click="openBindCarModal()"
-                     style="display: inline-block;width:20%;text-align: right;position: absolute;bottom:10%;right:0%;text-align: center">
-                    <button class="button button-small button-dark"
-                            style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;padding-left:10%;padding-right:10%;">
-                        创建新车
-                    </button>
+            </div>
+
+            <div style="height: 80%;">
+                <div style="height: 85%;width:100%;border-bottom:1px solid #ddd">
+                    <ion-scroll style="height: 98%;">
+                        <div class="list list-inset padding"
+                             style="margin-bottom: 10%;margin-left: 0;margin-right: 0;padding: 0;">
+                            <div class="item"
+                                 style="position:relative"
+                                 ng-repeat="car in relativeCars">
+
+                                <div style="display: inline-block;width: 20%;" ng-if="car.idle!=true" >
+                                    <span style="font-size:2em;color:rgba(88, 73, 58, 0.95);"><i class="fa fa-times"></i></span>
+                                </div>
+
+                                <div style="display:inline-block;width:20%;" ng-if="car.idle==true" ng-click="Mutex(car,'checked',relativeCars)">
+                                    <i ng-if="car.checked!=true" class="fa fa-square-o" style="font-size:200%"></i>
+                                    <i ng-if="car.checked==true" class="fa fa-check-square-o" style="font-size:200%"></i>
+                                </div>
+
+                                <div style="display:inline-block;width:55%;">
+                                    <div>
+                                        <span>{{car.carNum}}</span>
+                                    </div>
+                                    <div>
+                                        <span>{{car.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}</span>
+                                    </div>
+                                </div>
+
+                                <div style="display: inline-block;width: 25%;color:#e45d23;font-size: 1.3em;" ng-click="goDetail(car)">
+                                    <span>详细</span>
+                                    <span><i class="fa fa-chevron-right"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ion-scroll>
+                </div>
+
+                <div style="height: 15%;width: 100%;">
+                    <div style="width: 100%;height: 100%;display:table;">
+                        <div style="display: table-cell;vertical-align: middle;text-align: center">
+                            <button class="button button-dark" ng-click="openBindCarModal()"
+                                    style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;width: 60%;">
+                                创建新车
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
 
-            <ion-scroll style="height: 80%;">
-                <div class="list list-inset padding"
-                     style="margin-bottom: 10%;margin-left: 0;margin-right: 0;padding: 0;">
-                    <div class="item"
-                         style="position:relative"
-                         ng-repeat="car in relativeCars"
-                         ng-click="Mutex(car,'checked',relativeCars)">
-
-                        <div style="display:inline-block;width:15%;">
-                            <i ng-if="car.checked!=true" class="ion-ios-checkmark-outline" style="font-size:200%"></i>
-                            <i ng-if="car.checked==true" class="ion-ios-checkmark" style="font-size:200%"></i>
-                        </div>
-
-                        <div style="display:inline-block;width:55%;">
-                            <div>
-                                <span>{{car.carNum}}</span>
-                            </div>
-                            <div>
-                                <span>{{car.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}</span>
-                            </div>
-                        </div>
-
-                        <div style="display: inline-block;width: 30%;">
-                            <span ng-if="car.idle==true" style="color:#e45d23;font-size: 1.3em;">
-                                可选
-                            </span>
-                            <span ng-if="car.idle!=true" style="color:#e45d23;font-size: 1.3em;">
-                                不可选
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </ion-scroll>
 
         </ion-content>
 
