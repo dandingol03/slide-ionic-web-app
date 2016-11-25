@@ -194,12 +194,18 @@ angular.module('starter')
         }
 
 
+        $scope.changeToUpperCase = function(carNum){
+
+            $scope.carInfo.carNum = carNum.toUpperCase();
+        }
+
+
 
         $scope.bindNewCar = function(){
 
             //车牌号限制
             var carNum=$scope.carInfo.carNum;
-            if(carNum.length!=6)
+            if(carNum.length!=7)
             {
                 $ionicPopup.alert({
                     title: '错误',

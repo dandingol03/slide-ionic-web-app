@@ -118,62 +118,29 @@ angular.module('starter')
             flag = true;
         }
       });
-      //如果已经进行修改
-      if (flag == true) {
-        $http({
-          method: "POST",
-          url: "/proxy/node_server/svr/request",
-          headers: {
-            'Authorization': "Bearer " + $rootScope.access_token
-          },
-          data:
-          {
-            request:'userUpdateLifeOrder',
-            info:{
-              orderId:1,
-              plans:plans
-            }
-          }
-        }).then(function(res) {
-          var json=res.data;
-          console.log('...');
-        }).catch(function(err) {
-          var str='';
-          for(var field in err)
-            str+=err[field];
-          console.error('error=\r\n' + str);
-        });
-      }else {//如果未产生如何改动
 
-        $http({
-          method: "POST",
-          url: "/proxy/node_server/svr/request",
-          headers: {
-            'Authorization': "Bearer " + $rootScope.access_token
-          },
-          data: {
-            request: 'userApplyUnchangedLifeOrder',
-            info: {
-              orderId: 1,
-              planIds: planIds
-            }
+      $http({
+        method: "POST",
+        url: Proxy.local() + '/svr/request',
+        headers: {
+          'Authorization': "Bearer " + $rootScope.access_token
+        },
+        data: {
+          request: 'commitLifePlan',
+          info:{
+            planIds:planIds,
+            orderId:$scope.order.orderId
           }
-        }).then(function (json) {
-          if (json.re == 1) {
-            //TODO:取消保存的寿险方案列表,从服务器获取寿险方案列表时匹配userSelect字段
-            var alertPopup = $ionicPopup.alert({
-              title: '修改方案已提交',
-              template: '等待后台工作人员重新报价'
-            });
 
-          }
-        }).catch(function (err) {
-          var str = '';
-          for (var field in err)
-            str += err[field];
-          console.error('error=\r\n' + str);
-        });
-      }
+        }
+      }).then(function(res) {
+        var json = res.data;
+        if(json.re==1){
+          alert('应该进入寿险支付页面');
+        }
+
+
+      })
 
     }
 

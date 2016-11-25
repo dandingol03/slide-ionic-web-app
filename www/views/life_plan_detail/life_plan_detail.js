@@ -132,28 +132,7 @@ angular.module('starter')
         }
 
         $rootScope.plan=$scope.item;
-      }).then(function() {
-
-        $http({
-          method: "POST",
-          url: Proxy.local() + '/svr/request',
-          headers: {
-            'Authorization': "Bearer " + $rootScope.access_token
-          },
-          data: {
-            request: 'updateLifeOrderPlan',
-            info:{
-              planId:$scope.item.planId,
-              main:$scope.item.main,
-              additions:$scope.item.additions,
-              insuranceQuota:$scope.item.insuranceQuota,
-              feeYearType:$scope.item.feeYearType,
-              insuranceFeeTotal:$scope.item.insuranceFeeTotal,
-            }
-          }
-        })
-
-      })
+       })
 
     }
 
@@ -299,41 +278,41 @@ angular.module('starter')
 
     //保存修改,同布数据至$rootScope
     $scope.sync=function(plan) {
-      var buttons=[
-        {
-          text: '<b>取消</b>',
-          type:'button-assertive'
-        },
-        {
-          text: '<b>确认</b>',
-          type: 'button-positive',
-          onTap: function(e) {
-            //TODO:do contrast
 
-            var planId=plan.planId;
-            var plans=$rootScope.lifeInsuranceOrder.plans;
-            plans.map(function(item,i) {
-              if(item.planId==planId)
-              {
-                plan.modified=true;
-                plan.checked=true;
-                plans[i]=plan;
-                $rootScope.modifiedFlag=true;
-              }
-            });
-            $rootScope.lifeInsuranceOrder.plans=plans;
-            $state.go('life_plan');
+      var planId=plan.planId;
+      var plans=$rootScope.lifeInsuranceOrder.plans;
+      plans.map(function(item,i) {
+        if(item.planId==planId)
+        {
+          plan.modified=true;
+          plan.checked=true;
+          plans[i]=plan;
+          $rootScope.modifiedFlag=true;
+        }
+      });
+      $rootScope.lifeInsuranceOrder.plans=plans;
+
+      $http({
+        method: "POST",
+        url: Proxy.local() + '/svr/request',
+        headers: {
+          'Authorization': "Bearer " + $rootScope.access_token
+        },
+        data: {
+          request: 'updateLifeOrderPlan',
+          info:{
+            planId:$scope.item.planId,
+            main:$scope.item.main,
+            additions:$scope.item.additions,
+            insuranceQuota:$scope.item.insuranceQuota,
+            feeYearType:$scope.item.feeYearType,
+            insuranceFeeTotal:$scope.item.insuranceFeeTotal,
           }
         }
-      ];
-      // var myPopup = $ionicPopup.show({
-      //   template: '保存修改之后,需要等待后台工作人员进行审核',
-      //   title: '<strong>修改保修方案?</strong>',
-      //   subTitle: '',
-      //   scope: $scope,
-      //   buttons: buttons
-      // });
 
+      })
+
+      $state.go('life_plan');
 
     };
 
