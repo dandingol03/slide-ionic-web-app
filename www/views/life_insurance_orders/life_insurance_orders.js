@@ -72,10 +72,11 @@ angular.module('starter')
 
     $scope.orders=[];
     $scope.pricingOrders=[];
-    $scope.unPaidOrders=[];
+    $scope.appliedOrders=[];
     $scope.finishOrders=[];
     $scope.plans=[];
 
+      $scope.appliedOrders=[];
 
     $scope.goDetail=function(order){
       $state.go('life_plan',{order:JSON.stringify(order)});
@@ -96,6 +97,7 @@ angular.module('starter')
       $scope.orders = $rootScope.lifeInsurance.orders;
       $scope.pricingOrders = $rootScope.lifeInsurance.pricingOrders;
       $scope.finishOrders = $rootScope.lifeInsurance.finishOrders;
+        $scope.appliedOrders = $rootScope.lifeInsurance.appliedOrders;
     }else{
 
 
@@ -117,7 +119,6 @@ angular.module('starter')
 
           $ionicLoading.hide();
 
-
           var json = res.data;
           if (json.re == 1) {
               $scope.orders = json.data;
@@ -137,35 +138,41 @@ angular.module('starter')
                       if (order.orderState == 5) {
                           $scope.finishOrders.push(order);
                       }
+                      if (order.orderState == 1||order.orderState == 2) {
+                          $scope.appliedOrders.push(order);
+                      }
 
 
                   })
               }
               $rootScope.lifeInsurance.pricingOrders = $scope.pricingOrders;
               $rootScope.lifeInsurance.finishOrders = $scope.finishOrders;
+              $rootScope.lifeInsurance.appliedOrders = $scope.appliedOrders;
           }
 
-          return $http({
-              method: "POST",
-              url: Proxy.local() + '/svr/request',
-              headers: {
-                  'Authorization': "Bearer " + $rootScope.access_token
-              },
-              data: {
-                  request: 'fetchLifeInsuranceAppliedOrders',
-              }
-          })
-      }).then(function(res) {
-            var json=res.data;
-            if(json.re==1) {
-                $scope.appliedOrders=json.data;
-            }
-        }).catch(function(err) {
-            var str='';
-            for(var field in err)
-                str+=err[field];
-            console.error('err=\r\n'+str);
-        });
+          // return $http({
+          //     method: "POST",
+          //     url: Proxy.local() + '/svr/request',
+          //     headers: {
+          //         'Authorization': "Bearer " + $rootScope.access_token
+          //     },
+          //     data: {
+          //         request: 'fetchLifeInsuranceAppliedOrders',
+          //     }
+          // })
+      })
+        //   .then(function(res) {
+        //     var json=res.data;
+        //     if(json.re==1) {
+        //         $scope.appliedOrders=json.data;
+        //     }
+        // })
+        //   .catch(function(err) {
+        //     var str='';
+        //     for(var field in err)
+        //         str+=err[field];
+        //     console.error('err=\r\n'+str);
+        // });
 
     }
 
