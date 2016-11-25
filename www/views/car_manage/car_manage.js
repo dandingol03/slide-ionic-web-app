@@ -252,10 +252,12 @@ angular.module('starter')
             $scope.carInfo.carNum=$scope.carInfo.carNum.toString().toUpperCase();
         }
 
+
         $scope.bindNewCar = function(){
 
             var carNum=$scope.carInfo.carNum;
             if(carNum!==undefined&&carNum!==null&&carNum!='')
+
             {
                 if(carNum.toString().length!=7)
                 {

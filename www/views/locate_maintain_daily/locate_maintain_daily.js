@@ -732,6 +732,7 @@ angular.module('starter')
 
 
       $scope.applyMaintainDailyOrder=function() {
+
         if ($scope.maintain.estimateTime !== undefined && $scope.maintain.estimateTime !== null) {
 
                 var orderId = null;
