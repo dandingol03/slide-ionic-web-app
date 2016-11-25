@@ -151,185 +151,232 @@
                 </div>
 
 
-
-                <!-- 手机拍照界面 正 -->
+                <!-- 身份证正面  新的界面 -->
                 <div class="item"
-                     style="background-color:transparent;border: 0px;padding: 0px;">
-                    <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
-                        <span class="input-label"
-                            style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
-                            身份证正面:
-                        </span>
+                     style="margin:1px;border:0px;padding:16px;position: relative;">
+                    <div style="width: 100%;height:260px;border:1px solid #aaa;display: table;text-align: center;border-radius: 10px;">
+                       <div style="display: table-cell;vertical-align: middle;text-align: center;">
+
+                           <div style="width: 80%;height: 200px;margin-left: 10%;position: relative;">
+                               <img src="img/perIdCard1Example.jpg"
+                                    style="width: 100%;max-height: 200px;border-radius: 10px;"
+                                    ng-if="car_insurance.insuranceder.perIdCard1_img==undefined||car_insurance.insuranceder.perIdCard1_img==null"/>
+
+                               <div style="position: absolute;top:0px;left:0px;width: 100%;height: 200px;z-index: 100;color:#a2a2a2;border-radius: 10px;
+                                    background: rgba(80, 80, 80, 0.78);"
+                                    ng-if="car_insurance.insuranceder.perIdCard1_img==undefined||car_insurance.insuranceder.perIdCard1_img==null">
+                                   <div style="width: 100%;height: 100%;display: table;">
+                                       <div style="display: table-cell;vertical-align: middle;text-align: center;position: relative;height: 100%;">
+                                           <div style="position: absolute;left:40%;top:30%;
+                                                width: 70px;height: 70px;border:2px dashed #fff;border-radius: 70px;padding-top: 10px;"
+                                                ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')">
+                                               <div style="width: 100%;height: 100%;position: relative">
+                                                   <span style="color:#fff;font-size: 2.4em;margin-top: 10px;">
+                                                       <i class="fa fa-id-card-o"></i>
+                                                   </span>
+                                                   <span style="position: absolute;right: 10%;bottom: 20%;font-size: 1.2em;color:#fff;">
+                                                       <i class="fa fa-camera"></i>
+                                                   </span>
+                                               </div>
+
+                                           </div>
+                                       </div>
+
+                                   </div>
+                               </div>
+
+                               <!-- 上传的身份证正面 -->
+                               <img ng-src="{{car_insurance.insuranceder.perIdCard1_img}}"
+                                    style="width: 100%;max-height: 200px;border-radius: 10px;"
+                                    ng-if="car_insurance.insuranceder.perIdCard1_img!==undefined&&car_insurance.insuranceder.perIdCard1_img!==null"/>
+                               <div style="position: absolute;top:0px;left:0px;width: 100%;height: 200px;z-index: 100;color:#a2a2a2;border-radius: 10px;"
+                                    ng-if="car_insurance.insuranceder.perIdCard1_img!==undefined&&car_insurance.insuranceder.perIdCard1_img!==null">
+                                   <div style="width: 100%;height: 100%;display: table;">
+                                       <div style="display: table-cell;vertical-align: middle;text-align: center;position: relative;height: 100%;">
+                                           <div style="position: absolute;left:40%;top:30%;
+                                                width: 70px;height: 70px;border:2px dashed #fff;border-radius: 70px;padding-top: 10px;"
+                                                ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')">
+                                               <div style="width: 100%;height: 100%;position: relative">
+                                                   <span style="color:#fff;font-size: 2.4em;margin-top: 10px;">
+                                                       <i class="fa fa-id-card-o"></i>
+                                                   </span>
+                                                   <span style="position: absolute;right: 10%;bottom: 20%;font-size: 1.2em;color:#fff;">
+                                                       <i class="fa fa-camera"></i>
+                                                   </span>
+                                               </div>
+
+                                           </div>
+                                       </div>
+
+                                   </div>
+                               </div>
+
+                           </div>
+
+                           <div style="margin-top:20px;">
+                                <span style="color:#33c6cd;font-weight: bolder;">上传身份证正面</span>
+                           </div>
+                       </div>
+
                     </div>
                 </div>
 
+                <!-- 身份证反面  新的界面 -->
                 <div class="item"
-                     style="margin:1px;border:0px;padding:10px;position: relative;">
+                     style="margin:1px;border:0px;padding:16px;position: relative;">
+                    <div style="width: 100%;height:260px;border:1px solid #aaa;display: table;text-align: center;border-radius: 10px;">
+                        <div style="display: table-cell;vertical-align: middle;text-align: center;">
 
-                    <div style="width: 60%;text-align:center;margin-left:20%;height:350px;border:1px solid;
-                        border-top-left-radius: 25px;border-top-right-radius: 25px;border-bottom-left-radius: 40px;border-bottom-right-radius: 40px;">
-                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:1px solid;
-                             border-radius: 10px;background: #666;"
-                             ng-if="car_insurance.insuranceder.perIdCard1_img==undefined||car_insurance.insuranceder.perIdCard1_img==null">
-                        </div>
+                            <div style="width: 80%;height: 200px;margin-left: 10%;position: relative;">
+                                <img src="img/perIdCard2Example.jpg"
+                                     style="width: 100%;max-height: 200px;border-radius: 10px;"
+                                     ng-if="car_insurance.insuranceder.perIdCard2_img==undefined||car_insurance.insuranceder.perIdCard2_img==null"/>
 
-                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:0px;
-                             border-radius: 10px;"
-                             ng-if="car_insurance.insuranceder.perIdCard1_img!==undefined&&car_insurance.insuranceder.perIdCard1_img!==null">
-                            <img ng-src="{{car_insurance.insuranceder.perIdCard1_img}}"
-                                 style="max-width: 100%;max-height: 100%;border-radius:10px;">
-                        </div>
+                                <div style="position: absolute;top:0px;left:0px;width: 100%;height: 200px;z-index: 100;color:#a2a2a2;border-radius: 10px;
+                                    background: rgba(80, 80, 80, 0.78);"
+                                     ng-if="car_insurance.insuranceder.perIdCard2_img==undefined||car_insurance.insuranceder.perIdCard2_img==null">
+                                    <div style="width: 100%;height: 100%;display: table;">
+                                        <div style="display: table-cell;vertical-align: middle;text-align: center;position: relative;height: 100%;">
+                                            <div style="position: absolute;left:40%;top:30%;
+                                                width: 70px;height: 70px;border:2px dashed #fff;border-radius: 70px;padding-top: 10px;"
+                                                 ng-click="addAttachment(car_insurance.insuranceder,'perIdCard2_img')">
+                                                <div style="width: 100%;height: 100%;position: relative">
+                                                   <span style="color:#fff;font-size: 2.4em;margin-top: 10px;">
+                                                       <i class="fa fa-id-card-o"></i>
+                                                   </span>
+                                                    <span style="position: absolute;right: 10%;bottom: 20%;font-size: 1.2em;color:#fff;">
+                                                       <i class="fa fa-camera"></i>
+                                                   </span>
+                                                </div>
 
-                        <div style="height: 50px;width: 90%;margin-left:5%;margin-top:10px;border:1px solid;">
-                            <div style="width: 100%;height: 100%;">
-                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
-                                <span style="width: 30%;display: inline-block;height: 100%;">
-                                    <div style="width: 100%;height: 100%;display: table;position: relative">
-                                        <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;"
-                                              ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')">
-                                            <i class="fa fa-camera-retro"></i>
-                                        </span>
-
-                                        <!-- 文字提示 -->
-                                        <div ng-class="firstTabHint"
-                                               ng-style="firstTabStyle"
-                                               style="position: absolute;top:100%;left: -70%; ">
-
-                                            <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;" >
-                                                <span style="position: absolute;right: 10%;color: #444;font-size: 1.1em;top:0px;">
-                                                    <i class="ion-arrow-up-b"></i>
-                                                </span>
-                                            </div>
-                                            <div class="item"
-                                               style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;margin-left:20px;">
-                                                <span>
-                                                    点击进行拍照
-                                                </span>
                                             </div>
                                         </div>
-                                    </div>
-                                </span>
-                                <span style="width: 30%;display: inline-block;height: 100%;">
-                                     <div style="width: 100%;height: 100%;display: table;position: relative">
-                                         <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;" ng-click="openPerIdCard1Modal()">
-                                             <i class="fa fa-info-circle"></i>
-                                         </span>
-                                         <!-- 文字提示 -->
-                                          <div ng-class="firstTabHint"
-                                               ng-style="firstTabStyle"
-                                               style="position: absolute;top:100%;left: 0%; ">
-                                              <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;">
-                                                  <span style="position: absolute;left: 14%;color: #444;font-size: 1.1em;top:0px;">
-                                                      <i class="ion-arrow-up-b"></i>
-                                                  </span>
-                                              </div>
-                                              <div class="item"
-                                                   style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;"
-                                                   ng-click="">
-                                                    点击'信息'查看身份证正面示例
-                                              </div>
 
-                                          </div>
-                                     </div>
-                                </span>
-                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
+                                    </div>
+                                </div>
+
+                                <!-- 上传的身份证正面 -->
+                                <img ng-src="{{car_insurance.insuranceder.perIdCard2_img}}"
+                                     style="width: 100%;max-height: 200px;border-radius: 10px;"
+                                     ng-if="car_insurance.insuranceder.perIdCard2_img!==undefined&&car_insurance.insuranceder.perIdCard2_img!==null"/>
+                                <div style="position: absolute;top:0px;left:0px;width: 100%;height: 200px;z-index: 100;color:#a2a2a2;border-radius: 10px;"
+                                     ng-if="car_insurance.insuranceder.perIdCard2_img!==undefined&&car_insurance.insuranceder.perIdCard2_img!==null">
+                                    <div style="width: 100%;height: 100%;display: table;">
+                                        <div style="display: table-cell;vertical-align: middle;text-align: center;position: relative;height: 100%;">
+                                            <div style="position: absolute;left:40%;top:30%;
+                                                width: 70px;height: 70px;border:2px dashed #fff;border-radius: 70px;padding-top: 10px;"
+                                                 ng-click="addAttachment(car_insurance.insuranceder,'perIdCard2_img')">
+                                                <div style="width: 100%;height: 100%;position: relative">
+                                                   <span style="color:#fff;font-size: 2.4em;margin-top: 10px;">
+                                                       <i class="fa fa-id-card-o"></i>
+                                                   </span>
+                                                    <span style="position: absolute;right: 10%;bottom: 20%;font-size: 1.2em;color:#fff;">
+                                                       <i class="fa fa-camera"></i>
+                                                   </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div style="margin-top:20px;">
+                                <span style="color:#33c6cd;font-weight: bolder;">上传身份证反面</span>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                <!-- 手机拍照界面 反 -->
-                <div class="item"
-                     style="background-color:transparent;border: 0px;padding: 0px;">
-                    <div style="padding-left:10px;padding-right: 10px; position: relative;background-color:transparent;">
-                        <span class="input-label"
-                              style="display: inline-block;width: 65%;background-color:transparent;color:#bf530c;font-size: 1.1em;">
-                            身份证反面:
-                        </span>
-                    </div>
-                </div>
-
-                <div class="item"
-                     style="margin:1px;border:0px;padding:10px;position: relative;">
-
-                    <div style="width: 60%;text-align:center;margin-left:20%;height:350px;border:1px solid;
-                        border-top-left-radius: 25px;border-top-right-radius: 25px;border-bottom-left-radius: 40px;border-bottom-right-radius: 40px;">
-
-                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:1px solid;
-                             border-radius: 10px;background: #666;"
-                             ng-if="car_insurance.insuranceder.perIdCard2_img==undefined||car_insurance.insuranceder.perIdCard2_img==null">
-                        </div>
-
-                        <div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:0px;
-                             border-radius: 10px;"
-                             ng-if="car_insurance.insuranceder.perIdCard2_img!==undefined&&car_insurance.insuranceder.perIdCard2_img!==null">
-                            <img ng-src="{{car_insurance.insuranceder.perIdCard2_img}}"
-                                 style="max-width: 100%;max-height: 100%;border-radius:10px;">
-                        </div>
 
 
 
 
-                        <div style="height: 50px;width: 90%;margin-left:5%;margin-top:10px;border:1px solid;">
-                            <div style="width: 100%;height: 100%;">
-                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
-                                <span style="width: 30%;display: inline-block;height: 100%;">
-                                    <div style="width: 100%;height: 100%;display: table;position: relative">
-                                        <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;"
-                                              ng-click="addAttachment(car_insurance.insuranceder,'perIdCard2_img')">
-                                            <i class="fa fa-camera-retro"></i>
-                                        </span>
-                                        <!-- 文字提示 -->
-                                          <div ng-class="firstTabHint"
-                                               ng-style="firstTabStyle"
-                                               style="position: absolute;top:100%;left: -70%; ">
-                                              <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;" >
-                                                  <span style="position: absolute;right: 8%;color: #444;font-size: 1.1em;top:0px;">
-                                                      <i class="ion-arrow-up-b"></i>
-                                                  </span>
-                                              </div>
-                                              <div class="item"
-                                                   style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;margin-left:20px;">
-                                                  <span>
-                                                      点击进行拍照
-                                                  </span>
-                                              </div>
 
-                                          </div>
-                                    </div>
-                                </span>
-                                <span style="width: 30%;display: inline-block;height: 100%;">
-                                     <div style="width: 100%;height: 100%;display: table;position: relative">
-                                         <span style="display: table-cell;vertical-align: middle;font-size: 2.4em;"
-                                               ng-click="openPerIdCard2Modal()">
-                                             <i class="fa fa-info-circle"></i>
-                                         </span>
-                                         <!-- 文字提示 -->
-                                          <div ng-class="firstTabHint"
-                                               ng-style="firstTabStyle"
-                                               style="position: absolute;top:100%;left: 0%; ">
-                                              <div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;" >
-                                                  <span style="position: absolute;left: 14%;color: #444;font-size: 1.1em;top:0px;">
-                                                      <i class="ion-arrow-up-b"></i>
-                                                  </span>
-                                              </div>
-                                              <div class="item"
-                                                   style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;"
-                                                   ng-click="">
-                                                    点击'信息'查看身份证反面示例
-                                              </div>
 
-                                          </div>
-                                     </div>
-                                </span>
-                                <span style="width: 20%;display: inline-block;height: 100%;"></span>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
 
+
+                <!--<div class="item"-->
+                     <!--style="margin:1px;border:0px;padding:10px;position: relative;">-->
+
+                    <!--<div style="width: 60%;text-align:center;margin-left:20%;height:350px;border:1px solid;-->
+                        <!--border-top-left-radius: 25px;border-top-right-radius: 25px;border-bottom-left-radius: 40px;border-bottom-right-radius: 40px;">-->
+                        <!--<div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:1px solid;-->
+                             <!--border-radius: 10px;background: #666;"-->
+                             <!--ng-if="car_insurance.insuranceder.perIdCard1_img==undefined||car_insurance.insuranceder.perIdCard1_img==null">-->
+                        <!--</div>-->
+
+                        <!--<div style="width: 90%;text-align:center;margin-left:5%;margin-top:20px;height:230px;border:0px;-->
+                             <!--border-radius: 10px;"-->
+                             <!--ng-if="car_insurance.insuranceder.perIdCard1_img!==undefined&&car_insurance.insuranceder.perIdCard1_img!==null">-->
+                            <!--<img ng-src="{{car_insurance.insuranceder.perIdCard1_img}}"-->
+                                 <!--style="max-width: 100%;max-height: 100%;border-radius:10px;">-->
+                        <!--</div>-->
+
+                        <!--<div style="height: 50px;width: 90%;margin-left:5%;margin-top:10px;border:1px solid;">-->
+                            <!--<div style="width: 100%;height: 100%;">-->
+                                <!--<span style="width: 20%;display: inline-block;height: 100%;"></span>-->
+                                <!--<span style="width: 30%;display: inline-block;height: 100%;">-->
+                                    <!--<div style="width: 100%;height: 100%;display: table;position: relative">-->
+                                        <!--<span style="display: table-cell;vertical-align: middle;font-size: 2.4em;"-->
+                                              <!--ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')">-->
+                                            <!--<i class="fa fa-camera-retro"></i>-->
+                                        <!--</span>-->
+
+                                        <!--&lt;!&ndash; 文字提示 &ndash;&gt;-->
+                                        <!--<div ng-class="firstTabHint"-->
+                                               <!--ng-style="firstTabStyle"-->
+                                               <!--style="position: absolute;top:100%;left: -70%; ">-->
+
+                                            <!--<div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;" >-->
+                                                <!--<span style="position: absolute;right: 10%;color: #444;font-size: 1.1em;top:0px;">-->
+                                                    <!--<i class="ion-arrow-up-b"></i>-->
+                                                <!--</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="item"-->
+                                               <!--style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;margin-left:20px;">-->
+                                                <!--<span>-->
+                                                    <!--点击进行拍照-->
+                                                <!--</span>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</span>-->
+                                <!--<span style="width: 30%;display: inline-block;height: 100%;">-->
+                                     <!--<div style="width: 100%;height: 100%;display: table;position: relative">-->
+                                         <!--<span style="display: table-cell;vertical-align: middle;font-size: 2.4em;" ng-click="openPerIdCard1Modal()">-->
+                                             <!--<i class="fa fa-info-circle"></i>-->
+                                         <!--</span>-->
+                                         <!--&lt;!&ndash; 文字提示 &ndash;&gt;-->
+                                          <!--<div ng-class="firstTabHint"-->
+                                               <!--ng-style="firstTabStyle"-->
+                                               <!--style="position: absolute;top:100%;left: 0%; ">-->
+                                              <!--<div style="color:#f9f9f9;position: relative;height: 18px;margin-top:-12px;">-->
+                                                  <!--<span style="position: absolute;left: 14%;color: #444;font-size: 1.1em;top:0px;">-->
+                                                      <!--<i class="ion-arrow-up-b"></i>-->
+                                                  <!--</span>-->
+                                              <!--</div>-->
+                                              <!--<div class="item"-->
+                                                   <!--style="padding: 2px;font-size: 0.5em;margin-top:-5px;background: #444;color:#fff;border:0px;"-->
+                                                   <!--ng-click="">-->
+                                                    <!--点击'信息'查看身份证正面示例-->
+                                              <!--</div>-->
+
+                                          <!--</div>-->
+                                     <!--</div>-->
+                                <!--</span>-->
+                                <!--<span style="width: 20%;display: inline-block;height: 100%;"></span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+                <!--</div>-->
+
+          <!---->
 
 
 
