@@ -602,7 +602,7 @@ angular.module('starter')
                                                               //make alert to confirm
                                                               var myPopup = $ionicPopup.alert({
                                                                   template: '被保险人绑定成功',
-                                                                  title: '<strong style="color:red">错误</strong>'
+                                                                  title: '<strong style="color:red">信息</strong>'
                                                               });
                                                           } else {
                                                               var myPopup = $ionicPopup.alert({
@@ -648,39 +648,6 @@ angular.module('starter')
                                                                           $scope.car_insurance.insuranceder.personId=$scope.new.personId;
                                                                           $scope.tabIndex=0;
                                                                       });
-
-                                                                          // $http({
-                                                                          //     method: "POST",
-                                                                          //     url: Proxy.local() + "/svr/request",
-                                                                          //     headers: {
-                                                                          //         'Authorization': "Bearer " + $rootScope.access_token
-                                                                          //     },
-                                                                          //     data: {
-                                                                          //         request: 'generateCarInsuranceOrder',
-                                                                          //         info: {
-                                                                          //             products: $scope.info.products,
-                                                                          //             companys: $scope.info.companys,
-                                                                          //             carId: $scope.info.carId,
-                                                                          //             insurancederId: $scope.insuranceder.personId
-                                                                          //         }
-                                                                          //     }
-                                                                          // }).then(function (res) {
-                                                                          //     var json = res.data;
-                                                                          //     var orderId = json.data;
-                                                                          //     if (orderId !== undefined && orderId !== null) {
-                                                                          //
-                                                                          //         alert('订单已创建,请等待报价');
-                                                                          //         $rootScope.car_orders_tabIndex=2;
-                                                                          //         $state.go('car_orders');
-                                                                          //     }
-                                                                          // }).catch(function (err) {
-                                                                          //     var str = '';
-                                                                          //     for (var field in err)
-                                                                          //         str += 'field' + field + '\r\n'
-                                                                          //             + err[field];
-                                                                          //     console.error('error=\r\n' + str);
-                                                                          // });
-
 
                                                                   } else {
                                                                       var myPopup = $ionicPopup.alert({
