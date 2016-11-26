@@ -13,9 +13,9 @@ angular.module('starter')
     };
 
 
-    $scope.historyBack=function(){
-      window.history.back();
-    };
+      $scope.go_back=function(){
+          window.history.back();
+      }
 
     $scope.tab_change=function(i)
     {
