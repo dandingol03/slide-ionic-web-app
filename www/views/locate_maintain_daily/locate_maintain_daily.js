@@ -730,6 +730,7 @@ angular.module('starter')
 
 
 
+      $scope.maintain.estimateTime=new Date();
 
       $scope.applyMaintainDailyOrder=function() {
 
@@ -829,6 +830,7 @@ angular.module('starter')
                             {}
                         });
 
+                      $state.go('service_orders');
                     }).catch(function (err) {
                         var str = '';
                         for (var field in err)
