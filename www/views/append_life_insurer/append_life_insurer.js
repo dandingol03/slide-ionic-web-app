@@ -561,7 +561,7 @@ angular.module('starter')
                                                 });
                                                 confirmPopup.then(function (res) {
                                                     if (res) {
-                                                        if($scope.car_insurance.insuranceder.perIdCard1_img==undefined||$scope.car_insurance.insuranceder.perIdCard1_img==null)
+                                                        if($scope.insurer.perIdCard1_img==undefined||$scope.insurer.perIdCard1_img==null)
                                                             $scope.addAttachment($scope.insurer, 'perIdCard1_img');
                                                         else
                                                             $scope.addAttachment($scope.insurer, 'perIdCard2_img');
