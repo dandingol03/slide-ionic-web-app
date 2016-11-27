@@ -18,7 +18,7 @@ angular.module('starter')
       $scope.fetch = function() {
         $cordovaPreferences.fetch('pwdPersisted')
             .success(function(value) {
-                alert('pwdPersisted='+value);
+
                 $scope.pwdPersisted=value;
 
                 if($scope.pwdPersisted)
