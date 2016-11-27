@@ -11,8 +11,9 @@ angular.module('starter')
 
       $scope.formUser = {};
 
-
       $scope.user={};
+
+      $scope.users=[];
 
       $scope.fetch = function() {
         $cordovaPreferences.fetch('pwdPersisted')
@@ -57,10 +58,6 @@ angular.module('starter')
         }
 
 
-
-
-
-
         $scope.togglePwdPersistent = function(){
           if($scope.pwdPersisted==true){
               $scope.pwdPersisted=false;
@@ -81,6 +78,41 @@ angular.module('starter')
                   })
           }
       }
+
+      $scope.historyUserName = function(){
+          try{
+              $cordovaPreferences.fetch('users')
+                  .success(function(value) {
+                      if(value!==undefined&&value!==null&&value.length>0){
+
+                          var buttons=[];
+                          value.map(function(user,i) {
+                              buttons.push({text: user.username});
+                          });
+
+                          $ionicActionSheet.show({
+                              buttons:buttons,
+                              titleText: '曾登录过的账号',
+                              cancelText: 'Cancel',
+                              buttonClicked: function(index) {
+                                  $scope.user.username = buttons[index].text;
+                                  $scope.user.password = value[index].password;
+                                  return true;
+                              },
+                              cssClass:'motor_insurance_actionsheet'
+                          });
+                      }
+
+                  })
+          }catch(e)
+          {
+              alert('exception=' + e.toString());
+          }
+
+
+
+      }
+
 
 
 
@@ -216,10 +248,8 @@ angular.module('starter')
 
               $ionicLoading.hide();
 
-
               var json = res.data;
               var access_token = json.access_token;
-
 
               if(window.plugins!==undefined&&window.plugins!==null) {
                   $cordovaPreferences.store('username', $scope.user.username)
@@ -234,12 +264,50 @@ angular.module('starter')
                       .error(function(error) {
                           alert("Error: " + error);
                       });
+
+                  $scope.user.isSave=true;
+                  $scope.users.map(function(user,i){
+                      if($scope.user.username==user.username){
+                          $scope.user.isSave=false
+                      }
+                  })
+                  if($scope.user.isSave==true){
+                      $scope.users.push($scope.user);
+
+                      $cordovaPreferences.store('users',$scope.users)
+                          .success(function(value) {
+                              alert('$scope.user.username='+$scope.user.username)
+                          })
+                          .error(function(error) {
+                              alert("Error: " + error);
+                          })
+
+                  }
+
               }
 
 
               if (access_token !== undefined && access_token !== null) {
                   $rootScope.access_token = access_token;
                   console.log('registrationId=\r\n' + $rootScope.registrationId);
+
+                  $scope.user.isSave=true;
+                  $scope.users.map(function(user,i){
+                      if($scope.user.username==user.username){
+                          $scope.user.isSave=false
+                      }
+                  })
+                  if($scope.user.isSave==true){
+                      $scope.users.push($scope.user);
+                  }
+
+                  $cordovaPreferences.store('users',$scope.users)
+                      .success(function(value) {
+                          alert('$scope.user.username='+$scope.user.username)
+                      })
+                      .error(function(error) {
+                          alert("Error: " + error);
+                      })
 
                   //获取个人信息
                   $http({

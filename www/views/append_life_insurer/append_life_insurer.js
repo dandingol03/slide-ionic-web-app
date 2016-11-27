@@ -213,44 +213,51 @@ angular.module('starter')
     //确认寿险投保人
     $scope.confirm=function(){
 
-      var persons=$scope.relativePersons;
-      var person=null;
-      if(persons!==undefined&&persons!==null&&Object.prototype.toString.call(persons)=='[object Array]')
-      {
-          persons.map(function(relative,i) {
+      if($scope.order.insurer!=undefined||$scope.order.insurer!=null){
+          $rootScope.dashboard.tabIndex=1;
+          $rootScope.life_insurance.insurer=$scope.order.insurer;
+          $state.go('tabs.dashboard');
+      }else{
+
+          var persons=$scope.relativePersons;
+          var person=null;
+          if(persons!==undefined&&persons!==null&&Object.prototype.toString.call(persons)=='[object Array]')
+          {
+              persons.map(function(relative,i) {
+                  if(relative.checked==true)
+                      person=relative;
+              });
+          }else{
+              var myPopup = $ionicPopup.alert({
+                  template: '请先查询已有关联人',
+                  title: '<strong style="color:red">错误</strong>'
+              });
+              return ;
+          }
+          if(person!==null)
+          {
+              $scope.order.insurer=person;
+              $rootScope.dashboard.tabIndex=1;
+              $rootScope.life_insurance.insurer=person;
+              $state.go('tabs.dashboard');
+          }else{
+              var myPopup = $ionicPopup.alert({
+                  template: '请选择投保人后提交',
+                  title: '<strong style="color:red">错误</strong>'
+              });
+          }
+
+
+          $scope.relativePersons.map(function(relative,i) {
               if(relative.checked==true)
-                  person=relative;
-          });
-      }else{
-          var myPopup = $ionicPopup.alert({
-              template: '请先查询已有关联人',
-              title: '<strong style="color:red">错误</strong>'
-          });
-          return ;
-      }
-      if(person!==null)
-      {
-          $scope.order.insurer=person;
-          $rootScope.dashboard.tabIndex=1;
-          $rootScope.life_insurance.insurer=person;
-          $state.go('tabs.dashboard');
-      }else{
-          var myPopup = $ionicPopup.alert({
-              template: '请选择投保人后提交',
-              title: '<strong style="color:red">错误</strong>'
+              {
+                  $scope.order.insurer=relative;
+                  $rootScope.dashboard.tabIndex=1;
+                  $rootScope.life_insurance.insurer=relative;
+                  $state.go('tabs.dashboard');
+              }
           });
       }
-
-
-      $scope.relativePersons.map(function(relative,i) {
-        if(relative.checked==true)
-        {
-          $scope.order.insurer=relative;
-          $rootScope.dashboard.tabIndex=1;
-          $rootScope.life_insurance.insurer=relative;
-          $state.go('tabs.dashboard');
-        }
-      });
 
     }
 

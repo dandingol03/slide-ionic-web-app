@@ -1419,9 +1419,22 @@ angular.module('starter')
         if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
             $state.go('car_insurance',{carInfo:JSON.stringify($scope.carInfo)});
         else{
-            var alertPopup = $ionicPopup.alert({
+            // var alertPopup = $ionicPopup.alert({
+            //     title: '信息',
+            //     template: '请先选择车辆!'
+            // });
+
+            var confirmPopup = $ionicPopup.confirm({
                 title: '信息',
-                template: '请通过点击'
+                template: '请先选择车辆!'
+            });
+
+            confirmPopup.then(function(res) {
+                if(res) {
+                    $state.go('car_manage');
+                } else {
+                    console.log('You are not sure');
+                }
             });
 
         }

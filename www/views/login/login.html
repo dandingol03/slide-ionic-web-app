@@ -20,13 +20,17 @@
               style="display: inline-block;width: 13%;text-align: left;font-size: 1.8em;">
           <i class="ion-person"></i>
         </span>
-          <span style="width: 87%;display: inline-block;text-align: left;">
+          <span style="width: 67%;display: inline-block;text-align: left;">
             <input type="text"
                    style="display:inline-block;background-color: transparent;width: 100%;"
                    placeholder="用户名/手机号"
                    ng-value="user.username"
                    ng-model="user.username"/>
           </span>
+          <div style="width: 20%;display: inline-block;text-align: left;padding-bottom: 5%;"
+               ng-click="historyUserName()">
+            <i class="ion-chevron-down"></i>
+          </div>
         </div>
 
         <div class="item"
