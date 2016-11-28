@@ -126,19 +126,27 @@
              ng-click="goOrderPrices(order)"
           >
 
-          <ul class="list" style="margin-bottom:0px;">
-            <li class="item item-icon-right"
+          <div class="list" style="margin-bottom:0px;">
+            <div class="item item-icon-right"
                 style="padding-right:34px;position: relative;border:0px;">
-              <div style="display:inline-block;width:95%;">
-                <div>订单号:{{order.orderNum}}</div>
+              <div style="display:inline-block;width:80%;">
+                <span>订单号:{{order.orderNum}}</span>
               </div>
-            </li>
-          </ul>
+              <div style="display:inline-block;width:20%;"
+                   ng-if="order.orderState==2">
+                <span>正在报价</span>
+              </div>
+              <div style="display:inline-block;width:20%;"
+                   ng-if="order.orderState==3">
+                <span>完成报价</span>
+              </div>
+            </div>
+          </div>
           <ul class="list">
             <li class="item item-icon-right"
                 style="padding-right:34px;padding-top:4px;padding-bottom:4px;position: relative;border:0px;">
               <div style="display:inline-block;width:95%;">
-                <div style="margin-right:5%;">车牌号:{{order.carNum}}</div>
+                <div style="margin-right:5%;">车牌号:{{order.carInfo.carNum}}</div>
                 <div style="margin-right:5%;">总金额:{{order.insuranceFeeTotal}}</div>
               </div>
               <div style="display:inline-block;width:5%;align-items:center;position: absolute;top:20%;font-size: 2em;">

@@ -63,6 +63,29 @@ angular.module('starter')
         }
 
 
+        $scope.modifyOrder = function(){
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request: 'updateCarOrderState',
+                    info: {
+                        orderId: $scope.orderId,
+                        orderState:0
+                    }
+                }
+            }).then(function(res) {
+                if(res.data.re==1){
+                    $rootScope.carOrderModify={orderId:$scope.orderId,carId:$scope.order.carId,flag:true};
+                    $state.go('car_insurance');
+                }
+            })
+
+
+        }
 
 
     });

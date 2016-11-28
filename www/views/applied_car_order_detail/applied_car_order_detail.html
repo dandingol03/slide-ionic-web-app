@@ -32,20 +32,24 @@
 
         <!-- inset two -->
         <div class="list list-inset"
-                style="margin-bottom:40px;margin-left:0px;margin-right:0px;"
+                style="margin-bottom:20px;margin-left:0px;margin-right:0px;"
                 ng-if="order.products!==undefined&&order.products!==null">
             <div class="item item-divider">
                 订单产品
             </div>
             <div class="item" style="padding: 16px;" ng-repeat="product in order.products">
-          <span>
-            {{product.productName}}
-          </span>
+                <span>
+                  {{product.productName}}
+                </span>
+                <span style="margin-left: 40%;">
+                  {{product.insuranceType}}
+                </span>
+
             </div>
         </div>
 
         <!-- inset three -->
-        <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
+        <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;margin-top:0px" >
             <div class="item" style="padding:16px;position: relative;border-left:0px;border-top:0px;
             border-right:0px;color:rgba(228, 93, 46, 0.87);font-size: 1.4em;">
                 被保险人:
@@ -59,6 +63,11 @@
             </div>
         </div>
 
+        <button class="button button-calm"
+                ng-click="modifyOrder()"
+                style="margin-left: 38%;">
+            修改订单
+        </button>
 
 
     </ion-content>

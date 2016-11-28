@@ -42,8 +42,10 @@ angular.module('starter')
               var json=res.data;
               if(json.re==1) {
                   $scope.orderPricedList=json.data;
-                  if($scope.orderPricedList!==undefined&&$scope.orderPricedList!==null)
-                  {}
+                  if($scope.orderPricedList==undefined||$scope.orderPricedList==null)
+                  {
+                      $scope.orderPricedList=[];
+                  }
               }
               return  $http({
                   method: "POST",
@@ -58,8 +60,17 @@ angular.module('starter')
               });
           }).then(function(res) {
               var json=res.data;
+              $scope.applyedList = [];
               if(json.re==1) {
-                  $scope.applyedList=json.data;
+                  $scope.orderUnpricedList=json.data;
+                  $scope.orderUnpricedList.map(function(order,i){
+                      if(order.orderState==2){
+                          $scope.orderPricedList.push(order);
+                      }
+                      if(order.orderState==1){
+                          $scope.applyedList.push(order);
+                      }
+                  })
               }
               $ionicLoading.hide();
           }).catch(function(err) {
