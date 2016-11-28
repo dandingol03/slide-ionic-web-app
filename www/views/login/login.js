@@ -18,7 +18,7 @@ angular.module('starter')
       $scope.fetch = function() {
         $cordovaPreferences.fetch('pwdPersisted')
             .success(function(value) {
-                alert('pwdPersisted='+value);
+
                 $scope.pwdPersisted=value;
 
                 if($scope.pwdPersisted)
@@ -88,7 +88,8 @@ angular.module('starter')
                           var buttons=[];
                           value.map(function(user,i) {
                               buttons.push({text: user.username});
-                              
+                              $scope.users.push(user);
+
                           });
 
                           $ionicActionSheet.show({
@@ -233,7 +234,7 @@ angular.module('starter')
       $scope.login = function() {
 
           $ionicLoading.show({
-                  template:'<p class="item-icon-left">Loading stuff...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                  template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
           });
 
 

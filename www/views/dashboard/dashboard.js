@@ -11,31 +11,6 @@ angular.module('starter')
 
 
 
-
-    $http({
-      method: "post",
-      url: Proxy.local() + "/svr/request",
-      headers: {
-        'Authorization': "Bearer " + $rootScope.access_token
-      },
-      data: {
-        request: 'getCarManageFees'
-      }
-    }).then(function (res) {
-      var json=res.data;
-      if(json.re==1) {
-        console.log('...');
-      }
-    }).catch(function(err) {
-      var str='';
-      for(var field in err)
-        str+=err[field];
-      console.error('error=' + str);
-    });
-
-
-
-
     $scope.serviceTypeMap={
       11:'维修-日常保养',
       12:'维修-故障维修',
@@ -3964,46 +3939,69 @@ $scope.openAirportTransfer=function(){
     //维修页面跳转
     $scope.pickMaintainDaily=function(locateType,index) {
 
+        var checkFlag=false;
 
-      if($scope.dailys!==undefined&&$scope.dailys!==null)
-      {
-        $rootScope.maintain.dailys=$scope.dailys;
-      }
+        if($scope.dailys!==undefined&&$scope.dailys!==null)
+        {
+            for(var i=0;i<$scope.dailys.length;i++)
+            {
+                var daily=$scope.dailys[i];
+                if(daily.checked==true)
+                {
+                    checkFlag=true;
+                    break;
+                }
+            }
+        }
 
-      console.log('subTabIndex='+$scope.subTabIndex);
-      var serviceType=null;
-      var maintain=$scope.maintain;
-      switch($scope.subTabIndex){
-          case 0:
-              serviceType='11';
-              var subServiceTypes=[];
-              $scope.dailys.map(function (daily, i) {
-                  if (daily.checked == true)
-                      subServiceTypes.push(daily.subServiceId);
-              });
-              maintain.serviceType=serviceType;
-              maintain.subServiceTypes=subServiceTypes;
-              maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
-              break;
-          case 1:
-              serviceType='12';
-              maintain.serviceType=serviceType;
-              maintain.description=$scope.maintain.description;
-              maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
-              break;
-          case 2:
-              serviceType='13';
-              maintain.serviceType=serviceType;
-              maintain.subServiceTypes=$scope.accident.type;
-              console.log('subServiceTypes='+$scope.accident.type);
-              maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
-              break;
-          default:
-              break;
+
+
+        if(checkFlag||$scope.subTabIndex!=0)
+        {
+
+            $rootScope.maintain.dailys=$scope.dailys;
+            console.log('subTabIndex='+$scope.subTabIndex);
+              var serviceType=null;
+              var maintain=$scope.maintain;
+              switch($scope.subTabIndex){
+                  case 0:
+                      serviceType='11';
+                      var subServiceTypes=[];
+                      $scope.dailys.map(function (daily, i) {
+                          if (daily.checked == true)
+                              subServiceTypes.push(daily.subServiceId);
+                      });
+                      maintain.serviceType=serviceType;
+                      maintain.subServiceTypes=subServiceTypes;
+                      maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+                      break;
+                  case 1:
+                      serviceType='12';
+                      maintain.serviceType=serviceType;
+                      maintain.description=$scope.maintain.description;
+                      maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+                      break;
+                  case 2:
+                      serviceType='13';
+                      maintain.serviceType=serviceType;
+                      maintain.subServiceTypes=$scope.accident.type;
+                      console.log('subServiceTypes='+$scope.accident.type);
+                      maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+                      break;
+                  default:
+                      break;
+              }
+          $state.go('locate_maintain_daily',
+              {locate:JSON.stringify({carInfo:$scope.carInfo,
+                  locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
+
+
+      }else{
+          $ionicPopup.alert({
+              title: '信息',
+              template: '请从服务项目列表中选择一项或几项后再进行维修厂的选择'
+          });
       }
-      $state.go('locate_maintain_daily',
-          {locate:JSON.stringify({carInfo:$scope.carInfo,
-              locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
     };
 
     $scope.pickAirportNearby=function() {
@@ -4210,12 +4208,6 @@ $scope.openAirportTransfer=function(){
         }else if(ionic.Platform.isAndroid()){
 
           $scope.media.stopRecord();
-          $scope.media.media.getAudioFullPath(function(path){
-            if(path!==undefined&&path!==null)
-            {
-              console.log('path='+$scope.maintain.description.audio);
-            }
-          });
           $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.mp3';
         }
 
