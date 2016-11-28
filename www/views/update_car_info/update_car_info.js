@@ -411,6 +411,16 @@ angular.module('starter')
                     }else{
                       if($scope.carInfo.ownerName!==undefined&&$scope.carInfo.ownerName!==null&&$scope.carInfo.ownername!=='')
                       {
+                          if($scope.carInfo.ownerName.toString().length<2)
+                          {
+                              $ionicPopup.alert({
+                                  title: '错误',
+                                  template: '您输入的车主姓名不能少于2位\r\n请重新输入'
+                              });
+                              return ;
+                          }
+
+
                           //填入车驾号的方式提交
                           if($scope.licenseIndex==0)
                           {
