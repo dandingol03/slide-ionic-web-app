@@ -560,6 +560,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
+          .state('car_insurance_new',{
+              url:'/car_insurance_new',
+              controller:'carInsuranceNewController',
+              templateUrl:'views/car_insurance_new/car_insurance_new.html'
+          })
+
           .state('orderCluster',{
             url:'/orderCluster',
             controller:'orderClusterController',

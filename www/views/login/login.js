@@ -88,6 +88,7 @@ angular.module('starter')
                           var buttons=[];
                           value.map(function(user,i) {
                               buttons.push({text: user.username});
+                              
                           });
 
                           $ionicActionSheet.show({
