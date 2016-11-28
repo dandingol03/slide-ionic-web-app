@@ -89,6 +89,7 @@ angular.module('starter')
                           value.map(function(user,i) {
                               buttons.push({text: user.username});
                               $scope.users.push(user);
+
                           });
 
                           $ionicActionSheet.show({
