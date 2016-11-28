@@ -4,7 +4,7 @@
 
    <ion-content scroll="false">
 
-     <div style="width: 100%;height: 50px;background: darkcyan">
+     <div style="width: 100%;height: 80px;background: darkcyan">
        <div style="display: inline-block;width: 12%;height: 100%;">
          <div style="width: 100%;height: 100%;display: table;margin-left:10%;"
               ng-click="go_back()">
@@ -64,7 +64,7 @@
 
       <ion-scroll style="height: 95%;" delegate-handle="products_scroll">
 
-        <div class="list list-inset padding" style="padding:0;border:0">
+        <div class="list list-inset padding" style="border:0">
 
           <div class="item" style="padding: 5px;border-left:0;border-right:0"
                ng-repeat="(key, product) in tabs[tabIndex].products"
@@ -82,7 +82,7 @@
 
               <div style="display:inline-block;width:25%;padding-left:5%"
                    ng-click="setter(product,'checked',false);">
-               <span>
+               <span style="font-size: 2em;">
                  <i ng-if="product.checked!=true" class="ion-ios-circle-outline"></i>
                  <i ng-if="product.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
                </span>
@@ -115,7 +115,7 @@
             <div class="row"
                  style="padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
 
-              <div style="display:inline-block;width:10%;"
+              <div style="display:inline-block;width:10%;font-size: 1.4em;"
                    ng-click="setter(product,'checked',false);">
                 <i ng-if="product.checked!=true" class="ion-ios-circle-outline"></i>
                 <i ng-if="product.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>

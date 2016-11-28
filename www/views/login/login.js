@@ -16,46 +16,38 @@ angular.module('starter')
       $scope.users=[];
 
       $scope.fetch = function() {
-        $cordovaPreferences.fetch('pwdPersisted')
-            .success(function(value) {
 
-                $scope.pwdPersisted=value;
+          $cordovaPreferences.fetch('username')
+              .success(function(value) {
+                  alert('username=' + value);
+                  if(value!==undefined&&value!==null&&value!='')
+                      $scope.user.username=value;
+              })
+              .error(function(error) {
+                  alert("Error: " + error);
+              });
 
-                if($scope.pwdPersisted)
-                {
-                    $cordovaPreferences.fetch('username')
-                        .success(function(value) {
-                            alert('username=' + value);
-                            if(value!==undefined&&value!==null&&value!='')
-                                $scope.user.username=value;
-                        })
-                        .error(function(error) {
-                            alert("Error: " + error);
-                        });
 
-                    $cordovaPreferences.fetch('password')
-                        .success(function(value) {
-                            alert('password=' + value);
-                            if(value!==undefined&&value!==null&&value!='')
-                                $scope.user.password=value;
-                        })
-                        .error(function(error) {
-                            alert("Error: " + error);
-                        });
-                }
+          $cordovaPreferences.fetch('password')
+                .success(function(value) {
+                    alert('password=' + value);
+                    if(value!==undefined&&value!==null&&value!='')
+                        $scope.user.password=value;
+                })
+                .error(function(error) {
+                    alert("Error: " + error);
+                });
 
-            })
-            .error(function(error) {
-                alert("Error: " + error);
-            })
       };
 
 
-        if(window.plugins!==undefined&&window.plugins!==null) {
+        if(window.cordova)
+        {
             $ionicPlatform.ready (function () {
                 $scope.fetch();
             })
         }
+
 
 
         $scope.togglePwdPersistent = function(){
@@ -68,7 +60,7 @@ angular.module('starter')
                       alert("Error: " + error);
                   })
           }else{
-              localStorage.pwdPersisted='true';
+
               $scope.pwdPersisted=true;
               $cordovaPreferences.store('pwdPersisted', true)
                   .success(function(value) {
@@ -267,24 +259,6 @@ angular.module('starter')
                           alert("Error: " + error);
                       });
 
-                  $scope.user.isSave=true;
-                  $scope.users.map(function(user,i){
-                      if($scope.user.username==user.username){
-                          $scope.user.isSave=false
-                      }
-                  })
-                  if($scope.user.isSave==true){
-                      $scope.users.push($scope.user);
-
-                      $cordovaPreferences.store('users',$scope.users)
-                          .success(function(value) {
-                              alert('$scope.user.username='+$scope.user.username)
-                          })
-                          .error(function(error) {
-                              alert("Error: " + error);
-                          })
-
-                  }
 
               }
 
@@ -293,23 +267,6 @@ angular.module('starter')
                   $rootScope.access_token = access_token;
                   console.log('registrationId=\r\n' + $rootScope.registrationId);
 
-                  $scope.user.isSave=true;
-                  $scope.users.map(function(user,i){
-                      if($scope.user.username==user.username){
-                          $scope.user.isSave=false
-                      }
-                  })
-                  if($scope.user.isSave==true){
-                      $scope.users.push($scope.user);
-                  }
-
-                  $cordovaPreferences.store('users',$scope.users)
-                      .success(function(value) {
-                          alert('$scope.user.username='+$scope.user.username)
-                      })
-                      .error(function(error) {
-                          alert("Error: " + error);
-                      })
 
                   //获取个人信息
                   $http({

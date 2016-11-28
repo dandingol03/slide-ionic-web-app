@@ -760,6 +760,7 @@ angular.module('starter')
                       $scope.maintain.servicePersonId = servicePerson.servicePersonId;
                       var maintain=$scope.maintain;
                       maintain.carId=$scope.carInfo.carId;
+                      maintain.servicePlaceId=$scope.unit.unitId;
                       return $http({
                           method: "POST",
                           url: Proxy.local() + "/svr/request",
@@ -869,7 +870,7 @@ angular.module('starter')
                           data: {
                               request: 'getServicePersonsByUnits',
                               info: {
-                                  units: $rootScope.maintain.units
+                                  units: $scope.units
                               }
                           }
                       });
