@@ -425,6 +425,7 @@ angular.module('starter')
       //提交车险意向
       $scope.confirm = function () {
 
+
           if ($scope.tabIndex == 0) {
               //选择已有被保险人,提交车险订单
 
@@ -437,65 +438,97 @@ angular.module('starter')
                           title: '<strong style="color:red">错误</strong>'
                       });
                   } else {
-
-                      //TODO:check car is free or not
-                      $http({
-                          method: "POST",
-                          url: Proxy.local() + "/svr/request",
-                          headers: {
-                              'Authorization': "Bearer " + $rootScope.access_token
-                          },
-                          data: {
-                              request: 'validateCarFree',
-                              info: {
-                                  carId: $scope.info.carId
+                      if($rootScope.carOrderModify==undefined||$rootScope.carOrderModify==null||$rootScope.carOrderModify.flag==false)
+                      {
+                          //TODO:check car is free or not
+                          $http({
+                              method: "POST",
+                              url: Proxy.local() + "/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data: {
+                                  request: 'validateCarFree',
+                                  info: {
+                                      carId: $scope.info.carId
+                                  }
                               }
-                          }
-                      }).then(function (res) {
-                          var json = res.data;
-                          if (json.data == true) {
-                              $ionicLoading.show({
-                                  template: '<p class="item-icon-left">生成车险订单...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-                              });
-                              $http({
-                                  method: "POST",
-                                  url: Proxy.local() + "/svr/request",
-                                  headers: {
-                                      'Authorization': "Bearer " + $rootScope.access_token
-                                  },
-                                  data: {
-                                      request: 'generateCarInsuranceOrder',
-                                      info: {
-                                          products: $scope.info.products,
-                                          companys: $scope.info.companys,
-                                          carId: $scope.info.carId,
-                                          insurancederId: $scope.car_insurance.insuranceder.personId
+                          }).then(function (res) {
+                              var json = res.data;
+                              if (json.data == true) {
+                                  $ionicLoading.show({
+                                      template: '<p class="item-icon-left">生成车险订单...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                                  });
+                                  $http({
+                                      method: "POST",
+                                      url: Proxy.local() + "/svr/request",
+                                      headers: {
+                                          'Authorization': "Bearer " + $rootScope.access_token
+                                      },
+                                      data: {
+                                          request: 'generateCarInsuranceOrder',
+                                          info: {
+                                              products: $scope.info.products,
+                                              companys: $scope.info.companys,
+                                              carId: $scope.info.carId,
+                                              insurancederId: $scope.car_insurance.insuranceder.personId
+                                          }
                                       }
+                                  }).then(function (res) {
+                                      var json = res.data;
+                                      var orderId = json.data;
+                                      if (orderId !== undefined && orderId !== null) {
+                                          $ionicLoading.hide();
+                                          alert('订单已创建,请等待报价');
+                                          $rootScope.car_orders_tabIndex = 0;
+                                          $state.go('car_orders');
+                                      }
+                                  }).catch(function (err) {
+                                      var str = '';
+                                      for (var field in err)
+                                          str += err[field];
+                                      console.error('err=\r\n' + str);
+                                  });
+                              } else {
+                                  var myPopup = $ionicPopup.alert({
+                                      template: '您所选的车已在订单状态,\r\n不能重复提交订单',
+                                      title: '<strong style="color:red">错误</strong>'
+                                  });
+                              }
+                          });
+                      }else{
+                          $http({
+                              method: "POST",
+                              url: Proxy.local() + "/svr/request",
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              },
+                              data: {
+                                  request: 'updateCarInsuranceOrder',
+                                  info: {
+                                      orderId: $rootScope.carOrderModify.orderId,
+                                      products: $scope.info.products,
+                                      companys: $scope.info.companys,
+                                      insurancederId: $scope.car_insurance.insuranceder.personId
                                   }
-                              }).then(function (res) {
-                                  var json = res.data;
-                                  var orderId = json.data;
-                                  if (orderId !== undefined && orderId !== null) {
-                                      $ionicLoading.hide();
-                                      alert('订单已创建,请等待报价');
-                                      $rootScope.car_orders_tabIndex = 0;
-                                      $state.go('car_orders');
-                                  }
-                              }).catch(function (err) {
-                                  var str = '';
-                                  for (var field in err)
-                                      str += err[field];
-                                  console.error('err=\r\n' + str);
-                              });
-                          } else {
-                              var myPopup = $ionicPopup.alert({
-                                  template: '您所选的车已在订单状态,\r\n不能重复提交订单',
-                                  title: '<strong style="color:red">错误</strong>'
-                              });
-                          }
-                      });
+                              }
+                          }).then(function (res) {
+                              var json = res.data;
+                              var orderId = json.data;
+                              if (orderId !== undefined && orderId !== null) {
+                                  $ionicLoading.hide();
+                                  alert('订单已修改,请等待报价');
+                                  $rootScope.car_orders_tabIndex = 0;
+                                  $state.go('car_orders');
+                              }
+                          }).catch(function (err) {
+                              var str = '';
+                              for (var field in err)
+                                  str += err[field];
+                              console.error('err=\r\n' + str);
+                          });
+                      }
                   }
-
 
               } else {
                   var myPopup = $ionicPopup.alert({

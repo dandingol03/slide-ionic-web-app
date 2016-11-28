@@ -7,7 +7,7 @@ angular.module('starter')
                                                 $rootScope,$ionicActionSheet,
                                                 $ionicModal,Proxy,$stateParams,$ionicPopup,
                                                 $ionicScrollDelegate,$ionicLoading){
-    if($stateParams.carInfo!==undefined&&$stateParams.carInfo!==null)
+    if($stateParams.carInfo!==undefined&&$stateParams.carInfo!==null&&$stateParams.carInfo!=="")
     {
       var carInfo=$stateParams.carInfo;
       if(Object.prototype.toString.call(carInfo)=='[object String]')
@@ -583,11 +583,22 @@ angular.module('starter')
                 }
             }
 
-            var info={
-                products:products,
-                companys:companys,
-                carId:$scope.carInfo.carId
-            };
+            if($rootScope.carOrderModify!=undefined&&$rootScope.carOrderModify!=null){
+                var info={
+                    orderId:$rootScope.carOrderModify.orderId,
+                    products:products,
+                    companys:companys,
+                    carId:$rootScope.carOrderModify.carId
+                };
+            }else{
+                var info={
+                    products:products,
+                    companys:companys,
+                    carId:$scope.carInfo.carId
+                };
+
+            }
+
 
             $state.go('append_car_insuranceder',{info:JSON.stringify(info)});
             $scope.closeCompanyModal();
