@@ -3,7 +3,7 @@
  */
 angular.module('starter')
 
-    .controller('carInsuranceController',function($scope,$state,$http,
+    .controller('carInsuranceNewController',function($scope,$state,$http,
                                                   $rootScope,$ionicActionSheet,
                                                   $ionicModal,Proxy,$stateParams,$ionicPopup,
                                                   $ionicScrollDelegate,$ionicLoading){
@@ -22,9 +22,9 @@ angular.module('starter')
             //productId为1的车损
             if(val==false&&item.productId==1)
             {
-                for(var proName in $scope.tabs[tabIndex].products)
+                for(var proName in $scope.tabs[$scope.tabIndex].products)
                 {
-                    var product= $scope.tabs[tabIndex].products[proName];
+                    var product= $scope.tabs[$scope.tabIndex].products[proName];
                     if(product.productId==9||product.productId==10||product.productId==11||product.productId==27)
                     {
                         product.checked==false;
