@@ -63,57 +63,78 @@
       </div>
 
       <ion-scroll style="height: 95%;" delegate-handle="products_scroll">
-        <div class="list list-inset padding">
 
+        <div class="list list-inset padding" style="padding:0;border:0">
 
-
-          <div class="item" style="padding: 5px;"
+          <div class="item" style="padding: 5px;border-left:0;border-right:0"
                ng-repeat="(key, product) in tabs[tabIndex].products"
                ng-if="product.productId==30">
 
             <div class="row"
                  style="padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
 
-              <div style="display:inline-block;width:65%;">
-                <span style="font-size: 0.8em;">{{product.productName}}</span>
+              <div style="display:inline-block;width: 3%;background-color: red;">
+
+              </div>
+              <div style="display:inline-block;width:70%;margin-left:5%">
+                <span style="font-size: 1em;">{{product.productName}}</span>
               </div>
 
-              <div style="display:inline-block;width:35%;padding-left:5%">
+              <div style="display:inline-block;width:25%;padding-left:5%"
+                   ng-click="setter(product,'checked',false);">
                <span>
-                 <i ng-if="product.irrespective!=true" class="ion-ios-circle-outline"></i>
-                 <i ng-if="product.irrespective==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
+                 <i ng-if="product.checked!=true" class="ion-ios-circle-outline"></i>
+                 <i ng-if="product.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
                </span>
-
               </div>
-
             </div>
 
           </div>
 
+        </div>
 
 
-          <div class="item" style="padding: 5px;">
-            <span>商业险</span>
+        <div class="list list-inset padding" style="border:0">
+
+          <div class="item" style="padding: 5px;border-left: 0;border-right: 0;">
+            <div class="row"
+                 style="padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
+              <div style="display:inline-block;width: 3%;background-color: red;">
+
+              </div>
+              <div style="display:inline-block;width:35%; margin-left:5%">
+                <span>商业险</span>
+              </div>
+
+            </div>
           </div>
 
-          <div class="item" style="padding: 5px;"
+          <div class="item" style="padding: 5px;border-left: 0;border-right: 0;"
                ng-repeat="(key, product) in tabs[tabIndex].products"
                ng-if="product.productId!=30">
             <div class="row"
                  style="padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
 
-              <div style="display:inline-block;width:15%;">
-                <i ng-if="product.irrespective!=true" class="ion-ios-circle-outline"></i>
-                <i ng-if="product.irrespective==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
+              <div style="display:inline-block;width:10%;"
+                   ng-click="setter(product,'checked',false);">
+                <i ng-if="product.checked!=true" class="ion-ios-circle-outline"></i>
+                <i ng-if="product.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
               </div>
 
-              <div style="display:inline-block;width:45%;">
+              <div style="display:inline-block;width:48%;">
 
                 <span style="font-size: 0.8em;">{{product.productName}}</span>
               </div>
 
-              <div style="display:inline-block;width:25%;" ng-click="">
-                <div style="border: 1px solid;border-radius: 6px;text-align: center;">
+              <div style="display:inline-block;width:25%;"
+                   ng-click="toggle(product,'irrespective')">
+                <div style="border: 1px solid;border-radius: 6px;text-align: center;"
+                     ng-if="product.isIrrespectable==1&&product.irrespective==false">
+                  <span style="font-size: 0.8em;">不计免赔</span>
+                </div>
+
+                <div style="border: 1px solid;border-radius: 6px;text-align: center;border-color:red"
+                     ng-if="product.isIrrespectable==1&&product.irrespective==true">
                   <span style="font-size: 0.8em;">不计免赔</span>
                 </div>
               </div>
