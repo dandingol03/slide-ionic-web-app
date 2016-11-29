@@ -514,13 +514,17 @@ angular.module('starter')
                               }
                           }).then(function (res) {
                               var json = res.data;
-                              var orderId = json.data;
-                              if (orderId !== undefined && orderId !== null) {
-                                  $ionicLoading.hide();
-                                  alert('订单已修改,请等待报价');
-                                  $rootScope.car_orders_tabIndex = 0;
-                                  $state.go('car_orders');
+                              if(json.re==1){
+                                  var orderId = json.data;
+                                  if (orderId !== undefined && orderId !== null) {
+                                      $ionicLoading.hide();
+                                      $rootScope.carOrderModify=false;
+                                      alert('订单已修改,请等待报价');
+                                      $rootScope.car_orders_tabIndex = 0;
+                                      $state.go('car_orders');
+                                  }
                               }
+
                           }).catch(function (err) {
                               var str = '';
                               for (var field in err)

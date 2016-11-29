@@ -226,7 +226,7 @@ angular.module('starter')
     //重选套餐
     $scope.reset_specials=function(){
       $rootScope.Insurance={};
-      var carOrderState = -1;
+      var carOrderState = 0;
 
       $http({
         method: "POST",
@@ -243,33 +243,13 @@ angular.module('starter')
           }
         }
       }).then(function(res) {
-
-        if(res.data.re==1){
-          $http({
-            method: "POST",
-            url: Proxy.local()+"/svr/request",
-            headers: {
-              'Authorization': "Bearer " + $rootScope.access_token
-            },
-            data:
-            {
-              request:'getCarInfo',
-              info:{
-                order:$scope.order
-              }
-            }
-          }).then(function(res) {
             if(res.data.re==1){
-              var json = res.data;
-              var carInfo=json.data;
-              $state.go('car_insurance',{carInfo:JSON.stringify(carInfo)});
+                $rootScope.carOrderModify={orderId:$scope.orderId,carId:$scope.order.carId,flag:true};
+                $state.go('car_insurance');
             }
-          })
-        }
       })
 
     }
-
 
   });
 
