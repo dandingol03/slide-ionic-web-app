@@ -55,6 +55,31 @@
                                     退出
                                 </div>
                             </li>
+                            <li style="width: 20%;float:right;text-align: center;"
+                                ng-click="gotoNotificationPanel()">
+                                <div ng-if="$rootScope.notifications!==undefined&&$rootScope.notifications!==null&&$rootScope.notifications.length>0">
+                                    <div style="width: 100%;height: 100%;position: relative;">
+                                        <span style="font-size: 2em;color:rgb(21, 232, 228);">
+                                            <i class=" ion-chatbox-working"></i>
+                                        </span>
+                                        <span style="position: absolute;right: 20%;top:-12%;
+                                            color:#fff;width: 20px;height: 17px;background:#ff3b30;border-radius: 10px;">
+                                            {{$rootScope.notifications.length}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div ng-if="$rootScope.notifications==undefined||$rootScope.notifications==null||$rootScope.notifications.length==0">
+                                    <div style="width: 100%;height: 100%;position: relative;">
+                                        <span style="font-size: 2em;">
+                                            <i class=" ion-chatbox-working"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    通知
+                                </div>
+                            </li>
+
 
                         </ul>
                     </div>

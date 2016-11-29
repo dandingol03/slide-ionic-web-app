@@ -145,6 +145,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           ]}
         ];
 
+        //notification初始化
+        $rootScope.notifications={0:[],1:[],2:[]};
+
         $rootScope.car_orders_tabIndex=1;
 
         //获取自定义消息的回调
@@ -171,129 +174,33 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 case 'from-service':
                   var order=message.order;
                   var servicePersonId=message.servicePersonId;
-                  alert('orderId='+order.orderId);
-
-                  if($rootScope.waitConfirm[order.orderId]==undefined||
-                      $rootScope.waitConfirm[order.orderId]==null)
-                    $rootScope.waitConfirm[order.orderId]=[];
-                  $rootScope.waitConfirm[order.orderId].push(message);
-
-                  var tem='';
-                  for(var i=0;i<$rootScope.waitConfirm[order.orderId].length;i++){
-                    var msg=$rootScope.waitConfirm[order.orderId][i];
-                    var mobilePhone=null;
-                    if(msg.mobilePhone!==undefined&&msg.mobilePhone!==null)
-                      mobilePhone=msg.mobilePhone;
-                    else
-                      mobilePhone='';
-                    tem='<div>'+msg.unitName+ mobilePhone+'</div>'
-                  }
-
-
-
-
-
-                  $scope.select = function(message){
-                    message.checked=true;
-                  }
-
                   var confirmPopup = $ionicPopup.confirm({
-                    title: '您的订单'+$rootScope.waitConfirm[order.orderId][0].order.orderNum,
-                    template: tem
+                    title:'信息',
+                    template:  '订单号为'+order.orderNum+'的订单有新的服务人员愿意接单,是否进入通知页面进行查看'
                   });
 
-
                   confirmPopup.then(function(res) {
-
+                    var ob=null;
                     if(res) {
-                      alert('orderId=' + order.orderId);
-                      alert('svpersonid=' + servicePersonId);
-                      $http({
-                        method: "post",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                          'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data: {
-                          request:'updateCandidateStateByOrderId',
-                          info:{
-                            orderId: order.orderId,
-                            candidateState:3
-                          }
+                        ob={
+                            type:'service',
+                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState,
+                                msg:'工号为'+servicePersonId+'的服务人员发出接单请求'},
+                            servicePersonId:servicePersonId,
+                            visited:true
                         }
-                      }).then(function(res) {
-                        var json=res.data;
-                        if(json.re==1){
-                          return $http({
-                            method: "POST",
-                            url: Proxy.local() + "/svr/request",
-                            headers: {
-                              'Authorization': "Bearer " + $rootScope.access_token
-                            },
-                            data: {
-                              request: 'setServicePersonInServiceOrder',
-                              info: {
-                                orderId: order.orderId,
-                                servicePersonId:servicePersonId,
-                                orderState:2
-                              }
-                            }
-                          });
-                        }
-
-                      }).then(function(res) {
-                        var json=res.data;
-                        alert('re='+json.re);
-                        if(json.re==1) {
-                          alert('得到所有候选服务人员');
-                          return $http({
-                            method: "POST",
-                            url: Proxy.local() + "/svr/request",
-                            headers: {
-                              'Authorization': "Bearer " + $rootScope.access_token
-                            },
-                            data: {
-                              request: 'getServicePersonIdsByOrderId',
-                              info: {
-                                orderId: order.orderId,
-                              }
-                            }
-                          });
-                        }
-                      }).then(function(res) {
-                        var json=res.data;
-                        alert('re=' + json.re);
-                        if(json.re==1) {
-                          alert('发给服务人员');
-                          var servicePersonIds=[];
-                          json.data.map(function(item,i) {
-                            if(item!=servicePersonId)
-                              servicePersonIds.push(item);
-                          })
-                          return $http({
-                            method: "POST",
-                            url: Proxy.local() + "/svr/request",
-                            headers: {
-                              'Authorization': "Bearer " + $rootScope.access_token
-                            },
-                            data: {
-                              request: 'sendCustomMessage',
-                              info: {
-                                type: 'confirm-to-service-person',
-                                servicePersonIds:servicePersonIds,
-                                order:order
-                              }
-                            }
-                          });
-                        }
-                      }).catch(function(err) {
-                        var str='';
-                        for(var field in err)
-                          str+=err[field];
-                        alert('error=\r\n' + str);
-                      })
+                        $rootScope.notifications[2].push(ob);
+                        $state.go('notification');
                     } else {
-                      console.log('You are not sure');
+                        ob={
+                            type:'service',
+                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState,
+                                msg:'工号为'+servicePersonId+'的服务人员发出接单请求'},
+                            servicePersonId:servicePersonId,
+                            visited:false
+                        }
+                        $rootScope.notifications[2].push(ob);
+                      console.log('didn\'t give a shit about this notification');
                     }
                   });
                   break;
@@ -309,7 +216,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               var orderType=message.orderType;
                               var msg=null;
                               if(orderType==1)
-                                  msg='订单号为'+orderNum+'的车险订单已抱价完成\r\n'+'是否现在进入车险订单页面查看';
+                                  msg='订单号为'+orderNum+'的车险订单已报价完成\r\n'+'是否现在进入车险订单页面查看';
                               else if(orderType==2)
                                   msg='订单号为'+orderNum+'的寿险订单已抱价完成\r\n'+'是否现在进入寿险订单页面查看';
                               var confirmPopup = $ionicPopup.confirm({
@@ -318,10 +225,35 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               });
 
                               confirmPopup.then(function(res) {
+                                //TODO:inject message to notification queue
+                                var ob=null;
+
+
                                   if(res) {
+                                      ob={
+                                          type:orderType==1?'car':'life',
+                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState,msg:'订单报价完成'},
+                                          servicePersonId:null,
+                                          visited:true
+                                      };
+                                      if(orderType==1)
+                                        $rootScope.notifications[0].push(ob);
+                                      else
+                                          $rootScope.notifications[1].push(ob);
                                       $rootScope.car_orders_tabIndex=1;
                                       $state.go('car_orders');
-                                  } else {}
+                                  } else {
+                                      ob={
+                                          type:orderType==1?'car':'life',
+                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState,msg:'订单报价完成'},
+                                          servicePersonId:null,
+                                          visited:false
+                                      };
+                                      if(orderType==1)
+                                          $rootScope.notifications[0].push(ob);
+                                      else
+                                          $rootScope.notifications[1].push(ob);
+                                  }
                               });
                               break;
                           default:
@@ -839,6 +771,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               url:'/car_info_detail:carInfo',
               controller:'carInfoDetailController',
               templateUrl:'views/car_info_detail/car_info_detail.html'
+          })
+
+          .state('notification',{
+              url:'/notification',
+              controller:'notificationController',
+              templateUrl:'views/notification/notification.html'
           })
 
 

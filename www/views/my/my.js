@@ -26,6 +26,10 @@ angular.module('starter')
         $state.go('login');
     }
 
+    $scope.gotoNotificationPanel=function () {
+        $state.go('notification');
+    }
+
     $scope.infos=[];
 
     $scope.userInfo=$rootScope.userInfo;
