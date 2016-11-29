@@ -41,8 +41,8 @@
                 <span>
                   {{product.productName}}
                 </span>
-                <span style="margin-left: 40%;">
-                  {{product.insuranceType}}
+                <span style="margin-left: 15%;" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
+                  (保额){{product.insuranceType}}
                 </span>
 
             </div>
