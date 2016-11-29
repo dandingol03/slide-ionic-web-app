@@ -10,7 +10,6 @@ angular.module('starter')
                                              $cordovaImagePicker,$cordovaDatePicker){
 
 
-
     $scope.serviceTypeMap={
       11:'维修-日常保养',
       12:'维修-故障维修',

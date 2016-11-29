@@ -15,6 +15,16 @@ angular.module('starter')
       maintenance: {}
     };
 
+      $scope.serviceTypeMap={
+          11:'维修-日常保养',
+          12:'维修-故障维修',
+          13:'维修-事故维修',
+          21:'车驾管-审车',
+          22:'车驾管-审证',
+          23:'车驾管-接送机',
+          24:'车驾管-取送车',
+          31:'鈑喷'};
+
     if ($stateParams.locate !== undefined && $stateParams.locate !== null) {
       $scope.locate=$stateParams.locate;
       if(Object.prototype.toString.call($scope.locate)=='[object String]')
@@ -903,6 +913,7 @@ angular.module('starter')
                   var json = res.data;
                   if (json.re == 1) {
                       //TODO:append address and serviceType and serviceTime
+                      alert('go into service');
                       var serviceName = $scope.serviceTypeMap[$scope.maintain.serviceType];
                       return $http({
                           method: "POST",
