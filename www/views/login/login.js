@@ -19,7 +19,7 @@ angular.module('starter')
 
           $cordovaPreferences.fetch('username')
               .success(function(value) {
-                  alert('username=' + value);
+
                   if(value!==undefined&&value!==null&&value!='')
                       $scope.user.username=value;
               })
@@ -30,7 +30,7 @@ angular.module('starter')
 
           $cordovaPreferences.fetch('password')
                 .success(function(value) {
-                    alert('password=' + value);
+
                     if(value!==undefined&&value!==null&&value!='')
                         $scope.user.password=value;
                 })
@@ -562,5 +562,15 @@ angular.module('starter')
       $scope.goFetchPassword=function(){
           $state.go('passwordForget');
       }
-        
+
+      $scope.speak=function () {
+          $scope.speakingText='hi,xiao hong';
+          try {
+              navigator.speech.startSpeaking( $scope.speakingText);
+          }catch (e)
+          {
+              alert('exception=' + e.toString());
+          }
+
+      }
     });

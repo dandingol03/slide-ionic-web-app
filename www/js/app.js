@@ -153,7 +153,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         //获取自定义消息的回调
         $rootScope.onReceiveMessage = function(event) {
           try{
-              console('message receiving......');
+              console.log('message receiving......');
               var message=null;
               if(device.platform == "Android") {
                 message = event.message;
@@ -169,11 +169,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
             if(message.type!=undefined&&message.type!=null){
+                alert('type='+message.type);
               switch(message.type){
 
                 case 'from-service':
                   var order=message.order;
                   var servicePersonId=message.servicePersonId;
+                  var date=message.date;
                   var confirmPopup = $ionicPopup.confirm({
                     title:'信息',
                     template:  '订单号为'+order.orderNum+'的订单有新的服务人员愿意接单,是否进入通知页面进行查看'
@@ -184,20 +186,22 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     if(res) {
                         ob={
                             type:'service',
-                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState,
-                                msg:'工号为'+servicePersonId+'的服务人员发出接单请求'},
+                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
+                            msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
                             servicePersonId:servicePersonId,
-                            visited:true
+                            visited:true,
+                            date:date
                         }
                         $rootScope.notifications[2].push(ob);
                         $state.go('notification');
                     } else {
                         ob={
                             type:'service',
-                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState,
-                                msg:'工号为'+servicePersonId+'的服务人员发出接单请求'},
+                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
+                            msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
                             servicePersonId:servicePersonId,
-                            visited:false
+                            visited:false,
+                            date:date
                         }
                         $rootScope.notifications[2].push(ob);
                       console.log('didn\'t give a shit about this notification');
@@ -214,6 +218,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               var orderId=message.orderId;
                               var orderNum=message.orderNum;
                               var orderType=message.orderType;
+                              var date=message.date;
                               var msg=null;
                               if(orderType==1)
                                   msg='订单号为'+orderNum+'的车险订单已报价完成\r\n'+'是否现在进入车险订单页面查看';
@@ -232,9 +237,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                   if(res) {
                                       ob={
                                           type:orderType==1?'car':'life',
-                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState,msg:'订单报价完成'},
+                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState},
+                                          msg:'订单报价完成',
                                           servicePersonId:null,
-                                          visited:true
+                                          visited:true,
+                                          date:date
                                       };
                                       if(orderType==1)
                                         $rootScope.notifications[0].push(ob);
@@ -245,9 +252,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                   } else {
                                       ob={
                                           type:orderType==1?'car':'life',
-                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState,msg:'订单报价完成'},
+                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState},
+                                          msg:'订单报价完成',
                                           servicePersonId:null,
-                                          visited:false
+                                          visited:false,
+                                          date:date
                                       };
                                       if(orderType==1)
                                           $rootScope.notifications[0].push(ob);
@@ -803,7 +812,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.150:3000";
+            return "http://139.129.96.231:3000";
           else
             return "/proxy/node_server";
             
