@@ -9,7 +9,8 @@ angular.module('starter')
                                                          BaiduMapService,$cordovaGeolocation,$ionicModal,
                                                          Proxy,$stateParams, $q) {
 
-        $scope.query=null;
+        $scope.root={
+        };
 
         $scope.Mutex = function (item, field, cluster) {
             if (item[field]) {
@@ -43,15 +44,126 @@ angular.module('starter')
             window.history.back();
         }
 
+
+
+
+
+        //搜索发式
         $scope.search=function () {
+
             var BMao=$scope.bMap;
             var map=$scope.map;
-            var local = new BMap.LocalSearch(map, {
-                renderOptions: {map: map, panel: "r-result"}
-            });
-            local.search("餐饮");
+            //仅容许根据区进行搜索
+            var reg=/\s*(.*区)/
+            var re=reg.exec($scope.root.query);
+            if(re!==undefined&&re!==null)
+            {
+                var district=re[1];
+                //区搜索
+                if(district==undefined||district==null||district=='')
+                {
+                    return;
+                }
+            }else{
+                return ;
+            }
+
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data: {
+                    request: 'fetchMaintenanceInArea',
+                    info: {
+                        townName: district
+                    }
+                }
+            }).then(function (res) {
+                var json = res.data;
+                var map=$scope.map;
+                if (json.re == 1) {
+                    $scope.units = [];
+                    json.data.map(function (unit, i) {
+                        if (unit.longitude !== undefined && unit.longitude !== null &&
+                            unit.latitude !== undefined && unit.latitude !== null) {
+                            //var center = $scope.maintain.center;
+                            // var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
+                            // if (distance <= 5000)
+                            $scope.units.push(unit);
+                        }
+                    });
+                    //remove previous markers
+                    map.clearOverlays();
+                    var mk=$scope.mk;
+                    if(mk!==undefined&&mk!==null)
+                    {
+                        var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
+                        label.setStyle({
+                            color: '#222',
+                            fontSize: "12px",
+                            height: "20px",
+                            lineHeight: "20px",
+                            fontFamily: "微软雅黑",
+                            border: '0px'
+                        });
+                        mk.setLabel(label);
+                        map.addOverlay(mk);
+                    }
+
+                    //render new markers
+                    $scope.labels = [];
+                    $scope.units.map(function (unit, i) {
+                        var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
+                        var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
+                        label.setStyle({
+                            color: '#222',
+                            fontSize: "12px",
+                            height: "20px",
+                            lineHeight: "20px",
+                            fontFamily: "微软雅黑",
+                            border: '0px'
+                        });
+                        mk.setLabel(label);
+                        map.addOverlay(mk);
+                    });
+                    $scope.contentInfo=$scope.units;
+                }
+
+            }).catch(function (err) {
+                var str = '';
+                for (var field in err)
+                    str += err[field];
+                console.error('error=\r\n' + str);
+
+            })
         }
 
+        $scope.infoWindowCb=function () {
+            alert('trigger');
+        }
+
+        $scope.locate=function (place) {
+            if(place!==undefined&&place!==null)
+            {
+                var map=$scope.map;
+                var BMap=$scope.bMap;
+                map.panTo(new BMap.Point(place.longitude, place.latitude) );
+                var opts = {
+                    width : 260,     // 信息窗口宽度
+                    height: 70,     // 信息窗口高度
+                    title : place.unitName , // 信息窗口标题
+                };
+                var content='地址:'+place.address;
+                var infoWindow = new BMap.InfoWindow(content, opts);
+                map.openInfoWindow(infoWindow,new BMap.Point(place.longitude, place.latitude)); //开启信息窗口
+            }
+        }
+
+        $scope.clear_search=function () {
+            $scope.query=null;
+        }
 
         $scope.clickFunc=function (e) {
             console.log('click point=' + e.point.lng + ',' + e.point.lat);
@@ -110,6 +222,32 @@ angular.module('starter')
         }
 
 
+        $scope.contentInfo=null;
+
+        /*** 绑定信息窗口模态框 ***/
+        $ionicModal.fromTemplateUrl('views/modal/popupContentInfoPanel.html',{
+            scope:  $scope,
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.contentInfoPanel = modal;
+        });
+
+        $scope.openContentInfoPanel= function(){
+            try{
+                $scope.contentInfoPanel.show();
+            }catch(e){
+                alert('error=\r\n'+ e.toString());
+            }
+        };
+
+        $scope.closeContentInfoPanel= function() {
+            $scope.contentInfoPanel.hide();
+        };
+        /*** 绑定信息窗口模态框 ***/
+
+
+
         BaiduMapService.getBMap().then(function (res) {
 
 
@@ -124,7 +262,6 @@ angular.module('starter')
                     var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
                     var mk = new BMap.Marker(point,{icon:bIcon});
                     mk.setAnimation(BMAP_ANIMATION_BOUNCE);
-                    $scope.mk=mk;
                     map.addOverlay(mk);
                     var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
                     label.setStyle({
@@ -136,7 +273,7 @@ angular.module('starter')
                         border: '0px'
                     });
                     mk.setLabel(label);
-
+                    $scope.mk=mk;
                 }
             });
 

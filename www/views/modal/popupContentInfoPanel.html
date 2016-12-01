@@ -1,0 +1,47 @@
+<ion-modal-view  class=" carInfo_modal animated slideInDown>" style="background: transparent">
+    <ion-content class="carInfo_content" scroll="false"
+            style="margin: 0 auto;bottom: 0%;width: 80%;top:60%;height: 40%;">
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-dark" style="position: static;height:14%;width: 100%;padding-left: 16px;padding-right: 16px;">
+            <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:0%">
+
+                <span style="display: inline-block;width: 80%;text-align: left;">
+                    <span style="font-size: 1.6em;"><i class="ion-android-pin"></i></span>搜索结果
+                </span>
+                <span style="display: inline-block;font-size: 1.2em;text-align: center;width: 20%;"
+                      ng-click="closeContentInfoPanel()">
+                  <i class="ion-close-circled"></i>
+              </span>
+                <span style="display: inline-block;width: 5%;">
+              </span>
+            </h1>
+        </div>
+
+        <ion-scroll style="width: 100%;height: 80%;">
+            <div class="list padding">
+
+                <!-- 用车城市 -->
+                <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                     padding:10px;background-color:transparent;"
+                     ng-repeat="item in contentInfo"
+                     ng-click="locate(item)"
+                >
+                    <span style="width: 35%;display: inline-block;text-align: left;">
+                        <div>
+                            <span style="color:#00c9ff">{{item.unitName}}</span>
+                        </div>
+                        <div>3.5km</div>
+                    </span>
+                    <span style="width: 65%;display: inline-block;text-align: right">
+                        <div><span><i class="ion-chevron-right"></i></span></div>
+                        <div>确认</div>
+                    </span>
+                </div>
+
+            </div>
+        </ion-scroll>
+
+    </ion-content>
+
+</ion-modal-view>
