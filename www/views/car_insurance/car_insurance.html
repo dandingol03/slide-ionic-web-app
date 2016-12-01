@@ -116,7 +116,7 @@
                  style="padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
 
               <div style="display:inline-block;width:10%;font-size: 1.4em;"
-                   ng-click="setter(product,'checked',false);">
+                   ng-click="setter(product,'checked',!product.checked);">
                 <i ng-if="product.checked!=true" class="ion-ios-circle-outline"></i>
                 <i ng-if="product.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
               </div>

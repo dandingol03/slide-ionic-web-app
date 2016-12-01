@@ -45,6 +45,7 @@ angular.module('starter')
         {
             $ionicPlatform.ready (function () {
                 $scope.fetch();
+                navigator.speech.initialize('583d766d');
             })
         }
 
@@ -563,10 +564,47 @@ angular.module('starter')
           $state.go('passwordForget');
       }
 
+      $scope.init_voice=function () {
+          var options_init={
+              appId:"8974317",
+              apiKey:"Pm9rUkPY2jLPcTLqWvGV99rt",
+              secretKey:"4547c02c2b8e8db4ea7042e642a143ef",
+              speed:"5", //朗读语速，取值范围[0, 9]，数值越大，语速越快
+              pitch:"5"  //音调，取值范围[0, 9]，数值越大，音量越高
+          };
+          baidu_tts.init(options_init);
+      }
+
+
       $scope.speak=function () {
-          $scope.speakingText='hi,xiao hong';
+          $scope.speakingText='我是山大研究生丁一铭';
           try {
-              navigator.speech.startSpeaking( $scope.speakingText);
+              //navigator.speech.startSpeaking( $scope.speakingText);
+
+              //navigator.speech.startSpeaking($scope.speakingText);
+              try{
+                  // TTS.speak(
+                  //     {
+                  //         text:'您好',
+                  //         locale:'zh-cn',
+                  //         rate: 0.75
+                  //     }
+                  //     , function () {
+                  //     alert('success');
+                  // }, function (reason) {
+                  //     alert(reason);
+                  // });
+                  //百度语音说话
+
+                  var options = {txt:"新年好"};
+                  baidu_tts.speak(
+                      function(ret){}, //success
+                      function(e){},   //error
+                      options);
+              }catch(e)
+              {
+                  alert('err=\r\n' + e.toString());
+              }
           }catch (e)
           {
               alert('exception=' + e.toString());

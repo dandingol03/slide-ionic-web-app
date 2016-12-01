@@ -8,7 +8,7 @@ angular.module('starter')
   .controller('locateAirportNearbyController',function($scope,$state,$http,$timeout,$rootScope,
                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
                                                         Proxy,$stateParams,$ionicLoading,$cordovaDatePicker,
-                                                       $ionicPopup,$ionicActionSheet) {
+                                                       $ionicPopup,$ionicActionSheet,$q) {
 
       $scope.selectTime=true;
       $scope.datetimepicker=function (item,field) {
@@ -441,6 +441,7 @@ angular.module('starter')
 
     //地图初始化
     $scope.init_map=function(BMap){
+        var deferred=$q.defer();
       var map = new BMap.Map("locate_airport_nearby");          // 创建地图实例
       //遥墙机场经纬度
         $http({
@@ -467,10 +468,12 @@ angular.module('starter')
 
                 //添加自身位置
                 $scope.appendAirportLocation(BMap,map,servicePlace);
+                deferred.resolve({re: 1});
+            }else{
+                deferred.resolve({re: 1});
             }
-
-        })
-
+        });
+        return deferred.promise;
     }
 
     //选择维修厂
@@ -499,6 +502,10 @@ angular.module('starter')
     //刷新附近维修厂
     //获取该地区的所有维修厂,并进行距离过滤
     $scope.fetchMaintennacesInArea=function(BMap){
+
+        var deferred=$q.defer();
+
+
       $http({
         method: "POST",
         url: Proxy.local() + "/svr/request",
@@ -553,13 +560,10 @@ angular.module('starter')
         //圈渲染
         //var circle = new BMap.Circle($scope.point, 50000, {strokeColor: "blue", strokeWeight: 2, strokeOpacity: 0.5}); //创建圆
         //$scope.map.addOverlay(circle);
-
-      }).catch(function (err) {
-        var str = '';
-        for (var field in err)
-          str += err[field];
-        console.error('error=\r\n' + str);
+          deferred.resolve({re: 1});
       });
+
+      return deferred.promise;
     }
 
     //维修厂确定
@@ -616,9 +620,17 @@ angular.module('starter')
       var BMap = $scope.bMap;
       $scope.BMap=BMap;
       //地图初始化
-      $scope.init_map(BMap);
-
-      $scope.fetchMaintennacesInArea(BMap);
+      $scope.init_map(BMap).then(function(json) {
+        return $scope.fetchMaintennacesInArea(BMap);
+      }).then(function(json) {
+          if(json.re==1)
+            console.log('map init completely');
+      }).catch(function(err) {
+          var str='';
+          for(var field in err)
+              str+=err[field];
+          alert('err=\r\n'+str);
+      })
 
     });
 

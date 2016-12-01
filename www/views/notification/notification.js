@@ -6,8 +6,7 @@
 angular.module('starter')
 
     .controller('notificationController',function($scope,$state,$http,$timeout,$rootScope,
-                                                         $ionicModal, Proxy,$stateParams,
-                                                         $ionicActionSheet,$q, $ionicPopup) {
+                                                          Proxy,$stateParams,$q) {
 
 
         $scope.go_back=function () {
@@ -31,7 +30,14 @@ angular.module('starter')
 
         $scope.notifications=$rootScope.notifications;
 
+        $scope.showNotyDetail=function (noty) {
+            switch (noty.type) {
+                case 'service':
 
-
+                    break;
+                default:
+                    break;
+            }
+        }
 
     })

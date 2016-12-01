@@ -1,28 +1,22 @@
 <ion-view view-title="订单详情">
   <ion-nav-bar class="bar-assertive" align-title="center" >
     <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
+      <button class="button button-icon button-clear bar_arr"
+              ng-click="go_back()"
+              style="font-size: 2.4em;"
+      >
         <i class="ion-chevron-left"></i>
       </button>
     </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-        <i class="ion-ios-search-strong"></i>
-      </button>
-    </ion-nav-buttons>
+
   </ion-nav-bar>
 
   <ion-content>
 
-    <div class="list" style="margin-bottom: 0px;">
-      <div class="item" style="border: 0px;background: rgba(45, 42, 42, 0.78);color:#fff;">
 
-      </div>
-    </div>
+    <div class="list padding" style="text-align: center;margin-top: 20%;">
 
-    <div class="list padding" style="text-align: center;margin-top: 35%;">
-
-      <div class="item"  style="border:0px;width: 80%;margin-left:10%;border-bottom: 2px solid #9e9e9e;">
+      <div class="item"  style="width: 100%;border-bottom: 1px solid #222;border-top:0px;border-left:0px;border-right: 0px;">
         <span style="display: inline-block;width: 30%;text-align: left">
           车牌号:
         </span>
@@ -32,7 +26,7 @@
         </span>
       </div>
 
-      <div class="item"  style="border:0px;width: 80%;margin-left:10%;border-bottom: 2px solid #9e9e9e;">
+      <div class="item"  style="border-bottom: 1px solid #222;border-top:0px;border-left:0px;border-right: 0px;">
         <span style="display: inline-block;width: 30%;text-align: left">
           地点:
         </span>
@@ -42,17 +36,16 @@
         </span>
       </div>
 
-      <div class="item"  style="border:0px;width: 80%;margin-left:10%;border-bottom: 2px solid #9e9e9e;">
+      <div class="item"  style="border:0px;border-bottom: 1px solid #222">
         <span style="display: inline-block;width: 30%;text-align: left">
           预约时间:
         </span>
         <span style="display: inline-block;width: 70%;">
-
-          {{order.time}}
+          {{order.time|date:'yyyy-MM-dd HH:mm'}}
         </span>
       </div>
 
-      <div class="item"  style="border:0px;width: 80%;margin-left:10%;border-bottom: 2px solid #9e9e9e;">
+      <div class="item"  style="border:0px;border-bottom: 1px solid #222;">
         <span style="display: inline-block;width: 30%;text-align: left">
           服务费:
         </span>
@@ -61,7 +54,7 @@
         </span>
       </div>
 
-      <div class="item"  style="border:0px;width: 80%;margin-left:10%;border-bottom: 1px solid #9e9e9e;">
+      <div class="item"  style="border-bottom: 1px solid #aaa;border-top:0px;border-right: 0px;border-left:0px;">
         <span style="display: inline-block;width: 30%;text-align: left">
           服务内容:
         </span>
@@ -70,12 +63,57 @@
         </span>
       </div>
 
+      <div class="item"
+           style="border-bottom: 1px solid #aaa;border-top:0px;border-right: 0px;border-left:0px;"
+           ng-if="order.servicePerson!==undefined&&order.servicePerson!==null">
+        <span style="display: inline-block;width: 30%;text-align: left">
+          服务人员:
+        </span>
+        <span style="display: inline-block;width: 70%;">
+          {{order.servicePerson.perName}}
+        </span>
+      </div>
+
+
+
+
+
+      <div ng-if="order.candidates!==undefined&&order.candidates!==null">
+        <div class="card">
+          <div class="item item-divider">
+            <span>侯选人员列表</span>
+          </div>
+          <div class="item"
+               style="border-bottom: 1px solid #aaa;border-top:0px;border-right: 0px;border-left:0px;"
+               ng-repeat="candidate in order.candidates"
+               ng-style="candidateColors[$index%4]"
+               ng-click="Setter(candidate,'checked',true)"
+          >
+            <span style="display: inline-block;width: 30%;text-align: left">
+              服务人员: {{candidate.personInfo.perName}}
+            </span>
+            <span style="display: inline-block;width: 60%;">
+              维修厂:  {{candidate.unit.unitName}}
+            </span>
+            <span style="display: inline-block;width: 10%;">
+                <span ng-if="candidate.checked==true"><i class="ion-checkmark"></i></span>
+            </span>
+          </div>
+          <div class="item" style="border-bottom: 1px solid #aaa;border-top:0px;border-right: 0px;border-left:0px;">
+
+            <button class="button button-block button-positive" style="width: 80%;margin-left: 10%;"
+                    ng-click="agreeWithCandidate()">
+              同意接单
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <button class="button button-block button-positive"
+    <button class="button button-block button-positive" style="width: 80%;margin-left: 10%;"
             ng-click="cancleOrder(-1)"
-            ng-if="order.orderState==1||order.orderState==2"
-    >
+            ng-if="order.orderState==1&&order.servicePersonId!==undefined&&order.servicePersonId!==null">
       取消订单
     </button>
 

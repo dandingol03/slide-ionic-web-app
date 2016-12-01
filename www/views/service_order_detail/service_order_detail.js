@@ -6,7 +6,8 @@
  */
 angular.module('starter')
 
-  .controller('serviceOrderDetailController',function($scope,$stateParams,$http,$rootScope){
+  .controller('serviceOrderDetailController',function($scope,$stateParams,$http,
+                                                      $rootScope,$ionicLoading,Proxy){
 
     $scope.order=$stateParams.order;
 
@@ -16,6 +17,149 @@ angular.module('starter')
     $scope.go_back=function(){
       window.history.back();
     };
+
+    $scope.candidateColors=[{background:'rgb(220, 171, 106)',color:'#fff'},{background:'rgba(220, 171, 106,0.7)',color:'#fff'},
+        {background:'rgba(220, 171, 106,0.4)',color:'#fff'},{background:'rgba(220, 171, 106,0.1)',color:'#fff'}];
+
+
+    $scope.fetchRelativeInfo=function () {
+        $ionicLoading.show({
+            template: '<p class="item-icon-left">生成车险订单...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+        });
+        //服务人员
+        if($scope.order.servicePersonId!==undefined&&$scope.order.servicePersonId!==null)
+        {
+            $http({
+                method: "post",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
+                    {
+                        request:'getInfoPersonInfoByServicePersonId',
+                        info:{
+                            servicePersonId:$scope.order.servicePersonId
+                        }
+                    }
+            }).then(function (res) {
+                var json=res.data;
+                if(json.re==1) {
+                    $scope.order.servicePerson=json.data;
+                }
+                $ionicLoading.hide();
+            }).catch(function(err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+                $ionicLoading.hide();
+            });
+        }else{
+            //TODO:fetch candidates so far
+            $http({
+                method: "post",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
+                    {
+                        request:'fetchServiceOrderCandidateByOrderId',
+                        info:{
+                            orderId:$scope.order.orderId
+                        }
+                    }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1)
+                {
+                    $scope.order.candidates=json.data;
+                    if($scope.order.candidates!==undefined&&$scope.order.candidates!==null&&$scope.order.candidates.length>0)
+                    {
+                        $scope.order.candidates[0].checked=true;
+                    }
+                }
+                $ionicLoading.hide();
+            }).catch(function (err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+                $ionicLoading.hide();
+            });
+        }
+
+    }
+    $scope.fetchRelativeInfo();
+
+      $scope.Setter=function (item,field,value) {
+            item[field]=value;
+      }
+
+    //同意接单
+      $scope.agreeWithCandidate=function () {
+          var candidate=null;
+          $scope.order.candidates.map(function(people,i) {
+              if(people.checked==true)
+                  candidate=people;
+          });
+          if(candidate!=null)
+          {
+              //TODO:inject sendCustomMessage to servicePerson
+              $http({
+                  method: "post",
+                  url: Proxy.local()+"/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token,
+                  },
+                  data:
+                      {
+                          request:'applyCarServiceOrderCandidate',
+                          info:{
+                              candidateId:candidate.candidateId
+                          }
+                      }
+              }).then(function(res) {
+                  var json=res.data;
+                  if(json.re==1) {
+
+                      return $http({
+                          method: "POST",
+                          url: Proxy.local() + "/svr/request",
+                          headers: {
+                              'Authorization': "Bearer " + $rootScope.access_token
+                          },
+                          data: {
+                              request: 'sendCustomMessage',
+                              info: {
+                                  order: $scope.order,
+                                  servicePersonId: candidate.servicePersonId,
+                                  type: 'to-servicePerson'
+                              }
+                          }
+                      });
+                  }
+              }).then(function (res) {
+                  var json=res.data;
+                  if(json.re==1) {
+                      var myPopup = $ionicPopup.alert({
+                          template: '接单成功',
+                          title: '<strong style="color:red">信息</strong>'
+                      });
+                  }
+              })
+
+
+                  .catch(function (err) {
+                  var str='';
+                  for(var field in err)
+                      str+=err[field];
+                  console.error('err=\r\n'+str);
+              })
+          }
+      }
+
 
 
     //取消订单

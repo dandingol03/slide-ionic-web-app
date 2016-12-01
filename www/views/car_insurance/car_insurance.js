@@ -19,32 +19,28 @@ angular.module('starter')
 
       $scope.setter=function (item,field,val) {
 
+
           if(item[field]==true){
               item[field]=val;
           }else{
               item[field]=true;
           }
-          //productId为1的车损
+
           if(val==false&&item.productId==1)
           {
               for(var proName in $scope.tabs[$scope.tabIndex].products)
               {
                   var product= $scope.tabs[$scope.tabIndex].products[proName];
-                  if(product.productId==9||product.productId==10||product.productId==11||product.productId==27)
+                  if(product.productId==9||product.productId==10||product.productId==11||product.productId==27
+                        ||product.productId==22||product.productId==29||product.productId==23||product.productId==24
+                        ||product.productId==25||product.productId==26)
                   {
-                      product.checked==false;
+                      product.checked=false;
                   }
               }
           }
 
-          if(item.productId==9||item.productId==10||item.productId==11||item.productId==27){
 
-              if($scope.tabs[$scope.tabIndex].products['车辆损失险'].checked==false)
-              {
-                  item[field]==false;
-              }
-
-          }
 
       }
 

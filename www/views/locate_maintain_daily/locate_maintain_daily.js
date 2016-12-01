@@ -36,6 +36,10 @@ angular.module('starter')
     }
 
     $scope.selectTime=true;
+
+    $scope.appointMode=false;
+
+
     $scope.datetimepicker=function (item,field) {
 
       var options = {
@@ -56,6 +60,8 @@ angular.module('starter')
         });
       }
     }
+
+
 
 
     //查询已绑定车辆,并显示车牌信息
@@ -116,208 +122,347 @@ angular.module('starter')
 
     }
 
+    $scope.clickFunc=function (e) {
+        console.log('click point=' + e.point.lng + ',' + e.point.lat);
+        $scope.destiny={lng: e.point.lng,lat: e.point.lat};
+        var BMap=$scope.bMap;
+        var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+        var mk = new BMap.Marker(e.point,{icon:bIcon});  // 创建标注
+        var map=$scope.map;
+        if($scope.mk!=null&&$scope.mk!=undefined){
+            map.removeOverlay($scope.mk);
+        }
 
-    BaiduMapService.getBMap().then(function (res) {
-      $scope.bMap = res;
-      var BMap = $scope.bMap;
-      var map = new BMap.Map("locate_maintain_daily");          // 创建地图实例
-      var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
-
-      map.centerAndZoom(point, 15);
-      map.addControl(new BMap.NavigationControl());
-      map.addControl(new BMap.ScaleControl());
-      map.enableScrollWheelZoom(true);
-
-
-      $scope.tpMarkers=[];
-      $scope.dragF=false;
-      //map添加拖拽结束事件
-
-      map.addEventListener("dragend", function(){
-        //中心点渲染
-         var center = map.getCenter();
-        console.log("地图中心点变更为：" + center.lng + ", " + center.lat);
-         map.clearOverlays();
-        var point=center;
-        //设置地图中心点覆盖物
-        var mkCenter = new BMap.Marker(point);
-        //map.addOverlay(mkCenter);
-        var label = new BMap.Label('中心', {offset: new BMap.Size(20, -10)});
+        map.addOverlay(mk);               // 将标注添加到地图中
+        var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
         label.setStyle({
-          color: '#fff',
-          fontSize: "12px",
-          height: "20px",
-          lineHeight: "20px",
-          fontFamily: "微软雅黑",
-          border: '0px',
-          'background-color':'#222'
+            color: '#222',
+            fontSize: "12px",
+            height: "20px",
+            lineHeight: "20px",
+            fontFamily: "微软雅黑",
+            border: '0px'
         });
-        mkCenter.setLabel(label);
+        mk.setLabel(label);
+        $scope.mk=mk;
+        map.panTo(e.point);
+        $scope.maintain.center = map.getCenter();
+        $scope.renderCircle(e.point,0.12, 0.1);
+    }
 
-        //拖拽延时
-        if($scope.timer!==undefined&&$scope.timer!==null)
-        {
-          $timeout.cancel( $scope.timer);
+
+
+
+    $scope.init_map=function (BMap) {
+
+        var deferred=$q.defer();
+
+        var cb=function () {
+            var map = new BMap.Map("locate_maintain_daily");          // 创建地图实例
+            var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
+            $scope.point=point;
+            map.centerAndZoom(point, 15);
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.ScaleControl());
+            map.enableScrollWheelZoom(true);
+
+            $scope.tpMarkers=[];
+            $scope.dragF=false;
+
+            //地图添加点击事件
+            //map.addEventListener("click", $scope.clickFunc);
+            $scope.map=map;
+            $scope.maintain.center = map.getCenter();
+            deferred.resolve({re: 1});
         }
-        else{}
-        $scope.timer = $timeout(
-          function() {
-            render();
-          },
-          1000
-        );
+        cb();
 
-        var render=function(){
-
-          //5公里范围内维修厂集合
-          $scope.units = [];
-          $scope.unitsInTown.map(function (unit, i) {
-            if (unit.longitude !== undefined && unit.longitude !== null &&
-              unit.latitude !== undefined && unit.latitude !== null) {
-              var distance = map.getDistance(point, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
-              if (distance <= 5000)
-                $scope.units.push(unit);
-            }
-          });
-
-          $scope.units.map(function (unit, i) {
-            var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
-            map.addOverlay(mk);
-            var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
-            label.setStyle({
-              color: '#222',
-              fontSize: "12px",
-              height: "20px",
-              lineHeight: "20px",
-              fontFamily: "微软雅黑",
-              border: '0px'
-            });
-            mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
-            mk.setLabel(label);
-            $scope.labels.push(label);
-          });
-        }
-      });
-
-
-
-      var mk = new BMap.Marker(point);
-      mk.setAnimation(BMAP_ANIMATION_BOUNCE);
-      map.addOverlay(mk);
-      var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
-      label.setStyle({
-        color: '#222',
-        fontSize: "12px",
-        height: "20px",
-        lineHeight: "20px",
-        fontFamily: "微软雅黑",
-        border: '0px'
-      });
-      mk.setLabel(label);
+        return deferred.promise;
+    }
 
 
       //选择维修厂
       $scope.marker_select = function (unit, label) {
-        if ($scope.unit !== undefined && $scope.unit !== null) {
-          $scope.unit = null;
-          label.setStyle({color: '#222', 'font-size': '0.8em'});
-        }
-        else {
-          label.setStyle({
-            color: '#00f'
-          });
+          if ($scope.unit !== undefined && $scope.unit !== null) {
+              $scope.unit = null;
+              label.setStyle({color: '#222', 'font-size': '0.8em'});
+          }
+          else {
+              label.setStyle({
+                  color: '#00f'
+              });
 
-          $scope.$apply(function(){
-              $scope.unit = unit;
-              $http({
-                  method: "POST",
-                  url: Proxy.local() + "/svr/request",
-                  headers: {
-                      'Authorization': "Bearer " + $rootScope.access_token,
-                  },
-                  data: {
-                      request: 'getServicePersonByUnitId',
-                      info:{
-                        unitId:unit.unitId
+              $scope.$apply(function(){
+                  $scope.unit = unit;
+                  $http({
+                      method: "POST",
+                      url: Proxy.local() + "/svr/request",
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token,
+                      },
+                      data: {
+                          request: 'getServicePersonByUnitId',
+                          info:{
+                              unitId:unit.unitId
+                          }
                       }
-                  }
-              }).then(function(res) {
-                  var json=res.data;
-                  if(json.re==1) {
-                      var servicePerson=json.data;
-                      $scope.maintain.servicePerson=servicePerson;
-                  }
-              }).catch(function(err) {
-                  var str='';
-                  for(var field in err)
-                    str+=err[field];
-                  console.error('err=\r\n'+str);
+                  }).then(function(res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          var servicePerson=json.data;
+                          $scope.maintain.servicePerson=servicePerson;
+                      }
+                  }).catch(function(err) {
+                      var str='';
+                      for(var field in err)
+                          str+=err[field];
+                      console.error('err=\r\n'+str);
+                  })
+
+              });
+
+
+              $scope.labels.map(function (item, i) {
+                  if (item.getContent().trim() != label.getContent().trim())
+                      item.setStyle({color: '#222', 'font-size': '0.8em'});
               })
+          }
+      }
 
+      $scope.addDragEnd=function () {
+
+
+
+          //map添加拖拽结束事件
+          map.addEventListener("dragend", function(){
+
+
+              $scope.timer = $timeout(
+                  function() {
+                      render();
+                  },
+                  1000
+              );
+
+              var render=function(){
+
+                  //5公里范围内维修厂集合
+                  $scope.wholeUnits=[];
+                  $scope.units = [];
+                  $scope.unitsInTown.map(function (unit, i) {
+                      if (unit.longitude !== undefined && unit.longitude !== null &&
+                          unit.latitude !== undefined && unit.latitude !== null) {
+                          var distance = map.getDistance(point, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
+                          if (distance <= 5000)
+                              $scope.units.push(unit);
+                      }
+                  });
+
+                  $scope.units.map(function (unit, i) {
+                      var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
+                      map.addOverlay(mk);
+                      var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
+                      label.setStyle({
+                          color: '#222',
+                          fontSize: "12px",
+                          height: "20px",
+                          lineHeight: "20px",
+                          fontFamily: "微软雅黑",
+                          border: '0px'
+                      });
+                      mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
+                      mk.setLabel(label);
+                      $scope.labels.push(label);
+                  });
+              }
           });
-
-
-          $scope.labels.map(function (item, i) {
-            if (item.getContent().trim() != label.getContent().trim())
-              item.setStyle({color: '#222', 'font-size': '0.8em'});
-          })
-        }
       }
 
 
-      var posOptions = {timeout: 10000, enableHighAccuracy: false};
+      //获取该地区的所有维修厂,并进行距离过滤
+      $scope.fetchAndRenderNearBy = function () {
+          var deferred=$q.defer();
 
-      $cordovaGeolocation
-        .getCurrentPosition(posOptions)
-        .then(function (position) {
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          console.log(lng + ',' + lat);
-          var ggPoint = new BMap.Point(lng, lat);
-          var convertor = new BMap.Convertor();
-          var pointArr = [];
-          pointArr.push(ggPoint);
+          $http({
+              method: "POST",
+              url: Proxy.local() + "/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token,
+              },
+              data: {
+                  request: 'fetchMaintenanceInArea',
+                  info: {
+                      provinceName: $scope.area.province,
+                      cityName: $scope.area.city,
+                      townName: $scope.area.town
+                  }
+              }
+          }).then(function (res) {
+              var json = res.data;
+              var map=$scope.map;
+              if (json.re == 1) {
+                  $scope.units = [];
+                  $scope.wholeUnits=[];
+                  $scope.unitsInTown = json.data;
+                  json.data.map(function (unit, i) {
+                      if (unit.longitude !== undefined && unit.longitude !== null &&
+                          unit.latitude !== undefined && unit.latitude !== null) {
+                          //var center = $scope.maintain.center;
+                          // var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
+                          // if (distance <= 5000)
+                          $scope.wholeUnits.push(unit);
+                      }
+                  });
+                  //remove previous markers
+                  map.clearOverlays();
+                  //render new markers
+                  $scope.labels = [];
+                  $scope.wholeUnits.map(function (unit, i) {
+                      var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
+                      map.addOverlay(mk);
+                      var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
+                      label.setStyle({
+                          color: '#222',
+                          fontSize: "12px",
+                          height: "20px",
+                          lineHeight: "20px",
+                          fontFamily: "微软雅黑",
+                          border: '0px'
+                      });
+                      mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
+                      mk.setLabel(label);
+                      $scope.labels.push(label);
+                  });
+              }
+              deferred.resolve({re: 1});
+          }).catch(function (err) {
+              var str = '';
+              for (var field in err)
+                  str += err[field];
+              console.error('error=\r\n' + str);
+              deferred.reject({});
+          })
+          return deferred.promise;
+      }
+      
+      
+      $scope.renderCircle=function (cen,x,y) {
 
-          var translateCallback = function (data) {
-            if (data.status === 0) {
-              var marker = new BMap.Marker(data.points[0]);
-              map.addOverlay(marker);
-              var label = new BMap.Label("转换后的百度坐标（正确）", {offset: new BMap.Size(20, -10)});
-              marker.setLabel(label); //添加百度label
-              map.setCenter(data.points[0]);
-            }
+          var center=null;
+          if(cen!==undefined&&cen!==null)
+            center=cen;
+          else
+            center=$scope.map.getCenter();
+          var BMap=$scope.bMap;
+          var map=$scope.map;
+          var assemble=[];
+          var angle;
+          var dot;
+          var tangent=x/y;
+          for(var i=0;i<36;i++)
+          {
+              angle = (2* Math.PI / 36) * i;
+              dot = new BMap.Point(center.lng+Math.sin(angle)*y*tangent, center.lat+Math.cos(angle)*y);
+              assemble.push(dot);
           }
 
-          convertor.translate(pointArr, 1, 5, translateCallback)
+          var oval = new BMap.Polygon(assemble, {fillColor:'rgba(211, 199, 220, 0.39)',strokeColor:"#fff", strokeWeight:6, strokeOpacity:0.5});
+          if($scope.oval!==undefined&&$scope.oval!==null)
+              map.removeOverlay($scope.oval);
+          $scope.oval=oval;
+          map.addOverlay(oval);
+
+      }
 
 
-        }, function (err) {
-          // error
-          console.error('error=\r\n' + err.toString());
-        });
+      //切换为指派中心模式
+      $scope.switchAppointMode=function () {
+          var map=$scope.map;
+          if($scope.appointMode!=true)
+          {
+            $scope.appointMode=true;
+              $scope.renderCircle(map.getCenter(),0.12,0.1);
+              var map=$scope.map;
+              map.addEventListener("click", $scope.clickFunc);
+          }else{
+              $scope.appointMode=false;
+              //移除圈
+              if($scope.oval!==undefined&&$scope.oval!==null)
+                  map.removeOverlay($scope.oval);
+              map.removeEventListener('click', $scope.clickFunc);
+          }
+      }
+
+      
+      
+      
+    BaiduMapService.getBMap().then(function (res) {
 
 
-      //fetch provinces list
-      $http({
-        method: "POST",
-        url: Proxy.local() + "/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token,
-        },
-        data: {
-          request: 'getProvinces',
-        }
-      }).then(function (res) {
-        var json = res.data;
-        if (json.re == 1) {
-          $scope.provinces = json.data;
-        }
-      }).catch(function (err) {
-        var str = '';
-        for (var field in err)
-          str += err[field];
-        console.error('error=\r\n' + str);
-      })
+        $scope.bMap = res;
+        var BMap = $scope.bMap;
+
+        $scope.init_map(BMap).then(function(json) {
+            if(json.re==1) {
+               return  $scope.fetchAndRenderNearBy();
+            }
+        }).then(function(json) {
+
+
+            var map=$scope.map;
+            //添加指派中心覆盖物
+            var point=$scope.point;
+            var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+            var mk = new BMap.Marker(point,{icon:bIcon});
+            mk.setAnimation(BMAP_ANIMATION_BOUNCE);
+            $scope.mk=mk;
+            map.addOverlay(mk);
+            var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
+            label.setStyle({
+                color: '#222',
+                fontSize: "12px",
+                height: "20px",
+                lineHeight: "20px",
+                fontFamily: "微软雅黑",
+                border: '0px'
+            });
+            mk.setLabel(label);
+
+            //$scope.renderCircle(map.getCenter(),0.12,0.1);
+
+
+            //自我定位修正
+            var posOptions = {timeout: 10000, enableHighAccuracy: false};
+            $cordovaGeolocation.getCurrentPosition(posOptions)
+                .then(function (position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    console.log(lng + ',' + lat);
+                    var ggPoint = new BMap.Point(lng, lat);
+                    var convertor = new BMap.Convertor();
+                    var pointArr = [];
+                    pointArr.push(ggPoint);
+
+                    var translateCallback = function (data) {
+                        if (data.status === 0) {
+                            var marker = new BMap.Marker(data.points[0]);
+                            map.addOverlay(marker);
+                            var label = new BMap.Label("转换后的百度坐标（正确）", {offset: new BMap.Size(20, -10)});
+                            marker.setLabel(label); //添加百度label
+                            map.setCenter(data.points[0]);
+                        }
+                    }
+
+                    convertor.translate(pointArr, 1, 5, translateCallback)
+
+
+                }, function (err) {
+                    // error
+                    console.error('error=\r\n' + err.toString());
+                });
+        })
+
+
 
       $scope.tabTag = 'province';
 
@@ -462,67 +607,6 @@ angular.module('starter')
       };
 
 
-      //获取该地区的所有维修厂,并进行距离过滤
-      $scope.fetchAndRenderNearBy = function () {
-        $http({
-          method: "POST",
-          url: Proxy.local() + "/svr/request",
-          headers: {
-            'Authorization': "Bearer " + $rootScope.access_token,
-          },
-          data: {
-            request: 'fetchMaintenanceInArea',
-            info: {
-              provinceName: $scope.area.province,
-              cityName: $scope.area.city,
-              townName: $scope.area.town
-            }
-          }
-        }).then(function (res) {
-          var json = res.data;
-          if (json.re == 1) {
-            $scope.units = [];
-            $scope.unitsInTown = json.data;
-            json.data.map(function (unit, i) {
-              if (unit.longitude !== undefined && unit.longitude !== null &&
-                unit.latitude !== undefined && unit.latitude !== null) {
-                var center = $scope.maintain.center;
-                var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
-                if (distance <= 5000)
-                  $scope.units.push(unit);
-              }
-            });
-            //remove previous markers
-            map.clearOverlays();
-            //render new markers
-            $scope.labels = [];
-            $scope.units.map(function (unit, i) {
-              var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
-              map.addOverlay(mk);
-              var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
-              label.setStyle({
-                color: '#222',
-                fontSize: "12px",
-                height: "20px",
-                lineHeight: "20px",
-                fontFamily: "微软雅黑",
-                border: '0px'
-              });
-              mk.addEventListener("click", $scope.marker_select.bind(this, unit, label));
-              mk.setLabel(label);
-              $scope.labels.push(label);
-            });
-          }
-        }).catch(function (err) {
-          var str = '';
-          for (var field in err)
-            str += err[field];
-          console.error('error=\r\n' + str);
-        })
-      }
-
-      $scope.maintain.center = map.getCenter();
-      $scope.fetchAndRenderNearBy();
 
       $scope.pct_confirm = function (town) {
         if (town !== undefined && town !== null)
@@ -952,6 +1036,7 @@ angular.module('starter')
                           alert('音频附件上传成功');
                       }else{}
                   });
+                  $state.go('service_orders');
 
               }).catch(function (err) {
                   var str = '';
@@ -964,10 +1049,61 @@ angular.module('starter')
       }
 
 
-
+      //提交维修服务订单
       $scope.applyMaintainDailyOrder=function() {
 
         if ($scope.maintain.estimateTime !== undefined && $scope.maintain.estimateTime !== null) {
+
+          var flag=false;
+          if($scope.unit==undefined||$scope.unit==null)
+          {
+              if(!$scope.appointMode)
+              {
+                  flag=true;
+                  var confirmPopup = $ionicPopup.confirm({
+                      title: '信息',
+                      template: '您未选择维修厂\r\n切换到指派模式可以由系统负责指派维修厂，是否现在切换'
+                  });
+                  confirmPopup.then(function(res) {
+                      if(res)
+                      {
+                          $scope.switchAppointMode();
+                      }else{
+                      }
+                  })
+              }else
+              {
+                  var map=$scope.map;
+                  var BMap=$scope.bMap;
+                  if($scope.wholeUnits!==undefined&&$scope.wholeUnits!==null)
+                  {
+                    $scope.units=[];
+                    $scope.wholeUnits.map(function (unit, i) {
+                        if (unit.longitude !== undefined && unit.longitude !== null &&
+                            unit.latitude !== undefined && unit.latitude !== null) {
+                            var center = $scope.map.getCenter();
+                            var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
+                            if (parseFloat(distance) <= 10000)
+                            $scope.units.push(unit);
+                        }
+                        if($scope.units.length>0)
+                        {}else{
+                            flag=true;
+                            var alertPopup = $ionicPopup.alert({
+                                title: '信息',
+                                template: '您所设定的指派中心周边没有可指派的维修厂,请重新设定指派中心'
+                            });
+                        }
+                    });
+                  }
+
+
+              }
+
+          }
+
+          if(flag)
+            return true;
 
             if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined&&$scope.carInfo.carId!==null)
             {

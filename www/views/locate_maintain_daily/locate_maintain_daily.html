@@ -69,6 +69,21 @@
           </span>
       </div>
 
+      <div class="item item-toggle"
+           style="border-left:0px;border-right:0px;border-bottom:1px solid #222;padding-left:10px;padding-right: 10px;
+                  color:#0017ec">
+        <span style="display: inline-block;width: 85%;font-size: 0.8em;text-align: left;">
+          却换到系统指派模式
+        </span>
+        <label class="toggle toggle-assertive" style="width: 15%;display: inline-block;">
+          <input type="checkbox" ng-model="appointMode" ng-value="appointMode" ng-click="switchAppointMode()">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+
+
       <div class="item"
            style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
            padding:10px;background-color:transparent;"
