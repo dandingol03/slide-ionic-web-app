@@ -3953,6 +3953,25 @@ $scope.openAirportTransfer=function(){
             }
         }
 
+        if($scope.subTabIndex==1)
+        {
+            var threshold=0;
+            if($scope.maintain.description.text!==undefined&&$scope.maintain.description.text!==null&&$scope.maintain.description.text!='')
+                threshold++;
+            if($scope.maintain.description.audio!==undefined&&$scope.maintain.description.audio!==null)
+                threshold++;
+            if($scope.maintain.description.video!==undefined&&$scope.maintain.description.video!==null)
+                threshold++;
+            if(threshold==0)
+            {
+                $ionicPopup.alert({
+                    title: '错误',
+                    template: '请填入故障维修信息后再选择维修厂'
+                });
+                return;
+            }
+        }
+
 
 
         if(checkFlag||$scope.subTabIndex!=0)

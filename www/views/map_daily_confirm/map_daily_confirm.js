@@ -12,6 +12,7 @@ angular.module('starter')
 
 
         $scope.go_back = function () {
+            alert('go back');
             window.history.back();
         }
 
@@ -38,7 +39,10 @@ angular.module('starter')
             $scope.contentInfo=$stateParams.contentInfo;
             if(Object.prototype.toString.call($scope.contentInfo)=='[object String]')
                 $scope.contentInfo=JSON.parse($scope.contentInfo);
-            $scope.unit = $scope.contentInfo.unit;
+            if($scope.contentInfo.unit!==undefined&&$scope.contentInfo.unit!==null)
+                $scope.unit = $scope.contentInfo.unit;
+            if($scope.contentInfo.units!==undefined&&$scope.contentInfo.units!==null)
+                $scope.units=$scope.contentInfo.units;
             if($scope.contentInfo.maintain!==undefined&&$scope.contentInfo.maintain!==null)
                 $scope.maintain=$scope.contentInfo.maintain;
             if($scope.contentInfo.carInfo!==undefined&&$scope.contentInfo.carInfo!==null)

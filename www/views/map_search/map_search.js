@@ -7,7 +7,7 @@ angular.module('starter')
 
     .controller('mapSearchController',function($scope,$state,$http,$timeout,$rootScope,
                                                          BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                         Proxy,$stateParams, $q) {
+                                                         Proxy,$stateParams, $q,$ionicLoading) {
 
         if($stateParams.ob!==undefined&&$stateParams.ob!==null)
         {
@@ -78,6 +78,10 @@ angular.module('starter')
                 return ;
             }
 
+            $ionicLoading.show({
+                template: '<p class="item-icon-left">搜索...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            });
+
             $http({
                 method: "POST",
                 url: Proxy.local() + "/svr/request",
@@ -139,8 +143,10 @@ angular.module('starter')
                         map.addOverlay(mk);
                     });
                     $scope.contentInfo=$scope.units;
+                    $ionicLoading.hide();
                     $scope.contentInfoPanel.show();
                 }else{
+                    $ionicLoading.hide();
                     var myPopup = $ionicPopup.alert({
                         template: '未搜索出任何结果',
                         title: '<strong style="color:red">信息</strong>'
@@ -152,12 +158,20 @@ angular.module('starter')
                 for (var field in err)
                     str += err[field];
                 console.error('error=\r\n' + str);
-
+                $ionicLoading.hide();
             })
         }
 
         $scope.infoWindowCb=function () {
             alert('trigger');
+        }
+
+        $scope.Select=function (set) {
+            //选择全集
+            if(set!==undefined&&set!==null&&set.length>0) {
+                $scope.closeContentInfoPanel();
+                $state.go('map_daily_confirm', {contentInfo: JSON.stringify({units: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+            }
         }
 
         $scope.locate=function (place) {

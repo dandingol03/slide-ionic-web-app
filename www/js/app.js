@@ -789,7 +789,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('map_search',{
-              cache:false,
               url:'/map_search:ob',
               controller:'mapSearchController',
               templateUrl:'views/map_search/map_search.html'
