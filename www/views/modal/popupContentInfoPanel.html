@@ -30,7 +30,7 @@
                         <div>
                             <span style="color:#00c9ff">{{item.unitName}}</span>
                         </div>
-                        <div>3.5km</div>
+                        <div>{{(item.distance/1000).toFixed(2)}}km</div>
                     </span>
                     <span style="width: 10%;display: inline-block;"></span>
                     <span style="width: 55%;display: inline-block;" ng-click="confirm(item)">

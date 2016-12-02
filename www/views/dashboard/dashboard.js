@@ -3935,6 +3935,14 @@ $scope.openAirportTransfer=function(){
       $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
     }
 
+    //审车页面跳转
+      $scope.car_registrate=function () {
+          //updated by danding
+          $state.go('map_administrate_search',{ob:JSON.stringify({carInfo:$scope.carInfo,
+            maintain:$scope.maintain})});
+      }
+
+
     //维修页面跳转
     $scope.pickMaintainDaily=function(locateType,index) {
 

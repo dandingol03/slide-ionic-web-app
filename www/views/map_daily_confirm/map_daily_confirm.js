@@ -105,7 +105,8 @@ angular.module('starter')
                 $ionicLoading.hide();
             })
         }
-        $scope.getServicePersonByUnitId();
+        if($scope.unit!==undefined&&$scope.unit!==null)
+            $scope.getServicePersonByUnitId();
 
 
         //查询已绑定车辆,并显示车牌信息
