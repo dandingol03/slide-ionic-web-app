@@ -3990,8 +3990,10 @@ $scope.openAirportTransfer=function(){
                   default:
                       break;
               }
-          $state.go('locate_maintain_daily',
-              {locate:JSON.stringify({carInfo:$scope.carInfo,
+
+          //updated by danding
+          $state.go('map_search',
+              {ob:JSON.stringify({carInfo:$scope.carInfo,
                   locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
 
 

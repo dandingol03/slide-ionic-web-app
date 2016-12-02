@@ -789,9 +789,16 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('map_search',{
-              url:'/map_search',
+              cache:false,
+              url:'/map_search:ob',
               controller:'mapSearchController',
               templateUrl:'views/map_search/map_search.html'
+          })
+
+          .state('map_daily_confirm',{
+              url:'/map_daily_confirm/:contentInfo',
+              controller:'mapDailyConfirmController',
+              templateUrl:'views/map_daily_confirm/map_daily_confirm.html'
           })
 
 

@@ -9,6 +9,17 @@ angular.module('starter')
                                                          BaiduMapService,$cordovaGeolocation,$ionicModal,
                                                          Proxy,$stateParams, $q) {
 
+        if($stateParams.ob!==undefined&&$stateParams.ob!==null)
+        {
+            $scope.ob=$stateParams.ob;
+            if(Object.prototype.toString.call($scope.ob)=='[object String]')
+                $scope.ob = JSON.parse($scope.ob);
+            if($scope.ob.carInfo!==undefined&&$scope.ob.carInfo!==null)
+                $scope.carInfo=$scope.ob.carInfo;
+            if($scope.ob.maintain!==undefined&&$scope.ob.maintain!==null)
+                $scope.maintain=$scope.ob.maintain;
+        }
+
         $scope.root={
         };
 
@@ -44,8 +55,7 @@ angular.module('starter')
             window.history.back();
         }
 
-
-
+        $scope.selectTime=true;
 
 
         //搜索发式
@@ -129,6 +139,12 @@ angular.module('starter')
                         map.addOverlay(mk);
                     });
                     $scope.contentInfo=$scope.units;
+                    $scope.contentInfoPanel.show();
+                }else{
+                    var myPopup = $ionicPopup.alert({
+                        template: '未搜索出任何结果',
+                        title: '<strong style="color:red">信息</strong>'
+                    });
                 }
 
             }).catch(function (err) {
@@ -159,6 +175,11 @@ angular.module('starter')
                 var infoWindow = new BMap.InfoWindow(content, opts);
                 map.openInfoWindow(infoWindow,new BMap.Point(place.longitude, place.latitude)); //开启信息窗口
             }
+        }
+        
+        $scope.confirm=function (item) {
+            $scope.closeContentInfoPanel();
+            $state.go('map_daily_confirm', {contentInfo: JSON.stringify({unit: item,carInfo:$scope.carInfo,maintain:$scope.maintain})});
         }
 
         $scope.clear_search=function () {
