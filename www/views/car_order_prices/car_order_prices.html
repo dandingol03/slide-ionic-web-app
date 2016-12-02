@@ -26,13 +26,13 @@
         <div style="height: 75%;">
           <ion-scroll style="height: 100%;">
             <div class="padding"  style="padding:10px">
-              <div style="width: 60%;" ng-click="reset_specials()">
+              <div style="width: 60%;" ng-click="reset_specials()" ng-if="order.orderState==3">
                 <span style="font-size: 1.2em;">更改险别</span>
                 <span style="font-size: 2.2em;"><i class="ion-ios-compose-outline"></i></span>
               </div>
             </div>
             <div>
-              <div ng-repeat="price in order.prices">
+              <div ng-repeat="price in order.prices" ng-if="order.orderState==3">
                 <!-- 公司产品细项 -->
                 <div class="padding"
                      style="padding:0px 10px">
@@ -93,11 +93,76 @@
                 </div>
               </div>
 
+              <div ng-if="order.orderState==2">
+
+
+                <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
+                  <div class="item item-divider">
+                    编号
+                  </div>
+                  <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
+                    车牌号:
+                    <span style="position: absolute;right:20%;">{{order.carInfo.carNum}}</span>
+                  </div>
+                  <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
+                    订单号:
+                    <span style="position: absolute;right:20%;">{{order.orderNum}}</span>
+                  </div>
+
+                </div>
+
+                <!-- inset two -->
+                <div class="list list-inset"
+                     style="margin-bottom:20px;margin-left:0px;margin-right:0px;"
+                     ng-if="order.products!==undefined&&order.products!==null">
+                  <div class="item item-divider">
+                    订单产品
+                  </div>
+                  <div class="item" style="padding: 16px;" ng-repeat="product in order.products">
+                <span>
+                  {{product.productName}}
+                </span>
+                    <span style="margin-left: 15%;" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
+                  (保额){{product.insuranceType}}
+                </span>
+
+                  </div>
+                </div>
+
+                <!-- inset three -->
+                <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;margin-top:0px" >
+                  <div class="item" style="padding:16px;position: relative;border-left:0px;border-top:0px;
+            border-right:0px;color:rgba(228, 93, 46, 0.87);font-size: 1.4em;">
+                    被保险人:
+                    <span style="position: absolute;right:20%;">{{order.insuranceder.perName}}</span>
+                  </div>
+                  <div class="item" style="padding:16px;font-size: 1.4em;color:rgba(228, 93, 46, 0.87);">
+                    申请日期:
+                    <span style="position: absolute;right:20%;">
+                    {{order.applyTime|date:'yyyy-MM-dd HH:mm'}}
+                </span>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+              </div>
+
+
+
+
+
+
+
             </div>
           </ion-scroll>
         </div>
 
-        <div style="height: 25%;position: relative">
+        <div style="height: 25%;position: relative" ng-if="order.orderState==3">
           <div class="bar bar-footer  bar-assertive"
                style="position: static;position: absolute;bottom:50%;width: 60%;margin-left:20%;"
                ng-click="applyCarPrice()">

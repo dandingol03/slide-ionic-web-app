@@ -8,7 +8,7 @@ angular.module('starter')
  */
   .controller('carOrderPricesController',function($scope,$state,$http,
                                             $location,$rootScope,$stateParams,
-                                            Proxy,$ionicModal){
+                                            Proxy,$ionicModal,$ionicLoading){
 
     $scope.insuranceder={};
 
@@ -18,8 +18,44 @@ angular.module('starter')
       $scope.order=JSON.parse($scope.order);
 
 
+    if($scope.order.orderState==2){
+        $scope.getOrder=function () {
+            $ionicLoading.show({
+                template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            });
+            //获取该订单的所有选中公司和产品
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request: 'getApplyedCarOrderByOrderId',
+                    info: {
+                        orderId: $scope.order.orderId
+                    }
+                }
+            }).then(function (res) {
+                var json = res.data;
+                if (json.re == 1) {
+                    $scope.order = json.data;
+                }
+                $ionicLoading.hide();
+            }).catch(function (err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=r\r\n' + str);
+                $ionicLoading.hide();
+            });
 
-    $scope.go_back=function(){
+        }
+        $scope.getOrder();
+    }
+
+
+      $scope.go_back=function(){
       window.history.back();
     }
 
