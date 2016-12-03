@@ -280,7 +280,7 @@ angular.module('starter')
                 var map = new BMap.Map("map_search");          // 创建地图实例
                 var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
                 $scope.point=point;
-                map.centerAndZoom(point, 15);
+                map.centerAndZoom(point, 13);
                 map.addControl(new BMap.NavigationControl());
                 map.addControl(new BMap.ScaleControl());
                 map.enableScrollWheelZoom(true);

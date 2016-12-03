@@ -63,14 +63,19 @@ angular.module('starter')
 
 
         $scope.renderCircle=function (cen,x,y) {
-
+            var BMap=$scope.bMap;
+            var map=$scope.map;
+            if($scope.distanceMax>10000)
+            {
+                var zoomLevel=map.getZoom();
+                if(zoomLevel!=11)
+                    map.setZoom(11);
+            }
             var center=null;
             if(cen!==undefined&&cen!==null)
                 center=cen;
             else
                 center=$scope.map.getCenter();
-            var BMap=$scope.bMap;
-            var map=$scope.map;
             var assemble=[];
             var angle;
             var dot;
@@ -122,7 +127,7 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token,
                 },
                 data: {
-                    request: 'fetchServicePlacesInArea',
+                    request: 'fetchDetectUnitsInArea',
                     info: {
                         townName: district
                     }
@@ -138,7 +143,14 @@ angular.module('starter')
                             place.latitude !== undefined && place.latitude !== null) {
                             var center = map.getCenter();
                             var distance = map.getDistance(center, new BMap.Point(place.longitude, place.latitude)).toFixed(2);
-                            if (distance <= 10000)
+                            if($scope.distanceMax!==undefined&&$scope.distanceMax!==null)
+                            {
+                                if(distance>$scope.distanceMax)
+                                    $scope.distanceMax=distance;
+                            }else{
+                                $scope.distanceMax=distance;
+                            }
+                            if (distance <= 20000)
                             {
                                 place.distance=distance;
                                 place.unitName=place.name;
@@ -180,12 +192,17 @@ angular.module('starter')
                         mk.setLabel(label);
                         map.addOverlay(mk);
                     });
+
                     //render circle
-                    $scope.renderCircle(map.getCenter(),0.12,0.1);
-
-
+                    $scope.renderCircle(map.getCenter(),0.22,0.2);
                     $scope.contentInfo=$scope.places;
                     $ionicLoading.hide();
+                    if($scope.places.length==1)
+                    {
+                        //默认定位第一个搜索结果
+                        var firstPlace=$scope.places[0];
+                        map.panTo(new BMap.Point(firstPlace.longitude, firstPlace.latitude) );
+                    }
                     $scope.contentInfoPanel.show();
                 }else{
                     $ionicLoading.hide();
@@ -212,7 +229,12 @@ angular.module('starter')
             //选择全集
             if(set!==undefined&&set!==null&&set.length>0) {
                 $scope.closeContentInfoPanel();
-                $state.go('map_administrate_confirm', {contentInfo: JSON.stringify({places: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+                $state.go('map_administrate_confirm', {contentInfo: JSON.stringify({detectUnites: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+            }else{
+                var myPopup = $ionicPopup.alert({
+                    template: '未选中如何结果',
+                    title: '<strong style="color:red">错误</strong>'
+                });
             }
         }
 
@@ -235,7 +257,7 @@ angular.module('starter')
 
         $scope.confirm=function (item) {
             $scope.closeContentInfoPanel();
-            $state.go('map_daily_confirm', {contentInfo: JSON.stringify({unit: item,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+            $state.go('map_administrate_confirm', {contentInfo: JSON.stringify({detectUnit: item,carInfo:$scope.carInfo,maintain:$scope.maintain})});
         }
 
         $scope.clear_search=function () {

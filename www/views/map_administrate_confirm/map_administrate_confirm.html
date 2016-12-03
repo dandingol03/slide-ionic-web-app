@@ -1,4 +1,4 @@
-<ion-view class="passwordForget-view" view-title="选择维修厂">
+<ion-view class="passwordForget-view" view-title="选择检测公司">
     <ion-nav-bar class="bar-stable" align-title="center" >
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear bar_arr"
@@ -46,20 +46,20 @@
 
             <!-- 特定维修厂选择 -->
             <div class="item" style="margin:1px;padding:4px;margin-bottom:10px; border: 1px solid #bf530c"
-                 ng-if="place!==undefined&&place!==null">
+                 ng-if="detectUnit!==undefined&&detectUnit!==null">
                 <span class="input-label"
                       style="display: inline-block;color:#bf530c;width: 20%;
                       text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
-                     维修厂
+                     检测公司
                 </span>
                 <span class="input-label"
-                      style="display: inline-block;width: 45%;text-align: center"
-                      ng-if="place!==undefined&&place!==null">
-                    {{place.name}}
+                      style="display: inline-block;width: 70%;text-align: center"
+                      ng-if="detectUnit!==undefined&&detectUnit!==null">
+                    {{detectUnit.name}}
                 </span>
 
                 <span class="input-label"
-                      style="display: inline-block;width:20%;">
+                      style="display: inline-block;width:10%;">
                 </span>
             </div>
 
@@ -116,7 +116,7 @@
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;
                         padding:10px;background-color:transparent;position: relative"
-                 ng-click="applyMaintainDailyOrder()"
+                 ng-click="generateServiceOrder()"
             >
                 <button class="button button-calm " style="width: 80%;margin-left:10%;margin-right:10%;">
                     提交维修订单

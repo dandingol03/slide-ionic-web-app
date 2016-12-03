@@ -61,7 +61,6 @@ angular.module('starter')
                 mode: 'datetime',
                 locale:'zh_cn'
             };
-
             if($scope.selectTime==true){
                 $scope.selectTime=false;
                 $cordovaDatePicker.show(options).then(function(date){

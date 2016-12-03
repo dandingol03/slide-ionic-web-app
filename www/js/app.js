@@ -800,11 +800,19 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/map_daily_confirm/map_daily_confirm.html'
           })
 
-            .state('map_administrate_search',{
-                url:'/map_administrate_search:ob',
-                controller:'mapAdministrateSearchController',
-                templateUrl:'views/map_administrate_search/map_administrate_search.html'
-            })
+          .state('map_administrate_search',{
+            url:'/map_administrate_search:ob',
+            controller:'mapAdministrateSearchController',
+            templateUrl:'views/map_administrate_search/map_administrate_search.html'
+          })
+
+          .state('map_administrate_confirm',{
+              url:'/map_administrate_confirm/:contentInfo',
+              controller:'mapAdministrateConfirmController',
+              templateUrl:'views/map_administrate_confirm/map_administrate_confirm.html'
+          })
+
+
 
 
       // if none of the above states are matched, use this as the fallback
@@ -830,7 +838,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://139.129.96.231:3000";
+            return "http://192.168.1.100:3000";
           else
             return "/proxy/node_server";
             
