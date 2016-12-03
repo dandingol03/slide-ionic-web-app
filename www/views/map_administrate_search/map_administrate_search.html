@@ -1,4 +1,4 @@
-<ion-view view-title="选择维修厂">
+<ion-view view-title="检测公司搜索">
     <ion-nav-bar class="bar-stable" align-title="center" >
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear bar_arr" style="font-size: 2em;"
@@ -68,8 +68,21 @@
             </div>
         </div>
 
-
-
+        <!-- 取车、送车 -->
+        <div style="position: absolute;right: 10px;top:20%;height:45px;z-index: 1000;">
+            <div class="card" style="display: table;width: 45px;height: 100%;margin:0px;text-align: center;">
+                <div ng-style="mode=='servicePlace'?blockInStyle:blockOffStyle" ng-click="modeSwitch('servicePlace')">
+                    <div>
+                        <span style="font-size: 2em;">
+                            <i class="ion-arrow-graph-up-right"></i>
+                        </span>
+                    </div>
+                    <div>
+                        <span style="font-weight: bolder;">检测点</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 

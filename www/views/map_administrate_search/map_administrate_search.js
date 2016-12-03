@@ -53,14 +53,23 @@ angular.module('starter')
 
 
         $scope.go_back = function () {
-            $rootScope.dashboard.tabIndex=2;
-            $rootScope.dashboard.subTabIndex=$scope.locateIndex;
+            $rootScope.dashboard.tabIndex=3;
+            $rootScope.dashboard.subTabIndex=0;
             window.history.back();
         }
 
         $scope.selectTime=true;
 
+        $scope.mode='servicePlace';
 
+        $scope.blockInStyle={display: 'table-cell','vertical-align': 'middle',background:'#11c1f3',color:'#fff'};
+        $scope.blockOffStyle={display: 'table-cell','vertical-align': 'middle',background:'#fff',color:'#666'};
+
+        $scope.modeSwitch=function (mode) {
+            if(mode===$scope.mode)
+                return;
+            $scope.mode=mode;
+        }
 
         $scope.renderCircle=function (cen,x,y) {
             var BMap=$scope.bMap;
@@ -150,7 +159,7 @@ angular.module('starter')
                             }else{
                                 $scope.distanceMax=distance;
                             }
-                            if (distance <= 20000)
+                            if (distance <= 25000)
                             {
                                 place.distance=distance;
                                 place.unitName=place.name;
