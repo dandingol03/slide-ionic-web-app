@@ -18,9 +18,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
 
-
-
-
       $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -812,6 +809,17 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/map_administrate_confirm/map_administrate_confirm.html'
           })
 
+          .state('map_paperValidate_search',{
+              url:'/map_paperValidate_search:ob',
+              controller:'mapPaperValidateSearchController',
+              templateUrl:'views/map_paperValidate_search/map_paperValidate_search.html'
+          })
+
+          .state('map_paperValidate_confirm',{
+              url:'/map_paperValidate_confirm/:contentInfo',
+              controller:'mapPaperValidateConfirmController',
+              templateUrl:'views/map_paperValidate_confirm/map_paperValidate_confirm.html'
+          })
 
 
 
