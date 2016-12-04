@@ -821,6 +821,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/map_paperValidate_confirm/map_paperValidate_confirm.html'
           })
 
+          .state('map_airport_search',{
+              url:'/map_airport_search:ob',
+              controller:'mapAirportSearchController',
+              templateUrl:'views/map_airport_search/map_airport_search.html'
+          })
+
 
 
       // if none of the above states are matched, use this as the fallback
@@ -846,7 +852,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.100:3000";
+            return "http://139.129.96.231:3000";
           else
             return "/proxy/node_server";
             

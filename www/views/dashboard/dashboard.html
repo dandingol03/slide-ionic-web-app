@@ -771,29 +771,11 @@
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='代办车辆年审'">
 
         <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            选择车辆:
-          </span>
-          <span>
-            {{carManage.carValidate.servicePlace!==undefined&&carManage.carValidate.servicePlace!==null?carManage.carValidate.servicePlace:''}}
-          </span>
-          <span ng-click="car_registrate()" style="font-size: 150%;">
-              <i class="ion-ios-arrow-down" ></i>
-          </span>
+          <button class="button button-assertive" style="width: 70%;" ng-click="car_registrate()">
+            下一步
+          </button>
         </div>
 
-
-        <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            选择车管所:
-          </span>
-            <span>
-            {{carManage.carValidate.servicePlace!==undefined&&carManage.carValidate.servicePlace!==null?carManage.carValidate.servicePlace:''}}
-          </span>
-            <span ng-click="pickMaintain(21,0)" style="font-size: 150%;">
-              <i class="ion-ios-arrow-down" ></i>
-          </span>
-          </div>
 
         <!--<div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">-->
           <!--<span class="input-label" style="display: inline-block;">-->
@@ -835,41 +817,13 @@
 
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='代办行驶证年审'">
 
-          <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            选择审证所:
-          </span>
-            <span>
-            {{carManage.paperValidate.servicePlace}}
-          </span>
-            <span ng-click="pickPaperValidate()" style="font-size: 1.6em;">
-              <i class="ion-ios-arrow-down" ></i>
-          </span>
-          </div>
 
           <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            服务人员:
-          </span>
-            <span ng-click="service_person_select(service_persons)">
-                 {{carManage.paperValidate.servicePerson!==undefined&&carManage.paperValidate.servicePerson!==null?carManage.paperValidate.servicePerson.perName:''}}
-            <span style="font-size: 1.6em;">
-              <i class="ion-ios-arrow-down"></i>
-            </span>
-          </span>
+            <button class="button button-assertive" style="width: 70%;" ng-click="pickPaperValidate()">
+              下一步
+            </button>
           </div>
 
-          <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-                 <span class="input-label" style="display: inline-block;">
-                  服务费:
-                </span>
-            <span>$40000</span>
-          </div>
-
-
-          <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="open_carManageTAModal()">
-            <h1 class="title">确认</h1>
-          </div>
         </div>
 
 

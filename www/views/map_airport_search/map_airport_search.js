@@ -5,9 +5,9 @@
  */
 angular.module('starter')
 
-    .controller('mapAdministrateSearchController',function($scope,$state,$http,$timeout,$rootScope,
-                                               BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                               Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
+    .controller('mapAirportSearchController',function($scope,$state,$http,$timeout,$rootScope,
+                                                           BaiduMapService,$cordovaGeolocation,$ionicModal,
+                                                           Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
 
         if($stateParams.ob!==undefined&&$stateParams.ob!==null)
         {

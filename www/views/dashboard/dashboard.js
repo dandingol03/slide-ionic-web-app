@@ -4041,7 +4041,10 @@ $scope.openAirportTransfer=function(){
     }
 
     $scope.pickPaperValidate=function(locateType) {
-        $state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
+        $state.go('map_paperValidate_search',
+            {ob:JSON.stringify({carInfo:$scope.carInfo,
+                locateType:locateType})});
+        //$state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
     }
 
 
