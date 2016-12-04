@@ -5,9 +5,9 @@
  */
 angular.module('starter')
 
-    .controller('mapSearchController',function($scope,$state,$http,$timeout,$rootScope,
-                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                         Proxy,$stateParams, $q,$ionicLoading) {
+    .controller('mapParkCarSearchController',function($scope,$state,$http,$timeout,$rootScope,
+                                                      BaiduMapService,$cordovaGeolocation,$ionicModal,
+                                                      Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
 
         if($stateParams.ob!==undefined&&$stateParams.ob!==null)
         {
@@ -53,24 +53,38 @@ angular.module('starter')
 
 
         $scope.go_back = function () {
-            $rootScope.dashboard.tabIndex=2;
-            $rootScope.dashboard.subTabIndex=$scope.locateIndex;
+            $rootScope.dashboard.tabIndex=3;
+            $rootScope.dashboard.subTabIndex=0;
             window.history.back();
         }
 
         $scope.selectTime=true;
 
+        $scope.mode='pickUp';
 
+        $scope.blockInStyle={display: 'table-cell','vertical-align': 'middle',background:'#11c1f3',color:'#fff'};
+        $scope.blockOffStyle={display: 'table-cell','vertical-align': 'middle',background:'#fff',color:'#666'};
+
+        $scope.modeSwitch=function (mode) {
+            if(mode===$scope.mode)
+                return;
+            $scope.mode=mode;
+        }
 
         $scope.renderCircle=function (cen,x,y) {
-
+            var BMap=$scope.bMap;
+            var map=$scope.map;
+            if($scope.distanceMax>10000)
+            {
+                var zoomLevel=map.getZoom();
+                if(zoomLevel!=11)
+                    map.setZoom(11);
+            }
             var center=null;
             if(cen!==undefined&&cen!==null)
                 center=cen;
             else
                 center=$scope.map.getCenter();
-            var BMap=$scope.bMap;
-            var map=$scope.map;
             var assemble=[];
             var angle;
             var dot;
@@ -97,7 +111,7 @@ angular.module('starter')
             var BMao=$scope.bMap;
             var map=$scope.map;
             //仅容许根据区进行搜索
-            var reg=/\s*(.*区)/
+            var reg=/\s*(.*区)/;
             var re=reg.exec($scope.root.query);
             if(re!==undefined&&re!==null)
             {
@@ -108,7 +122,8 @@ angular.module('starter')
                     return;
                 }
             }else{
-                return ;
+                //未选择,筛选出历城、历下、槐荫、天桥、市中
+                district=['历城区','历下区','槐荫区','天桥区','市中区'];
             }
 
             $ionicLoading.show({
@@ -138,7 +153,14 @@ angular.module('starter')
                             unit.latitude !== undefined && unit.latitude !== null) {
                             var center = map.getCenter();
                             var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
-                            if (distance <= 10000)
+                            if($scope.distanceMax!==undefined&&$scope.distanceMax!==null)
+                            {
+                                if(distance>$scope.distanceMax)
+                                    $scope.distanceMax=distance;
+                            }else{
+                                $scope.distanceMax=distance;
+                            }
+                            if (distance <= 30000)
                             {
                                 unit.distance=distance;
                                 $scope.units.push(unit);
@@ -147,21 +169,6 @@ angular.module('starter')
                     });
                     //remove previous markers
                     map.clearOverlays();
-                    var mk=$scope.mk;
-                    if(mk!==undefined&&mk!==null)
-                    {
-                        var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
-                        label.setStyle({
-                            color: '#222',
-                            fontSize: "12px",
-                            height: "20px",
-                            lineHeight: "20px",
-                            fontFamily: "微软雅黑",
-                            border: '0px'
-                        });
-                        mk.setLabel(label);
-                        map.addOverlay(mk);
-                    }
 
                     //render new markers
                     $scope.labels = [];
@@ -179,12 +186,24 @@ angular.module('starter')
                         mk.setLabel(label);
                         map.addOverlay(mk);
                     });
+
+                    //渲染遥墙机场
+                    if($scope.point)
+                    {
+                        var point=$scope.point;
+                        $scope.appendAirportLocation(BMap,map,{longitude:point.lng,latitude:point.lat});
+                    }
+
                     //render circle
-                    $scope.renderCircle(map.getCenter(),0.12,0.1);
-
-
+                    $scope.renderCircle(map.getCenter(),0.22,0.2);
                     $scope.contentInfo=$scope.units;
                     $ionicLoading.hide();
+                    if($scope.units.length==1)
+                    {
+                        //默认定位第一个搜索结果
+                        var firstPlace=$scope.units[0];
+                        map.panTo(new BMap.Point(firstPlace.longitude, firstPlace.latitude) );
+                    }
                     $scope.contentInfoPanel.show();
                 }else{
                     $ionicLoading.hide();
@@ -211,31 +230,37 @@ angular.module('starter')
             //选择全集
             if(set!==undefined&&set!==null&&set.length>0) {
                 $scope.closeContentInfoPanel();
-                $state.go('map_daily_confirm', {contentInfo: JSON.stringify({units: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+                $state.go('map_parkCar_confirm', {contentInfo: JSON.stringify({units: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+            }else{
+                var myPopup = $ionicPopup.alert({
+                    template: '未选中如何结果',
+                    title: '<strong style="color:red">错误</strong>'
+                });
             }
         }
 
-        $scope.locate=function (place) {
-            if(place!==undefined&&place!==null)
+        $scope.locate=function (unit) {
+            if(unit!==undefined&&unit!==null)
             {
                 var map=$scope.map;
                 var BMap=$scope.bMap;
-                map.panTo(new BMap.Point(place.longitude, place.latitude) );
+                map.panTo(new BMap.Point(unit.longitude, unit.latitude) );
                 var opts = {
                     width : 260,     // 信息窗口宽度
                     height: 70,     // 信息窗口高度
-                    title : place.unitName , // 信息窗口标题
+                    title : unit.unitName , // 信息窗口标题
                 };
-                var content='地址:'+place.address;
+                var content='地址:'+unit.address;
                 var infoWindow = new BMap.InfoWindow(content, opts);
+                //关闭模态框
                 $scope.closeContentInfoPanel();
-                map.openInfoWindow(infoWindow,new BMap.Point(place.longitude, place.latitude)); //开启信息窗口
+                map.openInfoWindow(infoWindow,new BMap.Point(unit.longitude, unit.latitude)); //开启信息窗口
             }
         }
-        
+
         $scope.confirm=function (item) {
             $scope.closeContentInfoPanel();
-            $state.go('map_daily_confirm', {contentInfo: JSON.stringify({unit: item,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+            $state.go('map_parkCar_confirm', {contentInfo: JSON.stringify({mode:$scope.mode,unit: item,carInfo:$scope.carInfo})});
         }
 
         $scope.clear_search=function () {
@@ -270,28 +295,73 @@ angular.module('starter')
             $scope.renderCircle(e.point,0.12, 0.1);
         }
 
+        $scope.appendAirportLocation=function(BMap,map,servicePlace){
 
-
+            if(servicePlace!==undefined&&servicePlace!==null)
+                $scope.carManage.servicePlaceId=servicePlace.placeId;
+            var point=new BMap.Point(servicePlace.longitude, servicePlace.latitude);
+            if($scope.mk!==undefined&&$scope.mk!==null)
+                map.removeOverlay($scope.mk);
+            var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+            var mk = new BMap.Marker(point,{icon:bIcon});  // 创建标注
+            map.addOverlay(mk);               // 将标注添加到地图中
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.ScaleControl());
+            map.enableScrollWheelZoom(true);
+            var label = new BMap.Label("遥墙机场", {offset: new BMap.Size(20, -10)});
+            label.setStyle({
+                color: '#222',
+                fontSize: "12px",
+                height: "20px",
+                lineHeight: "20px",
+                fontFamily: "微软雅黑",
+                border: '0px'
+            });
+            mk.setLabel(label);
+            $scope.mk=mk;
+        }
 
         $scope.init_map=function (BMap) {
 
             var deferred=$q.defer();
 
             var cb=function () {
-                var map = new BMap.Map("map_search");          // 创建地图实例
-                var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
-                $scope.point=point;
-                map.centerAndZoom(point, 13);
-                map.addControl(new BMap.NavigationControl());
-                map.addControl(new BMap.ScaleControl());
-                map.enableScrollWheelZoom(true);
-                $scope.tpMarkers=[];
-                $scope.dragF=false;
+                var map = new BMap.Map("map_airport_search");
+                //遥墙机场经纬度
+                $http({
+                    method: "POST",
+                    url: Proxy.local() + "/svr/request",
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token,
+                    },
+                    data: {
+                        request: 'getInsuranceCarServicePlaceByName',
+                        info: {
+                            name:'遥墙机场'
+                        }
+                    }
+                }).then(function(res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        var servicePlace=json.data;
+                        var point = new BMap.Point(servicePlace.longitude, servicePlace.latitude);
+                        if(point!==undefined&&point!==null)
+                            $scope.point=point;
 
-                //地图添加点击事件
-                //map.addEventListener("click", $scope.clickFunc);
-                $scope.map=map;
-                deferred.resolve({re: 1});
+                        map.centerAndZoom(point, 11);
+                        map.addControl(new BMap.NavigationControl());
+                        map.addControl(new BMap.ScaleControl());
+                        map.enableScrollWheelZoom(true);
+                        $scope.tpMarkers=[];
+                        $scope.dragF=false;
+
+                        //地图添加点击事件
+                        //map.addEventListener("click", $scope.clickFunc);
+                        $scope.map=map;
+                        $scope.appendAirportLocation(BMap,map,servicePlace);
+                    }
+                })
+
             }
             cb();
 

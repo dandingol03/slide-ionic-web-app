@@ -260,6 +260,7 @@ angular.module('starter')
                 };
                 var content='地址:'+place.address;
                 var infoWindow = new BMap.InfoWindow(content, opts);
+                $scope.closeContentInfoPanel();
                 map.openInfoWindow(infoWindow,new BMap.Point(place.longitude, place.latitude)); //开启信息窗口
             }
         }

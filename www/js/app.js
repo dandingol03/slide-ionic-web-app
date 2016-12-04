@@ -833,6 +833,18 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/map_airport_confirm/map_airport_confirm.html'
           })
 
+          .state('map_parkCar_search',{
+              url:'/map_parkCar_search:ob',
+              controller:'mapParkCarSearchController',
+              templateUrl:'views/map_parkCar_search/map_parkCar_search.html'
+          })
+
+          .state('map_parkCar_confirm',{
+              url:'/map_parkCar_confirm/:contentInfo',
+              controller:'mapParkCarConfirmController',
+              templateUrl:'views/map_parkCar_confirm/map_parkCar_confirm.html'
+          })
+
 
 
 

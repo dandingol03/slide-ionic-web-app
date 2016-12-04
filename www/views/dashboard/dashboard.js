@@ -4056,6 +4056,14 @@ $scope.openAirportTransfer=function(){
                   locateType:locateType})});
       }
 
+
+      //取送车
+      $scope.goParkCarSearch=function(locateType) {
+          $state.go('map_parkCar_search',
+              {ob:JSON.stringify({carInfo:$scope.carInfo,
+                  locateType:locateType})});
+      }
+
     /*** bind matching_car_info modal ***/
     $ionicModal.fromTemplateUrl('views/modal/matching_car_info.html',{
       scope:  $scope,

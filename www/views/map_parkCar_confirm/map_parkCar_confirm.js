@@ -5,10 +5,10 @@
  */
 angular.module('starter')
 
-    .controller('mapAirportConfirmController',function($scope,$state,$http,$timeout,$rootScope,
-                                                            $ionicModal, Proxy,$stateParams,$q,
-                                                            $ionicActionSheet,$cordovaDatePicker,$ionicLoading,
-                                                            $ionicPopup) {
+    .controller('mapParkCarConfirmController',function($scope,$state,$http,$timeout,$rootScope,
+                                                       $ionicModal, Proxy,$stateParams,$q,
+                                                       $ionicActionSheet,$cordovaDatePicker,$ionicLoading,
+                                                       $ionicPopup) {
 
 
 
@@ -93,10 +93,10 @@ angular.module('starter')
                 switch($scope.contentInfo.mode)
                 {
                     case 'pickUp':
-                        $scope.viewTitle='生成接机订单';
+                        $scope.viewTitle='生成取车订单';
                         break;
                     case 'seeOff':
-                        $scope.viewTitle='生成送机订单';
+                        $scope.viewTitle='生成送车订单';
                         break;
                     default:
                         break;
@@ -389,10 +389,10 @@ angular.module('starter')
                 {
                     $scope.generateServiceOrder();
                 }else{
-                        $ionicPopup.alert({
-                            title: '',
-                            template: '请选择预约时间'
-                        });
+                    $ionicPopup.alert({
+                        title: '',
+                        template: '请选择预约时间'
+                    });
                 }
             }else{
                 $ionicPopup.alert({

@@ -230,7 +230,7 @@ angular.module('starter')
             //选择全集
             if(set!==undefined&&set!==null&&set.length>0) {
                 $scope.closeContentInfoPanel();
-                $state.go('map_administrate_confirm', {contentInfo: JSON.stringify({units: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+                $state.go('map_airport_confirm', {contentInfo: JSON.stringify({units: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
             }else{
                 var myPopup = $ionicPopup.alert({
                     template: '未选中如何结果',
@@ -252,6 +252,8 @@ angular.module('starter')
                 };
                 var content='地址:'+unit.address;
                 var infoWindow = new BMap.InfoWindow(content, opts);
+                //关闭模态框
+                $scope.closeContentInfoPanel();
                 map.openInfoWindow(infoWindow,new BMap.Point(unit.longitude, unit.latitude)); //开启信息窗口
             }
         }
