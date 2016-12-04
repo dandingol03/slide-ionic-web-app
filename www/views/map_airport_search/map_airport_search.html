@@ -40,7 +40,7 @@
                 <div style="width:100%;height: 100%;position: relative;">
                       <span style="width: 67%;display: inline-block;position: absolute;left:0%;top:0px;
                       height: 100%; padding-top: 10px;padding-bottom: 10px;">
-                            <input type="text" placeholder="请输入搜索条件"
+                            <input type="text" placeholder="请输入'区'的名字指派接机的维修厂"
                                    style="display:inline-block;background-color: transparent;width: 100%;"
                                    ng-value="root.query"
                                    ng-model="root.query"
@@ -69,8 +69,8 @@
         </div>
 
         <!-- 接机、送机 -->
-        <div style="position: absolute;right: 10px;top:20%;height:45px;z-index: 1000;">
-            <div class="card" style="display: table;width: 45px;height: 100%;margin:0px;text-align: center;">
+        <div style="position: absolute;right: 10px;top:20%;height:50px;z-index: 1000;">
+            <div class="card" style="display: table;width: 50px;height: 100%;margin:0px;text-align: center;">
                 <div ng-style="mode=='pickUp'?blockInStyle:blockOffStyle" ng-click="modeSwitch('pickUp')">
                     <div>
                         <span style="font-size: 2em;">
@@ -84,8 +84,8 @@
             </div>
         </div>
 
-        <div style="position: absolute;right: 10px;top:20%;height:45px;z-index: 1000;">
-            <div class="card" style="display: table;width: 45px;height: 100%;margin:0px;text-align: center;">
+        <div style="position: absolute;right: 10px;top:29%;height:50px;z-index: 1000;">
+            <div class="card" style="display: table;width: 50px;height: 100%;margin:0px;text-align: center;">
                 <div ng-style="mode=='seeOff'?blockInStyle:blockOffStyle" ng-click="modeSwitch('seeOff')">
                     <div>
                         <span style="font-size: 2em;">

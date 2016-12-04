@@ -4040,6 +4040,8 @@ $scope.openAirportTransfer=function(){
       $state.go('locate_parkCar_nearby', {locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType})});
     }
 
+
+    //审证
     $scope.pickPaperValidate=function(locateType) {
         $state.go('map_paperValidate_search',
             {ob:JSON.stringify({carInfo:$scope.carInfo,
@@ -4047,6 +4049,12 @@ $scope.openAirportTransfer=function(){
         //$state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
     }
 
+      //接送机
+      $scope.goAirportSearch=function(locateType) {
+          $state.go('map_airport_search',
+              {ob:JSON.stringify({carInfo:$scope.carInfo,
+                  locateType:locateType})});
+      }
 
     /*** bind matching_car_info modal ***/
     $ionicModal.fromTemplateUrl('views/modal/matching_car_info.html',{

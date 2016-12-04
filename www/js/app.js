@@ -827,9 +827,16 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/map_airport_search/map_airport_search.html'
           })
 
+          .state('map_airport_confirm',{
+              url:'/map_airport_confirm/:contentInfo',
+              controller:'mapAirportConfirmController',
+              templateUrl:'views/map_airport_confirm/map_airport_confirm.html'
+          })
 
 
-      // if none of the above states are matched, use this as the fallback
+
+
+        // if none of the above states are matched, use this as the fallback
 
       $urlRouterProvider.otherwise('/login');
 
