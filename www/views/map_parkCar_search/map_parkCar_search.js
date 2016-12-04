@@ -187,12 +187,7 @@ angular.module('starter')
                         map.addOverlay(mk);
                     });
 
-                    //渲染遥墙机场
-                    if($scope.point)
-                    {
-                        var point=$scope.point;
-                        $scope.appendAirportLocation(BMap,map,{longitude:point.lng,latitude:point.lat});
-                    }
+
 
                     //render circle
                     $scope.renderCircle(map.getCenter(),0.22,0.2);
@@ -295,72 +290,29 @@ angular.module('starter')
             $scope.renderCircle(e.point,0.12, 0.1);
         }
 
-        $scope.appendAirportLocation=function(BMap,map,servicePlace){
 
-            if(servicePlace!==undefined&&servicePlace!==null)
-                $scope.carManage.servicePlaceId=servicePlace.placeId;
-            var point=new BMap.Point(servicePlace.longitude, servicePlace.latitude);
-            if($scope.mk!==undefined&&$scope.mk!==null)
-                map.removeOverlay($scope.mk);
-            var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
-            var mk = new BMap.Marker(point,{icon:bIcon});  // 创建标注
-            map.addOverlay(mk);               // 将标注添加到地图中
-            map.addControl(new BMap.NavigationControl());
-            map.addControl(new BMap.ScaleControl());
-            map.enableScrollWheelZoom(true);
-            var label = new BMap.Label("遥墙机场", {offset: new BMap.Size(20, -10)});
-            label.setStyle({
-                color: '#222',
-                fontSize: "12px",
-                height: "20px",
-                lineHeight: "20px",
-                fontFamily: "微软雅黑",
-                border: '0px'
-            });
-            mk.setLabel(label);
-            $scope.mk=mk;
-        }
 
         $scope.init_map=function (BMap) {
 
             var deferred=$q.defer();
 
             var cb=function () {
-                var map = new BMap.Map("map_airport_search");
-                //遥墙机场经纬度
-                $http({
-                    method: "POST",
-                    url: Proxy.local() + "/svr/request",
-                    headers: {
-                        'Authorization': "Bearer " + $rootScope.access_token,
-                    },
-                    data: {
-                        request: 'getInsuranceCarServicePlaceByName',
-                        info: {
-                            name:'遥墙机场'
-                        }
-                    }
-                }).then(function(res) {
-                    var json=res.data;
-                    if(json.re==1) {
-                        var servicePlace=json.data;
-                        var point = new BMap.Point(servicePlace.longitude, servicePlace.latitude);
-                        if(point!==undefined&&point!==null)
-                            $scope.point=point;
+                var map = new BMap.Map("map_parkCar_search");
 
-                        map.centerAndZoom(point, 11);
-                        map.addControl(new BMap.NavigationControl());
-                        map.addControl(new BMap.ScaleControl());
-                        map.enableScrollWheelZoom(true);
-                        $scope.tpMarkers=[];
-                        $scope.dragF=false;
+                var point = new BMap.Point(116.997267, 36.677446);
+                if(point!==undefined&&point!==null)
+                    $scope.point=point;
 
-                        //地图添加点击事件
-                        //map.addEventListener("click", $scope.clickFunc);
-                        $scope.map=map;
-                        $scope.appendAirportLocation(BMap,map,servicePlace);
-                    }
-                })
+                map.centerAndZoom(point, 12);
+                map.addControl(new BMap.NavigationControl());
+                map.addControl(new BMap.ScaleControl());
+                map.enableScrollWheelZoom(true);
+                $scope.tpMarkers=[];
+                $scope.dragF=false;
+
+                //地图添加点击事件
+                //map.addEventListener("click", $scope.clickFunc);
+                $scope.map=map;
 
             }
             cb();

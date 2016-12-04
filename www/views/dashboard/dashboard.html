@@ -829,38 +829,15 @@
 
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='接送机'">
 
-          <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="goAirportSearch()">
+          <div class="bar bar-footer  bar-assertive" style="position: static;width: 70%;" ng-click="goAirportSearch()">
             <h1 class="title">下一步</h1>
           </div>
         </div>
 
 
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='取送车'">
-          <div class="item"
-               style="margin:1px;border-bottom:1px solid #222;border-top:0px;border-left:0px;border-right:0px;padding:10px;background-color:transparent;">
 
-          <span class="input-label" style="display: inline-block;width: 30%;text-align: left">
-            目的地:
-          </span>
-            <span
-                    style="width: 45%;display: inline-block;text-align: left;"
-                    ng-if="carManage.parkCar.destiny!==undefined&&carManage.parkCar.destiny!==null"
-            >
-             {{carManage.parkCar.destiny.lat+','+carManage.parkCar.destiny.lng}}
-          </span>
-            <span
-                    ng-if="carManage.parkCar.destiny==undefined||carManage.parkCar.destiny==null"
-                    style="width: 45%;display: inline-block;text-align: left;color:#aaa;"
-            >
-            请选择目的地
-          </span>
-            <span ng-click="pickParkCarNearby()"
-                  style="font-size: 1.6em;width: 30%;display: inline-block;text-align: center;">
-            <i class="ion-ios-arrow-down" ></i>
-          </span>
-          </div>
-
-          <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="goParkCarSearch()">
+          <div class="bar bar-footer  bar-assertive" style="position: static;width: 70%;" ng-click="goParkCarSearch()">
             <h1 class="title">下一步</h1>
           </div>
         </div>

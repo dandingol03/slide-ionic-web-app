@@ -83,9 +83,54 @@
                 </span>
             </div>
 
+            <!-- servicePlace -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;
+                border: 1px solid #bf530c">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.6em;color:#bf530c;width: 20%;
+                      text-align: center;padding-bottom: 5px;padding-top:10px;border-right: 1px solid;">
+                  <i class="fa fa-home"></i>
+                </span>
+
+                <span style="display: inline-block;width:40%;vertical-align: text-bottom;text-align: center;"
+                      ng-if="servicePlace!==undefined&&servicePlace!==null">
+                    {{servicePlace.name}}
+                </span>
+
+                <span style="display: inline-block;width:40%;vertical-align: text-bottom;text-align: center;color:#aaa;"
+                      ng-if="servicePlace==undefined||servicePlace==null||servicePlace==''">
+                    <span ng-if="viewTitle=='生成接站订单'">
+                        接站出发地
+                    </span>
+                     <span ng-if="viewTitle=='生成送站订单'">
+                        送站目的地
+                    </span>
+                </span>
+
+                <span class="input-label"
+                      style="display: inline-block;background:#f79916;color:#fff;width:35%;
+                      text-align: center;vertical-align: super;padding-right: 2px;"
+                      ng-if="viewTitle=='生成接站订单'"
+                      ng-click="selectServicePlace()">
+                    选择接站出发地
+                </span>
+
+                <span class="input-label"
+                      style="display: inline-block;background:#f79916;color:#fff;width:35%;
+                      text-align: center;vertical-align: super;padding-right: 2px;"
+                      ng-if="viewTitle=='生成送站订单'"
+                      ng-click="selectDestination()">
+                    选择送站目的地
+                </span>
 
 
-            <!-- 取车送车目的地 -->
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+
+            <!-- customerPlace -->
             <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;
                 border: 1px solid #bf530c">
                 <span class="input-label"
@@ -109,17 +154,17 @@
                 <span class="input-label"
                       style="display: inline-block;background:#f79916;color:#fff;width:35%;
                       text-align: center;vertical-align: super;padding-right: 2px;"
-                      ng-if="viewTitle=='生成接机订单'"
+                      ng-if="viewTitle=='生成接站订单'"
                       ng-click="selectDestination()">
-                    选择接机目的地
+                    选择接站目的地
                 </span>
 
                 <span class="input-label"
                       style="display: inline-block;background:#f79916;color:#fff;width:35%;
                       text-align: center;vertical-align: super;padding-right: 2px;"
-                      ng-if="viewTitle=='生成送机订单'"
+                      ng-if="viewTitle=='生成送站订单'"
                       ng-click="selectDestination()">
-                    选择送机出发地
+                    选择送站出发地
                 </span>
 
 
@@ -135,7 +180,8 @@
                  ng-click="applyCarServiceOrder()"
             >
                 <button class="button button-calm " style="width: 80%;margin-left:10%;margin-right:10%;">
-                    提交接机订单
+                    <span ng-if="viewTitle=='生成接站订单'">提交接站订单</span>
+                    <span ng-if="viewTitle=='生成送站订单'">提交送站订单</span>
                 </button>
             </div>
 

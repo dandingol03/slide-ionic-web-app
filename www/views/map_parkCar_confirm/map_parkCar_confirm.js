@@ -93,10 +93,10 @@ angular.module('starter')
                 switch($scope.contentInfo.mode)
                 {
                     case 'pickUp':
-                        $scope.viewTitle='生成取车订单';
+                        $scope.viewTitle='生成接站订单';
                         break;
                     case 'seeOff':
-                        $scope.viewTitle='生成送车订单';
+                        $scope.viewTitle='生成送站订单';
                         break;
                     default:
                         break;
@@ -146,6 +146,61 @@ angular.module('starter')
         if($scope.unit!==undefined&&$scope.unit!==null)
             $scope.getServicePersonByUnitId();
 
+
+        //选取servicePlace
+        $scope.selectServicePlace=function () {
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request: 'fetchRailwayStationInArea',
+                    info:{}
+                }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1) {
+                    var servicePlaces=json.data;
+                    if(servicePlaces!==undefined&&servicePlaces!==null&&servicePlaces.length>0) {
+                        var buttons=[];
+
+                        servicePlaces.map(function (servicePlace) {
+                            var item=servicePlace;
+                            item.text=servicePlace.name;
+                            buttons.push(item);
+                        })
+                        var servicePlaceSheet = $ionicActionSheet.show({
+                            buttons: buttons,
+                            titleText: '<b>选择服务场所</b>',
+                            cancelText: 'Cancel',
+                            cancel: function() {
+                                // add cancel code..
+                            },
+
+                            buttonClicked: function(index) {
+                                $scope.servicePlace=buttons[index];
+                                return true;
+                            },
+                            cssClass:'center'
+                        });
+                    }
+                }else if(json.re==2)
+                {
+
+                    $ionicPopup.alert({
+                        title: '信息',
+                        template: '没有可供选择的服务场所'
+                    });
+                }else{}
+
+
+            })
+        }
+
+
+        //选取用户地址
         $scope.selectDestination=function () {
             $http({
                 method: "POST",
@@ -223,7 +278,8 @@ angular.module('starter')
             $scope.carManage.serviceType=21;
             if(unit!==undefined&&unit!==null)//
             {
-                $scope.carManage.servicePlaceId=55;
+
+                $scope.carManage.servicePlaceId=$scope.servicePlace.placeId;
                 $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
 
                 $http({
@@ -387,10 +443,17 @@ angular.module('starter')
             {
                 if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
                 {
-                    $scope.generateServiceOrder();
+                    if($scope.servicePlace!==undefined&&$scope.servicePlace!==null)
+                        $scope.generateServiceOrder();
+                    else{
+                        $ionicPopup.alert({
+                            title: '信息',
+                            template: '请先选择服务场所'
+                        });
+                    }
                 }else{
                     $ionicPopup.alert({
-                        title: '',
+                        title: '信息',
                         template: '请选择预约时间'
                     });
                 }
