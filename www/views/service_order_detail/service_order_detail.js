@@ -171,7 +171,7 @@ angular.module('starter')
               //指定了服务人员
               if($scope.order.servicePersonId!=undefined&&$scope.order.servicePersonId!=null) {
                   var date = new Date();
-                  $scope.timeDifference = parseInt((date-$scope.order.estimateTime) /(1000*60*60))
+                  $scope.timeDifference = parseInt(($scope.order.estimateTime- date) / 1000 / 60 / 60)
                   if ($scope.timeDifference >= 2) {
                       $http({
                           method: "post",
