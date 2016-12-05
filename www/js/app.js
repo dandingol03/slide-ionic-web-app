@@ -18,9 +18,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
 
-
-
-
       $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -789,13 +786,69 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('map_search',{
-              url:'/map_search',
+              url:'/map_search:ob',
               controller:'mapSearchController',
               templateUrl:'views/map_search/map_search.html'
           })
 
+          .state('map_daily_confirm',{
+              url:'/map_daily_confirm/:contentInfo',
+              controller:'mapDailyConfirmController',
+              templateUrl:'views/map_daily_confirm/map_daily_confirm.html'
+          })
 
-      // if none of the above states are matched, use this as the fallback
+          .state('map_administrate_search',{
+            url:'/map_administrate_search:ob',
+            controller:'mapAdministrateSearchController',
+            templateUrl:'views/map_administrate_search/map_administrate_search.html'
+          })
+
+          .state('map_administrate_confirm',{
+              url:'/map_administrate_confirm/:contentInfo',
+              controller:'mapAdministrateConfirmController',
+              templateUrl:'views/map_administrate_confirm/map_administrate_confirm.html'
+          })
+
+          .state('map_paperValidate_search',{
+              url:'/map_paperValidate_search:ob',
+              controller:'mapPaperValidateSearchController',
+              templateUrl:'views/map_paperValidate_search/map_paperValidate_search.html'
+          })
+
+          .state('map_paperValidate_confirm',{
+              url:'/map_paperValidate_confirm/:contentInfo',
+              controller:'mapPaperValidateConfirmController',
+              templateUrl:'views/map_paperValidate_confirm/map_paperValidate_confirm.html'
+          })
+
+          .state('map_airport_search',{
+              url:'/map_airport_search:ob',
+              controller:'mapAirportSearchController',
+              templateUrl:'views/map_airport_search/map_airport_search.html'
+          })
+
+          .state('map_airport_confirm',{
+              url:'/map_airport_confirm/:contentInfo',
+              controller:'mapAirportConfirmController',
+              templateUrl:'views/map_airport_confirm/map_airport_confirm.html'
+          })
+
+          .state('map_parkCar_search',{
+              url:'/map_parkCar_search:ob',
+              controller:'mapParkCarSearchController',
+              templateUrl:'views/map_parkCar_search/map_parkCar_search.html'
+          })
+
+          .state('map_parkCar_confirm',{
+              url:'/map_parkCar_confirm/:contentInfo',
+              controller:'mapParkCarConfirmController',
+              templateUrl:'views/map_parkCar_confirm/map_parkCar_confirm.html'
+          })
+
+
+
+
+        // if none of the above states are matched, use this as the fallback
 
       $urlRouterProvider.otherwise('/login');
 
@@ -818,7 +871,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.148:3000";
+            return "http://192.168.1.121:3000";
           else
             return "/proxy/node_server";
             

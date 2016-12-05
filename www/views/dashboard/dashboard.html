@@ -769,29 +769,11 @@
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='代办车辆年审'">
 
         <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            选择车辆:
-          </span>
-          <span>
-            {{carManage.carValidate.servicePlace!==undefined&&carManage.carValidate.servicePlace!==null?carManage.carValidate.servicePlace:''}}
-          </span>
-          <span ng-click="pickMaintain(21,0)" style="font-size: 150%;">
-              <i class="ion-ios-arrow-down" ></i>
-          </span>
+          <button class="button button-assertive" style="width: 70%;" ng-click="car_registrate()">
+            下一步
+          </button>
         </div>
 
-
-        <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            选择车管所:
-          </span>
-            <span>
-            {{carManage.carValidate.servicePlace!==undefined&&carManage.carValidate.servicePlace!==null?carManage.carValidate.servicePlace:''}}
-          </span>
-            <span ng-click="pickMaintain(21,0)" style="font-size: 150%;">
-              <i class="ion-ios-arrow-down" ></i>
-          </span>
-          </div>
 
         <!--<div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">-->
           <!--<span class="input-label" style="display: inline-block;">-->
@@ -833,104 +815,28 @@
 
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='代办行驶证年审'">
 
-          <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            选择审证所:
-          </span>
-            <span>
-            {{carManage.paperValidate.servicePlace}}
-          </span>
-            <span ng-click="pickPaperValidate()" style="font-size: 1.6em;">
-              <i class="ion-ios-arrow-down" ></i>
-          </span>
-          </div>
 
           <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-          <span class="input-label" style="display: inline-block;">
-            服务人员:
-          </span>
-            <span ng-click="service_person_select(service_persons)">
-                 {{carManage.paperValidate.servicePerson!==undefined&&carManage.paperValidate.servicePerson!==null?carManage.paperValidate.servicePerson.perName:''}}
-            <span style="font-size: 1.6em;">
-              <i class="ion-ios-arrow-down"></i>
-            </span>
-          </span>
+            <button class="button button-assertive" style="width: 70%;" ng-click="pickPaperValidate()">
+              下一步
+            </button>
           </div>
 
-          <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
-                 <span class="input-label" style="display: inline-block;">
-                  服务费:
-                </span>
-            <span>$40000</span>
-          </div>
-
-
-          <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="open_carManageTAModal()">
-            <h1 class="title">确认</h1>
-          </div>
         </div>
 
 
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='接送机'">
 
-          <div class="item"
-               style="margin:1px;border-bottom:1px solid #222;border-top:0px;border-left:0px;border-right:0px;padding:10px;background-color:transparent;">
-
-          <span class="input-label" style="display: inline-block;width: 30%;text-align: left">
-            目的地:
-          </span>
-
-            <span
-                    style="width: 45%;display: inline-block;text-align: left;"
-                    ng-if="carManage.airportTransfer.destiny!==undefined&&carManage.airportTransfer.destiny!==null"
-            >
-             {{carManage.airportTransfer.destiny.lat+','+carManage.airportTransfer.destiny.lng}}
-          </span>
-            <span
-                    ng-if="carManage.airportTransfer.destiny==undefined||carManage.airportTransfer.destiny==null"
-                    style="width: 45%;display: inline-block;text-align: left;color:#aaa;"
-            >
-            请选择目的地
-          </span>
-            <span ng-click="pickAirportNearby()"
-                  style="font-size: 1.6em;width: 30%;display: inline-block;text-align: center;">
-            <i class="ion-ios-arrow-down" ></i>
-          </span>
-          </div>
-
-          <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="open_carManageTAModal()">
-            <h1 class="title">确认</h1>
+          <div class="bar bar-footer  bar-assertive" style="position: static;width: 70%;" ng-click="goAirportSearch()">
+            <h1 class="title">下一步</h1>
           </div>
         </div>
 
 
         <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='取送车'">
-          <div class="item"
-               style="margin:1px;border-bottom:1px solid #222;border-top:0px;border-left:0px;border-right:0px;padding:10px;background-color:transparent;">
 
-          <span class="input-label" style="display: inline-block;width: 30%;text-align: left">
-            目的地:
-          </span>
-            <span
-                    style="width: 45%;display: inline-block;text-align: left;"
-                    ng-if="carManage.parkCar.destiny!==undefined&&carManage.parkCar.destiny!==null"
-            >
-             {{carManage.parkCar.destiny.lat+','+carManage.parkCar.destiny.lng}}
-          </span>
-            <span
-                    ng-if="carManage.parkCar.destiny==undefined||carManage.parkCar.destiny==null"
-                    style="width: 45%;display: inline-block;text-align: left;color:#aaa;"
-            >
-            请选择目的地
-          </span>
-            <span ng-click="pickParkCarNearby()"
-                  style="font-size: 1.6em;width: 30%;display: inline-block;text-align: center;">
-            <i class="ion-ios-arrow-down" ></i>
-          </span>
-          </div>
-
-          <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="open_carManageTAModal()">
-            <h1 class="title">确认</h1>
+          <div class="bar bar-footer  bar-assertive" style="position: static;width: 70%;" ng-click="goParkCarSearch()">
+            <h1 class="title">下一步</h1>
           </div>
         </div>
 

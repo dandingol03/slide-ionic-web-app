@@ -5,9 +5,9 @@
  */
 angular.module('starter')
 
-    .controller('mapSearchController',function($scope,$state,$http,$timeout,$rootScope,
-                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                         Proxy,$stateParams, $q,$ionicLoading) {
+    .controller('mapAdministrateSearchController',function($scope,$state,$http,$timeout,$rootScope,
+                                               BaiduMapService,$cordovaGeolocation,$ionicModal,
+                                               Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
 
         if($stateParams.ob!==undefined&&$stateParams.ob!==null)
         {
@@ -53,24 +53,38 @@ angular.module('starter')
 
 
         $scope.go_back = function () {
-            $rootScope.dashboard.tabIndex=2;
-            $rootScope.dashboard.subTabIndex=$scope.locateIndex;
+            $rootScope.dashboard.tabIndex=3;
+            $rootScope.dashboard.subTabIndex=0;
             window.history.back();
         }
 
         $scope.selectTime=true;
 
+        $scope.mode='servicePlace';
 
+        $scope.blockInStyle={display: 'table-cell','vertical-align': 'middle',background:'#11c1f3',color:'#fff'};
+        $scope.blockOffStyle={display: 'table-cell','vertical-align': 'middle',background:'#fff',color:'#666'};
+
+        $scope.modeSwitch=function (mode) {
+            if(mode===$scope.mode)
+                return;
+            $scope.mode=mode;
+        }
 
         $scope.renderCircle=function (cen,x,y) {
-
+            var BMap=$scope.bMap;
+            var map=$scope.map;
+            if($scope.distanceMax>10000)
+            {
+                var zoomLevel=map.getZoom();
+                if(zoomLevel!=11)
+                    map.setZoom(11);
+            }
             var center=null;
             if(cen!==undefined&&cen!==null)
                 center=cen;
             else
                 center=$scope.map.getCenter();
-            var BMap=$scope.bMap;
-            var map=$scope.map;
             var assemble=[];
             var angle;
             var dot;
@@ -122,7 +136,7 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token,
                 },
                 data: {
-                    request: 'fetchMaintenanceInArea',
+                    request: 'fetchDetectUnitsInArea',
                     info: {
                         townName: district
                     }
@@ -132,16 +146,24 @@ angular.module('starter')
                 var map=$scope.map;
                 var BMap=$scope.bMap;
                 if (json.re == 1) {
-                    $scope.units = [];
-                    json.data.map(function (unit, i) {
-                        if (unit.longitude !== undefined && unit.longitude !== null &&
-                            unit.latitude !== undefined && unit.latitude !== null) {
+                    $scope.places = [];
+                    json.data.map(function (place, i) {
+                        if (place.longitude !== undefined && place.longitude !== null &&
+                            place.latitude !== undefined && place.latitude !== null) {
                             var center = map.getCenter();
-                            var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
-                            if (distance <= 10000)
+                            var distance = map.getDistance(center, new BMap.Point(place.longitude, place.latitude)).toFixed(2);
+                            if($scope.distanceMax!==undefined&&$scope.distanceMax!==null)
                             {
-                                unit.distance=distance;
-                                $scope.units.push(unit);
+                                if(distance>$scope.distanceMax)
+                                    $scope.distanceMax=distance;
+                            }else{
+                                $scope.distanceMax=distance;
+                            }
+                            if (distance <= 25000)
+                            {
+                                place.distance=distance;
+                                place.unitName=place.name;
+                                $scope.places.push(place);
                             }
                         }
                     });
@@ -165,9 +187,9 @@ angular.module('starter')
 
                     //render new markers
                     $scope.labels = [];
-                    $scope.units.map(function (unit, i) {
-                        var mk = new BMap.Marker(new BMap.Point(unit.longitude, unit.latitude));
-                        var label = new BMap.Label(unit.unitName, {offset: new BMap.Size(20, -10)});
+                    $scope.places.map(function (place, i) {
+                        var mk = new BMap.Marker(new BMap.Point(place.longitude, place.latitude));
+                        var label = new BMap.Label(place.name, {offset: new BMap.Size(20, -10)});
                         label.setStyle({
                             color: '#222',
                             fontSize: "12px",
@@ -179,12 +201,17 @@ angular.module('starter')
                         mk.setLabel(label);
                         map.addOverlay(mk);
                     });
+
                     //render circle
-                    $scope.renderCircle(map.getCenter(),0.12,0.1);
-
-
-                    $scope.contentInfo=$scope.units;
+                    $scope.renderCircle(map.getCenter(),0.22,0.2);
+                    $scope.contentInfo=$scope.places;
                     $ionicLoading.hide();
+                    if($scope.places.length==1)
+                    {
+                        //默认定位第一个搜索结果
+                        var firstPlace=$scope.places[0];
+                        map.panTo(new BMap.Point(firstPlace.longitude, firstPlace.latitude) );
+                    }
                     $scope.contentInfoPanel.show();
                 }else{
                     $ionicLoading.hide();
@@ -211,7 +238,12 @@ angular.module('starter')
             //选择全集
             if(set!==undefined&&set!==null&&set.length>0) {
                 $scope.closeContentInfoPanel();
-                $state.go('map_daily_confirm', {contentInfo: JSON.stringify({units: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+                $state.go('map_administrate_confirm', {contentInfo: JSON.stringify({detectUnites: set,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+            }else{
+                var myPopup = $ionicPopup.alert({
+                    template: '未选中如何结果',
+                    title: '<strong style="color:red">错误</strong>'
+                });
             }
         }
 
@@ -232,10 +264,10 @@ angular.module('starter')
                 map.openInfoWindow(infoWindow,new BMap.Point(place.longitude, place.latitude)); //开启信息窗口
             }
         }
-        
+
         $scope.confirm=function (item) {
             $scope.closeContentInfoPanel();
-            $state.go('map_daily_confirm', {contentInfo: JSON.stringify({unit: item,carInfo:$scope.carInfo,maintain:$scope.maintain})});
+            $state.go('map_administrate_confirm', {contentInfo: JSON.stringify({detectUnit: item,carInfo:$scope.carInfo,maintain:$scope.maintain})});
         }
 
         $scope.clear_search=function () {
@@ -278,10 +310,10 @@ angular.module('starter')
             var deferred=$q.defer();
 
             var cb=function () {
-                var map = new BMap.Map("map_search");          // 创建地图实例
+                var map = new BMap.Map("map_administrate_search");          // 创建地图实例
                 var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
                 $scope.point=point;
-                map.centerAndZoom(point, 13);
+                map.centerAndZoom(point, 12);
                 map.addControl(new BMap.NavigationControl());
                 map.addControl(new BMap.ScaleControl());
                 map.enableScrollWheelZoom(true);

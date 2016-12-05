@@ -1,0 +1,179 @@
+<ion-view class="passwordForget-view" view-title="选择维修厂">
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2em;color:#bf530c"
+                    ng-click="go_back()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+
+    </ion-nav-bar>
+
+    <ion-content>
+        <div class="list list-inset padding" style="margin-bottom: 0px;">
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;
+                border: 1px solid #bf530c">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.2em;color:#bf530c;width: 20%;
+                      text-align: center;padding-bottom: 5px;padding-top:10px;border-right: 1px solid;">
+                  <i class="ion-calendar"></i>
+                </span>
+
+                <span  style="display: inline-block;width:40%;vertical-align: text-bottom;
+                color:#aaa;text-align: center;font-size: 0.9em;"
+                    ng-if="maintain.estimateTime==undefined||maintain.estimateTime==null">
+                    服务时间
+                </span>
+
+                <span style="display: inline-block;width:40%;vertical-align: inherit;text-align: text-bottom;"
+                      ng-if="maintain.estimateTime!==undefined&&maintain.estimateTime!==null">
+                    {{maintain.estimateTime|date:'yyyy-MM-dd HH:mm'}}
+                </span>
+
+
+                <span class="input-label"
+                      style="display: inline-block;background:#f79916;color:#fff;width:35%;
+                      text-align: center;vertical-align: super;padding-right: 2px;"
+                      ng-click="datetimepicker(maintain,'estimateTime')">
+                    选择服务时间
+                </span>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+
+            <!-- 特定维修厂选择 -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px; border: 1px solid #bf530c"
+                ng-if="unit!==undefined&&unit!==null">
+                <span class="input-label"
+                      style="display: inline-block;color:#bf530c;width: 20%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                     维修厂
+                </span>
+                <span class="input-label"
+                      style="display: inline-block;width: 45%;text-align: center"
+                      ng-if="unit!==undefined&&unit!==null">
+                    {{unit.unitName}}
+                </span>
+
+                <span class="input-label"
+                      style="display: inline-block;width:20%;">
+                </span>
+            </div>
+
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px; border: 1px solid #bf530c"
+                 ng-if="maintain.servicePerson!==undefined&&maintain.servicePerson!==null">
+                <span class="input-label"
+                      style="display: inline-block;color:#bf530c;width: 20%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                     服务人员
+                </span>
+                <span class="input-label"
+                      style="display: inline-block;width: 45%;text-align: center">
+                    {{maintain.servicePerson.perName}}
+                </span>
+
+                <span class="input-label"
+                      style="display: inline-block;width:20%;">
+                </span>
+            </div>
+
+
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;
+                border: 1px solid #bf530c">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.2em;color:#bf530c;width: 20%;
+                      text-align: center;padding-bottom: 5px;padding-top:10px;border-right: 1px solid;">
+                  <i class="fa fa-automobile"></i>
+                </span>
+
+                <span  style="display: inline-block;width:40%;vertical-align: text-bottom;
+                color:#aaa;text-align: center;font-size: 0.9em;"
+                       ng-if="carInfo.carNum==undefined||carInfo.carNum==null">
+                    车牌号
+                </span>
+
+                <span style="display: inline-block;width:40%;vertical-align: text-bottom;text-align: center;"
+                      ng-if="carInfo.carNum!==undefined&&carInfo.carNum!==null">
+                    {{carInfo.carNum}}
+                </span>
+
+
+                <span class="input-label"
+                      style="display: inline-block;background:#f79916;color:#fff;width:35%;
+                      text-align: center;vertical-align: super;padding-right: 2px;"
+                      ng-click="selectCarInfoByCarNum(carInfo,carManage_t_a_modal)">
+                    选择车辆
+                </span>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+
+            <div class="item item-toggle" style="padding: 12px;border:0px;">
+                <span style="font-size: 1.1em;color:#bf530c">
+                    取送车
+                </span>
+                <label class="toggle toggle-energized" style="right: 60%;top:8px;">
+                    <input type="checkbox" ng-model="maintain.isAgent">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </div>
+
+
+            <!-- 取车地点 -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border: 1px solid #bf530c"
+                ng-if="maintain.isAgent==true"
+            >
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.6em;color:#bf530c;width: 20%;
+                      text-align: center;padding-bottom: 5px;padding-top:10px;border-right: 1px solid;">
+                  <i class="fa fa-home"></i>
+                </span>
+
+                <span  style="display: inline-block;width:40%;vertical-align: text-bottom;
+                color:#aaa;text-align: center;font-size: 0.9em;"
+                       ng-if="maintain.destination.address===undefined||maintain.destination.address==null||maintain.destination.address==''">
+                    地点
+                </span>
+
+                <span style="display: inline-block;width:40%;vertical-align: text-bottom;text-align: center;"
+                      ng-if="maintain.destination.address!==undefined&&maintain.destination.address!==null&&maintain.destination.address!=''">
+                    {{maintain.destination.address}}
+                </span>
+
+
+                <span class="input-label"
+                      style="display: inline-block;background:#f79916;color:#fff;width:35%;
+                      text-align: center;vertical-align: super;padding-right: 2px;"
+                      ng-click="selectDestination()">
+                    选择取车地点
+                </span>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+
+
+            <div class="item"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;
+                        padding:10px;background-color:transparent;position: relative"
+                 ng-click="applyMaintainDailyOrder()"
+            >
+                <button class="button button-calm " style="width: 80%;margin-left:10%;margin-right:10%;">
+                    提交维修订单
+                </button>
+            </div>
+
+        </div>
+    </ion-content>
+
+</ion-view>

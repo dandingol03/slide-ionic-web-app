@@ -498,6 +498,10 @@ angular.module('starter')
 
       }
 
+      $scope.goMap=function () {
+          $state.go('map_search');
+      }
+
 
       /***  悬浮窗  ***/
       $ionicPopover.fromTemplateUrl('/views/popover/order_special_popover.html', {
@@ -611,4 +615,5 @@ angular.module('starter')
           }
 
       }
+
     });

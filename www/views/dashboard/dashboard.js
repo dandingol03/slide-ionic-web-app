@@ -3935,6 +3935,14 @@ $scope.openAirportTransfer=function(){
       $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
     }
 
+    //审车页面跳转
+      $scope.car_registrate=function () {
+          //updated by danding
+          $state.go('map_administrate_search',{ob:JSON.stringify({carInfo:$scope.carInfo,
+            maintain:$scope.maintain})});
+      }
+
+
     //维修页面跳转
     $scope.pickMaintainDaily=function(locateType,index) {
 
@@ -3950,6 +3958,25 @@ $scope.openAirportTransfer=function(){
                     checkFlag=true;
                     break;
                 }
+            }
+        }
+
+        if($scope.subTabIndex==1)
+        {
+            var threshold=0;
+            if($scope.maintain.description.text!==undefined&&$scope.maintain.description.text!==null&&$scope.maintain.description.text!='')
+                threshold++;
+            if($scope.maintain.description.audio!==undefined&&$scope.maintain.description.audio!==null)
+                threshold++;
+            if($scope.maintain.description.video!==undefined&&$scope.maintain.description.video!==null)
+                threshold++;
+            if(threshold==0)
+            {
+                $ionicPopup.alert({
+                    title: '错误',
+                    template: '请填入故障维修信息后再选择维修厂'
+                });
+                return;
             }
         }
 
@@ -3990,8 +4017,10 @@ $scope.openAirportTransfer=function(){
                   default:
                       break;
               }
-          $state.go('locate_maintain_daily',
-              {locate:JSON.stringify({carInfo:$scope.carInfo,
+
+          //updated by danding
+          $state.go('map_search',
+              {ob:JSON.stringify({carInfo:$scope.carInfo,
                   locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
 
 
@@ -4011,10 +4040,29 @@ $scope.openAirportTransfer=function(){
       $state.go('locate_parkCar_nearby', {locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType})});
     }
 
+
+    //审证
     $scope.pickPaperValidate=function(locateType) {
-        $state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
+        $state.go('map_paperValidate_search',
+            {ob:JSON.stringify({carInfo:$scope.carInfo,
+                locateType:locateType})});
+        //$state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
     }
 
+      //接送机
+      $scope.goAirportSearch=function(locateType) {
+          $state.go('map_airport_search',
+              {ob:JSON.stringify({carInfo:$scope.carInfo,
+                  locateType:locateType})});
+      }
+
+
+      //取送车
+      $scope.goParkCarSearch=function(locateType) {
+          $state.go('map_parkCar_search',
+              {ob:JSON.stringify({carInfo:$scope.carInfo,
+                  locateType:locateType})});
+      }
 
     /*** bind matching_car_info modal ***/
     $ionicModal.fromTemplateUrl('views/modal/matching_car_info.html',{
