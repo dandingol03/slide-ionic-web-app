@@ -14,6 +14,7 @@ angular.module('starter')
     if(Object.prototype.toString.call($scope.order)=='[object String]')
       $scope.order = JSON.parse($scope.order);
 
+
     $scope.go_back=function(){
       window.history.back();
     };
@@ -162,23 +163,137 @@ angular.module('starter')
 
 
 
-    //取消订单
+      //取消订单
     $scope.cancleOrder = function(state){
-      $http({
-        method: "post",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token,
-        },
-        data:
-        {
-          request:'updateServiceOrderState',
-          info:{
-            orderState:state,
-            order:$scope.order
+
+          //取消"已下单"的订单
+          if($scope.order.orderState==1){
+              //指定了服务人员
+              if($scope.order.servicePersonId!=undefined&&$scope.order.servicePersonId!=null) {
+                  var date = new Date();
+                  $scope.timeDifference = parseInt((date-$scope.order.estimateTime) /(1000*60*60))
+                  if ($scope.timeDifference >= 2) {
+                      $http({
+                          method: "post",
+                          url: Proxy.local() + "/svr/request",
+                          headers: {
+                              'Authorization': "Bearer " + $rootScope.access_token,
+                          },
+                          data: {
+                              request: 'updateServiceOrderState',
+                              info: {
+                                  orderState: state,
+                                  order: $scope.order,
+                              }
+                          }
+                      }).then(function (res) {
+                          var json=res.data;
+                          if(json.re==1) {
+                             alert('订单取消成功！');
+                          }
+
+                      }).catch(function(err) {
+                          var str='';
+                          for(var field in err)
+                              str+=err[field];
+                          console.error('err=\r\n'+str);
+                      });
+
+                  }
+                  else {
+                      alert("距离预约时间不足两小时，无法取消订单！");
+                  }
+              }
+              //未指定服务人员
+              else{
+                  // 通知 candidate表中的服务人员
+                  var date = new Date();
+                  $scope.timeDifference = parseInt((date-$scope.order.estimateTime) /(1000*60*60))
+                  if ($scope.timeDifference >= 2) {
+                      $http({
+                          method: "post",
+                          url: Proxy.local() + "/svr/request",
+                          headers: {
+                              'Authorization': "Bearer " + $rootScope.access_token,
+                          },
+                          data: {
+                              request: 'updateServiceOrderState',
+                              info: {
+                                  orderState: state,
+                                  order: $scope.order
+                              }
+                          }
+                      }).then(function(res) {
+                          var json=res.data;
+                          if(json.re==1) {
+                              var servicePersonIds = json.data;
+                              $http({
+                                  method: "post",
+                                  url: Proxy.local() + "/svr/request",
+                                  headers: {
+                                      'Authorization': "Bearer " + $rootScope.access_token,
+                                  },
+                                  data: {
+                                      request: 'sendCustomMessage',
+                                      info: {
+                                          order: $scope.order,
+                                          servicePersonIds: servicePersonIds,
+                                          type: 'to-servicePerson'
+                                      }
+                                  }
+                              })
+
+                          }
+
+                      })
+
+                  }
+                  else {
+                      alert("距离预约时间不足两小时，无法取消订单！");
+                  }
+
+              }
           }
-        }
-      })
+
+        //取消服务中的订单（已有确定人员接单但还未执行））
+          if($scope.order.orderState==2){
+
+              var date = new Date();
+              $scope.timeDifference = parseInt((date-$scope.order.estimateTime) /(1000*60*60));
+              if ($scope.timeDifference >= 2) {
+                  $http({
+                      method: "post",
+                      url: Proxy.local() + "/svr/request",
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token,
+                      },
+                      data: {
+                          request: 'updateServiceOrderState',
+                          info: {
+                              orderState: state,
+                              order: $scope.order,
+                          }
+                      }
+                  }).then(function (res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          alert('订单取消成功！');
+                      }
+
+                  }).catch(function(err) {
+                      var str='';
+                      for(var field in err)
+                          str+=err[field];
+                      console.error('err=\r\n'+str);
+                  });
+
+              }
+              else {
+                  alert("距离预约时间不足两小时，无法取消订单！");
+              }
+
+          }
+
     }
 
   });

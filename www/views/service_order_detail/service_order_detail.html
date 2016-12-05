@@ -74,10 +74,6 @@
         </span>
       </div>
 
-
-
-
-
       <div ng-if="order.candidates!==undefined&&order.candidates!==null">
         <div class="card">
           <div class="item item-divider">
@@ -111,9 +107,11 @@
 
     </div>
 
+
+
     <button class="button button-block button-positive" style="width: 80%;margin-left: 10%;"
             ng-click="cancleOrder(-1)"
-            ng-if="order.orderState==1&&order.servicePersonId!==undefined&&order.servicePersonId!==null">
+            ng-if="order.orderState==1||order.orderState==2">
       取消订单
     </button>
 
