@@ -96,6 +96,8 @@ angular.module('starter')
 
             var BMao=$scope.bMap;
             var map=$scope.map;
+            var center=map.getCenter();
+            $scope.gravity={longitude:0,latitude:0};
             //仅容许根据区进行搜索
             var reg=/\s*(.*区)/
             var re=reg.exec($scope.root.query);
@@ -107,9 +109,7 @@ angular.module('starter')
                 {
                     return;
                 }
-            }else{
-                return ;
-            }
+            }else{}
 
             $ionicLoading.show({
                 template: '<p class="item-icon-left">搜索...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
@@ -138,9 +138,11 @@ angular.module('starter')
                             unit.latitude !== undefined && unit.latitude !== null) {
                             var center = map.getCenter();
                             var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
-                            if (distance <= 10000)
+                            if (distance <= 20000)
                             {
                                 unit.distance=distance;
+                                $scope.gravity.longitude+=unit.longitude-center.lng;
+                                $scope.gravity.latitude+=unit.latitude-center.lat;
                                 $scope.units.push(unit);
                             }
                         }
@@ -181,6 +183,15 @@ angular.module('starter')
                     });
                     //render circle
                     $scope.renderCircle(map.getCenter(),0.12,0.1);
+
+                    if($scope.units!==undefined&&$scope.units!==null&&$scope.units.length>0)
+                    {
+                        $scope.gravity.longitude=$scope.gravity.longitude/$scope.units.length;
+                        $scope.gravity.latitude=$scope.gravity.latitude/$scope.units.length;
+                        //map pan to gravity center
+                        map.panTo(new BMap.Point(center.lng+$scope.gravity.longitude, center.lat+$scope.gravity.latitude) );
+                    }
+
 
 
                     $scope.contentInfo=$scope.units;
@@ -281,7 +292,7 @@ angular.module('starter')
                 var map = new BMap.Map("map_search");          // 创建地图实例
                 var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
                 $scope.point=point;
-                map.centerAndZoom(point, 13);
+                map.centerAndZoom(point, 12);
                 map.addControl(new BMap.NavigationControl());
                 map.addControl(new BMap.ScaleControl());
                 map.enableScrollWheelZoom(true);

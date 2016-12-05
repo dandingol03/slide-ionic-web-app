@@ -110,6 +110,8 @@ angular.module('starter')
 
             var BMao=$scope.bMap;
             var map=$scope.map;
+            var center=map.getCenter();
+            $scope.gravity={longitude:0,latitude:0};
             //仅容许根据区进行搜索
             var reg=/\s*(.*区)/
             var re=reg.exec($scope.root.query);
@@ -163,6 +165,8 @@ angular.module('starter')
                             {
                                 place.distance=distance;
                                 place.unitName=place.name;
+                                $scope.gravity.longitude+=place.longitude-center.lng;
+                                $scope.gravity.latitude+=place.latitude-center.lat;
                                 $scope.places.push(place);
                             }
                         }
@@ -211,6 +215,10 @@ angular.module('starter')
                         //默认定位第一个搜索结果
                         var firstPlace=$scope.places[0];
                         map.panTo(new BMap.Point(firstPlace.longitude, firstPlace.latitude) );
+                    }else{
+                        $scope.gravity.longitude=$scope.gravity.longitude/$scope.places.length;
+                        $scope.gravity.latitude=$scope.gravity.latitude/$scope.places.length;
+                        map.panTo(new BMap.Point(center.lng+$scope.gravity.longitude, center.lat+$scope.gravity.latitude) );
                     }
                     $scope.contentInfoPanel.show();
                 }else{

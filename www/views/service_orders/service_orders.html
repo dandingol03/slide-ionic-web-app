@@ -76,7 +76,7 @@
           >
             <div class="list list-inset" style="margin-top:0px;">
 
-              <div ng-repeat="order in orders1" style="">
+              <div ng-repeat="order in orders1|orderBy:'-applyTime'" style="">
                 <ul class="list" style="margin-bottom:0px;">
                   <li class="item item-icon-right"
                       style="padding-right:34px;position: relative;border:0px;">
@@ -110,7 +110,7 @@
 
             <div class="list list-inset">
 
-              <div ng-repeat="order in orders2" style="">
+              <div ng-repeat="order in orders2|orderBy:'-applyTime'" style="">
                 <ul class="list" style="margin-bottom:0px;">
                   <li class="item item-icon-right"
                       style="padding-right:34px;position: relative;border:0px;">
@@ -146,7 +146,7 @@
 
             <div class="list list-inset" style="margin-top:0px;">
 
-              <div ng-repeat="order in orders3" style="">
+              <div ng-repeat="order in orders3|orderBy:'-applyTime'" style="">
                 <ul class="list" style="margin-bottom:0px;">
                   <li class="item item-icon-right"
                       style="padding-right:34px;position: relative;border:0px;">
