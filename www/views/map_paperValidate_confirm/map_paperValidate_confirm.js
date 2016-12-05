@@ -245,6 +245,7 @@ angular.module('starter')
             })
         }
 
+        $scope.carManage.isAgent=false;
 
         $scope.generateServiceOrder=function(){
 
