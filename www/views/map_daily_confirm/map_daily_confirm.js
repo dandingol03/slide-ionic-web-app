@@ -16,6 +16,9 @@ angular.module('starter')
             window.history.back();
         }
 
+        $scope.go_to=function (state) {
+            $state.go(state);
+        }
 
         $scope.maintain = {
             maintenance: {}
@@ -51,8 +54,7 @@ angular.module('starter')
                 $scope.carInfo={};
         }
 
-
-
+        $scope.maintain.isAgent=false;
 
         $scope.datetimepicker=function (item,field) {
 
@@ -163,6 +165,71 @@ angular.module('starter')
                 console.error('error=\r\n' + str);
             });
         }
+
+        $scope.selectDestination=function () {
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request: 'selectDestinationByPersonId'
+                }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1) {
+                    var destinations=json.data;
+                    if(destinations!==undefined&&destinations!==null&&destinations.length>0) {
+                        var buttons=[];
+                        buttons.push({text:"创建新地址"});
+                        destinations.map(function (destination) {
+                            var item=destination;
+                            item.text=destination.address;
+                            buttons.push(item);
+                        })
+                        var destinationSheet = $ionicActionSheet.show({
+                            buttons: buttons,
+                            titleText: '<b>选择目的地</b>',
+                            cancelText: 'Cancel',
+                            cancel: function() {
+                                // add cancel code..
+                            },
+
+                            buttonClicked: function(index) {
+                                if(index==0){
+                                    $scope.go_to('create_new_customerPlace');
+                                }else{
+                                    $scope.maintain.destination=buttons[index];
+                                }
+
+                                return true;
+                            },
+                            cssClass:'center'
+                        });
+                    }
+                }else if(json.re==2)
+                {
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: '信息',
+                        template: '<strong>没有可供选择的地址</strong><br/><strong>是否创建住址</strong>',
+                        subTitle: '',
+                        scope: $scope
+                    });
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            $scope.go_to('create_new_customerPlace')
+                        } else {}
+                    });
+
+
+                }else{}
+
+
+            })
+        }
+
+
 
         $scope.Mutex = function (item, field, cluster) {
             if (item[field]) {
@@ -392,6 +459,8 @@ angular.module('starter')
 
             $scope.generateMaintainDailyOrder=function () {
 
+
+
                 var orderId = null;
                 //已选维修厂
                 if ($scope.unit !== undefined && $scope.unit !== null) {
@@ -431,9 +500,14 @@ angular.module('starter')
                                 }
                             });
                         } else {
-                            return {re: -1};
+                            var alertPopup = $ionicPopup.alert({
+                                title: '错误',
+                                template: '该维修厂没有指定服务人员'
+                            });
+                            throw new Error(2,'no servicePerson');
                         }
                     }).then(function(res) {
+                        alert('....');
                         var json = res.data;
                         if (json.re == 1) {
                             orderId=json.data.orderId;
@@ -490,8 +564,8 @@ angular.module('starter')
                     }).catch(function (err) {
                         var str = '';
                         for (var field in err)
-                            str += err[field];
-
+                            str += 'field='+field+'\r\n'+err[field];
+                        alert(str);
                     });
                 }
                 else//未选定服务人员
@@ -603,7 +677,7 @@ angular.module('starter')
                     }).catch(function (err) {
                         var str = '';
                         for (var field in err)
-                            str += err[field];
+                            str += 'field='+field+'\r\n'+err[field];
                         alert('error=\r\n' + str);
                     });
 

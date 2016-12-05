@@ -38,6 +38,10 @@ angular.module('starter')
             window.history.back();
         }
 
+        $scope.go_to=function (state) {
+            $state.go(state);
+        }
+
 
         $scope.Toggle = function (item, field) {
             if (item[field] == true)
@@ -244,6 +248,7 @@ angular.module('starter')
             })
         }
 
+        $scope.carManage.isAgent=false;
 
         $scope.generateServiceOrder=function(){
 
