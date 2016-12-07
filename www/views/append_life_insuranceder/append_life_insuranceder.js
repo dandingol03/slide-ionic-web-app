@@ -214,7 +214,7 @@ angular.module('starter')
         $scope.order.insuranceder=person;
         $rootScope.dashboard.tabIndex=1;
         $rootScope.life_insurance.insuranceder=person;
-        $state.go('tabs.dashboard');
+        $state.go('life');
 
       }else{
         var myPopup = $ionicPopup.alert({
@@ -230,7 +230,7 @@ angular.module('starter')
           $scope.order.insuranceder=relative;
           $rootScope.dashboard.tabIndex=1;
           $rootScope.life_insurance.insuranceder=relative;
-          $state.go('tabs.dashboard');
+          $state.go('life');
         }
       });
 

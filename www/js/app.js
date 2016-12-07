@@ -846,12 +846,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car',{
+              cache:false,
               url:'/car',
               controller:'carController',
               templateUrl:'views/car/car.html'
           })
 
           .state('life',{
+              cache:false,
               url:'/life',
               controller:'lifeController',
               templateUrl:'views/life/life.html'
