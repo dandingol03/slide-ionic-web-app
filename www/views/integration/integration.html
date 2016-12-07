@@ -89,7 +89,7 @@
 
       <div class="item item-divider" style="background:#CBCBCB;border-top-left-radius: 10px;border-top-right-radius: 10px;">
         <div style="display: inline-block;width: 33%;text-align: center">
-           积分来源
+           收入类型
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
           获取日期
@@ -100,55 +100,49 @@
       </div>
 
 
-      <div class="item" ng-repeat="order in carOrders">
+      <div class="item" ng-repeat="feeAccount in feeAccounts[0]">
         <div style="display: inline-block;width: 33%;text-align: center">
-          车险订单购买
+          <span ng-if="feeAccount.feeType==1">
+            车险订单
+          </span>
+          <span ng-if="feeAccount.feeType==2">
+            寿险订单
+          </span>
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{order.orderDate}}
+          {{feeAccount.feeTime}}
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{order.score}}
+          {{feeAccount.fee}}
         </div>
       </div>
 
-      <div class="item" ng-repeat="order in lifeOrders">
-        <div style="display: inline-block;width: 33%;text-align: center">
-          寿险订单购买
-        </div>
-        <div style="display: inline-block;width: 33%;text-align: center">
-          {{order.insuranceEndDate}}
-        </div>
-        <div style="display: inline-block;width: 33%;text-align: center">
-          {{}}
-        </div>
-      </div>
     </div>
 
     <div class="list" ng-if="score_tab==1">
 
       <div class="item item-divider" style="background:#CBCBCB;border-top-left-radius: 10px;border-top-right-radius: 10px;">
         <div style="display: inline-block;width: 33%;text-align: center">
-          积分支出
+          支出类型
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
           支出日期
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          支出数量
+          积分支出
         </div>
       </div>
 
 
-      <div class="item" ng-repeat="order in serviceOrders">
+      <div class="item" ng-repeat="feeAccount in feeAccounts[1]">
         <div style="display: inline-block;width: 33%;text-align: center">
           服务订单支出
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{order.orderFinishDate}}
+          {{feeAccount.feeTime}}
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{order.fee}}
+          {{feeAccount.fee}}
         </div>
       </div>
     </div>

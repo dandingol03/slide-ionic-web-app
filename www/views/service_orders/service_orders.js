@@ -108,7 +108,9 @@ angular.module('starter')
       }
 
 
-
+      $scope.evaluate=function () {
+          //TODO:go into evaluate page
+      }
 
     $scope.showOrderDetail=function(order){
       $state.go('service_order_detail',{order:JSON.stringify(order)});
