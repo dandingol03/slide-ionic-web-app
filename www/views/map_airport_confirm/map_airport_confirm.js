@@ -10,6 +10,9 @@ angular.module('starter')
                                                             $ionicActionSheet,$cordovaDatePicker,$ionicLoading,
                                                             $ionicPopup) {
 
+        $scope.goBack = function () {
+            window.history.back();
+        }
 
 
         $scope.selectTime=true;
@@ -36,7 +39,6 @@ angular.module('starter')
 
 
         $scope.go_back = function () {
-            alert('go back');
             window.history.back();
         }
 
@@ -129,10 +131,12 @@ angular.module('starter')
                     $scope.carManage.servicePerson=json.data;
                 }
                 else{
-                    $ionicPopup.alert({
-                        title: '错误',
-                        template: '该维修厂没有指定的服务人员'
-                    });
+                    $timeout(function () {
+                        $ionicPopup.alert({
+                            title: '错误',
+                            template: '该维修厂没有指定的服务人员'
+                        });
+                    },1000)
                 }
                 $ionicLoading.hide();
             }).catch(function (err) {

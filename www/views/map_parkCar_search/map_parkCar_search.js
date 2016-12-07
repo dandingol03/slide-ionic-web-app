@@ -110,7 +110,7 @@ angular.module('starter')
 
             var BMao=$scope.bMap;
             var map=$scope.map;
-            var center=$scope.center;
+            var center=map.getCenter();
             $scope.gravity={longitude:0,latitude:0};
             //仅容许根据区进行搜索
             var reg=/\s*(.*区)/;
