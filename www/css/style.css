@@ -886,6 +886,11 @@ table.table1{
   padding-right: 10%;
 }
 
+.ul-tabs.finance-theme{
+  border-bottom: 1px solid #222;
+}
+
+
 
 .ul-tabs li{
   float:left;
@@ -922,6 +927,22 @@ table.table1{
   background: transparent;
   color:#fff;
 }
+
+.ul-tabs.finance-theme li .cell{
+  background: transparent;
+  color:#aaa;
+  border-bottom:0px;
+}
+
+.ul-tabs.finance-theme li .cell.selected{
+  border-top:1px solid #222;
+  border-left:1px solid #222;
+  border-right: 1px solid #222;
+  border-bottom:transparent;
+  background: #fff;
+  color:#222;
+}
+
 
 .ul-tabs li .cell.selected{
   border-top:1px solid #eee;

@@ -3,7 +3,7 @@
  */
 angular.module('starter')
   .controller('integrationController',function($scope,$state,$http
-                                               ,$rootScope){
+                                               ,$rootScope,$ionicLoading){
 
     $scope.go_back=function(){
       window.history.back();
@@ -46,7 +46,9 @@ angular.module('starter')
                       }
                   });
               }
+              $ionicLoading.hide();
           }).catch(function (err) {
+              $ionicLoading.hide();
               console.log('server fetch error');
           });
 

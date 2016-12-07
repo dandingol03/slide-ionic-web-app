@@ -47,7 +47,7 @@
     <!-- 积分tab 改为车驾管服务-->
     <div class="list" scroll="true">
       <div class="list" style="margin-bottom: 0px;">
-        <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
+        <ul class="ul-tabs finance-theme">
           <li style="width:50%;">
             <div class="cell"
                  ng-class="{true: 'selected', false: ''}[score_tab==0]"
@@ -110,7 +110,7 @@
           </span>
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{feeAccount.feeTime}}
+          {{feeAccount.feeTime|date:'yyyy-MM-dd HH:mm'}}
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
           {{feeAccount.fee}}
@@ -136,10 +136,15 @@
 
       <div class="item" ng-repeat="feeAccount in feeAccounts[1]">
         <div style="display: inline-block;width: 33%;text-align: center">
-          服务订单支出
+          服务订单
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{feeAccount.feeTime}}
+          <span ng-if="feeAccount.feeTime!==undefined&&feeAccount.feeTime!==null">
+            {{feeAccount.feeTime|date:'yyyy-MM-dd HH:mm'}}
+          </span>
+          <span ng-if="feeAccount.feeTime==undefined||feeAccount.feeTime==null">
+            ----
+          </span>
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
           {{feeAccount.fee}}
