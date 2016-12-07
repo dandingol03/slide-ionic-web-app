@@ -41,7 +41,10 @@
       "id": "jpush-phonegap-plugin"
     },
     "cordova-plugin-file-transfer",
-    "cordova-plugin-geolocation"
+    "cordova-plugin-geolocation",
+    "cordova-plugin-media-capture",
+    "cordova-plugin-compat",
+    "cordova-plugin-tts"
   ],
   "cordovaPlatforms": [
     "ios",
