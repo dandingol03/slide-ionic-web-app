@@ -869,11 +869,17 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/manage/manage.html'
           })
 
+          .state('evaluate',{
+              url:'/evaluate',
+              controller:'evaluateController',
+              templateUrl:'views/evaluate/evaluate.html'
+          })
+
 
 
         // if none of the above states are matched, use this as the fallback
 
-      $urlRouterProvider.otherwise('/login');
+      $urlRouterProvider.otherwise('/evaluate');
 
     })
 

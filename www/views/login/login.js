@@ -310,8 +310,8 @@ angular.module('starter')
                                   alert('error=' + error);
                               });
                           } else {
-                             // $state.go('tabs.dashboard');
-                              $state.go('dashboard_backup');
+                              $state.go('tabs.dashboard');
+                              //$state.go('dashboard_backup');
                           }
                       }
                   })

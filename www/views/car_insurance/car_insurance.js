@@ -40,8 +40,6 @@ angular.module('starter')
               }
           }
 
-
-
       }
 
       $scope.slideIndexSearch=0;
