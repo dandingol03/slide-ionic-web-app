@@ -7,7 +7,7 @@ angular.module('starter')
                                                BaiduMapService,$ionicLoading,$cordovaMedia,$cordovaCapture,
                                                Proxy,$stateParams,$anchorScroll,
                                                $cordovaFileTransfer,$ionicPopup,$ionicSlideBoxDelegate,
-                                               $cordovaImagePicker,$cordovaDatePicker){
+                                               $cordovaImagePicker,$cordovaDatePicker,$cordovaToast){
 
 
         $scope.serviceTypeMap={
@@ -24,7 +24,6 @@ angular.module('starter')
         //选择车驾管服务项目
         $scope.services=["代办车辆年审","代办行驶证年审","接送机","取送车","违章查询"];
 
-
         $scope.maintain={
             tabs:['日常保养','故障维修','事故维修'],
             tab:'日常保养',
@@ -38,6 +37,46 @@ angular.module('starter')
             $scope.tabIndex=$rootScope.dashboard.tabIndex;
         else
             $scope.tabIndex=0;
+
+        $scope.goIntoCarInsurance=function () {
+
+            if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+            {
+                //TODO:validate bind car
+                var carInfo=$rootScope.carInfo;
+                $http({
+                    method: "POST",
+                    url: Proxy.local()+"/svr/request",
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token,
+                    },
+                    data:
+                    {
+                        request:'validateCarFree',
+                        info:{
+                            carId:carInfo.carId
+                        }
+                    }
+                }).then(function(res) {
+                    var json=res.data;
+                    if(json.data==true)
+                    {
+                        $state.go('car_insurance',{carInfo:JSON.stringify($rootScope.carInfo)});
+                    }else{
+                        //TODO:inject toast message
+                        $cordovaToast
+                            .show('您绑定的车辆已处于订单状态,请重新进入车辆管理界面选择车辆', 'long', 'center')
+                            .then(function(success) {
+                                $state.go('car_manage');
+                            }, function (error) {
+                                // error
+                            });
+                    }
+                })
+            }else{
+                $state.go('car_manage');
+            }
+        }
 
 
         //寿险
@@ -2122,115 +2161,6 @@ angular.module('starter')
             }
             return deferred.promise;
         }
-
-        //车驾管服务
-// $scope.carService=function(){
-//
-//   var order = null;
-//   var servicePersonIds = [];
-//   var personIds = [];
-//   $http({
-//     method: "POST",
-//     url: Proxy.local() + "/svr/request",
-//     headers: {
-//       'Authorization': "Bearer " + $rootScope.access_token
-//     },
-//     data: {
-//       request: 'generateCarServiceOrder',
-//       info: {
-//         carManager: $scope.carManage
-//       }
-//     }
-//   }).then(function (res) {
-//     var json = res.data;
-//     alert(json.re);
-//     if (json.re == 1) {
-//       order = json.data;
-//       return $http({
-//         method: "POST",
-//         url: Proxy.local() + "/svr/request",
-//         headers: {
-//           'Authorization': "Bearer " + $rootScope.access_token
-//         },
-//         data: {
-//           request: 'getServicePersonsByUnits',
-//           info: {
-//             units: $rootScope.carManage.units
-//           }
-//         }
-//       });
-//     }
-//   }).then(function(res) {
-//     var json=res.data;
-//     if(json.re==1) {
-//       json.data.map(function(servicePerson,i) {
-//         servicePersonIds.push(servicePerson.servicePersonId);
-//         personIds.push(servicePerson.personId);
-//       });
-//
-//       return $http({
-//         method: "POST",
-//         url: Proxy.local() + "/svr/request",
-//         headers: {
-//           'Authorization': "Bearer " + $rootScope.access_token
-//         },
-//         data: {
-//           request: 'updateCandidateState',
-//           info: {
-//             orderId: order.orderId,
-//             servicePersonIds: servicePersonIds
-//           }
-//         }
-//       });
-//     }
-//   }).then(function (res) {
-//     var json = res.data;
-//     if (json.re == 1) {
-//       //TODO:append address and serviceType and serviceTime
-//       var serviceName = $scope.serviceTypeMap[$scope.carManage.serviceType];
-//       return $http({
-//         method: "POST",
-//         url: Proxy.local() + "/svr/request",
-//         headers: {
-//           'Authorization': "Bearer " + $rootScope.access_token
-//         },
-//         data: {
-//           request: 'sendCustomMessage',
-//           info: {
-//             order: order,
-//             servicePersonIds: servicePersonIds,
-//             serviceName: serviceName,
-//             type: 'to-servicePerson',
-//             category:'carManage'
-//           }
-//         }
-//       });
-//     } else {
-//       return ({re: -1});
-//     }
-//   }).then(function (res) {
-//     var json = res.data;
-//     if (json.re == 1) {
-//       $scope.videoCheck(order.orderId).then(function (json) {
-//         alert('result of videocheck=\r\n' + json);
-//         if (json.re == 1) {
-//           alert('附件上传成功');
-//         }
-//         else
-//         {}
-//       });
-//     }
-//   }).catch(function (err) {
-//     var str = '';
-//     for (var field in err)
-//       str += err[field];
-//     console.error('error=\r\n' + str);
-//   });
-//
-// }
-
-
-
 
 
         /*** bind append_maintainOrderPerson_modal***/

@@ -596,7 +596,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_manage',{
-            cache:false,
             url:'/car_manage',
             controller:'carManageController',
             templateUrl:'views/car_manage/car_manage.html'
