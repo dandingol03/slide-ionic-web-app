@@ -870,7 +870,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('evaluate',{
-              url:'/evaluate',
+              url:'/evaluate:order',
               controller:'evaluateController',
               templateUrl:'views/evaluate/evaluate.html'
           })

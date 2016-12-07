@@ -341,7 +341,7 @@ angular.module('starter')
                           });
                           confirmPopup.then(function(res) {
                               if(res) {
-                                  console.log('go into rate page');
+                                  $state.go('evaluate', {order: JSON.stringify($scope.order)});
                               }
                           })
                       }
