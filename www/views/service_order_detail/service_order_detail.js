@@ -317,17 +317,49 @@ angular.module('starter')
           }).then(function (res) {
               var json=res.data;
               if(json.re==1) {
-                  var confirmPopup = $ionicPopup.confirm({
-                      title: '信息',
-                      template: '订单已完成,是否现在进行评价'
-                  });
-                  confirmPopup.then(function(res) {
-                      if(res) {
-                          console.log('go into rate page');
+
+                  $http({
+                      method: "post",
+                      url: Proxy.local() + "/svr/request",
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token,
+                      },
+                      data: {
+                          request: 'insertFeePayInfo',
+                          info: {
+                              fee:$scope.order.fee,
+                              orderId: $scope.order.orderId,
+                              type:'service'
+                          }
                       }
+                  }).then(function(res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          var confirmPopup = $ionicPopup.confirm({
+                              title: '信息',
+                              template: '订单已完成,是否现在进行评价'
+                          });
+                          confirmPopup.then(function(res) {
+                              if(res) {
+                                  console.log('go into rate page');
+                              }
+                          })
+                      }
+                  }).catch(function (err) {
+                      var str='';
+                      for(var field in err)
+                          str+=err[field];
+                      console.error('err=\r\n'+str);
                   })
+
+              }else{
+                  var myPopup = $ionicPopup.alert({
+                      template: '服务订单修改状态失败',
+                      title: '信息'
+                  });
+                  return {re: -1};
               }
-          })
+          });
       }
       
 
