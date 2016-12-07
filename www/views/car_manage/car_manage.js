@@ -32,7 +32,7 @@ angular.module('starter')
                 }
             });
             if(carInfo!==null)
-                $scope.go_to('tabs.dashboard');
+                $scope.go_to('car');
             else{
                 $ionicPopup.alert({
                     title: '错误',

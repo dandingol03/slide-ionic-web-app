@@ -240,7 +240,7 @@ angular.module('starter')
         $rootScope.dashboard.tabIndex=1;
         $rootScope.life_insurance.benefiter=null;
         $rootScope.life_insurance.isLegalBenefiter=1;
-        $state.go('tabs.dashboard');
+        $state.go('life');
       }
       else{
           if(benefiter!==null)
@@ -248,7 +248,7 @@ angular.module('starter')
               $scope.order.benefiter=benefiter;
               $rootScope.dashboard.tabIndex=1;
               $rootScope.life_insurance.benefiter=benefiter;
-              $state.go('tabs.dashboard');
+              $state.go('life');
           }else{
               var myPopup = $ionicPopup.alert({
                   template: '请选择受益人后再点击确认',

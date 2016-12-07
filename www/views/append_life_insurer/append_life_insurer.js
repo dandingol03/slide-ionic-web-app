@@ -213,12 +213,6 @@ angular.module('starter')
     //确认寿险投保人
     $scope.confirm=function(){
 
-      if($scope.order.insurer!=undefined||$scope.order.insurer!=null){
-          $rootScope.dashboard.tabIndex=1;
-          $rootScope.life_insurance.insurer=$scope.order.insurer;
-          $state.go('tabs.dashboard');
-      }else{
-
           var persons=$scope.relativePersons;
           var person=null;
           if(persons!==undefined&&persons!==null&&Object.prototype.toString.call(persons)=='[object Array]')
@@ -239,7 +233,7 @@ angular.module('starter')
               $scope.order.insurer=person;
               $rootScope.dashboard.tabIndex=1;
               $rootScope.life_insurance.insurer=person;
-              $state.go('tabs.dashboard');
+              $state.go('life');
           }else{
               var myPopup = $ionicPopup.alert({
                   template: '请选择投保人后提交',
@@ -254,10 +248,9 @@ angular.module('starter')
                   $scope.order.insurer=relative;
                   $rootScope.dashboard.tabIndex=1;
                   $rootScope.life_insurance.insurer=relative;
-                  $state.go('tabs.dashboard');
+                  $state.go('life');
               }
           });
-      }
 
     }
 

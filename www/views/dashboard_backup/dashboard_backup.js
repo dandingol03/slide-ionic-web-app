@@ -181,13 +181,11 @@ angular.module('starter')
 
 
         //车辆信息
-        $scope.carInfo=
-            {};
-
+        $scope.carInfo= {};
 
 
         $scope.goto=function(url){
-            $location.path(url);
+            $state.go(url);
         };
 
 
