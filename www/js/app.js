@@ -845,6 +845,29 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/map_parkCar_confirm/map_parkCar_confirm.html'
           })
 
+          .state('car',{
+              url:'/car',
+              controller:'carController',
+              templateUrl:'views/car/car.html'
+          })
+
+          .state('life',{
+              url:'/life',
+              controller:'lifeController',
+              templateUrl:'views/life/life.html'
+          })
+
+          .state('modify',{
+              url:'/modify',
+              controller:'modifyController',
+              templateUrl:'views/modify/modify.html'
+          })
+
+          .state('manage',{
+              url:'/manage',
+              controller:'manageController',
+              templateUrl:'views/manage/manage.html'
+          })
 
 
 

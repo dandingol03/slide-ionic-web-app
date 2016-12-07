@@ -10,32 +10,6 @@ angular.module('starter')
                                                $cordovaImagePicker,$cordovaDatePicker){
 
 
-
-
-        $http({
-            method: "post",
-            url: Proxy.local() + "/svr/request",
-            headers: {
-                'Authorization': "Bearer " + $rootScope.access_token
-            },
-            data: {
-                request: 'getCarManageFees'
-            }
-        }).then(function (res) {
-            var json=res.data;
-            if(json.re==1) {
-                console.log('...');
-            }
-        }).catch(function(err) {
-            var str='';
-            for(var field in err)
-                str+=err[field];
-            console.error('error=' + str);
-        });
-
-
-
-
         $scope.serviceTypeMap={
             11:'维修-日常保养',
             12:'维修-故障维修',
@@ -1415,7 +1389,29 @@ angular.module('starter')
         }
 
         $scope.select_type=function(){
-            $state.go('car_insurance',{carInfo:JSON.stringify($scope.carInfo)});
+            //TODO:validat
+            if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+                $state.go('car_insurance',{carInfo:JSON.stringify($scope.carInfo)});
+            else{
+                // var alertPopup = $ionicPopup.alert({
+                //     title: '信息',
+                //     template: '请先选择车辆!'
+                // });
+
+                var confirmPopup = $ionicPopup.confirm({
+                    title: '信息',
+                    template: '请先选择车辆!'
+                });
+
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        $state.go('car_manage');
+                    } else {
+                        console.log('You are not sure');
+                    }
+                });
+
+            }
         }
 
 
@@ -1653,8 +1649,6 @@ angular.module('starter')
                 var data=res.state;
                 if(data==3)
                 {
-
-
                 }
             }).catch(function(err) {
                 var str='';
@@ -1665,6 +1659,55 @@ angular.module('starter')
 
         }
 
+
+
+        $scope.applyLifeInsuranceIntend=function () {
+            $http({
+                method: "POST",
+                url: Proxy.local()+'/svr/request',
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
+                    {
+                        request:'generateLifeInsuranceOrder',
+                        info:$scope.life_insurance.order
+                    }
+            }).then(function(res) {
+                if(res.data!==undefined&&res.data!==null)
+                {
+                    var orderId=res.data.data;
+                    if(orderId!==undefined&&orderId!==null)
+                    {
+                        if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
+                            $rootScope.lifeInsurance={};
+                        $rootScope.lifeInsurance.orderId=orderId;
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '您的订单',
+                            template: '您的寿险意向已提交,请等待工作人员配置方案后在"我的寿险订单"中进行查询'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res){
+                                $state.go('life_insurance_orders',{tabIndex:2});
+                            }else {
+                                console.log('You are not sure');
+                            }
+                        });
+                        //清除寿险意向数据
+                        $rootScope.life_insurance={
+                        };
+                        $state.go('tabs.dashboard');
+
+                    }
+                }
+
+            }).catch(function(err) {
+                var str='';
+                for(var field in err)
+                    str += field + ':' + err[field];
+                alert('error=\r\n' + str);
+            });
+        }
 
 
         //寿险意向保留
@@ -1678,6 +1721,9 @@ angular.module('starter')
                 &&$scope.life_insurance.order.planInsuranceFee!=undefined&&$scope.life_insurance.order.planInsuranceFee!=null
             )
             {
+                //TDOO:校验是否已有寿险订单
+                //受益人法定
+
                 $http({
                     method: "POST",
                     url: Proxy.local()+'/svr/request',
@@ -1686,44 +1732,41 @@ angular.module('starter')
                     },
                     data:
                         {
-                            request:'generateLifeInsuranceOrder',
-                            info:$scope.life_insurance.order
+                            request:'validateLifeInsuranceOrderApplyRedundancy',
+                            info:{
+                                insurancederId:$scope.life_insurance.order.insuranceder.personId,
+                                insurerId:$scope.life_insurance.order.insurer.personId,
+                                benefiterId:$scope.life_insurance.order.benefiter.personId
+                            }
                         }
                 }).then(function(res) {
-
-                    if(res.data!==undefined&&res.data!==null)
-                    {
-                        var orderId=res.data.data;
-                        if(orderId!==undefined&&orderId!==null)
+                    var json=res.data;
+                    if(json.data==true) {
+                        var msg=null;
+                        if($scope.life_insurance.order.benefiter.personId!==undefined&&$scope.life_insurance.order.benefiter.personId!==null)
                         {
-                            if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
-                                $rootScope.lifeInsurance={};
-                            $rootScope.lifeInsurance.orderId=orderId;
-
-
-                            var confirmPopup = $ionicPopup.confirm({
-                                title: '您的订单',
-                                template: '您的寿险意向已提交,请等待工作人员配置方案后在"我的寿险订单"中进行查询'
-                            });
-
-                            confirmPopup.then(function(res) {
-                                if(res){
-                                    console.log('You are sure');
-                                }else {
-                                    console.log('You are not sure');
-                                }
-                            })
-
-                            // $state.go('life_insurance_orders',{tabIndex:2});
+                            msg='已存在正在申请的相同投保人、被保险人的寿险订单,是否仍要提交';
                         }
+                        else{
+                            msg='已存在正在申请的相同投保人、被保险人、受益人的寿险订单的寿险订单,是否仍要提交'
+                        }
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '信息',
+                            template: msg
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res){
+                                $scope.applyLifeInsuranceIntend();
+                            }else {
+                            }
+                        })
+                    }else{
+                        $scope.applyLifeInsuranceIntend();
                     }
+                })
 
-                }).catch(function(err) {
-                    var str='';
-                    for(var field in err)
-                        str += field + ':' + err[field];
-                    alert('error=\r\n' + str);
-                });
+
+
             }else{
                 var confirmPopup = $ionicPopup.confirm({
                     title: '请填写完寿险意向后才选择提交',
@@ -1840,32 +1883,49 @@ angular.module('starter')
 
         $scope.miles=0;
 
-
-
         $scope.getMaintainPlan=function(miles){
-            var miles= parseInt(miles/5000)*5000;
 
-            $http({
-                method: "POST",
-                url: Proxy.local()+'/svr/request',
-                headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token,
-                },
-                data:
-                    {
-                        request:'getMaintainPlan',
-                        info:{
-                            miles:miles
+            var reg=/\D/;
+            if(miles==undefined||miles==null||reg.exec(miles)!=null)
+            {
+                var myPopup = $ionicPopup.alert({
+                    template: '您输入的公里数格式有误',
+                    title: '<strong style="color:red">错误</strong>'
+                });
+            }else{
+                if(miles<5000||miles>200000){
+                    var myPopup = $ionicPopup.alert({
+                        template: '请输入5000至200000公里范围内的里程',
+                        title: '<strong style="color:red">错误</strong>'
+                    });
+
+                }else{
+                    var miles= parseInt(miles/5000)*5000;
+
+                    $http({
+                        method: "POST",
+                        url: Proxy.local()+'/svr/request',
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token,
+                        },
+                        data:
+                            {
+                                request:'getMaintainPlan',
+                                info:{
+                                    miles:miles
+                                }
+                            }
+                    }).then(function(res) {
+                        var json = res.data;
+                        if(json.re==1){
+                            $scope.routineName=json.data;
+                            $scope.open_maintainPlanModal();
                         }
-                    }
-            }).then(function(res) {
-                var json = res.data;
-                if(json.re==1){
-                    $scope.routineName=json.data;
-                    $scope.open_maintainPlanModal();
-                }
 
-            })
+                    })
+                }
+            }
+
         }
 
         /***  查看保养计划模态框***/
@@ -3875,49 +3935,101 @@ angular.module('starter')
             $state.go('locate_maintain_nearby',{locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType,locateIndex:index})});
         }
 
+        //审车页面跳转
+        $scope.car_registrate=function () {
+            //updated by danding
+            $state.go('map_administrate_search',{ob:JSON.stringify({carInfo:$scope.carInfo,
+                maintain:$scope.maintain})});
+        }
+
+
         //维修页面跳转
         $scope.pickMaintainDaily=function(locateType,index) {
 
+            var checkFlag=false;
 
             if($scope.dailys!==undefined&&$scope.dailys!==null)
             {
-                $rootScope.maintain.dailys=$scope.dailys;
+                for(var i=0;i<$scope.dailys.length;i++)
+                {
+                    var daily=$scope.dailys[i];
+                    if(daily.checked==true)
+                    {
+                        checkFlag=true;
+                        break;
+                    }
+                }
             }
 
-            console.log('subTabIndex='+$scope.subTabIndex);
-            var serviceType=null;
-            var maintain=$scope.maintain;
-            switch($scope.subTabIndex){
-                case 0:
-                    serviceType='11';
-                    var subServiceTypes=[];
-                    $scope.dailys.map(function (daily, i) {
-                        if (daily.checked == true)
-                            subServiceTypes.push(daily.subServiceId);
+            if($scope.subTabIndex==1)
+            {
+                var threshold=0;
+                if($scope.maintain.description.text!==undefined&&$scope.maintain.description.text!==null&&$scope.maintain.description.text!='')
+                    threshold++;
+                if($scope.maintain.description.audio!==undefined&&$scope.maintain.description.audio!==null)
+                    threshold++;
+                if($scope.maintain.description.video!==undefined&&$scope.maintain.description.video!==null)
+                    threshold++;
+                if(threshold==0)
+                {
+                    $ionicPopup.alert({
+                        title: '错误',
+                        template: '请填入故障维修信息后再选择维修厂'
                     });
-                    maintain.serviceType=serviceType;
-                    maintain.subServiceTypes=subServiceTypes;
-                    maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
-                    break;
-                case 1:
-                    serviceType='12';
-                    maintain.serviceType=serviceType;
-                    maintain.description=$scope.maintain.description;
-                    maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
-                    break;
-                case 2:
-                    serviceType='13';
-                    maintain.serviceType=serviceType;
-                    maintain.subServiceTypes=$scope.accident.type;
-                    console.log('subServiceTypes='+$scope.accident.type);
-                    maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
-                    break;
-                default:
-                    break;
+                    return;
+                }
             }
-            $state.go('locate_maintain_daily',
-                {locate:JSON.stringify({carInfo:$scope.carInfo,
-                    locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
+
+
+
+            if(checkFlag||$scope.subTabIndex!=0)
+            {
+
+                $rootScope.maintain.dailys=$scope.dailys;
+                console.log('subTabIndex='+$scope.subTabIndex);
+                var serviceType=null;
+                var maintain=$scope.maintain;
+                switch($scope.subTabIndex){
+                    case 0:
+                        serviceType='11';
+                        var subServiceTypes=[];
+                        $scope.dailys.map(function (daily, i) {
+                            if (daily.checked == true)
+                                subServiceTypes.push(daily.subServiceId);
+                        });
+                        maintain.serviceType=serviceType;
+                        maintain.subServiceTypes=subServiceTypes;
+                        maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+                        break;
+                    case 1:
+                        serviceType='12';
+                        maintain.serviceType=serviceType;
+                        maintain.description=$scope.maintain.description;
+                        maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+                        break;
+                    case 2:
+                        serviceType='13';
+                        maintain.serviceType=serviceType;
+                        maintain.subServiceTypes=$scope.accident.type;
+                        console.log('subServiceTypes='+$scope.accident.type);
+                        maintain.serviceName=$scope.serviceTypeMap[maintain.serviceType];
+                        break;
+                    default:
+                        break;
+                }
+
+                //updated by danding
+                $state.go('map_search',
+                    {ob:JSON.stringify({carInfo:$scope.carInfo,
+                        locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
+
+
+            }else{
+                $ionicPopup.alert({
+                    title: '信息',
+                    template: '请从服务项目列表中选择一项或几项后再进行维修厂的选择'
+                });
+            }
         };
 
         $scope.pickAirportNearby=function() {
@@ -3928,10 +4040,29 @@ angular.module('starter')
             $state.go('locate_parkCar_nearby', {locate:JSON.stringify({carInfo:$scope.carInfo,locateType:locateType})});
         }
 
+
+        //审证
         $scope.pickPaperValidate=function(locateType) {
-            $state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
+            $state.go('map_paperValidate_search',
+                {ob:JSON.stringify({carInfo:$scope.carInfo,
+                    locateType:locateType})});
+            //$state.go('locate_paperValidate_nearby', {locate:JSON.stringify({locateType:locateType,carInfo:$scope.carInfo})});
         }
 
+        //接送机
+        $scope.goAirportSearch=function(locateType) {
+            $state.go('map_airport_search',
+                {ob:JSON.stringify({carInfo:$scope.carInfo,
+                    locateType:locateType})});
+        }
+
+
+        //取送车
+        $scope.goParkCarSearch=function(locateType) {
+            $state.go('map_parkCar_search',
+                {ob:JSON.stringify({carInfo:$scope.carInfo,
+                    locateType:locateType})});
+        }
 
         /*** bind matching_car_info modal ***/
         $ionicModal.fromTemplateUrl('views/modal/matching_car_info.html',{
@@ -4064,26 +4195,52 @@ angular.module('starter')
         }
 
         $scope.startCapture=function(){
-            var options = { limit: 3, duration: 15 };
-            $cordovaCapture.captureVideo(options).then(function(videoData) {
-                // Success! Video data is here
 
-                $scope.maintain.description.video=videoData[0].fullPath;
-                alert('whole path=' + $scope.maintain.description.video);
-                var basicPath=cordova.file.applicationStorageDirectory;
-                alert('basic path=' + basicPath);
+            if (ionic.Platform.isIOS()) {
+                var options = { limit: 3, duration: 15 };
+                $cordovaCapture.captureVideo(options).then(function(videoData) {
+                    // Success! Video data is here
 
-                var suffixIndex=videoData[0].fullPath.indexOf(basicPath)+basicPath.length;
-                var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
-                alert('filename=' + filename);
-                $scope.videoData=videoData[0];
-            }, function(err) {
-                // An error occurred. Show a message to the user
-                var str='';
-                for(var field in err)
-                    str+=err[field];
-                console.error('error=\r\n' + str);
-            });
+                    $scope.maintain.description.video=videoData[0].fullPath;
+                    alert('whole path=' + $scope.maintain.description.video);
+                    var basicPath=cordova.file.applicationStorageDirectory;
+                    alert('basic path=' + basicPath);
+
+                    var suffixIndex=videoData[0].fullPath.indexOf(basicPath)+basicPath.length;
+                    var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
+                    alert('filename=' + filename);
+                    $scope.videoData=videoData[0];
+                }, function(err) {
+                    // An error occurred. Show a message to the user
+                    var str='';
+                    for(var field in err)
+                        str+=err[field];
+                    console.error('error=\r\n' + str);
+                });
+            }else if(ionic.Platform.isAndroid()){
+                var options = { limit: 1, duration: 15 };
+                $cordovaCapture.captureVideo(options).then(function(videoData) {
+                    // Success! Video data is here
+
+                    $scope.maintain.description.video=videoData[0].fullPath;
+                    alert('whole path=' + $scope.maintain.description.video);
+                    var basicPath=cordova.file.applicationStorageDirectory;
+                    alert('basic path=' + basicPath);
+
+                    var suffixIndex=videoData[0].fullPath.indexOf(basicPath)+basicPath.length;
+                    var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
+                    alert('filename=' + filename);
+                    $scope.videoData=videoData[0];
+                }, function(err) {
+                    // An error occurred. Show a message to the user
+                    var str='';
+                    for(var field in err)
+                        str+=err[field];
+                    console.error('error=\r\n' + str);
+                });
+            }
+
+
         }
 
 
@@ -4124,12 +4281,6 @@ angular.module('starter')
                 }else if(ionic.Platform.isAndroid()){
 
                     $scope.media.stopRecord();
-                    $scope.media.media.getAudioFullPath(function(path){
-                        if(path!==undefined&&path!==null)
-                        {
-                            console.log('path='+$scope.maintain.description.audio);
-                        }
-                    });
                     $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.mp3';
                 }
 
