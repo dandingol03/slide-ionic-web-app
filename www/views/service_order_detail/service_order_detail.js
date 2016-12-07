@@ -327,7 +327,7 @@ angular.module('starter')
                       data: {
                           request: 'insertFeePayInfo',
                           info: {
-                              fee:$scope.order.fee,
+                              fee:-$scope.order.fee,
                               orderId: $scope.order.orderId,
                               type:'service'
                           }
