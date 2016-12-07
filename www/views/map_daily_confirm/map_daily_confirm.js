@@ -459,8 +459,6 @@ angular.module('starter')
 
             $scope.generateMaintainDailyOrder=function () {
 
-
-
                 var orderId = null;
                 //已选维修厂
                 if ($scope.unit !== undefined && $scope.unit !== null) {
@@ -495,7 +493,9 @@ angular.module('starter')
                                 data: {
                                     request: 'generateCarServiceOrder',
                                     info: {
-                                        maintain:maintain
+                                        maintain:maintain,
+                                        serviceType:$scope.maintain.serviceType,
+                                        subServiceTypes:$scope.maintain.subServiceTypes
                                     }
                                 }
                             });

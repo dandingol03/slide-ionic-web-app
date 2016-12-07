@@ -171,7 +171,7 @@ angular.module('starter')
               //指定了服务人员
               if($scope.order.servicePersonId!=undefined&&$scope.order.servicePersonId!=null) {
                   var date = new Date();
-                  $scope.timeDifference = parseInt((date-new Date($scope.order.estimateTime)) /(1000*60*60))
+                  $scope.timeDifference = parseInt((new Date($scope.order.estimateTime-date)) /(1000*60*60))
                   if ($scope.timeDifference >= 2) {
                       $http({
                           method: "post",
@@ -208,7 +208,7 @@ angular.module('starter')
               else{
                   // 通知 candidate表中的服务人员
                   var date = new Date();
-                  $scope.timeDifference = parseInt((date-new Date($scope.order.estimateTime)) /(1000*60*60))
+                  $scope.timeDifference = parseInt((new Date($scope.order.estimateTime-date)) /(1000*60*60))
                   if ($scope.timeDifference >= 2) {
                       $http({
                           method: "post",
@@ -226,7 +226,11 @@ angular.module('starter')
                       }).then(function(res) {
                           var json=res.data;
                           if(json.re==1) {
-                              var servicePersonIds = json.data;
+                              var servicePersonIdObjs = json.data;
+                              var servicePersonIds = [];
+                              servicePersonIdObjs.map(function(servicePersonId,i) {
+                                  servicePersonIds.push(servicePersonId.servicePersonId);
+                              })
                               $http({
                                   method: "post",
                                   url: Proxy.local() + "/svr/request",
@@ -259,7 +263,7 @@ angular.module('starter')
           if($scope.order.orderState==2){
 
               var date = new Date();
-              $scope.timeDifference = parseInt((date-new Date($scope.order.estimateTime)) /(1000*60*60));
+              $scope.timeDifference = parseInt((new Date($scope.order.estimateTime-date)) /(1000*60*60));
               if ($scope.timeDifference >= 2) {
                   $http({
                       method: "post",

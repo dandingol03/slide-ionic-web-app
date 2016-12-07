@@ -275,7 +275,8 @@ angular.module('starter')
                     data: {
                         request: 'generateCarServiceOrder',
                         info: {
-                            carManage: $scope.carManage
+                            carManage: $scope.carManage,
+                            serviceType:$scope.carManage.serviceType
                         }
                     }
                 }).then(function(res) {
@@ -420,6 +421,8 @@ angular.module('starter')
         }
 
         $scope.applyCarServiceOrder=function () {
+
+            $scope.carManage.estimateTime = new Date();
 
             //inject
             $scope.carManage.carId=$scope.carInfo.carId;

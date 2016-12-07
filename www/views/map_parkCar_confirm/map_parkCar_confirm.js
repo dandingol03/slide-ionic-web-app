@@ -291,7 +291,8 @@ angular.module('starter')
                     data: {
                         request: 'generateCarServiceOrder',
                         info: {
-                            carManage: $scope.carManage
+                            carManage: $scope.carManage,
+                            serviceType: $scope.carManage.serviceType
                         }
                     }
                 }).then(function(res) {
