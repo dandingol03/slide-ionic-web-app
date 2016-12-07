@@ -2,7 +2,8 @@
  * Created by dingyiming on 2016/12/7.
  */
 angular.module('starter')
-    .controller('lifeController',function($scope,$state,$stateParams,$ionicActionSheet,$rootScope,$ionicPopup,$http){
+    .controller('lifeController',function($scope,$state,$stateParams,$ionicActionSheet,
+                                          $rootScope,$ionicPopup,$http, Proxy){
 
         $scope.go_back=function(){
             window.history.back();
@@ -104,7 +105,6 @@ angular.module('starter')
             {
                 //TDOO:校验是否已有寿险订单
                 //受益人法定
-
                 $http({
                     method: "POST",
                     url: Proxy.local()+'/svr/request',
@@ -145,9 +145,6 @@ angular.module('starter')
                         $scope.applyLifeInsuranceIntend();
                     }
                 })
-
-
-
             }else{
                 var confirmPopup = $ionicPopup.confirm({
                     title: '请填写完寿险意向后才选择提交',
@@ -162,11 +159,55 @@ angular.module('starter')
                     }
                 })
             }
-
-
         }
 
 
+        $scope.applyLifeInsuranceIntend=function () {
+            $http({
+                method: "POST",
+                url: Proxy.local()+'/svr/request',
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
+                    {
+                        request:'generateLifeInsuranceOrder',
+                        info:$scope.life_insurance.order
+                    }
+            }).then(function(res) {
+                if(res.data!==undefined&&res.data!==null)
+                {
+                    var orderId=res.data.data;
+                    if(orderId!==undefined&&orderId!==null)
+                    {
+                        if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
+                            $rootScope.lifeInsurance={};
+                        $rootScope.lifeInsurance.orderId=orderId;
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '您的订单',
+                            template: '您的寿险意向已提交,请等待工作人员配置方案后在"我的寿险订单"中进行查询'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res){
+                                $state.go('life_insurance_orders',{tabIndex:2});
+                            }else {
+                                console.log('You are not sure');
+                            }
+                        });
+                        //清除寿险意向数据
+                        $rootScope.life_insurance={
+                        };
+                        $state.go('life');
+                    }
+                }
+
+            }).catch(function(err) {
+                var str='';
+                for(var field in err)
+                    str += field + ':' + err[field];
+                alert('error=\r\n' + str);
+            });
+        }
 
 
     })
