@@ -60,15 +60,25 @@
                             <div class="item" style="padding:0;height:90%;">
                                 <div class="list list-inset padding" style="margin:0;height:90%">
                                     <div class="item" style="padding:10px">
-                                        <span ng-repeat="star in stars"
-                                              ng-click="setter(star,'checked',!star.checked)">
-                                            <i class="ion-ios-star-outline"
-                                               ng-if="star.checked!=true"
-                                               style="font-size:1.5em"></i>
-                                            <i class="ion-ios-star"
-                                               ng-if="star.checked==true"
-                                               style="font-size:1.5em"></i>
+                                        <span style="width: 70%;display: inline-block">
+                                            <span ng-repeat="star in stars" style="font-size: 1.2em;"
+                                                    ng-click="starSetter(star,true)">
+                                                <i class="ion-ios-star-outline"
+                                                   ng-if="star.checked!=true"
+                                                   style="font-size:1.5em"></i>
+                                                <i class="ion-ios-star"
+                                                   ng-if="star.checked==true"
+                                                   style="font-size:1.5em"></i>
+                                            </span>
                                         </span>
+                                        <span style="width: 30%;display: inline-block;">
+                                            <span ng-if="starCount==1">极差</span>
+                                            <span ng-if="starCount==2">失望</span>
+                                            <span ng-if="starCount==3">一般</span>
+                                            <span ng-if="starCount==4">满意</span>
+                                            <span ng-if="starCount==5">惊喜</span>
+                                        </span>
+
                                     </div>
 
                                     <div class="item" style="padding:5px;height:80%">
@@ -93,9 +103,9 @@
 
                     </div>
 
-                    <div style="height:10%;margin-top:5%" ng-click="submit">
-                        <button class="button button-full button-calm">
-                            提交
+                    <div style="height:10%;margin-top:5%" ng-click="submit()">
+                        <button class="button button-full button-calm" style="width: 50%;margin-left:25%;font-weight: bolder;">
+                            提交     <span><i class="fa fa-hand-o-up"></i></span>
                         </button>
 
                     </div>

@@ -9,11 +9,11 @@ angular.module('starter')
 
 
         $scope.stars=[
-            {checked:false},
-            {checked:false},
-            {checked:false},
-            {checked:false},
-            {checked:false}
+            {index:0,checked:false},
+            {index:1,checked:false},
+            {index:2,checked:false},
+            {index:3,checked:false},
+            {index:4,checked:false}
             ];
 
         $scope.option = '';
@@ -22,32 +22,31 @@ angular.module('starter')
         $scope.starsCount = null;
 
 
-        $scope.setter=function (item,field,val) {
-            if(item[field]==true){
-                item[field]=val;
-            }else{
-                item[field]=true;
-            }
+        $scope.starSetter=function (item,val) {
 
-            $scope.stars.map(function(star,i) {
-                $scope.starsCount = 0;
-                if(star.checked==true){
-                    $scope.starsCount++;
-                }
-            })
+            for(var i=0;i<=item.index;i++) {
+                $scope.stars[i].checked=true;
+            }
+            for(var i=item.index+1;i<=4;i++) {
+                $scope.stars[i].checked=false;
+            }
+            $scope.starCount=item.index+1;
 
         }
 
 
 
         $scope.submit = function(){
-            $scope.stars.map(function(star,i) {
-                $scope.starsCount = 0;
-                if(star.checked==true){
-                    $scope.starsCount++;
-                }
-            })
-            $scope.evaluate =  $scope.starsCount;
+
+            if($scope.starCount==undefined||$scope.starCount==null)
+            {
+                var myPopup = $ionicPopup.alert({
+                    template: '请在评价一栏进行打分',
+                    title: '信息'
+                });
+            }
+
+            $scope.evaluate =  $scope.starCount;
 
             $http({
                 method: "post",
