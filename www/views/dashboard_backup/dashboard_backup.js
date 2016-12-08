@@ -79,30 +79,49 @@ angular.module('starter')
         }
 
 
-        //寿险
-        $scope.life_insurance=
-            {
-                insurer:{perTypeCode:'I'},
-                insuranceder:{perTypeCode:'I'},
-                benefiter:{perTypeCode:'I'},
-                intend:{},
-                order:{
-                    insurer:{},
-                    insuranceder:{},
-                    benefiter:{}
-                }
-            };
+        //车驾管选择种类
+        $scope.carDrivingManageSelect=function() {
+            var buttons=[{text:'审车'},{text:'审证'},{text:'接送机'},{text:'接送站'}];
+            $ionicActionSheet.show({
+                buttons:buttons,
+                titleText: '选择车驾管类型',
+                cancelText: '取消',
+                buttonClicked: function(index) {
+                    switch (index) {
+                        case 0:
+                            //审车页面跳转
+                            if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+                                $state.go('map_administrate_search',{ob:JSON.stringify({carInfo:$rootScope.carInfo})});
+                            else
+                                $state.go('map_administrate_search');
+                            break;
+                        case 1:
+                            //审证
+                            if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+                            $state.go('map_paperValidate_search',
+                                {ob:JSON.stringify({carInfo:$rootScope.carInfo})});
+                            else
+                                $state.go('map_paperValidate_search');
+                            break;
+                        case 2:
+                            $state.go('map_airport_search');
+                            break;
+                        case 3:
+                            $state.go('map_parkCar_search');
+                            break;
+                        default:
+                            break;
+                    }
+                    return true;
+                },
+                cssClass:'carDriving_manage_actionsheet'
+            });
+        }
 
 
 
-        //车驾管信息
-        $scope.carManage={
-            carValidate:$rootScope.carManage.carValidate,
-            paperValidate:$rootScope.carManage.paperValidate,
-            airportTransfer:$rootScope.carManage.airportTransfer,
-            parkCar:$rootScope.carManage.parkCar,
-            serviceType:$rootScope.carManage.serviceType
-        };
+
+
 
         $scope.dailys = [
             {subServiceId:'1',subServiceTypes:'机油,机滤',serviceType:'11'},
@@ -205,17 +224,6 @@ angular.module('starter')
 
         }
 
-        /***  悬浮窗  ***/
-        $scope.carNumHint='hidden list';
-        $scope.focusInCarNum=function(){
-            $scope.carNumHint='list';
-        }
-        $scope.blurCarNum= function () {
-            $scope.carNumHint = 'hidden list';
-        }
-
-        $scope.slideDescriptionHint='list';
-        /***  悬浮窗  ***/
 
 
 
@@ -228,32 +236,6 @@ angular.module('starter')
         };
 
 
-
-        //同步车辆信息
-        if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
-        {
-            var carInfo=$rootScope.carInfo;
-            $http({
-                method: "POST",
-                url: Proxy.local()+"/svr/request",
-                headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token,
-                },
-                data:
-                    {
-                        request:'validateCarFree',
-                        info:{
-                            carId:carInfo.carId
-                        }
-                    }
-            }).then(function(res) {
-                var json=res.data;
-                if(json.data==true)
-                    $scope.carInfo=$rootScope.carInfo;
-            })
-        }else{
-
-        }
 
 
 
@@ -278,269 +260,10 @@ angular.module('starter')
         }
 
 
-        //use factory to improve
-        $scope.datepick = function(item,field){
-            var ipObj1 = {
-                callback: function (val) {  //Mandatory
-
-                    var date=new Date(val);
-                    var month=parseInt(date.getMonth())+1;
-                    item[field]=date.getFullYear()+'-'+month+'-'+date.getDate();
-                },
-                from: new Date(1949, 10, 1), //Optional
-                to: new Date(2040, 10, 30), //Optional
-                inputDate: new Date(),
-                mondayFirst: false,
-                closeOnSelect: false,
-                templateType: 'popup',
-                weeksList: ["S", "M", "T", "W", "T", "F", "S"]
-            };
-            ionicDatePicker.openDatePicker(ipObj1);
-        };
 
 
         //填写车辆信息的示例图片
         $scope.car={};
-        $scope.isShowPicture = false;
-        $scope.isShowPicture1 = false;
-        $scope.isShowPicture2 = false;
-        $scope.isShowPicture3 = false;
-        $scope.isShowLicenseCard1 = false;
-        $scope.isShowLicenseCard2 = false;
-        $scope.isShowLicenseCard3 = false;
-
-        $scope.setIsShowPicture = function(){
-            $scope.isShowPicture = true;
-            $scope.openDemoModal();
-        };
-        $scope.setIsShowPicture1 = function(){
-            $scope.isShowPicture1 = true;
-            $scope.openDemoModal1();
-        };
-        $scope.setIsShowPicture2 = function(){
-            $scope.isShowPicture2 = true;
-            $scope.openDemoModal2();
-        };
-        $scope.setIsShowPicture3 = function(){
-            $scope.isShowPicture3 = true;
-            $scope.openDemoModal3();
-        };
-
-        $scope.setIsShowLicenseCard1 = function(){
-            $scope.isShowLicenseCard1 = true;
-            $scope.openLicenseCard1();
-        };
-        $scope.setIsShowLicenseCard2 = function(){
-            $scope.isShowLicenseCard2 = true;
-            $scope.openLicenseCard2();
-        };
-        $scope.setIsShowLicenseCard3 = function(){
-            $scope.isShowLicenseCard3 = true;
-            $scope.openLicenseCard3();
-        };
-
-
-        /*** show demo modal ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_demo_modal.html',{
-            scope:  $scope,
-            animation: 'slide-in-bottom'
-        }).then(function(modal) {
-            $scope.show_demo_modal = modal;
-        });
-
-        $scope.openDemoModal= function(){
-            try{
-                $scope.show_demo_modal.show();
-            }catch(e){
-                alert('error=\r\n'+ e.toString());
-            }
-
-        };
-
-        $scope.closeDemoModal= function() {
-            $scope.show_demo_modal.hide();
-        };
-        /*** show demo modal ***/
-
-        /*** show demo modal1 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_demo_modal1.html',{
-            scope:  $scope,
-            animation: 'slide-in-bottom'
-        }).then(function(modal) {
-            $scope.show_demo_modal1 = modal;
-        });
-
-        $scope.openDemoModal1= function(){
-            $scope.show_demo_modal1.show();
-        };
-
-        $scope.closeDemoModal1= function() {
-            $scope.show_demo_modal1.hide();
-        };
-        /*** show demo modal1 ***/
-
-        /*** show demo modal2 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_demo_modal2.html',{
-            scope:  $scope,
-            animation: 'slide-in-bottom'
-        }).then(function(modal) {
-            $scope.show_demo_modal2 = modal;
-        });
-
-        $scope.openDemoModal2= function(){
-            $scope.show_demo_modal2.show();
-        };
-
-        $scope.closeDemoModal2= function() {
-            $scope.show_demo_modal2.hide();
-        };
-        /*** show demo modal2 ***/
-
-        /*** show demo modal3 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_demo_modal3.html',{
-            scope:  $scope,
-            animation: 'slide-in-bottom'
-        }).then(function(modal) {
-            $scope.show_demo_modal3 = modal;
-        });
-
-        $scope.openDemoModal3= function(){
-            $scope.show_demo_modal3.show();
-        };
-
-        $scope.closeDemoModal3= function() {
-            $scope.show_demo_modal3.hide();
-        };
-        /*** show demo modal3 ***/
-
-        /*** ShowLicenseCard1 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_license_card_modal1.html',{
-            scope:  $scope,
-            animation: 'slide-in-bottom'
-        }).then(function(modal) {
-            $scope.show_license_card_modal1 = modal;
-        });
-
-        $scope.openLicenseCard1= function(){
-            $scope.show_license_card_modal1.show();
-        };
-
-        $scope.closeLicenseCard1= function() {
-            $scope.show_license_card_modal1.hide();
-        };
-        /*** ShowLicenseCard1 ***/
-
-        /*** ShowLicenseCard2 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_license_card_modal2.html',{
-            scope:  $scope,
-            animation: 'slide-in-bottom'
-        }).then(function(modal) {
-            $scope.show_license_card_modal2 = modal;
-        });
-
-        $scope.openLicenseCard2= function(){
-            $scope.show_license_card_modal2.show();
-        };
-
-        $scope.closeLicenseCard2= function() {
-            $scope.show_license_card_modal2.hide();
-        };
-        /*** ShowLicenseCard2 ***/
-
-        /*** ShowLicenseCard3 ***/
-        $ionicModal.fromTemplateUrl('views/modal/show_license_card_modal3.html',{
-            scope:  $scope,
-            animation: 'slide-in-bottom'
-        }).then(function(modal) {
-            $scope.show_license_card_modal3 = modal;
-        });
-
-        $scope.openLicenseCard3= function(){
-            $scope.show_license_card_modal3.show();
-        };
-
-        $scope.closeLicenseCard3= function() {
-            $scope.show_license_card_modal3.hide();
-        };
-        /*** ShowLicenseCard3 ***/
-
-
-        /*** bind car modal ***/
-        $ionicModal.fromTemplateUrl('views/modal/bind_car.html',{
-            scope:  $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.bind_car_modal = modal;
-        });
-
-        $scope.openCarModal= function(){
-            $scope.bind_car_modal.show();
-
-        };
-
-        $scope.closeCarModal= function() {
-            $scope.bind_car_modal.hide();
-        };
-        /*** bind car modal ***/
-
-
-        /*** bind append_insurer_modal 选择投保人模态框***/
-        $ionicModal.fromTemplateUrl('views/modal/append_insurer_modal.html',{
-            scope:  $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.append_insurer_modal = modal;
-        });
-
-        $scope.open_appendInsurerModal= function(){
-            $scope.append_insurer_modal.show();
-        };
-
-
-        $scope.close_appendInsurerModal= function() {
-            $scope.append_insurer_modal.hide();
-        };
-        /*** bind append_insurer_modal ***/
-
-
-        /*** bind append_insuranceder_modal 选择被保险人模态框***/
-        $ionicModal.fromTemplateUrl('views/modal/append_insuranceder_modal.html',{
-            scope:  $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.append_insuranceder_modal = modal;
-        });
-
-        $scope.open_appendInsurancederModal= function(){
-            $scope.append_insuranceder_modal.show();
-        };
-
-        $scope.close_appendInsurancederModal= function() {
-            $scope.append_insuranceder_modal.hide();
-        };
-        /*** bind append_insuranceder_modal ***/
-
-
-
-        /*** bind append_benefiter_modal 选择受益人模态框***/
-        $ionicModal.fromTemplateUrl('views/modal/append_benefiter_modal.html',{
-            scope:  $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.append_benifiter_modal = modal;
-        });
-
-        $scope.open_appendBenifiterModal= function(){
-            $scope.append_benifiter_modal.show();
-        };
-
-        $scope.close_appendBenifiterModal= function() {
-            $scope.append_benifiter_modal.hide();
-        };
-        /*** bind append_benefiter_modal ***/
-
-
-
 
 
         $scope.check_carInfo=function(){
@@ -555,23 +278,6 @@ angular.module('starter')
         };
 
 
-        /*** bind upload_ownerIdCard_modal***/
-        $ionicModal.fromTemplateUrl('views/modal/upload_ownerIdCard_modal.html',{
-            scope:  $scope,
-            animation: 'animated '+' bounceInUp',
-            hideDelay:920
-        }).then(function(modal) {
-            $scope.upload_ownerIdCard_modal = modal;
-        });
-
-        $scope.open_uploadOwnerIdCardModal= function(){
-            $scope.upload_ownerIdCard_modal.show();
-        };
-
-        $scope.close_uploadOwnerIdCardModal= function() {
-            $scope.upload_ownerIdCard_modal.hide();
-        };
-        /*** bind upload_ownerIdCard_modal ***/
 
         $scope.uploadOwnerIdCardPhoto=function(){
             $scope.open_uploadOwnerIdCardModal();
@@ -717,351 +423,7 @@ angular.module('starter')
             }
         }
 
-        //上传验车照片
-        $scope.uploadCarAttachPhotoConfirm=function(){
-            if($scope.carInfo.carAttachId1_img!==undefined&&$scope.carInfo.carAttachId1_img!==null&&
-                $scope.carInfo.carAttachId2_img!==undefined&&$scope.carInfo.carAttachId2_img!==null&&
-                $scope.carInfo.carAttachId3_img!==undefined&&$scope.carInfo.carAttachId3_img!==null&&
-                $scope.carInfo.carAttachId4_img!==undefined&&$scope.carInfo.carAttachId4_img!==null&&
-                $scope.carInfo.carAttachId5_img!==undefined&&$scope.carInfo.carAttachId5_img!==null&&
-                $scope.carInfo.carAttachId6_img!==undefined&&$scope.carInfo.carAttachId6_img!==null)
-            {
-                console.log('path of carAttachId1 =' + $scope.carInfo.carAttachId1_img);
-                console.log('path of carAttachId2 =' + $scope.carInfo.carAttachId2_img);
-                console.log('path of carAttachId3 =' + $scope.carInfo.carAttachId3_img);
-                console.log('path of carAttachId4 =' + $scope.carInfo.carAttachId4_img);
-                console.log('path of carAttachId5 =' + $scope.carInfo.carAttachId5_img);
-                console.log('path of carAttachId6 =' + $scope.carInfo.carAttachId6_img);
 
-                var carId=$scope.carInfo.carId;
-                var suffix='';
-                var imageType='carPhoto';
-                if($scope.carInfo.carAttachId1_img.indexOf('.jpg')!=-1)
-                    suffix='jpg';
-                else if($scope.carInfo.carAttachId1_img.indexOf('.png')!=-1)
-                    suffix='png';
-                else{}
-                var server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                    '&imageType='+imageType+'&suffix='+suffix+'&filename='+'carAttachId1'+'&carId='+carId;
-                var options = {
-                    fileKey:'file',
-                    headers: {
-                        'Authorization': "Bearer " + $rootScope.access_token
-                    }
-                };
-
-                var carAttachId1=null;
-                var carAttachId2=null;
-                var carAttachId3=null;
-                var carAttachId4=null;
-                var carAttachId5=null;
-                var carAttachId6=null;
-
-                $cordovaFileTransfer.upload(server, $scope.carInfo.carAttachId1_img, options)
-                    .then(function(res) {
-                        alert('upload first carAttach success');
-                        for(var field in res) {
-                            alert('field=' + field + '\r\n' + res[field]);
-                        }
-                        var su=null
-                        if($scope.carInfo.carAttachId1_img.indexOf('.jpg')!=-1)
-                            su='jpg';
-                        else if($scope.carInfo.carAttachId1_img.indexOf('.png')!=-1)
-                            su='png';
-                        alert('suffix=' + su);
-                        return $http({
-                            method: "POST",
-                            url: Proxy.local()+"/svr/request",
-                            headers: {
-                                'Authorization': "Bearer " + $rootScope.access_token,
-                            },
-                            data:
-                                {
-                                    request:'createPhotoAttachment',
-                                    info:{
-                                        imageType:'carPhoto',
-                                        filename:'carAttachId1',
-                                        suffix:su,
-                                        docType:'I4',
-                                        carId:carId
-                                    }
-                                }
-                        });
-                    }).then(function(res) {
-                    var json=res.data;
-                    if(json.re==1) {
-
-                        carAttachId1=json.data;
-                        alert('carAttachId1=' + carAttachId1);
-                        var su=null;
-                        if($scope.carInfo.carAttachId2_img.indexOf('.jpg')!=-1)
-                            su='jpg';
-                        else if($scope.carInfo.carAttachId2_img.indexOf('.png')!=-1)
-                            su='png';
-                        server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                            '&imageType='+imageType+'&suffix='+su+'&filename='+'carAttachId2'+'&carId='+carId;
-                        return  $cordovaFileTransfer.upload(server, $scope.carInfo.carAttachId2_img, options);
-                    }
-                }).then(function(res) {
-                    alert('second carAttach upload success');
-                    var su=null;
-                    if($scope.carInfo.carAttachId2_img.indexOf('.jpg')!=-1)
-                        su='jpg';
-                    else if($scope.carInfo.carAttachId2_img.indexOf('.png')!=-1)
-                        su='png';
-                    return $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token,
-                        },
-                        data:
-                            {
-                                request:'createPhotoAttachment',
-                                info:{
-                                    imageType:'carPhoto',
-                                    filename:'carAttachId2',
-                                    suffix:su,
-                                    docType:'I4',
-                                    carId:carId
-                                }
-                            }
-                    });
-                }).then(function(res) {
-                    var json=res.data;
-                    if(json.re==1) {
-                        carAttachId2=json.data;
-                        alert('carAttachId2=' + carAttachId2);
-                        var su=null;
-                        if($scope.carInfo.carAttachId3_img.indexOf('.jpg')!=-1)
-                            su='jpg';
-                        else if($scope.carInfo.carAttachId3_img.indexOf('.png')!=-1)
-                            su='png';
-                        server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                            '&imageType='+imageType+'&suffix='+su+'&filename='+'carAttachId3'+'&carId='+carId;
-                        return  $cordovaFileTransfer.upload(server, $scope.carInfo.carAttachId3_img, options);
-                    }
-                }).then(function(res) {
-                    alert('third image upload successfully');
-                    var su=null;
-                    if($scope.carInfo.carAttachId3_img.indexOf('.jpg')!=-1)
-                        su='jpg';
-                    else if($scope.carInfo.carAttachId3_img.indexOf('.png')!=-1)
-                        su='png';
-                    return $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token,
-                        },
-                        data:
-                            {
-                                request:'createPhotoAttachment',
-                                info:{
-                                    imageType:'carPhoto',
-                                    filename:'carAttachId3',
-                                    suffix:su,
-                                    docType:'I4',
-                                    carId:carId
-                                }
-                            }
-                    });
-                }).then(function(res) {
-                    var json=res.data;
-                    if(json.re==1) {
-                        carAttachId3=json.data;
-                        var su=null;
-                        if($scope.carInfo.carAttachId4_img.indexOf('.jpg')!=-1)
-                            su='jpg';
-                        else if($scope.carInfo.carAttachId4_img.indexOf('.png')!=-1)
-                            su='png';
-                        server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                            '&imageType='+imageType+'&suffix='+su+'&filename='+'carAttachId4'+'&carId='+carId;
-                        return  $cordovaFileTransfer.upload(server, $scope.carInfo.carAttachId4_img, options);
-                    }
-                }).then(function(res) {
-                    alert('fourth image upload successfully');
-                    var su=null;
-                    if($scope.carInfo.carAttachId4_img.indexOf('.jpg')!=-1)
-                        su='jpg';
-                    else if($scope.carInfo.carAttachId4_img.indexOf('.png')!=-1)
-                        su='png';
-                    return $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token,
-                        },
-                        data:
-                            {
-                                request:'createPhotoAttachment',
-                                info:{
-                                    imageType:'carPhoto',
-                                    filename:'carAttachId4',
-                                    suffix:su,
-                                    docType:'I4',
-                                    carId:carId
-                                }
-                            }
-                    });
-                }).then(function(res) {
-                    var json=res.data;
-                    if(json.re==1) {
-                        carAttachId4=json.data;
-                        var su=null;
-                        if($scope.carInfo.carAttachId5_img.indexOf('.jpg')!=-1)
-                            su='jpg';
-                        else if($scope.carInfo.carAttachId5_img.indexOf('.png')!=-1)
-                            su='png';
-                        server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                            '&imageType='+imageType+'&suffix='+su+'&filename='+'carAttachId5'+'&carId='+carId;
-                        return  $cordovaFileTransfer.upload(server, $scope.carInfo.carAttachId5_img, options);
-                    }
-                }).then(function(res) {
-                    alert('fifth image upload successfully');
-                    var su=null;
-                    if($scope.carInfo.carAttachId5_img.indexOf('.jpg')!=-1)
-                        su='jpg';
-                    else if($scope.carInfo.carAttachId5_img.indexOf('.png')!=-1)
-                        su='png';
-                    return $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token,
-                        },
-                        data:
-                            {
-                                request:'createPhotoAttachment',
-                                info:{
-                                    imageType:'carPhoto',
-                                    filename:'carAttachId5',
-                                    suffix:su,
-                                    docType:'I4',
-                                    carId:carId
-                                }
-                            }
-                    });
-                }).then(function(res) {
-                    var json=res.data;
-                    if(json.re==1) {
-                        carAttachId5=json.data;
-                        var su=null;
-                        if($scope.carInfo.carAttachId6_img.indexOf('.jpg')!=-1)
-                            su='jpg';
-                        else if($scope.carInfo.carAttachId6_img.indexOf('.png')!=-1)
-                            su='png';
-                        server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                            '&imageType='+imageType+'&suffix='+su+'&filename='+'carAttachId6'+'&carId='+carId;
-                        return  $cordovaFileTransfer.upload(server, $scope.carInfo.carAttachId6_img, options);
-                    }
-                }).then(function(res) {
-                    alert('sixth image upload successfully');
-                    var su=null;
-                    if($scope.carInfo.carAttachId6_img.indexOf('.jpg')!=-1)
-                        su='jpg';
-                    else if($scope.carInfo.carAttachId6_img.indexOf('.png')!=-1)
-                        su='png';
-                    return $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token,
-                        },
-                        data:
-                            {
-                                request:'createPhotoAttachment',
-                                info:{
-                                    imageType:'carPhoto',
-                                    filename:'carAttachId6',
-                                    suffix:su,
-                                    docType:'I4',
-                                    carId:carId
-                                }
-                            }
-                    });
-                }).then(function(res) {
-                    var json=res.data;
-                    if(json.re==1) {
-                        carAttachId6=json.data;
-                        var ob={
-                            carAttachId1:carAttachId1,
-                            carAttachId2:carAttachId2,
-                            carAttachId3:carAttachId3,
-                            carAttachId4:carAttachId4,
-                            carAttachId5:carAttachId5,
-                            carAttachId6:carAttachId6
-                        }
-                        return $http({
-                            method: "POST",
-                            url: Proxy.local()+"/svr/request",
-                            headers: {
-                                'Authorization': "Bearer " + $rootScope.access_token,
-                            },
-                            data:
-                                {
-                                    request:'updateInsuranceCarInfo',
-                                    info:{
-                                        carId:carId,
-                                        ob:ob
-                                    }
-                                }
-                        });
-                    }
-                }).then(function(res) {
-                    alert('car attach upload completely');
-                    $scope.close_uploadCarAttachModal();
-                    $scope.select_type();
-                }).catch(function(err) {
-                    var str='';
-                    for(var field in err) {
-                        str+=err[field];
-                    }
-                    alert('error=\r\n' + str);
-                });
-            }else{
-                $ionicPopup.alert({
-                    title: '',
-                    template: '请同时上传验车照片6张'
-                });
-            }
-        }
-
-        /*** bind upload_licenseCard_modal***/
-        $ionicModal.fromTemplateUrl('views/modal/upload_licenseCard_modal.html',{
-            scope:  $scope,
-            animation: 'animated '+' bounceInUp',
-            hideDelay:920
-        }).then(function(modal) {
-            $scope.upload_licenseCard_modal = modal;
-        });
-
-        $scope.open_uploadLicenseCardModal= function(){
-            $scope.upload_licenseCard_modal.show();
-        };
-
-        $scope.close_uploadLicenseCardModal= function() {
-            $scope.upload_licenseCard_modal.hide();
-        };
-        /*** bind upload_licenseCard_modal ***/
-
-        /*** bind upload_carAttach_modal***/
-        $ionicModal.fromTemplateUrl('views/modal/upload_carAttach_modal.html',{
-            scope:  $scope,
-            animation: 'animated '+' bounceInUp',
-            hideDelay:920
-        }).then(function(modal) {
-            $scope.upload_carAttach_modal = modal;
-        });
-
-        $scope.open_uploadCarAttachModal= function(){
-            $scope.upload_carAttach_modal.show();
-        };
-
-        $scope.close_uploadCarAttachModal= function() {
-            $scope.upload_carAttach_modal.hide();
-        };
-        /*** bind upload_carAttach_modal ***/
 
 
 

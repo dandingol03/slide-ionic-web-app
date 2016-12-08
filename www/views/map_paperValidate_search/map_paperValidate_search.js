@@ -9,7 +9,7 @@ angular.module('starter')
                                                            BaiduMapService,$ionicModal,
                                                            Proxy,$stateParams, $q,$ionicLoading) {
 
-        if($stateParams.ob!==undefined&&$stateParams.ob!==null)
+        if($stateParams.ob!==undefined&&$stateParams.ob!==null&&$stateParams.ob!='')
         {
             $scope.ob=$stateParams.ob;
             if(Object.prototype.toString.call($scope.ob)=='[object String]')

@@ -484,6 +484,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             templateUrl:'views/login/login.html'
           })
 
+          .state('dashboard',{
+              url:'/dashboard',
+              controller: 'dashboardController',
+              templateUrl:'views/dashboard/dashboard.html'
+          })
+
+
+
 
           .state('register',{
             url:'/register',
@@ -760,11 +768,19 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 templateUrl:'views/my_page/my_page.html'
           })
 
-          .state('dashboard_backup',{
-            url:'/dashboard_backup',
-              controller:'dashboardBackUpController',
-              templateUrl:'views/dashboard_backup/dashboard_backup.html'
+
+          .state('tabs.dashboard_backup',{
+              cache:false,
+              url:'/dashboard_backup/:params',
+              views:{
+                  'dashboard-backup-tab':{
+                      controller:'dashboardBackUpController',
+                      templateUrl:'views/dashboard_backup/dashboard_backup.html'
+                  }
+              }
           })
+
+
 
           .state('applied_life_order_detail',{
               url:'/applied_life_order_detail:orderId',
@@ -858,16 +874,16 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/life/life.html'
           })
 
-          .state('modify',{
-              url:'/modify',
-              controller:'modifyController',
-              templateUrl:'views/modify/modify.html'
+          .state('maintain',{
+              url:'/maintain',
+              controller:'maintainController',
+              templateUrl:'views/maintain/maintain.html'
           })
 
-          .state('manage',{
-              url:'/manage',
-              controller:'manageController',
-              templateUrl:'views/manage/manage.html'
+          .state('carDrivingManage',{
+              url:'/carDrivingManage',
+              controller:'carDrivingManageController',
+              templateUrl:'views/carDrivingManage/carDrivingManage.html'
           })
 
           .state('evaluate',{
@@ -901,7 +917,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.121:3000";
+            return "http://139.129.96.231:3000";
           else
             return "/proxy/node_server";
             
