@@ -102,20 +102,24 @@ angular.module('starter')
 
         $scope.init_map=function (BMap) {
 
-            var deferred=$q.defer();
-            var cb=function () {
+            var deferred = $q.defer();
+            var cb = function () {
                 // 创建地图实例
                 var map = new AMap.Map("map_search", {
                     resizeEnable: true,
-                    zoom:11,
-                    center: [117.144816,36.672171]
+                    zoom: 11,
+                    center: [117.144816, 36.672171]
                 });
 
-            return deferred.promise;
+                return deferred.promise;
+            }
+
         }
 
 
-
+        function init() {
+            angular.bootstrap(document.getElementById("map"), ['app.ui-map']);
+        }
 
 
 
