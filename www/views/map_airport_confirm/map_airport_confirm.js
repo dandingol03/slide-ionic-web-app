@@ -224,7 +224,6 @@ angular.module('starter')
 
             //接送机----已指派服务人员
 
-            $scope.carManage.serviceType=21;
             if(unit!==undefined&&unit!==null)//
             {
                 $scope.carManage.servicePlaceId=55;
@@ -392,7 +391,63 @@ angular.module('starter')
             {
                 if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
                 {
-                    $scope.generateServiceOrder();
+                    $scope.carManage.serviceType=23;
+                    //TODO:scoreVerify
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'fetchScoreTotal'
+                        }
+                    }).then(function (res) {
+                        var json=res.data;
+                        if(json.re==1) {
+                            var score=json.data;
+                            $http({
+                                method: "POST",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data: {
+                                    request: 'generateCarServiceOrderFee',
+                                    info: {
+                                        serviceType: $scope.carManage.serviceType,
+                                        subServiceTypes: null
+                                    }
+                                }
+                            }).then(function (res) {
+                                var json=res.data;
+                                if(json.re==1)
+                                {
+                                    var fee=json.data;
+                                    $scope.carManage.fee=fee;
+                                    if(fee>=score)
+                                    {
+                                        $scope.generateServiceOrder();
+                                    }else{
+                                        var alertPopup = $ionicPopup.alert({
+                                            title: '警告',
+                                            template: '服务订单的费用超过您现在的积分'
+                                        });
+                                    }
+                                }
+                            })
+
+
+                        }else{
+                            var alertPopup = $ionicPopup.alert({
+                                title: '警告',
+                                template: '您没有合法积分'
+                            });
+                        }
+                    })
+
+
+
                 }else{
                         $ionicPopup.alert({
                             title: '',
