@@ -300,7 +300,7 @@ angular.module('starter')
                               }).then(function (res) {
                                   var json = res.data;
                                   if (json.re == 1 || json.result == 'ok') {
-                                      $state.go('dashboard_backup');
+                                      $state.go('tabs.dashboard_backup');
                                   }
                               }).catch(function (err) {
                                   var error = '';
@@ -310,7 +310,7 @@ angular.module('starter')
                                   alert('error=' + error);
                               });
                           } else {
-                              $state.go('dashboard_backup');
+                              $state.go('tabs.dashboard_backup');
                           }
                       }
                   })

@@ -32,7 +32,18 @@ angular.module('starter')
                 }
             });
             if(carInfo!==null)
-                $scope.go_to('car');
+            {
+
+                if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+                    $state.go('car_insurance',{carInfo:JSON.stringify($rootScope.carInfo)});
+                else{
+                    var confirmPopup = $ionicPopup.alert({
+                        title: '信息',
+                        template: '请先选择车辆!'
+                    });
+
+                }
+            }
             else{
                 $ionicPopup.alert({
                     title: '错误',
