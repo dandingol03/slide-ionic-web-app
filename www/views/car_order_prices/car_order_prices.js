@@ -18,6 +18,8 @@ angular.module('starter')
       $scope.order=JSON.parse($scope.order);
 
 
+
+
     if($scope.order.orderState==2){
         $scope.getOrder=function () {
             $ionicLoading.show({
@@ -40,6 +42,7 @@ angular.module('starter')
                 var json = res.data;
                 if (json.re == 1) {
                     $scope.order = json.data;
+
                 }
                 $ionicLoading.hide();
             }).catch(function (err) {
@@ -53,6 +56,23 @@ angular.module('starter')
         }
         $scope.getOrder();
     }
+
+
+      //获取各公司的估价详请
+      if($scope.order.orderState==3){
+
+
+
+          $scope.order.prices.map(function (price, i) {
+              var fee=0;
+              price.items.map(function (item, j) {
+                  fee+=item.insuranceFee;
+              });
+              price.insuranceFeeTotal=fee;
+          });
+      }
+
+
 
 
       $scope.go_back=function(){
