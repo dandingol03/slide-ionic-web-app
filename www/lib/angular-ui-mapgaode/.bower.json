@@ -1,0 +1,46 @@
+{
+  "author": "anypossiblew",
+  "name": "angular-ui-mapgaode",
+  "version": "1.1.0",
+  "authors": [
+    "anypossiblew <anypossible.w@gmail.com>"
+  ],
+  "homepage": "http://angular-ui.github.com",
+  "keywords": [
+    "angular",
+    "angularui",
+    "map"
+  ],
+  "main": "./ui-map.js",
+  "dependencies": {
+    "angular": "1.x",
+    "angular-ui-utils": "event-0.1.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.x",
+    "angular-bootstrap": "0.10.0",
+    "bootstrap": "~3.2.0"
+  },
+  "ignore": [
+    "demo",
+    "test",
+    ".bowerrc",
+    ".gitignore",
+    ".jshintignore",
+    ".jshintrc",
+    "gruntFile.js",
+    "package.json",
+    "publish.js",
+    "README.md"
+  ],
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.0",
+    "commit": "56bd5c89b82067e72e822e706a7df820d627d637"
+  },
+  "_source": "https://github.com/anypossiblew/ui-map-gaode.git",
+  "_target": "^1.1.0",
+  "_originalSource": "angular-ui-mapgaode",
+  "_direct": true
+}
