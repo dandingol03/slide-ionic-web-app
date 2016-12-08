@@ -150,10 +150,7 @@ angular.module('starter')
                           title: '<strong style="color:red">信息</strong>'
                       });
                   }
-              })
-
-
-                  .catch(function (err) {
+              }).catch(function (err) {
                   var str='';
                   for(var field in err)
                       str+=err[field];

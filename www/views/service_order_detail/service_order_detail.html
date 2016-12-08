@@ -109,20 +109,21 @@
 
 
 
-    <button class="button button-block button-positive" style="width: 80%;margin-left: 10%;"
+
+    <button class="button button-block button-positive" style="width: 70%;margin-left: 15%;"
             ng-click="cancleOrder(-3)"
             ng-if="order.orderState==1||order.orderState==2">
       取消订单
     </button>
 
-    <button class="button button-block button-positive" style="width: 80%;margin-left:10%;"
+    <button class="button button-block button-positive" style="width: 70%;margin-left:15%;"
             ng-click="finishOrder()"
             ng-if="order.orderState==2"
     >
       完成订单
     </button>
 
-    <button class="button button-block button-positive" style="width: 80%;margin-left: 10%;"
+    <button class="button button-block button-positive" style="width: 70%;margin-left: 15%;"
             ng-if="order.orderState==3"
     >
       评价订单

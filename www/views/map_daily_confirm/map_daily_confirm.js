@@ -743,7 +743,8 @@ angular.module('starter')
 
                     if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined&&$scope.carInfo.carId!==null)
                     {
-                        //TODO:check this car free or not
+
+                        //TODO:fetch scoreTotal from insurance_customer
                         $http({
                             method: "POST",
                             url: Proxy.local() + "/svr/request",
@@ -751,34 +752,88 @@ angular.module('starter')
                                 'Authorization': "Bearer " + $rootScope.access_token
                             },
                             data: {
-                                request: 'validateCarServiceStateFree',
-                                info: {
-                                    carId: $scope.carInfo.carId
-                                }
+                                request: 'fetchScoreTotal'
                             }
                         }).then(function (res) {
                             var json=res.data;
-                            if(json.data==true)
-                            {
+                            if(json.re==1) {
+                                var score=json.data;
+
+                                $http({
+                                    method: "POST",
+                                    url: Proxy.local() + "/svr/request",
+                                    headers: {
+                                        'Authorization': "Bearer " + $rootScope.access_token
+                                    },
+                                    data: {
+                                        request: 'generateCarServiceOrderFee',
+                                        info: {
+                                            serviceType: $scope.maintain.serviceType,
+                                            subServiceTypes: $scope.maintain.subServiceTypes
+                                        }
+                                    }
+                                }).then(function (res) {
+                                    var json=res.data;
+                                    if(json.re==1) {
+                                        var fee=json.data;
+                                        $scope.maintain.fee=fee;
+                                        if(fee>=score)
+                                        {
+                                            $http({
+                                                method: "POST",
+                                                url: Proxy.local() + "/svr/request",
+                                                headers: {
+                                                    'Authorization': "Bearer " + $rootScope.access_token
+                                                },
+                                                data: {
+                                                    request: 'validateCarServiceStateFree',
+                                                    info: {
+                                                        carId: $scope.carInfo.carId
+                                                    }
+                                                }
+                                            }).then(function (res) {
+                                                var json=res.data;
+                                                if(json.data==true)
+                                                {
 
 
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '信息',
-                                    template: '您所选的车已有还未完成的服务订单\r\n是否仍要继续提交订单'
-                                });
-                                confirmPopup.then(function(res) {
-                                    if(res) {
-                                        $scope.generateMaintainDailyOrder();
-                                    } else {
-                                        return;
+                                                    var confirmPopup = $ionicPopup.confirm({
+                                                        title: '信息',
+                                                        template: '您所选的车已有还未完成的服务订单\r\n是否仍要继续提交订单'
+                                                    });
+                                                    confirmPopup.then(function(res) {
+                                                        if(res) {
+                                                            $scope.generateMaintainDailyOrder();
+                                                        } else {
+                                                            return;
+                                                        }
+                                                    });
+                                                }else{
+                                                    //车是自由状态
+                                                    $scope.generateMaintainDailyOrder();
+
+                                                }
+                                            });
+                                        }else{
+                                            var alertPopup = $ionicPopup.alert({
+                                                title: '警告',
+                                                template: '服务订单的费用超过您现在的积分'
+                                            });
+                                        }
                                     }
                                 });
                             }else{
-                                //车是自由状态
-                                $scope.generateMaintainDailyOrder();
-
+                                var alertPopup = $ionicPopup.alert({
+                                    title: '警告',
+                                    template: '您没有合法积分'
+                                });
                             }
-                        });
+                        }).catch(function(err) {
+                            var str='';
+                            for(var field in err)
+                                str+=err[field];
+                            console.error('err=\r\n'+str);
+                        })
 
                     }else{
                         var alertPopup = $ionicPopup.alert({
