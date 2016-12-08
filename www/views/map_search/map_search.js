@@ -23,8 +23,7 @@ angular.module('starter')
                 $scope.locateIndex=$scope.ob.locateIndex;
         }
 
-        $scope.root={
-        };
+        $scope.root={};
 
         $scope.Mutex = function (item, field, cluster) {
             if (item[field]) {
