@@ -1,8 +1,108 @@
 <ion-nav-view class="slide-left-right" hide-nav-bar="true">
     <ion-view view-title="车架管" hide-nav-bar="true">
 
+        <ion-nav-bar class="bar-calm" align-title="center" >
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear bar_arr" style="font-size: 2.4em;"
+                        ng-click="go_back()">
+                    <i class="ion-chevron-left"></i>
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+
         <ion-content scroll="false">
-            <span>车架管</span>
+
+            <!-- 车驾管 -->
+            <div  class='home-tab' style="margin-top: 12%;">
+                <div class="list" style="margin-bottom: 0px;">
+                    <ul class="ul-tabs transparent" style="padding-left:6%;padding-right:6%;border-bottom: 0px;">
+                        <!-- 代办车辆年审 -->
+                        <li style="width:25%;">
+                            <div class="cell"
+                                 ng-class="{true: 'selected', false: ''}[service=='代办车辆年审']"
+                                 ng-click="service='代办车辆年审'">
+                                <span style="position:absolute;left: 20%;top:40%;">
+                                    审车
+                                </span>
+                            </div>
+                        </li>
+
+                        <!-- 代办行驶证年审 -->
+                        <li style="width:25%">
+                            <div class="cell"
+                                 ng-class="{true: 'selected', false: ''}[service=='代办行驶证年审']"
+                                 ng-click="service='代办行驶证年审'">
+                                 <span style="position:absolute;left: 20%;top:40%;">
+                                    审证
+                                 </span>
+                            </div>
+                        </li>
+
+                        <!-- 接送机 -->
+                        <li style="width:25%;">
+                            <div class="cell"
+                                 ng-class="{true: 'selected', false: ''}[service=='接送机']"
+                                 ng-click="service='接送机'">
+                                <span style="position:absolute;left: 20%;top:40%;">
+                                    接送机
+                                </span>
+                            </div>
+                        </li>
+                        <!-- 取送车 -->
+                        <li style="width:25%;">
+                            <div class="cell"
+                                 ng-class="{true: 'selected', false: ''}[service=='取送车']"
+                                 ng-click="service='取送车'">
+                                 <span style="position:absolute;left: 20%;top:40%;">
+                                    取送车
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='代办车辆年审'">
+
+                    <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
+                        <button class="button button-assertive" style="width: 70%;" ng-click="car_registrate()">
+                            下一步
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='代办行驶证年审'">
+
+
+                    <div class="item" style="margin:1px;border-top:0px;border-bottom:1px solid #222;border-left:0px;border-right:0px;padding:10px;background: transparent">
+                        <button class="button button-assertive" style="width: 70%;" ng-click="pickPaperValidate()">
+                            下一步
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='接送机'">
+
+                    <div class="bar bar-footer  bar-assertive" style="position: static;width: 70%;" ng-click="goAirportSearch()">
+                        <h1 class="title">下一步</h1>
+                    </div>
+                </div>
+
+
+                <div class="list list-inset padding" style="margin-bottom:40px;background: transparent" ng-if="service=='取送车'">
+
+                    <div class="bar bar-footer  bar-assertive" style="position: static;width: 70%;" ng-click="goParkCarSearch()">
+                        <h1 class="title">下一步</h1>
+                    </div>
+                </div>
+
+
+            </div>
+
         </ion-content>
     </ion-view>
 </ion-nav-view>

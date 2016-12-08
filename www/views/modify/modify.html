@@ -1,0 +1,367 @@
+<ion-nav-view class="slide-left-right">
+    <ion-view view-title="维修">
+
+        <ion-nav-bar class="bar-calm" align-title="center" >
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear bar_arr" style="font-size: 2.4em;"
+                        ng-click="go_back()">
+                    <i class="ion-chevron-left"></i>
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+
+        <ion-content scroll="false">
+
+            <!-- 维修 -->
+            <div class="list" style="margin-top: 15%;">
+                <div class="list" style="margin-bottom: 0px;">
+                    <ul class="ul-tabs transparent"
+                        style="background: rgb(203,203,203);background-color: transparent;border-bottom: 0px;">
+                        <li style="width:33.3%;">
+                            <div class="cell"
+                                 ng-class="{true: 'selected', false: ''}[subTabIndex==0]"
+                                 ng-click="subTab_change(0)"
+                                 style="background-color: transparent;">
+                                <span style="position:absolute;left: 20%;top:40%;color: black;">
+                                   日常保养
+                                </span>
+                            </div>
+                        </li>
+
+                        <li style="width:33.3%;overflow:initial;">
+                            <div class="cell"
+                                 ng-class="{true: 'selected', false: ''}[subTabIndex==1]"
+                                 ng-click="subTab_change(1)"
+                                 style="background-color: transparent;position: relative">
+                                <span style="position:absolute;left: 20%;top:40%;color: black;">
+                                  故障维修
+                                 </span>
+
+                            </div>
+                        </li>
+
+                        <li style="width:33.3%">
+                            <div class="cell"
+                                 ng-class="{true: 'selected', false: ''}[subTabIndex==2]"
+                                 ng-click="subTab_change(2)"
+                                 style="background-color: transparent;">
+                                <span style="position:absolute;left: 25%;top:40%;color: black;">
+                                  事故维修
+                                </span>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+                <div style="height: 100%;margin-top:2px;">
+                    <!-- 日常保养 -->
+                    <div ng-if="subTabIndex==0" style="">
+                        <div class="item item-divider"
+                             style="background-color: transparent;border-top:0px;border-bottom:0px;">
+                            服务项目列表
+                        </div>
+
+                        <div class="list padding">
+                            <div class="row" style='border-bottom:0px;'>
+
+                                <div class="col"
+                                     style="padding:16px;border:1px solid;border-right:0px;border-bottom:0px;"
+                                     ng-click="grid_check(0)">
+                                    <div>
+                                        <i class="ion-paintbucket"></i>
+                                    </div>
+                                    <span>机油、机滤</span>
+                                    <div ng-if="dailys[0].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid;border-right: 0px;border-bottom:0px;"
+                                     ng-click="grid_check(1)">
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <span>检查制动系统</span>
+                                    <span>更换刹车片</span>
+                                    <div ng-if="dailys[1].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid;border-bottom:0px;"
+                                     ng-click="grid_check(2)">
+                                    <div>
+                                        <i class="ion-ios-cloud"></i>
+                                    </div>
+                                    <span>雨刷片更换</span>
+                                    <div ng-if="dailys[2].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid;border-bottom: 0px;border-right: 0px;"
+                                     ng-click="grid_check(3)">
+
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <span>轮胎更换</span>
+                                    <div ng-if="dailys[3].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid;border-bottom: 0px;border-right:0px;"
+                                     ng-click="grid_check(4)">
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <span>燃油添加剂</span>
+                                    <div ng-if="dailys[4].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid;border-bottom:0px;"
+                                     ng-click="grid_check(5)">
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <span>空气滤清器</span>
+                                    <div ng-if="dailys[5].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid;"
+                                     ng-click="grid_check(6)">
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <span>检查火花塞</span>
+                                    <div ng-if="dailys[6].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid;border-right:0px;border-left:0px;"
+                                     ng-click="grid_check(7)">
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <span>检查驱动皮带</span>
+                                    <div ng-if="dailys[7].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+                                <div class="col"
+                                     style="padding: 16px;border:1px solid"
+                                     ng-click="grid_check(8)">
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <span>更换空调滤芯</span>
+                                    <div ng-if="dailys[8].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div style="padding: 16px;border:1px solid;width: 33.33%;border-top:0px;"
+                                     ng-click="grid_check(9)">
+                                    <div>
+                                        <i class="ion-wrench"></i>
+                                    </div>
+                                    <div>更换蓄电池</div>
+                                    <div>防冻液</div>
+                                    <div ng-if="dailys[9].checked==true" style="color: #ff0000;font-size: 1.8em;">
+                                        <i class="ion-checkmark"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list" style="padding:10px;">
+                            <div class="item"
+                                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                   padding:10px;background-color: transparent;">
+                                <span class="input-label" style="display: inline-block;width:20%;padding-left: 3%;max-width: 150px;">
+                                    里程:
+                                </span>
+                                <input type="text" placeholder="请输入您的里程"
+                                       style="display: inline-block;background-color: transparent;width:35%"
+                                       ng-model="miles"
+                                />
+                                <button class="button button-stable" style="display: inline-block;" ng-click="getMaintainPlan(miles)">
+                                    查看保养计划
+                                </button>
+                            </div>
+
+
+                            <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
+                                    ng-click="pickMaintainDaily('maintain',0)">
+                                选择附近的维修厂
+                            </button>
+                            <a id="maintenance_anchor"></a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- 故障维修 -->
+                    <div class="list list-inset padding"
+                         style="margin-bottom:40px;padding:3px;background-color: transparent;overflow: initial"
+                         ng-if="subTabIndex==1">
+
+                        <ion-slide-box on-slide-changed="slideChanged($index)" style="background-color:transparent;">
+                            <ion-slide>
+                                <div class="item"
+                                     style="margin:1px;border:0px;padding:10px;position: relative;background-color:transparent;">
+                                    <span class="input-label" style="display: inline-block;width: 35%;text-align: left;">
+                                        故障文字描述:
+                                    </span>
+
+                                    <div style="width: 90%;margin-left:5%;margin-right:5%;border:1px solid #222;">
+                                        <textarea style="width:100%;height:80px;background-color: transparent;"
+                                                  placeholder="请描述故障..."
+                                                  ng-model=" maintain.description.text"
+                                                  ng-value="maintain.description.text">
+
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </ion-slide>
+
+                            <ion-slide>
+                                <div class="item"
+                                     style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                   padding:10px;position: relative;background-color:transparent;">
+                                    <span class="input-label" style="display: inline-block;width: 55%;text-align: left;">
+                                        上传故障描述视频:
+                                    </span>
+                                    <span class="camera"
+                                          style="width:45%;display: inline-block;font-size: 1.4em;">
+                                         <i class="ion-android-camera" ng-click="startCapture()"></i>
+                                    </span>
+                                </div>
+                            </ion-slide>
+
+                            <ion-slide>
+                                <div class="item"
+                                     style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;position: relative;background-color:transparent;"
+                                     ng-click="">
+                                    <span class="input-label" style="display: inline-block;width: 55%;text-align: left;">
+                                        上传故障描述音频:
+                                    </span>
+
+                                    <div class="item" style="background-color: transparent;">
+                                        <button class="button "
+                                                ng-click="startRecord()"
+                                                style="background-color: transparent;">
+                                            <span>
+                                                 <i class="ion-mic-a"></i>
+                                            </span>
+                                            <span>record</span>
+                                        </button>
+                                        <button class="button" ng-click="stopRecord()" style="background-color: transparent;">
+                                            <span>
+                                                 <i class="ion-pause"></i>
+                                            </span>
+                                            <span>stop</span>
+                                        </button>
+                                        <button class="button" ng-click="play()" style="background-color: transparent;">
+                                             <span>
+                                                 <i class="ion-play"></i>
+                                             </span>
+                                            <span>play</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </ion-slide>
+                        </ion-slide-box>
+
+
+                        <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
+                                ng-click="pickMaintainDaily('maintain',1)">
+                            选择附近的维修厂
+                        </button>
+
+                    </div>
+
+                    <!-- 事故维修 -->
+                    <div ng-if="subTabIndex==2">
+                        <div class="item item-divider" style="background-color:transparent;border-bottom: 0px;">
+                            事故状况
+                        </div>
+
+                        <div class="list padding">
+                            <div class="item"
+                                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial"
+                                 ng-click="accidant_check('已报案')">
+                                <span class="input-label" style="display: inline-block;width: 45%;text-align: center">
+                                    已报案:
+                                 </span>
+                                <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
+                              font-size: 2em;">
+                                    <i ng-if="accident.type!='已报案'" class="ion-ios-checkmark-outline"></i>
+                                    <i ng-if="accident.type=='已报案'" class="ion-ios-checkmark"></i>
+                                </span>
+                            </div>
+
+                            <div class="item"
+                                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial"
+                                 ng-click="accidant_check('未报案')">
+                                 <span class="input-label" style="display: inline-block;width: 45%;text-align: center">
+                                    未报案:
+                                 </span>
+                                <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
+                              font-size: 2em;">
+                                    <i ng-if="accident.type!='未报案'" class="ion-ios-checkmark-outline"></i>
+                                    <i ng-if="accident.type=='未报案'" class="ion-ios-checkmark"></i>
+                                </span>
+                            </div>
+
+                            <div class="item"
+                                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial"
+                                 ng-click="accidant_check('代索赔')">
+                                <span class="input-label" style="display: inline-block;width: 45%;text-align: center">
+                                    代索赔:
+                                </span>
+                                <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
+                              font-size: 2em;">
+                                    <i ng-if="accident.type!='代索赔'" class="ion-ios-checkmark-outline"></i>
+                                    <i ng-if="accident.type=='代索赔'" class="ion-ios-checkmark"></i>
+                                </span>
+                            </div>
+
+                            <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
+                                    ng-click="pickMaintainDaily('maintain')">
+                                选择附近的维修厂
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </ion-content>
+    </ion-view>
+</ion-nav-view>

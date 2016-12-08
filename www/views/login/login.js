@@ -15,6 +15,13 @@ angular.module('starter')
 
       $scope.users=[];
 
+      $scope.goto = function(){
+          $state.go('testAMap');
+      }
+
+
+
+
       $scope.fetch = function() {
 
           $cordovaPreferences.fetch('username')
@@ -310,7 +317,6 @@ angular.module('starter')
                                   alert('error=' + error);
                               });
                           } else {
-                              //$state.go('tabs.dashboard');
                               $state.go('tabs.dashboard_backup');
                           }
                       }
