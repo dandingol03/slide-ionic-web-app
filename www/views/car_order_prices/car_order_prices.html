@@ -43,13 +43,28 @@
 
               <div style="margin-top:1px;">
                 <div ng-repeat="price in order.prices" ng-if="order.orderState==3">
+
+
                   <!-- 公司产品细项 -->
                   <div class="padding"
-                       style="padding:0px 10px;">
+                       style="padding:0px 10px;position: relative">
+
+
+                    <!--选中开关 -->
+                    <div ng-style="priceIndex==$index?checkedStyle:uncheckedStyle"
+                         ng-click="setterPrice($index,price)">
+                      <span ng-if="priceIndex!=$index">点击选中</span>
+                      <span ng-if="priceIndex==$index" style="color:#ff3b30">已选中</span>
+                      <span style="color:#f1c300;font-size: 1.3em;" ng-if="priceIndex==$index"><i class="fa fa-check"></i></span>
+                    </div>
+
+
+
                     <ion-item style="border-bottom:0px;position:relative;padding-left:3%;padding-right:3%;
                                       padding-bottom: 0px;"
                               ng-click="setterPrice($index,price)">
-                      <span style="width: 30%;display: inline-block;"></span>
+                      <span style="width: 30%;display: inline-block;">
+                      </span>
                       <span style="width: 40%;display: inline-block;text-align: center;
                               font-weight: bolder;">
                         <span>￥</span>
@@ -59,19 +74,14 @@
 
                     </ion-item>
 
-
+                    <!-- 公司名 -->
                     <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;"
-                              ng-click="setterPrice($index,price)">
+                              >
                       <span style="width: 25%;display: inline-block;"></span>
                       <span style="width: 75%;display: inline-block;font-weight: bolder;font-size: 1.1em;">
                         {{price.companyName}}
                       </span>
-                      <div style="position: absolute;right:3%;top:20%;">
-                        <span style="font-size: 2em;">
-                          <i ng-if="$index!=priceIndex" class="ion-ios-checkmark-outline" style="font-size: 70%;"></i>
-                          <i ng-if="$index==priceIndex" class="ion-ios-checkmark" style="font-size: 70%;"></i>
-                        </span>
-                      </div>
+
                     </ion-item>
                   </div>
 
@@ -100,6 +110,21 @@
                           ￥{{product.insuranceFee}}
                         </div>
                       </ion-item>
+
+                      <!-- 积分 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;">
+                        <div style="display:inline-block;width:33%;color:#0a9dc7;font-size: 1.2em;">
+                          <span>积分:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;color:#0a9dc7;font-size: 1.2em;">
+                          {{price.score}}
+                        </div>
+                      </ion-item>
+
+
 
                       <ion-item style="border-top:0px;border-left:0px;border-right:0px;">
                         <div style="display:inline-block;width:60%;">
