@@ -227,7 +227,9 @@ angular.module('starter')
             if(unit!==undefined&&unit!==null)//
             {
                 $scope.carManage.servicePlaceId=55;
-                $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                if($scope.carManage.servicePersonId!==undefined&&$scope.carManage.servicePersonId!==null){
+                    $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                }
 
                 $http({
                     method: "POST",
@@ -385,10 +387,10 @@ angular.module('starter')
 
         $scope.applyCarServiceOrder=function () {
 
-
-
             if($scope.carManage.destination&&$scope.carManage.destination.address)
             {
+                $scope.carManage.estimateTime = new Date();
+
                 if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
                 {
                     $scope.carManage.serviceType=23;
@@ -425,7 +427,7 @@ angular.module('starter')
                                 {
                                     var fee=json.data;
                                     $scope.carManage.fee=fee;
-                                    if(fee>=score)
+                                    if(fee<=score)
                                     {
                                         $scope.generateServiceOrder();
                                     }else{

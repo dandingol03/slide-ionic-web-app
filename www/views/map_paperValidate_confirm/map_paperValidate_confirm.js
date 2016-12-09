@@ -260,7 +260,9 @@ angular.module('starter')
             if(place!==undefined&&place!==null)//已选检测公司
             {
                 $scope.carManage.servicePlaceId=place.placeId;
-                $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                if($scope.carManage.servicePersonId!=undefined&&$scope.carManage.servicePersonId!=null){
+                    $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                }
 
                 $http({
                     method: "POST",
@@ -418,9 +420,11 @@ angular.module('starter')
 
         $scope.applyCarServiceOrder=function () {
 
-            $scope.carManage.serviceType=21;
+            $scope.carManage.serviceType=22;
 
             $scope.carManage.carId=$scope.carInfo.carId;
+
+            $scope.carManage.estimateTime = new Date();
 
             if($scope.carManage.destination&&$scope.carManage.destination.address)
             {
@@ -461,7 +465,7 @@ angular.module('starter')
                                 if(json.re==1) {
                                     var fee=json.data;
                                     $scope.carManage.fee=fee;
-                                    if(fee>=score)
+                                    if(fee<=score)
                                     {
                                         $http({
                                             method: "POST",

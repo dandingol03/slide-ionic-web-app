@@ -688,6 +688,8 @@ angular.module('starter')
             //提交维修服务订单
             $scope.applyMaintainDailyOrder=function() {
 
+                $scope.maintain.estimateTime = new Date();
+
                 if ($scope.maintain.estimateTime !== undefined && $scope.maintain.estimateTime !== null) {
 
                     var flag=false;
@@ -758,6 +760,7 @@ angular.module('starter')
                             var json=res.data;
                             if(json.re==1) {
                                 var score=json.data;
+                                $scope.maintain.serviceType = '11';
 
                                 $http({
                                     method: "POST",
@@ -777,7 +780,7 @@ angular.module('starter')
                                     if(json.re==1) {
                                         var fee=json.data;
                                         $scope.maintain.fee=fee;
-                                        if(fee>=score)
+                                        if(fee<=score)
                                         {
                                             $http({
                                                 method: "POST",

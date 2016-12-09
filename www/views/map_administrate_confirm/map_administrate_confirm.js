@@ -264,7 +264,9 @@ angular.module('starter')
             if(detectUnit!==undefined&&detectUnit!==null)//已选检测公司
             {
                 $scope.carManage.servicePlaceId=detectUnit.placeId;
-                $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                if( $scope.carManage.servicePersonId!==undefined&& $scope.carManage.servicePersonId!==null){
+                    $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                }
 
                 $http({
                     method: "POST",
@@ -462,7 +464,7 @@ angular.module('starter')
                 if(json.re==1){
                     fee=json.data;
                     $scope.carManage.fee=fee;
-                    if(scoreTotal>fee){
+                    if(scoreTotal>=fee){
                         $scope.carManage.estimateTime = new Date();
                         if($scope.carManage.destination&&$scope.carManage.destination.address)
                         {
@@ -525,17 +527,10 @@ angular.module('starter')
                         }
 
                     }else{
-
-                        var confirmPopup = $ionicPopup.confirm({
-                            title:'信息',
-                            template:'您的积分不足'
+                        var alertPopup = $ionicPopup.alert({
+                            title: '警告',
+                            template: '服务订单的费用超过您现在的积分'
                         });
-                        confirmPopup.then(function (res) {
-                            if(res)
-                            {
-                                $scope.generateServiceOrder();
-                            }
-                        })
                     }
                 }
 
