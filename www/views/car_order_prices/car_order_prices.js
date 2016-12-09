@@ -304,8 +304,13 @@ angular.module('starter')
                 $state.go('car_insurance');
             }
       })
-
     }
+
+      $scope.checkedStyle={position: 'absolute',top:'12%',left:'4%','z-index': 1000,'font-size': '0.8em',color:'#222',
+          border:'1px solid #ff3b30','border-radius': '12px',padding: '4px 25px'};
+      $scope.uncheckedStyle={position: 'absolute',top:'12%',left:'4%','z-index': 1000,'font-size': '0.8em',color:'#222',
+          border:'1px solid #aaa','border-radius': '12px',padding: '4px 25px'};
+
 
   });
 
