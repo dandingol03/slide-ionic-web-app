@@ -14,7 +14,8 @@ angular.module('starter')
 
 
       $scope.go_back=function(){
-          window.history.back();
+          //window.history.back();
+          $state.go('tabs.dashboard_backup');
       }
 
     $scope.tab_change=function(i)

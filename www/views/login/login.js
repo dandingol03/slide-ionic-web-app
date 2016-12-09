@@ -15,13 +15,6 @@ angular.module('starter')
 
       $scope.users=[];
 
-      $scope.goto = function(){
-          $state.go('testAMap');
-      }
-
-
-
-
       $scope.fetch = function() {
 
           $cordovaPreferences.fetch('username')

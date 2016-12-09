@@ -69,9 +69,7 @@ angular.module('starter')
         };
 
 
-        $scope.carManage={
-
-        };
+        $scope.carManage={};
 
         $scope.servicePlace=null;
 
@@ -105,8 +103,6 @@ angular.module('starter')
         }
 
 
-
-
         $scope.getServicePersonByUnitId=function () {
             $ionicLoading.show({
                 template:'<p class="item-icon-left">拉取维修厂数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
@@ -129,10 +125,12 @@ angular.module('starter')
                     $scope.carManage.servicePerson=json.data;
                 }
                 else{
-                    $ionicPopup.alert({
-                        title: '错误',
-                        template: '该维修厂没有指定的服务人员'
-                    });
+                    $timeout(function () {
+                        $ionicPopup.alert({
+                            title: '错误',
+                            template: '该维修厂没有指定的服务人员'
+                        });
+                    },1000)
                 }
                 $ionicLoading.hide();
             }).catch(function (err) {
@@ -275,12 +273,14 @@ angular.module('starter')
 
             //接送机----已指派服务人员
 
-            $scope.carManage.serviceType=21;
+            $scope.carManage.serviceType=24;
             if(unit!==undefined&&unit!==null)//
             {
 
                 $scope.carManage.servicePlaceId=$scope.servicePlace.placeId;
-                $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                if($scope.carManage.servicePersonId!==undefined&&$scope.carManage.servicePersonId!==null){
+                    $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
+                }
 
                 $http({
                     method: "POST",
@@ -438,14 +438,63 @@ angular.module('starter')
 
         $scope.applyCarServiceOrder=function () {
 
-
-
+            var score = null;
+            var fee = null;
             if($scope.carManage.destination&&$scope.carManage.destination.address)
             {
+                $scope.carManage.estimateTime = new Date();
+
                 if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
                 {
-                    if($scope.servicePlace!==undefined&&$scope.servicePlace!==null)
-                        $scope.generateServiceOrder();
+                    if($scope.servicePlace!==undefined&&$scope.servicePlace!==null){
+
+                        $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data: {
+                                request: 'fetchScoreTotal'
+                            }
+                        }).then(function (res) {
+                            var json = res.data;
+                            if (json.re == 1) {
+                                score = json.data;
+
+                               return $http({
+                                    method: "POST",
+                                    url: Proxy.local() + "/svr/request",
+                                    headers: {
+                                        'Authorization': "Bearer " + $rootScope.access_token
+                                    },
+                                    data: {
+                                        request: 'generateCarServiceOrderFee',
+                                        info: {
+                                            serviceType: $scope.carManage.serviceType,
+                                            subServiceTypes: null
+                                        }
+                                    }
+                                })
+                            }
+                        }).then(function(res) {
+
+                            var json = res.data;
+                            if(json.re==1){
+                                fee = json.data;
+                                if(fee<=score){
+                                    $scope.generateServiceOrder();
+                                }
+                                else{
+                                    var alertPopup = $ionicPopup.alert({
+                                        title: '警告',
+                                        template: '服务订单的费用超过您现在的积分'
+                                    });
+                                }
+                            }
+
+                        })
+                    }
                     else{
                         $ionicPopup.alert({
                             title: '信息',
