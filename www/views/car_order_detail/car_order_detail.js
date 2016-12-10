@@ -13,6 +13,8 @@ angular.module('starter')
       };
 
       $scope.go_back=function(){
+          if($scope.order.orderState==5)
+              $rootScope.car_orders_tabIndex=2;
           window.history.back();
       }
 

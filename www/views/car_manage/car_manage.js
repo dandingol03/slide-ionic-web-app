@@ -110,15 +110,18 @@ angular.module('starter')
                 {
                     //询问用户是否需要创建新车
                     var confirmPopup = $ionicPopup.confirm({
-                        title: '您未有已绑定的车辆',
-                        template: '请问是否现在创建新车\r\n您也可以通过点击右上反的\'绑定车辆完成此步骤\''
+                        title: '您没有已绑定的车辆',
+                        template: '您尚未绑定车辆，请点击"确定"创建新车。'
                     });
                     confirmPopup.then(function(res) {
                         if(res) {
                             $scope.openBindCarModal();
                         } else {}
                     });
-                }else{}
+                }else{
+
+                    alert('放弃降无法使用车险报价，车驾管等服务，确认取消吗?');
+                }
                 $ionicLoading.hide();
             }).catch(function(err) {
                 var str='';

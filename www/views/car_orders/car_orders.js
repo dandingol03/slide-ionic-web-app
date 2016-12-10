@@ -213,4 +213,14 @@ angular.module('starter')
 
 
 
+      $scope.selectedTabStyle=
+          {
+              display:'inline-block',color:'#fff',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(55, 144, 139)','background-color':'rgb(55, 144, 139)'
+          };
+      $scope.unSelectedTabStyle=
+          {
+              display:'inline-block',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(68, 78, 78)'
+          };
+
+
   });
