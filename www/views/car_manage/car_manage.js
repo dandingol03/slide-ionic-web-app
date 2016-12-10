@@ -116,12 +116,11 @@ angular.module('starter')
                     confirmPopup.then(function(res) {
                         if(res) {
                             $scope.openBindCarModal();
-                        } else {}
+                        } else {
+                            alert('放弃降无法使用车险报价，车驾管等服务，确认取消吗?');
+                        }
                     });
-                }else{
-
-                    alert('放弃降无法使用车险报价，车驾管等服务，确认取消吗?');
-                }
+                }else{}
                 $ionicLoading.hide();
             }).catch(function(err) {
                 var str='';

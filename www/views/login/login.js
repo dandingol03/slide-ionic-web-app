@@ -15,6 +15,14 @@ angular.module('starter')
 
       $scope.users=[];
 
+      if($rootScope.username!==undefined&&$rootScope.username!==null){
+          $scope.user.username = $rootScope.username;
+      }
+
+       if($rootScope.password!==undefined&&$rootScope.password!==null){
+           $scope.user.password = $rootScope.password;
+       }
+
       $scope.fetch = function() {
 
           $cordovaPreferences.fetch('username')
