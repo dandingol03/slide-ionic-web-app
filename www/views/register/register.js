@@ -83,13 +83,38 @@ angular.module('starter')
         }).then(function(res) {
           var json = res.data;
           if(json.re==1){
-              var alertPopup = $ionicPopup.alert({
-                  title: '信息',
-                  template: '用户信息注册成功'
+              var confirmPopup = $ionicPopup.confirm({
+                  title: '注册信息',
+                  template: '注册成功！是否要直接登录？'
               });
-              alertPopup.then(function(res) {
-                  $state.go('login');
+              confirmPopup.then(function(res) {
+                  if(res) {
+                      $rootScope.userInfo.username = $scope.userInfo.username;
+                      $rootScope.userInfo.password = $scope.userInfo.password;
+                      $state.go('login');
+                  }
+                  else {
+
+                  }
               });
+
+              var confirmPopup = $ionicPopup.confirm({
+                  title: '注册信息',
+                  template: '注册成功！是否要直接登录？'
+              });
+              confirmPopup.then(function(res) {
+                  if(res) {
+                     $rootScope.userInfo.username = $scope.userInfo.username;
+                     $rootScope.userInfo.password = $scope.userInfo.password;
+                      $state.go('login');
+                  }
+                  else {
+
+                  }
+              });
+
+
+
               $timeout(function() {
                   var state=alertPopup.$$state;
                   if(state==0)

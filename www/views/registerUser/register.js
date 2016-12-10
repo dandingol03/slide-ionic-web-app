@@ -95,26 +95,27 @@ angular.module('starter')
                 }).then(function(res) {
                     var json = res.data;
                     if(json.re==1){
-                        var alertPopup = $ionicPopup.alert({
-                            title: '信息',
-                            template: '用户信息注册成功'
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '注册信息',
+                            template: '注册成功！是否要直接登录？'
                         });
-                        alertPopup.then(function(res) {
-                            $state.go('login');
-                        });
-                        $timeout(function() {
-                            var state=alertPopup.$$state;
-                            if(state==0)
-                            {
-                                alertPopup.close();
+                        confirmPopup.then(function(res) {
+                            if(res) {
+
+                                alert('$scope.userInfo.username='+$scope.info.username);
+                                $rootScope.username = $scope.info.username,
+                                $rootScope.password = $scope.info.password
                                 $state.go('login');
                             }
-                        }, 3000);
+                            else {
+
+                            }
+                        });
 
                     }
                     else{
                         if(json.re==2){
-                            alert('该手机号已存在');
+                            alert('该手机号或用户名已存在');
                         }else{
                             alert('注册失败');
                         }
