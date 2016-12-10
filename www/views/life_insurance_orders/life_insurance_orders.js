@@ -79,8 +79,17 @@ angular.module('starter')
       $scope.appliedOrders=[];
 
     $scope.goDetail=function(order){
-      $state.go('life_plan',{order:JSON.stringify(order)});
-      $rootScope.lifeInsuranceOrder=order;
+        if(order.plans!==undefined&&order.plans!==null)
+        {
+            $state.go('life_plan',{order:JSON.stringify(order)});
+            $rootScope.lifeInsuranceOrder=order;
+        }else{
+            var alertPopup = $ionicPopup.alert({
+                title: '信息',
+                template: '该订单没有估价方案'
+            });
+
+        }
     }
 
     $scope.goAppliedLifeOrderDetail=function (order) {

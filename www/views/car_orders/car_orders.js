@@ -26,6 +26,7 @@ angular.module('starter')
               var json=res.data;
               if(json.re==1) {
                   $scope.historyOrders=json.data;
+                  $rootScope.flags.carOrders.data.historyOrders=json.data;
               }
             return   $http({
                   method: "POST",
@@ -72,6 +73,9 @@ angular.module('starter')
                       }
                   })
               }
+              $rootScope.flags.carOrders.data.orderPricedList=$scope.orderPricedList;
+              $rootScope.flags.carOrders.data.applyedList=$scope.applyedList;
+              $rootScope.flags.carOrders.onFresh=false;
               $ionicLoading.hide();
           }).catch(function(err) {
               var str='';
@@ -82,7 +86,15 @@ angular.module('starter')
           });
       }
 
-      $scope.getOrders();
+
+      if($rootScope.flags.carOrders.onFresh==true)
+      {
+          $scope.getOrders();
+      }else{
+          $scope.historyOrders=$rootScope.flags.carOrders.data.historyOrders;
+          $scope.orderPricedList=$rootScope.flags.carOrders.data.orderPricedList;
+          $scope.applyedList=$rootScope.flags.carOrders.data.applyedList;
+      }
 
 
       //车险订单  0.已完成;1.估价列表;2.已申请

@@ -96,6 +96,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           description:{}
         }
 
+        $rootScope.flags={
+            carOrders:{
+                onFresh:true,
+                data:{
+                }
+            }
+        }
 
         var onTagsWithAlias = function(event) {
           try {
@@ -547,9 +554,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_orders',{
-            url:'/car_orders/:selected',
-            controller:'carOrdersController',
-            templateUrl:'views/car_orders/car_orders.html'
+              cache:false,
+              url:'/car_orders/:selected',
+              controller:'carOrdersController',
+              templateUrl:'views/car_orders/car_orders.html'
           })
 
           .state('service_orders',{
@@ -917,7 +925,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.121:3000";
+            return "http://139.129.96.231:3000";
           else
             return "/proxy/node_server";
             

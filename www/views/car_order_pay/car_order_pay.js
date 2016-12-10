@@ -668,13 +668,18 @@ angular.module('starter')
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
+
                     var alertPopup = $ionicPopup.alert({
                         title: '提示',
                         template: '订单已支付完成'
                     });
+
                     alertPopup.then(function(res) {
-                        $state.go('tabs.dashboard');
+                        $state.go('tabs.my');
                     });
+
+                    $rootScope.flags.carOrders.onFresh=true;
+
                 }
             }).catch(function (err) {
                 var str = '';

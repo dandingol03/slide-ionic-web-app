@@ -17,19 +17,22 @@ angular.module('starter')
     //评价方案
     var plans=[];
     var data=$scope.order.plans;
-    data.map(function(plan,i) {
-      var main=null;
-      var additions=[];
-      plan.items.map(function(proj,j) {
-        if(proj.product.ownerId!==undefined&&proj.product.ownerId!==null)
-          additions.push(proj);
-        else
-          main=proj;
-      })
-      plan.main=main;
-      plan.additions=additions;
-      plans.push(plan);
-    });
+    if(data!==undefined&&data!==null)
+    {
+        data.map(function(plan,i) {
+            var main=null;
+            var additions=[];
+            plan.items.map(function(proj,j) {
+                if(proj.product.ownerId!==undefined&&proj.product.ownerId!==null)
+                    additions.push(proj);
+                else
+                    main=proj;
+            })
+            plan.main=main;
+            plan.additions=additions;
+            plans.push(plan);
+        });
+    }
     $scope.plans=plans;
 
 
