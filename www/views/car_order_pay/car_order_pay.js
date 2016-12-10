@@ -233,7 +233,44 @@ angular.module('starter')
                     $scope.applyCarOrderPrice();
                 }else if(json.re==2)
                 {
-                    $scope.open_uploadCarAttachModal();
+                    //TODO:verify carAttachId
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'verifyCarAttachComplete',
+                            info: {
+                                carId: carId
+                            }
+                        }
+                    }).then(function (res) {
+                        var json=res.data;
+                        if(json.re==1) {
+                            if(json.data==true)
+                                $scope.applyCarOrderPrice();
+                            else
+                            {
+                                var confirmPopup = $ionicPopup.confirm({
+                                    title:'信息',
+                                    template:  '提交订单需要上传验车照片，是否现在上传'
+                                });
+                                confirmPopup.then(function (res) {
+                                    if(res) {
+                                        $scope.open_uploadCarAttachModal();
+                                    }
+                                })
+                            }
+                        }else{
+                            $ionicPopup.alert({
+                                title: '信息',
+                                template: json.data
+                            });
+                        }
+                    });
+
                 }else{
                     throw new Error('unknow data of json ');
                 }
