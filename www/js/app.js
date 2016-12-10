@@ -486,9 +486,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
           .state('login',{
-            url:'/login',
-            controller: 'loginController',
-            templateUrl:'views/login/login.html'
+              cache:false,
+              url:'/login',
+              controller: 'loginController',
+              templateUrl:'views/login/login.html'
           })
 
           .state('dashboard',{
@@ -925,7 +926,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.121:3000";
+            return "http://139.129.96.231:3000";
           else
             return "/proxy/node_server";
             

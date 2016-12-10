@@ -53,7 +53,7 @@ angular.module('starter')
         {
             $ionicPlatform.ready (function () {
                 $scope.fetch();
-                navigator.speech.initialize('583d766d');
+                //navigator.speech.initialize('583d766d');
             })
         }
 

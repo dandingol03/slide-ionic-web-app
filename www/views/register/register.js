@@ -89,8 +89,21 @@ angular.module('starter')
               });
               confirmPopup.then(function(res) {
                   if(res) {
-                      $rootScope.userInfo.username = $scope.userInfo.username;
-                      $rootScope.userInfo.password = $scope.userInfo.password;
+                      if(window.plugins!==undefined&&window.plugins!==null)
+                      {
+                          $cordovaPreferences.store('username', $scope.user.username)
+                              .success(function(value) {
+                              })
+                              .error(function(error) {
+                                  alert("Error: " + error);
+                              });
+                          $cordovaPreferences.store('password', $scope.user.password)
+                              .success(function(value) {
+                              })
+                              .error(function(error) {
+                                  alert("Error: " + error);
+                              });
+                      }
                       $state.go('login');
                   }
                   else {

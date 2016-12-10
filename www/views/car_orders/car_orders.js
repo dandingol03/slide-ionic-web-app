@@ -2,7 +2,7 @@ angular.module('starter')
 
   .controller('carOrdersController',function($scope,$state,$http,
                                              $location, $rootScope,Proxy,
-                                             $ionicLoading){
+                                             $ionicLoading,$ionicHistory){
 
 
       $scope.getOrders=function () {
@@ -120,7 +120,9 @@ angular.module('starter')
     };
 
     $scope.go_back=function(){
-      window.history.back();
+        $ionicHistory.clearHistory();
+        $ionicHistory.clearHistory();
+        $state.go('tabs.my');
     }
 
     $scope.tab_change=function(i)

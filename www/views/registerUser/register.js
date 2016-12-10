@@ -7,7 +7,7 @@
 angular.module('starter')
 
     .controller('registerController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
-        ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
+        ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy,$cordovaPreferences
     ){
 
 
@@ -45,7 +45,7 @@ angular.module('starter')
             {
                 $http({
                     method:"GET",
-                    url:Proxy.local()+'/securityCode?'+"phoneNum=" + $scope.info.mobile,
+                    url:Proxy.local()+'/securityCode?'+"phoneNum=" + $scope.info.mobilePhone,
                     headers: {
                         'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -102,10 +102,25 @@ angular.module('starter')
                         confirmPopup.then(function(res) {
                             if(res) {
 
-                                alert('$scope.userInfo.username='+$scope.info.username);
-                                $rootScope.username = $scope.info.username,
-                                $rootScope.password = $scope.info.password
-                                $state.go('login');
+                                if(window.plugins!==undefined&&window.plugins!==null)
+                                {
+                                    $cordovaPreferences.store('username', $scope.info.username)
+                                        .success(function(value) {
+                                        })
+                                        .error(function(error) {
+                                            alert("Error: " + error);
+                                        });
+                                    $cordovaPreferences.store('password', $scope.info.password)
+                                        .success(function(value) {
+                                        })
+                                        .error(function(error) {
+                                            alert("Error: " + error);
+                                        });
+
+                                }
+                                $timeout(function () {
+                                    $state.go('login');
+                                },600)
                             }
                             else {
 
