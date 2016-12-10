@@ -82,6 +82,11 @@ angular.module('starter')
       $scope.selectCarInsuranceder = function () {
 
           if ($scope.sheild !== true) {
+
+              $ionicLoading.show({
+                  template: '<p class="item-icon-left">搜索...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+              });
+
               $scope.sheild = true;
               $http({
                   method: "POST",
@@ -101,12 +106,14 @@ angular.module('starter')
                       $scope.car_insurance.relativePersons = json.data;
                   }
                   $scope.sheild = false;
+                  $ionicLoading.hide();
               }).catch(function (err) {
                   var str = '';
                   for (var field in err)
                       str += err[field];
                   console.error('err=\r\n' + str);
                   $scope.sheild = false;
+                  $ionicLoading.hide();
               })
           }
 
@@ -965,8 +972,9 @@ angular.module('starter')
       return deferred.promise;
     }
 
-
-
-
+    $scope.selectedTabStyle={width:'26%',display: 'inline-block',background: 'rgba(199, 207, 216, 0.470588)',padding: '7px'};
+    $scope.unSelectedTabStyle={width:'26%', display: 'inline-block',padding: '7px'};
+    $scope.selectedCellStyle={color:'#fff','text-align': 'center'};
+    $scope.unSelectedCellStyle={color:'#eee','text-align': 'center'};
 
   })
