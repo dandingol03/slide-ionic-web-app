@@ -28,6 +28,11 @@ angular.module('starter')
           $scope.tabIndex=1;
       }
 
+      //TODO:life_orders_tabIndex
+      if($rootScope.life_orders_tabIndex!==undefined&&$rootScope.life_orders_tabIndex!==null)
+      {
+          $scope.tabIndex=$rootScope.life_orders_tabIndex;
+      }
 
 
     $scope.go_back=function(){
@@ -138,8 +143,8 @@ angular.module('starter')
                   $scope.orders.map(function (order, i) {
 
                       var date = new Date(order.applyTime);
-                      order.applyTime = date.getFullYear().toString() + '-'
-                          + date.getMonth().toString() + '-' + date.getDate().toString();
+                      // order.applyTime = date.getFullYear().toString() + '-'
+                      //     + date.getMonth().toString() + '-' + date.getDate().toString();
 
                       if (order.orderState == 3) {
                           $scope.pricingOrders.push(order);
@@ -266,5 +271,16 @@ angular.module('starter')
       }
 
     }
+
+      $scope.selectedTabStyle=
+          {
+              display:'inline-block',color:'#fff',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(55, 144, 139)','background-color':'rgb(55, 144, 139)'
+          };
+      $scope.unSelectedTabStyle=
+          {
+              display:'inline-block',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(68, 78, 78)'
+          };
+
+
 
   });

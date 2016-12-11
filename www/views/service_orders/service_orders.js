@@ -4,7 +4,8 @@
 angular.module('starter')
 
   .controller('serviceOrdersController',function($scope,$state,$http, $location,
-                                                 $rootScope,Proxy,$ionicLoading){
+                                                 $rootScope,Proxy,$ionicLoading,
+                                                 $ionicHistory){
 
     $scope.tabIndex=0;
 
@@ -13,9 +14,10 @@ angular.module('starter')
     };
 
 
-      $scope.go_back=function(){
-          //window.history.back();
-          $state.go('tabs.dashboard_backup');
+      $scope.goBack=function(){
+          $ionicHistory.clearHistory();
+          $ionicHistory.clearCache();
+          $state.go('tabs.my');
       }
 
     $scope.tab_change=function(i)
@@ -117,5 +119,7 @@ angular.module('starter')
       $state.go('service_order_detail',{order:JSON.stringify(order)});
     }
 
+    $scope.notFirstRowStyle={height: '70px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd'};
+    $scope.firstRowStyle={height: '70px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd','border-top':'0px'};
 
   });

@@ -121,7 +121,7 @@ angular.module('starter')
 
     $scope.go_back=function(){
         $ionicHistory.clearHistory();
-        $ionicHistory.clearHistory();
+        $ionicHistory.clearCache();
         $state.go('tabs.my');
     }
 

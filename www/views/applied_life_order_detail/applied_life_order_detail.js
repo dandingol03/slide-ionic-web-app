@@ -50,7 +50,8 @@ angular.module('starter')
         };
 
         $scope.go_back=function(){
-            $rootScope.car_orders_tabIndex=2;
+            if($scope.order.orderState==1)
+                $rootScope.life_orders_tabIndex=0;
             window.history.back();
         }
 
