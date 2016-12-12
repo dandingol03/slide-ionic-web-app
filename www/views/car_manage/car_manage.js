@@ -386,6 +386,8 @@ angular.module('starter')
 
         }
 
+        $scope.notFirstRowStyle={height: '70px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd'};
+        $scope.firstRowStyle={height: '70px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd','border-top':'0px'}
 
 
 

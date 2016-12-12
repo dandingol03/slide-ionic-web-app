@@ -38,29 +38,51 @@ angular.module('starter')
 
         $scope.getCode=function () {
 
+
             //TODO:校验手机号长度
             var reg=/\d{11}/;
             var mobilePhone=$scope.info.mobilePhone;
             if(reg.exec(mobilePhone)!==null)
             {
+
                 $http({
                     method:"GET",
-                    url:Proxy.local()+'/securityCode?'+"phoneNum=" + $scope.info.mobilePhone,
+                    url:Proxy.local()+'/verifyMobilePhoneRedundancy?'+"mobilePhone=" + $scope.info.mobilePhone,
                     headers: {
                         'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
-
-                }).then(function(res) {
+                }).then(function (res) {
                     var json=res.data;
-                    if(json.re==1){
-                        $scope.code=json.data;
-                        alert('验证码='+$scope.code);
+                    if(json.data==true)
+                    {
+                        var myPopup = $ionicPopup.alert({
+                            template: '您输入的手机号已被使用,请重新填入手机号再注册',
+                            title: '<strong style="color:red">信息</strong>'
+                        });
+                    }else{
+                        $http({
+                            method:"GET",
+                            url:Proxy.local()+'/securityCode?'+"phoneNum=" + $scope.info.mobilePhone,
+                            headers: {
+                                'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+
+                        }).then(function(res) {
+                            var json=res.data;
+                            if(json.re==1){
+                                $scope.code=json.data;
+                                alert('验证码='+$scope.code);
+                            }
+                            else{
+                                alert('error=\r\n'+json.data);
+                            }
+                        })
                     }
-                    else{
-                        alert('error=\r\n'+json.data);
-                    }
-                })
+                });
+
+
             }else{
                 var myPopup = $ionicPopup.alert({
                     template: '请输入11位的数字作为手机号\r\n再点击获取验证码',
@@ -130,7 +152,7 @@ angular.module('starter')
                     }
                     else{
                         if(json.re==2){
-                            alert('该手机号或用户名已存在');
+                            alert(json.data);
                         }else{
                             alert('注册失败');
                         }
