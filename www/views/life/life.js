@@ -189,7 +189,7 @@ angular.module('starter')
                         });
                         confirmPopup.then(function(res) {
                             if(res){
-                                $state.go('life_insurance_orders',{tabIndex:2});
+                                $state.go('life_insurance_orders',{tabIndex:0});
                             }else {
                                 console.log('You are not sure');
                             }
