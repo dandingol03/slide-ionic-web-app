@@ -138,7 +138,7 @@ angular.module('starter')
             });
         }
 
-        $scope.fetchRelativeCars();
+
         $scope.Mutex=function(item,field,cluster) {
 
             if(item.idle)

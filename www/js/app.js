@@ -391,7 +391,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           $ionicHistory.goBack();
         } else {
           $rootScope.backButtonPressedOnceToExit = true;
-          $cordovaToast.showShortTop('再按一次退出系统');
+          $cordovaToast.showShortTop('已无法回退，请点击底部标签页进行切换');
           setTimeout(function () {
             $rootScope.backButtonPressedOnceToExit = false;
           }, 2000);
@@ -924,7 +924,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.121:3000";
+            return "http://139.129.96.231:3000";
           else
             return "/proxy/node_server";
             
