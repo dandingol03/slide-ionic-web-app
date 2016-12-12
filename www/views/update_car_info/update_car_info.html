@@ -8,6 +8,17 @@
         <i class="ion-chevron-left"></i>
       </button>
     </ion-nav-buttons>
+
+      <ion-nav-buttons side="right">
+          <button class="button button-assertive"
+                  ng-click="postCarInfo()">
+              <span style="display: inline-block;">
+                  <i class="fa fa-hand-pointer-o"></i>
+              </span>
+              <span style="font-size: 0.9em;display: inline-block;">保存车辆信息</span>
+          </button>
+
+      </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content style="padding:0px;">
@@ -332,12 +343,6 @@
             </ion-slide>
 
           </ion-slide-box>
-
-            <div class="list list-inset padding" style="margin-bottom:40px;background-color:transparent;">
-                <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="postCarInfo()">
-                  <h1 class="title">保存车辆信息</h1>
-                </div>
-            </div>
 
         </div>
     </div>

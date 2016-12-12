@@ -54,7 +54,8 @@ angular.module('starter')
 
 
     $scope.go_back=function(){
-      window.history.back();
+        $rootScope.life_orders_tabIndex=1;
+        window.history.back();
     }
 
 
