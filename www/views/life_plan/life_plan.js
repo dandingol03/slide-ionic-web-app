@@ -35,8 +35,6 @@ angular.module('starter')
     }
     $scope.plans=plans;
 
-
-
     $scope.changedState= false;
 
 

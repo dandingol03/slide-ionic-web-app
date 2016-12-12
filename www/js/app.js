@@ -474,6 +474,16 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
           })
 
+          .state('tabs.chosenProduct',{
+              url:'/chosenProduct',
+              views:{
+                  'chosenProduct-tab':{
+                      controller:'chosenProductController',
+                      templateUrl:'views/chosenProduct/chosenProduct.html'
+                  }
+              }
+          })
+
           .state('tabs.chatter', {
             url: '/chatter',
             views: {
