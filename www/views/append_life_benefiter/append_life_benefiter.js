@@ -25,6 +25,11 @@ angular.module('starter')
 
       }
 
+      $scope.selectedTabStyle={width:'26%',display: 'inline-block',background: 'rgba(199, 207, 216, 0.470588)',padding: '7px'};
+      $scope.unSelectedTabStyle={width:'26%', display: 'inline-block',padding: '7px'};
+      $scope.selectedCellStyle={color:'#fff','text-align': 'center'};
+      $scope.unSelectedCellStyle={color:'#eee','text-align': 'center'};
+
     if($stateParams.info!==undefined&&$stateParams.info!==null)
     {
       var info=$stateParams.info;

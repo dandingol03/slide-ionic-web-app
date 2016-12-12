@@ -131,9 +131,27 @@ angular.module('starter')
             }
 
         })
-
-
     }
+
+
+      /*** 上传身份证模态框 ***/
+      $ionicModal.fromTemplateUrl('views/modal/append_maintainOrder_person.html',{
+          scope:  $scope,
+          animation: 'animated '+' bounceInUp',
+          hideDelay:920
+      }).then(function(modal) {
+          $scope.append_maintainOrderPerson_modal = modal;
+      });
+
+      $scope.open_appendMaintainServiceOrderModal= function(){
+          $scope.append_maintainOrderPerson_modal.show();
+      };
+
+      $scope.close_appendMaintainServiceOrderModal= function() {
+          $scope.append_maintainOrderPerson_modal.hide();
+      };
+      /*** 上传身份证模态框 ***/
+
 
 
 

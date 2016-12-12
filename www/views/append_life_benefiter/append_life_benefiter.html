@@ -1,47 +1,56 @@
-<ion-view view-title="选择寿险受益人">
-
-
-  <ion-nav-bar class="bar-stable" align-title="center" >
-
-
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr"
-              style="font-size: 2.4em;"
-              ng-click="go_back()"
-      >
-        <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
-
-
-
-  </ion-nav-bar>
-
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view  hide-nav-bar="true">
 
   <ion-content>
+    <!-- header -->
+    <div style="width: 100%;height: 130px;background: #11c1f3;position: relative">
 
-    <div class="list" style="margin-bottom: 0px;">
-      <ul class="ul-tabs dark-theme" style="background: rgb(203,203,203)">
-        <li style="width:50%;font-size: medium;" >
-          <div class="cell"
-               ng-class="{true: 'selected', false: ''}[tabIndex==0]"
-               ng-click="tab_change(0)">
-            <span style="position:absolute;left:15%;top:40%;">
-              已有关联人
-            </span>
-          </div>
-        </li>
-        <li style="width:50%; font-size: medium;" >
-          <div class="cell"
-               ng-class="{true: 'selected', false: ''}[tabIndex==1]"
-               ng-click="tab_change(1)">
-            <span style="position:absolute;left: 20%;top:40%;">
-              新建关联人
-            </span>
-          </div>
-        </li>
+      <!-- goback  -->
+      <div style="position: absolute;left:2%;top:10%;">
+        <div style="width: 100%;height: 100%;display: table;margin-left:10%;"
+             ng-click="go_back()">
+                       <span style="display: table-cell;vertical-align: middle;color:#fff;font-size: 2.4em;">
+                         <i class="fa fa-chevron-left"></i>
+                       </span>
+        </div>
+      </div>
 
-      </ul>
+
+      <!-- tile -->
+      <div style="position: absolute;left:16%;top:16px;">
+        <span style="font-size: 1.3em;color:#fff;">选择受益人</span>
+      </div>
+
+      <!-- button -->
+      <div style="position: absolute;right: 10px;top:16px;" ng-if="tabIndex==1">
+        <button class="button button-assertive" style="height: 34px;line-height: 34px;min-height: 34px;"
+                ng-click="upload('createRelativePerson',benefiter)">
+                        <span style="display: inline-block;">
+                            <i class="fa fa-hand-pointer-o"></i>
+                        </span>
+          <span style="font-size: 0.9em;display: inline-block;">提交关联亲属信息</span>
+        </button>
+      </div>
+
+      <!-- tab -->
+      <div class="list" style="margin-bottom: 0px;position:absolute;bottom: 0px;width: 100%">
+        <div style="width: 22%;display: inline-block;"></div>
+        <div  ng-style="tabIndex==0?selectedTabStyle:unSelectedTabStyle">
+          <div  ng-style="tabIndex==0?selectedCellStyle:unSelectedCellStyle"  ng-click="tab_change(0)">
+            <div><span style="font-size: 2em;"><i class="fa fa-user"></i></span></div>
+            <div>已有受益人</div>
+          </div>
+        </div>
+        <div  ng-style="tabIndex==1?selectedTabStyle:unSelectedTabStyle" >
+          <div ng-style="tabIndex==1?selectedCellStyle:unSelectedCellStyle"  ng-click="tab_change(1)">
+            <div><span style="font-size: 2em;"><i class="fa fa-user-plus"></i></span></div>
+            <span>新建受益人</span>
+          </div>
+        </div>
+        <div style="width: 22%;display: inline-block;"></div>
+
+      </div>
+
     </div>
 
 
@@ -306,18 +315,6 @@
             </div>
           </div>
 
-
-
-
-
-          <button class="button button-block button-calm" ng-click="upload('createRelativePerson',benefiter)">
-            关联亲属信息
-          </button>
-
-          <div style="width: 10%;height: 20px;">
-
-          </div>
-
         </div>
 
 
@@ -325,12 +322,7 @@
     </div>
 
 
-
-
-
   </ion-content>
 
-
-
-
-</ion-view>
+  </ion-view>
+</ion-nav-view>
