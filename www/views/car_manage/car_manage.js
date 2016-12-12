@@ -81,6 +81,7 @@ angular.module('starter')
 
 
         $scope.relativeCars=[];
+        $scope.car={};
 
         //查询已绑定车辆,并显示车牌信息
         $scope.fetchRelativeCars = function(){
@@ -99,7 +100,7 @@ angular.module('starter')
                 data:
                     {
                         request:'fetchInsuranceCarInfoByCustomerId',
-                        info:{carNum:$scope.tempCarNum}
+                        info:{carNum:$scope.car.carNum}
                     }
             }).then(function(res) {
                 var json=res.data;
@@ -137,7 +138,7 @@ angular.module('starter')
             });
         }
 
-        $scope.fetchRelativeCars();
+        //$scope.fetchRelativeCars();
         $scope.Mutex=function(item,field,cluster) {
 
             if(item.idle)

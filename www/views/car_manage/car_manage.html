@@ -41,8 +41,8 @@
                       height: 100%;">
                             <input type="text" placeholder="请输入搜索条件"
                                    style="display:inline-block;background-color: transparent;width: 100%;"
-                                   ng-value="tempCarNum"
-                                   ng-model="tempCarNum"
+                                   ng-value="car.carNum"
+                                   ng-model="car.carNum"
                             />
                         </span>
                         <span style="display: inline-block;width: 15%;height: 100%;position: absolute;top:0px;
@@ -55,7 +55,8 @@
                         </span>
                         <span style="width: 18%;height: 100%;display: inline-block;
                         position: absolute;left:82%;top:0px;">
-                            <div style="width: 100%;height: 100%;display: table;text-align: center;background: #00c9ff" ng-click="fetchRelativeCars()">
+                            <div style="width: 100%;height: 100%;display: table;text-align: center;background: #00c9ff"
+                                 ng-click="fetchRelativeCars()">
                                 <span style="display: table-cell;vertical-align: middle;font-size: 1.5em;color:#fff;">
                                     <i class="ion-search"></i>
                                 </span>
