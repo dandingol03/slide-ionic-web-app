@@ -3,7 +3,7 @@
  */
 angular.module('starter')
   .controller('integrationController',function($scope,$state,$http
-                                               ,$rootScope,$ionicLoading){
+                                               ,$rootScope,$ionicLoading,$ionicPopup){
 
     $scope.go_back=function(){
       window.history.back();
@@ -103,5 +103,40 @@ angular.module('starter')
     $scope.change_scoreTab=function(i){
       $scope.score_tab=i;
     }
+
+    $scope.checkIdCard = function(){
+        $http({
+            method: "POST",
+            url: "/proxy/node_server/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data: {
+                request:'checkcCustomerIdCard'
+            }
+        }).then(function(res) {
+            var json = res.data;
+            if(json.re==1){
+                var confirmPopup = $ionicPopup.confirm({
+                    title: '我的积分',
+                    template: '可以将积分提现，是否现在提取？'
+                });
+                confirmPopup.then(function(res) {
+
+                })
+            }else{
+                //上传身份证照片
+                alert('请先上传身份证照片！');
+
+            }
+
+        })
+
+
+    }
+
+
+
+
 
   });
