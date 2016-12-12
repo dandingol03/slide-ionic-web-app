@@ -1095,7 +1095,7 @@ angular.module('starter')
                         //清除寿险意向数据
                         $rootScope.life_insurance={
                         };
-                        $state.go('tabs.dashboard');
+                        $state.go('/tab/car_manage');
 
                     }
                 }
