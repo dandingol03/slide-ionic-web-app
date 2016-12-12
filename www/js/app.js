@@ -477,12 +477,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
           })
 
-          .state('tabs.chosenProduct',{
-              url:'/chosenProduct',
+          .state('tabs.handpicked_product',{
+              url:'/handpicked_product',
               views:{
-                  'chosenProduct-tab':{
-                      controller:'chosenProductController',
-                      templateUrl:'views/chosenProduct/chosenProduct.html'
+                  'handpicked_product-tab':{
+                      controller:'handpickedProductController',
+                      templateUrl:'views/handpicked_product/handpicked_product.html'
                   }
               }
           })

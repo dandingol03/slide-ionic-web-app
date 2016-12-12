@@ -1,0 +1,32 @@
+<ion-view view-title='寿险精选产品' >
+
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2.4em;" ng-click="go_back()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content scroll="false" >
+
+        <div class="list padding">
+            <div ng-repeat="product in products" style="margin-bottom: 20px;">
+
+                <div class="item" style="height: 200px;width: 100%;padding: 0;">
+                    <img ng-src="{{srcArr[$index]}}" style="width: 100%;height: 100%;">
+                </div>
+
+                <div class="item" style="width: 100%;padding: 0;padding-top: 16px;padding-bottom: 16px;margin: 0;border:0px;">
+                    <span style="width: 65%;display: inline-block;font-weight: bolder;">{{product.productName}}</span>
+                    <span style="width: 35%;display: inline-block;color:#e2511c">
+                        保额:<span style="font-size: 1.4em;">${{product.insuranceQuota}}</span>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>
