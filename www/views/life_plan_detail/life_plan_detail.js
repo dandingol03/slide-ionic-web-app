@@ -284,10 +284,11 @@ angular.module('starter')
       plans.map(function(item,i) {
         if(item.planId==planId)
         {
-          plan.modified=true;
-          plan.checked=true;
-          plans[i]=plan;
-          $rootScope.modifiedFlag=true;
+            plan.modified=true;
+            plan.checked=true;
+            plans[i]=plan;
+            $rootScope.modifiedFlag=true;
+            $rootScope.flags.lifeOrders.onFresh=false;
         }
       });
       $rootScope.lifeInsuranceOrder.plans=plans;

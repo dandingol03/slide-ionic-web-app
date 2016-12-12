@@ -183,21 +183,42 @@ angular.module('starter')
                         if($rootScope.lifeInsurance==undefined||$rootScope.lifeInsurance==null)
                             $rootScope.lifeInsurance={};
                         $rootScope.lifeInsurance.orderId=orderId;
-                        var confirmPopup = $ionicPopup.confirm({
-                            title: '您的订单',
-                            template: '您的寿险意向已提交,请等待工作人员配置方案后在"我的寿险订单"中进行查询'
-                        });
-                        confirmPopup.then(function(res) {
-                            if(res){
-                                $state.go('life_insurance_orders',{tabIndex:0});
-                            }else {
-                                console.log('You are not sure');
-                            }
-                        });
+
+
+                        //TODO:校验
+                        if($rootScope.modifiedFlag)
+                        {
+                            var myConfirm = $ionicPopup.confirm({
+                                title: '信息',
+                                template: '您有已改动的寿险报价方案,是否取消改动并拉取新的订单数据'
+                            });
+                            myConfirm.then(function (res) {
+                                if(res)
+                                {
+                                    $rootScope.flags.lifeOrders.onFresh=true;
+                                    $state.go('life_insurance_orders',{tabIndex:0});
+                                }else{
+                                }
+                            })
+                        }else{
+                            var confirmPopup = $ionicPopup.confirm({
+                                title: '您的订单',
+                                template: '您的寿险意向已提交,请等待工作人员配置方案后在"我的寿险订单"中进行查询'
+                            });
+
+                            confirmPopup.then(function(res) {
+                                if(res){
+                                    $rootScope.flags.lifeOrders.onFresh=true;
+                                    $state.go('life_insurance_orders',{tabIndex:0});
+                                }else {
+                                    console.log('You are not sure');
+                                }
+                            });
+                        }
                         //清除寿险意向数据
-                        $rootScope.life_insurance={
-                        };
-                        $state.go('life');
+                        // $rootScope.life_insurance={
+                        // };
+                        // $state.go('life');
                     }
                 }
 
