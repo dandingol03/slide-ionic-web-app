@@ -789,8 +789,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               }
           })
 
-
-
           .state('applied_life_order_detail',{
               url:'/applied_life_order_detail:orderId',
               controller:'appliedLifeOrderDetailController',

@@ -23,6 +23,11 @@ angular.module('starter')
 
         };
 
+        $scope.clear_search=function () {
+            $scope.tempCarNum=null;
+        }
+
+
         $scope.confirmCarInfo=function () {
             var carInfo=null;
             $scope.relativeCars.map(function(car,i) {
@@ -93,7 +98,8 @@ angular.module('starter')
                 },
                 data:
                     {
-                        request:'fetchInsuranceCarInfoByCustomerId'
+                        request:'fetchInsuranceCarInfoByCustomerId',
+                        info:{carNum:$scope.tempCarNum}
                     }
             }).then(function(res) {
                 var json=res.data;
@@ -378,6 +384,8 @@ angular.module('starter')
 
 
         }
+
+
 
 
     })
