@@ -3,7 +3,7 @@
         <ion-content >
 
             <!-- header -->
-            <div style="width: 100%;height: 110px;background: #11c1f3;position: relative">
+            <div style="width: 100%;height: 130px;background: #11c1f3;position: relative">
 
                 <!-- goback  -->
                 <div style="position: absolute;left:2%;top:10%;">
@@ -16,12 +16,23 @@
                 </div>
 
 
-                <!-- ttile -->
+                <!-- tile -->
                 <div style="position: absolute;left:16%;top:16px;">
                     <span style="font-size: 1.3em;color:#fff;">选择被保险人</span>
                 </div>
 
+                <!-- button -->
+                <div style="position: absolute;right: 10px;top:16px;" ng-if="tabIndex==1">
+                    <button class="button button-assertive" style="height: 34px;line-height: 34px;min-height: 34px;"
+                            ng-click="confirm()">
+                        <span style="display: inline-block;">
+                            <i class="fa fa-hand-pointer-o"></i>
+                        </span>
+                        <span style="font-size: 0.9em;display: inline-block;">提交车险意向</span>
+                    </button>
+                </div>
 
+                <!-- tab -->
                 <div class="list" style="margin-bottom: 0px;position:absolute;bottom: 0px;width: 100%">
                     <div style="width: 22%;display: inline-block;"></div>
                     <div  ng-style="tabIndex==0?selectedTabStyle:unSelectedTabStyle">
@@ -43,7 +54,7 @@
             </div>
 
 
-            <div ng-if="tabIndex==0" style="height: 100%;">
+            <div ng-if="tabIndex==0" style="height: 76%;width: 100%;">
 
                 <div class="list list-inset padding"
                      style="height: 65%;">
@@ -52,23 +63,23 @@
                          style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
                  padding:10px;background-color:transparent;overflow:initial">
 
-                    <span class="input-label"
-                          style="display: inline-block;width: 25%;text-align: left">
-                        姓名:
-                    </span>
+                        <span class="input-label"
+                              style="display: inline-block;width: 25%;text-align: left">
+                            姓名:
+                        </span>
 
                         <span style="width: 55%;display: inline-block;text-align: left;">
-                        <input type="text" placeholder="输入亲属姓名"
-                               ng-value="car_insurance.insuranceder.perName"
-                               ng-model="car_insurance.insuranceder.perName"/>
-                    </span>
+                            <input type="text" placeholder="输入亲属姓名"
+                                   ng-value="car_insurance.insuranceder.perName"
+                                   ng-model="car_insurance.insuranceder.perName"/>
+                        </span>
 
                         <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
                               ng-click="selectCarInsuranceder()">
-                        <button class="button button-small button-assertive">
-                            搜索
-                        </button>
-                    </span>
+                            <button class="button button-small button-assertive">
+                                搜索
+                            </button>
+                        </span>
 
                     </div>
 
@@ -77,9 +88,9 @@
                         <div class="item" ng-repeat="person in car_insurance.relativePersons" ng-click="mutex(person,car_insurance.relativePersons)">
 
                             <div style="display:inline-block;width:70%">
-               <span>
-                {{person.perName}}
-               </span>
+                               <span>
+                                {{person.perName}}
+                               </span>
                             </div>
 
                             <i ng-if="person.checked!=true" class="ion-ios-checkmark-outline" ></i>
@@ -92,14 +103,10 @@
 
                 </div>
 
-                <div
-                        class="list list-inset padding"
-                        style="margin:0px 10px;padding:0px 10px;"
-                >
-                    <div
-                            class="item"
-                            style="margin:1px;border:0px;padding:0px 10px;background-color:transparent;"
-                    >
+                <div class="list list-inset padding"
+                     style="margin:0px 10px;padding:0px 10px;height: 35%;">
+                    <div class="item"
+                        style="margin:1px;border:0px;padding:0px 10px;background-color:transparent;">
                         <button
                                 class="button button-block button-calm"
                                 ng-click="confirm()"
@@ -425,16 +432,6 @@
                     <!--</div>-->
                 </div>
 
-
-                <div style="width: 100%;height: 20%;text-align: center;">
-                    <div style="width: 100%;height: 100%;display: table;text-align:center;">
-                        <button class="button button-block button-calm"
-                                style=";width: 70%;display: table-cell;vertical-align:middle;"
-                                ng-click="confirm()">
-                            提交车险意向
-                        </button>
-                    </div>
-                </div>
             </div>
 
 

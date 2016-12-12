@@ -318,7 +318,7 @@ angular.module('starter')
             var deferred=$q.defer();
 
             var cb=function () {
-                var map = new BMap.Map("map_administrate_search");          // 创建地图实例
+                var map = new BMap.Map("map_paperValidate_search");          // 创建地图实例
                 var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
                 $scope.point=point;
                 map.centerAndZoom(point, 12);
