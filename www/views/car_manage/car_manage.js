@@ -281,116 +281,142 @@ angular.module('starter')
             $scope.carInfo.carNum=$scope.carInfo.carNum.toString().toUpperCase();
         }
 
-
-        $scope.bindNewCar = function(){
-
+        $scope.verifyCarNum=function () {
             var carNum=$scope.carInfo.carNum;
-            if(carNum!==undefined&&carNum!==null&&carNum!='')
 
+            if(carNum!==undefined&&carNum!==null&&carNum!='')
             {
-                if(carNum.toString().length!=7)
+                if(carNum.toString().length!=7&&carNum.toString().length!=8)
                 {
                     $ionicPopup.alert({
                         title: '错误',
-                        template: '车牌号输入错误\r\n请输入6位的车牌号'
+                        template: '您输入的车牌号位数不对，请输入6位或者7位的车牌号再点击创建'
                     });
                 }else{
-
-                    var carNumPrefix=carNum.substring(0,2);
-                    var  prefix=$scope.getCarNumPrefixByCity ($scope.city_confirmed);
-                    if(carNumPrefix!=prefix)
+                    //TODO:give a tip
+                    var flag=false;
+                    if(carNum.toString().length==8)
                     {
-                        $ionicPopup.alert({
-                            title: '错误',
-                            template: '您输入的车牌号前缀不符合您选择的城市'
+                        var confirm=$ionicPopup.confirm({
+                            title: '信息',
+                            template: '您输入的车牌号为7位，是否为新能源车'
                         });
-                        return ;
-                    }
-
-                    $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data:
-                            {
-                                request:'bindNewCar',
-                                info:{
-                                    carNum:$scope.carInfo.carNum
-                                }
+                        confirm.then(function (res) {
+                            if(res) {
+                                $scope.bindNewCar();
+                            }else{
+                                $ionicPopup.alert({
+                                    title: '错误',
+                                    template: '非新能源车的车牌号不能为7位'
+                                });
                             }
-                    }).then(function(res) {
-                        var json=res.data;
-                        var result = json.re;
-                        switch (result){
-                            case -1:
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '绑定车辆',
-                                    template: '数据库中未保存此车,是否要创建新车'
-                                });
-                                confirmPopup.then(function(res) {
-                                    if(res) {
-                                        $scope.closeBindCarModal();
-                                        $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
-                                    } else {
-                                        $scope.closeBindCarModal();
-                                    }
-                                });
-                                break;
-                            case -2:
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '绑定车辆',
-                                    template: '是否要创建新车'
-                                });
-                                confirmPopup.then(function(res) {
-                                    if(res) {
-                                        $scope.closeBindCarModal();
-                                        $state.go('update_car_info');
-                                    } else {
-                                        $scope.closeBindCarModal();
-                                    }
-                                });
-                                break;
-                            case -3:
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '绑定车辆',
-                                    template: '该车还在保险期内,是否要创建新车'
-                                });
-                                confirmPopup.then(function(res) {
-                                    if(res) {
-                                        $scope.closeBindCarModal();
-                                        $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
-                                    } else {
-                                        $scope.closeBindCarModal();
-                                    }
-                                });
-                                break;
-                            case 1:
-                                var carInfo = res.data;
-                                $scope.relativeCars.push(carInfo);
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '绑定车辆',
-                                    template: '绑定成功!'
-                                });
-                                confirmPopup.then(function(res) {
-                                    $scope.closeBindCarModal();
-                                    $scope.fetchRelativeCars();
-                                    $state.go('car_manage');
-                                });
-                                break;
-                            default:
-                                break;
-                        }
-                    });
+                        });
+                    }else{
+                        $scope.bindNewCar();
+                    }
                 }
-
             }else{
                 $ionicPopup.alert({
                     title: '错误',
                     template: '请填入车牌号再进行绑定'
                 });
             }
+
+        }
+
+        $scope.bindNewCar = function(){
+
+            var carNum=$scope.carInfo.carNum;
+
+            var carNumPrefix=carNum.substring(0,2);
+            var  prefix=$scope.getCarNumPrefixByCity ($scope.city_confirmed);
+            if(carNumPrefix!=prefix)
+            {
+                $ionicPopup.alert({
+                    title: '错误',
+                    template: '您输入的车牌号前缀不符合您选择的城市'
+                });
+                return ;
+            }
+
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data:
+                    {
+                        request:'bindNewCar',
+                        info:{
+                            carNum:$scope.carInfo.carNum
+                        }
+                    }
+            }).then(function(res) {
+                var json=res.data;
+                var result = json.re;
+                switch (result){
+                    case -1:
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '绑定车辆',
+                            template: '数据库中未保存此车,是否要创建新车'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res) {
+                                $scope.closeBindCarModal();
+                                $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
+                            } else {
+                                $scope.closeBindCarModal();
+                            }
+                        });
+                        break;
+                    case -2:
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '绑定车辆',
+                            template: '是否要创建新车'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res) {
+                                $scope.closeBindCarModal();
+                                $state.go('update_car_info');
+                            } else {
+                                $scope.closeBindCarModal();
+                            }
+                        });
+                        break;
+                    case -3:
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '绑定车辆',
+                            template: '该车还在保险期内,是否要创建新车'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res) {
+                                $scope.closeBindCarModal();
+                                $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
+                            } else {
+                                $scope.closeBindCarModal();
+                            }
+                        });
+                        break;
+                    case 1:
+                        var carInfo = res.data;
+                        $scope.relativeCars.push(carInfo);
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '绑定车辆',
+                            template: '绑定成功!'
+                        });
+                        confirmPopup.then(function(res) {
+                            $scope.closeBindCarModal();
+                            $scope.fetchRelativeCars();
+                            $state.go('car_manage');
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+
 
 
         }

@@ -15,6 +15,9 @@ angular.module('starter')
 
       $scope.users=[];
 
+
+
+
       if($rootScope.username!==undefined&&$rootScope.username!==null){
           $scope.user.username = $rootScope.username;
       }
@@ -36,7 +39,7 @@ angular.module('starter')
                           if($scope.user.username!==undefined&&$scope.user.username!==null&&$scope.user.username!=''
                             &&$scope.user.password!==undefined&&$scope.user.password!==null&&$scope.user.password!='')
                           {
-                              $scope.doLogin();
+                              //$scope.doLogin();
                           }
 
                       })
@@ -56,6 +59,7 @@ angular.module('starter')
             $ionicPlatform.ready (function () {
                 $scope.fetch();
                 //navigator.speech.initialize('583d766d');
+
             })
         }
 
@@ -624,6 +628,26 @@ angular.module('starter')
               alert('exception=' + e.toString());
           }
 
+      }
+
+      $scope.installWxOrNot=function () {
+          WeChat
+              .isInstalled(function(installed) {
+                  console.log('WeChat installed='+installed);
+              }, function(reason) {
+                  console.log(reason);
+              });
+      }
+
+
+
+      $scope.wxShare=function () {
+          WeChat
+              .share('文本', WeChat.Scene.session, function () {
+                  console.log('分享成功~');
+              }, function (reason) {
+                  console.log(reason);
+              });
       }
 
     });
