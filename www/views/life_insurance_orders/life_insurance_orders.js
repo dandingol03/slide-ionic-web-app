@@ -92,6 +92,12 @@ angular.module('starter')
                   $rootScope.lifeInsurance.appliedOrders = $scope.appliedOrders;
               }
 
+          }).catch(function (err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('err='+str);
+              $ionicLoading.hide();
           })
 
       }else{
