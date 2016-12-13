@@ -106,6 +106,9 @@ angular.module('starter')
                 var json=res.data;
                 if(json.re==1) {
                     $scope.relativeCars=json.data;
+                    $scope.relativeCars.map(function(car,i) {
+                        car.checked = false;
+                    })
                     if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
                     {
                         $scope.relativeCars.map(function(car,i) {
@@ -140,22 +143,28 @@ angular.module('starter')
 
 
         $scope.Mutex=function(item,field,cluster) {
+                           // car checked relativeCars
 
             if(item.idle)
             {
-                item[field]=true;
-                $rootScope.carInfo=item;
-                cluster.map(function(cell,i) {
-                    if(item.carId!=cell.carId&&cell.idle==true)
-                        cell[field]=false;
-                })
-                $scope.relativeCars.map(function(car,i){
-                    if(car.checked==true){
-                        $scope.factoryNum = car.factoryNum;
-                        $scope.engineNum = car.engineNum;
-                        $scope.frameNum = car.frameNum;
-                    }
-                })
+                if(item[field]==false){
+                    item[field]=true;
+                    $rootScope.carInfo=item;
+                    cluster.map(function(cell,i) {
+                        if(item.carId!=cell.carId&&cell.idle==true)
+                            cell[field]=false;
+                    })
+                    $scope.relativeCars.map(function(car,i){
+                        if(car.checked==true){
+                            $scope.factoryNum = car.factoryNum;
+                            $scope.engineNum = car.engineNum;
+                            $scope.frameNum = car.frameNum;
+                        }
+                    })
+                }
+                else{
+                    item[field]=false;
+                }
             }
         };
 
