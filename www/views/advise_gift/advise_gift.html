@@ -2,14 +2,12 @@
 
   <ion-nav-bar class="bar-stable" align-title="center" >
     <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr" ng-click="go_back()">
+      <button class="button button-icon button-clear bar_arr" style="font-size: 2em;" ng-click="go_back()">
         <i class="ion-chevron-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-      <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-        <i class="ion-ios-search-strong"></i>
-      </button>
+
     </ion-nav-buttons>
 
   </ion-nav-bar>
@@ -17,39 +15,22 @@
   <ion-content scroll="false" >
 
     <ion-scroll>
-      <ion-list>
-        <ion-item ng-repeat="item in items"
-                  class="item-thumbnail-left">
 
-          <h2>{{item.title}}</h2>
-          <p>{{item.description}}</p>
-          <ion-option-button class="button-positive"
-                             ng-click="share(item)">
-            分享
-          </ion-option-button>
-          <ion-option-button class="button-info"
-                             ng-click="edit(item)">
-            编辑
-          </ion-option-button>
-          <ion-delete-button class="ion-minus-circled"
-                             ng-click="items.splice($index, 1)">
-          </ion-delete-button>
-          <ion-reorder-button class="ion-navicon"
-                              on-reorder="reorderItem(item, $fromIndex, $toIndex)">
-          </ion-reorder-button>
+      <div class="list padding">
+        <div class="item" style="border:0px;">
+          <textarea placeholder="Comments" style="border:1px solid #aaa;width: 80%;margin-left:10%;" rows="5"
+                    ng-model="wx.text"
+                    ng-value="wx.text"
+          ></textarea>
 
-        </ion-item>
-        <ion-item style="text-align: center" ng-if="target!==undefined&&target!==null">
-          <div style="min-height: 200px">
-            <img ng-src="{{target}}"/>
-          </div>
-        </ion-item>
-        <ion-item style="text-align: center">
-          <button class="button button-calm" ng-click="downloadQrCode()">
-            点击下载二维码
+
+          <button class="button button-block button-calm" style="width: 30%;margin-left:35%;"
+                  ng-click="wxShareText()">
+            <span style="font-size: 2em;"><i class="fa fa-weixin"></i></span>
+            <span>分享</span>
           </button>
-        </ion-item>
-      </ion-list>
+        </div>
+      </div>
     </ion-scroll>
 
 

@@ -13,7 +13,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-                  $ionicPopup,Proxy,$http,$state,$q) {
+                  $ionicPopup,Proxy,$http,$state,$q,$timeout) {
 
 
 
@@ -907,11 +907,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
-          .state('wechatDemo',{
-              url:'/wechatDemo',
-              controller:'DemoCtrl',
-              templateUrl:'views/wechatDemo/demo.html'
-          })
+
 
         // if none of the above states are matched, use this as the fallback
 
@@ -936,7 +932,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.148:3000";
+            return "http://192.168.1.121:3000";
           else
             return "/proxy/node_server";
             
@@ -1026,4 +1022,3 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
     )
-

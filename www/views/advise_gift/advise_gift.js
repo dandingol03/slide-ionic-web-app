@@ -3,14 +3,8 @@
  */
 angular.module('starter')
   .controller('adviseGiftController',function($scope,$state,$http,
-                                                       $rootScope,$cordovaFileTransfer,Proxy,$timeout){
-
-    $scope.items=[
-      {title:'header 1',description:'content of header1'},
-      {title:'header 2',description:'content of header2'},
-      {title:'header 3',description:'content of header3'},
-      {title:'header 4',description:'content of header4'}
-    ];
+                                              $rootScope,$cordovaFileTransfer,
+                                              Proxy,$timeout,$ionicPopup){
 
     $scope.downloadQrCode=function() {
 
@@ -63,5 +57,43 @@ angular.module('starter')
     $scope.go_to=function(state){
       $state.go(state);
     };
+
+    $scope.wx={};
+
+    $scope.share=function () {
+        alert('text='+$scope.wx.text);
+    }
+      //分享至指定朋友
+      $scope.wxShareText=function () {
+
+        if($scope.wx.text!==undefined&&$scope.wx.text!==null&&$scope.wx.text!='')
+        {
+            Wechat.isInstalled(function (installed) {
+                if(installed)
+                {
+                    var ob={
+                        scene:Wechat.Scene.SESSION,
+                        text :text
+                    };
+                    Wechat.share(ob, function () {
+                        alert('share success')
+                    }, function (reason) {
+                        alert('share encounter failure');
+                    });
+                }else{
+                    $ionicPopup.alert({
+                        title: '信息',
+                        template: '您的手机上没有安装微信'
+                    });
+                }
+            });
+        }else{
+            $ionicPopup.alert({
+                title: '错误',
+                template: '请填写您需要分享的内容再点击分享'
+            });
+        }
+      }
+
 
   })
