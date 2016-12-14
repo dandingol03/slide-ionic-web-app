@@ -58,6 +58,44 @@ angular.module('starter')
         }
 
 
+        $scope.goto = function(){
+            $state.go('wechatDemo');
+
+        }
+
+/**************************************测微信***************************************/
+        $scope.data = {
+            selectedScene: 1,
+            selectedSceneLabel: "朋友圈"
+        };
+
+        $scope.buttons = [
+            {
+                id: "check-installed",
+                label: "是否安装了微信"
+            },
+            {
+                id: "send-text",
+                label: "发送Text消息给微信"
+            }
+        ]
+
+        $scope.handle = function () {
+             Wechat.share({
+                 message: {title: "Message Title",
+                    description: "Message Description(optional)"
+                },
+                scene: Wechat.Scene.SESSION   // share to Timeline
+             }, function () {
+                 alert("Success");
+             }, function (reason) {
+                 alert("Failed: " + reason);
+             });
+        };
+
+
+ /***************************************测微信***************************************/
+
 
         $scope.togglePwdPersistent = function(){
           if($scope.pwdPersisted==true){

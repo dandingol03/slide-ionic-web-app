@@ -301,10 +301,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               break;
                       }
 
-
-
                     break;
-
 
               }
             }
@@ -497,13 +494,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
           })
 
-
-
-
-
-
-
-
           .state('login',{
               cache:false,
               url:'/login',
@@ -516,8 +506,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               controller: 'dashboardController',
               templateUrl:'views/dashboard/dashboard.html'
           })
-
-
 
 
           .state('register',{
@@ -919,6 +907,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
+          .state('wechatDemo',{
+              url:'/wechatDemo',
+              controller:'DemoCtrl',
+              templateUrl:'views/wechatDemo/demo.html'
+          })
 
         // if none of the above states are matched, use this as the fallback
 
@@ -943,7 +936,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.121:3000";
+            return "http://192.168.1.148:3000";
           else
             return "/proxy/node_server";
             
