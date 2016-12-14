@@ -39,7 +39,7 @@ angular.module('starter')
                           if($scope.user.username!==undefined&&$scope.user.username!==null&&$scope.user.username!=''
                             &&$scope.user.password!==undefined&&$scope.user.password!==null&&$scope.user.password!='')
                           {
-                              //$scope.doLogin();
+                              $scope.doLogin();
                           }
 
                       })
@@ -639,15 +639,5 @@ angular.module('starter')
               });
       }
 
-
-
-      $scope.wxShare=function () {
-          WeChat
-              .share('文本', WeChat.Scene.session, function () {
-                  console.log('分享成功~');
-              }, function (reason) {
-                  console.log(reason);
-              });
-      }
 
     });
