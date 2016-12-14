@@ -6,8 +6,10 @@
  */
 angular.module('starter')
 
-    .controller('registerController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
-        ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy,$cordovaPreferences
+    .controller('registerController',function($scope,$state,$http,$ionicPopup,
+                                              $timeout,$rootScope,$cordovaFile,$cordovaFileTransfer,
+                                              $ionicActionSheet,$cordovaCamera,Proxy,$cordovaPreferences,
+                                              $ionicLoading
     ){
 
 
@@ -121,27 +123,27 @@ angular.module('starter')
                             title: '注册信息',
                             template: '注册成功！是否要直接登录？'
                         });
+                        if(window.plugins!==undefined&&window.plugins!==null)
+                        {
+                            $cordovaPreferences.store('username', $scope.info.username)
+                                .success(function(value) {
+                                })
+                                .error(function(error) {
+                                    alert("Error: " + error);
+                                });
+                            $cordovaPreferences.store('password', $scope.info.password)
+                                .success(function(value) {
+                                })
+                                .error(function(error) {
+                                    alert("Error: " + error);
+                                });
+                        }
+
                         confirmPopup.then(function(res) {
                             if(res) {
 
-                                if(window.plugins!==undefined&&window.plugins!==null)
-                                {
-                                    $cordovaPreferences.store('username', $scope.info.username)
-                                        .success(function(value) {
-                                        })
-                                        .error(function(error) {
-                                            alert("Error: " + error);
-                                        });
-                                    $cordovaPreferences.store('password', $scope.info.password)
-                                        .success(function(value) {
-                                        })
-                                        .error(function(error) {
-                                            alert("Error: " + error);
-                                        });
-
-                                }
                                 $timeout(function () {
-                                    $state.go('login');
+                                    $scope.doLogin();
                                 },600)
                             }
                             else {
@@ -168,6 +170,163 @@ angular.module('starter')
 
 
 
+        $scope.doLogin=function(){
+            if($rootScope.registrationId==undefined||$rootScope.registrationId==null||$rootScope.registrationId=='')
+            {
+
+                if(window.plugins!==undefined&&window.plugins!==null) {
+                    try {
+
+                        window.plugins.jPushPlugin.getRegistrationID(function(data) {
+                            alert('registrationId=\r\n'+data);
+                            $rootScope.registrationId=data;
+                            $scope.login();
+                        });
+                    } catch (e) {
+                        alert(e);
+                    }
+                }
+                else{
+                    $scope.login();
+                }
+            }else{
+                $scope.login();
+            }
+        }
+
+
+        //登录
+        $scope.login = function() {
+
+            $ionicLoading.show({
+                template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            });
+
+
+            $http({
+                method: "POST",
+                data: "grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
+                url: Proxy.local() + '/login',
+                headers: {
+                    'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(function (res) {
+
+                $ionicLoading.hide();
+
+                var json = res.data;
+                var access_token = json.access_token;
+
+                if(window.plugins!==undefined&&window.plugins!==null) {
+                    $cordovaPreferences.store('username', $scope.user.username)
+                        .success(function(value) {
+                        })
+                        .error(function(error) {
+                            alert("Error: " + error);
+                        });
+                    $cordovaPreferences.store('password', $scope.user.password)
+                        .success(function(value) {
+                        })
+                        .error(function(error) {
+                            alert("Error: " + error);
+                        });
+
+
+                }
+
+
+                if (access_token !== undefined && access_token !== null) {
+                    $rootScope.access_token = access_token;
+                    console.log('registrationId=\r\n' + $rootScope.registrationId);
+
+
+                    //获取个人信息
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'getPersonInfoByPersonId'
+                        }
+                    }).then(function(res) {
+                        var json=res.data;
+                        if(json.re==1) {
+                            $rootScope.userInfo=json.data;
+                            //手机环境
+                            if (window.cordova !== undefined && window.cordova !== null) {
+                                $http({
+                                    method: "POST",
+                                    url: Proxy.local() + "/svr/request",
+                                    headers: {
+                                        'Authorization': "Bearer " + $rootScope.access_token
+                                    },
+                                    data: {
+                                        request: 'activatePersonOnline',
+                                        info: {
+                                            registrationId: $rootScope.registrationId !== undefined && $rootScope.registrationId !== null ? $rootScope.registrationId : ''
+                                        }
+                                    }
+                                }).then(function (res) {
+                                    var json = res.data;
+                                    if (json.re == 1 || json.result == 'ok') {
+                                        $state.go('tabs.dashboard_backup');
+                                    }
+                                }).catch(function (err) {
+                                    var error = '';
+                                    for (var field in err) {
+                                        error += err[field] + '\r\n';
+                                    }
+                                    alert('error=' + error);
+                                });
+                            } else {
+                                $state.go('tabs.dashboard_backup');
+                            }
+                        }
+                    })
+                }
+                else
+                    console.log('cannot get access_token');
+            }).catch(function(err) {
+                var msg=err.data;
+                if(msg.error=='invalid_grant')
+                {
+                    if(msg.error_description=='User credentials are invalid')
+                    {
+
+                        $http({
+                            method: "POST",
+                            url: Proxy.local() + "/validateUser?username="+$scope.user.username+'&'+'password='+$scope.user.password,
+                            headers: {
+                                'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        }).then(function(res) {
+                            var json=res.data;
+                            if(json.re==2)
+                            {
+                                $ionicPopup.alert({
+                                    title: '错误',
+                                    template: '密码无法匹配用户名'
+                                });
+                            }else if(json.re==-1)
+                            {
+                                $ionicPopup.alert({
+                                    title: '错误',
+                                    template: '用户名不存在'
+                                });
+                            }else{}
+                        });
+
+
+                    }
+                }
+                $ionicLoading.hide();
+
+            })
+        }
 
 
     });
