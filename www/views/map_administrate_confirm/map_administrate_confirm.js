@@ -99,9 +99,11 @@ angular.module('starter')
             var data={
                 request:'fetchInsuranceCarInfoByCustomerId'
             };
-            if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
-                data.carNum=$scope.carInfo.carNum;
-
+            if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null) {
+                data.info = {
+                    carNum: $scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null&&$scope.carInfo.carNum!=''?$scope.carInfo.carNum:null
+                };
+            }
 
             $http({
                 method: "POST",
