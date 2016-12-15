@@ -3,7 +3,8 @@
  */
 angular.module('starter')
   .controller('myController',function($scope,$state,$http,$rootScope,
-                                Proxy,$ionicSideMenuDelegate,$ionicHistory){
+                                Proxy,$ionicSideMenuDelegate,$ionicHistory,
+                                      $cordovaPreferences){
 
     $scope.go_back=function(){
       window.history.back();
@@ -19,11 +20,21 @@ angular.module('starter')
 
     $scope.quit=function () {
         localStorage.pwdPersisted='false';
-        localStorage.userName='';
-        localStorage.password='';
         $ionicHistory.clearHistory();
         $ionicHistory.clearCache();
-        $state.go('login');
+        $cordovaPreferences.store('username', '')
+            .success(function(value) {
+                $cordovaPreferences.store('password', '')
+                    .success(function(value) {
+                        $state.go('login');
+                    })
+                    .error(function(error) {
+                        console.error("Error: " + error);
+                    })
+            })
+            .error(function(error) {
+                console.error("Error: " + error);
+            })
     }
 
     $scope.gotoNotificationPanel=function () {

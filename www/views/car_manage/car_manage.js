@@ -20,12 +20,12 @@ angular.module('starter')
         }
 
         $scope.carInfo={
-
         };
 
         //TODO:改为大写过滤
         $scope.carNumChange=function () {
-            $scope.carInfo.carNum=$scope.carInfo.carNum.toString().toUpperCase();
+            if($scope.car.carNum!==undefined&&$scope.car.carNum!==null)
+                $scope.car.carNum=$scope.car.carNum.toString().toUpperCase();
         }
 
         $scope.clear_search=function () {
