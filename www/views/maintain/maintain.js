@@ -257,7 +257,7 @@ angular.module('starter')
                     console.error('error=\r\n' + str);
                 });
             }else if(ionic.Platform.isAndroid()){
-                var options = { limit: 1, duration: 15 };
+                var options = { limit: 1, duration: 30 };
                 $cordovaCapture.captureVideo(options).then(function(videoData) {
                     // Success! Video data is here
 
