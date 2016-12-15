@@ -5,7 +5,8 @@ angular.module('starter')
 
   .controller('appendLifeInsurancederController',function($scope,$state,$http, $location,
                                                      $rootScope,$ionicActionSheet,$cordovaCamera,$cordovaImagePicker,
-                                                     $ionicModal,Proxy,$stateParams,$cordovaFileTransfer,$ionicPopup){
+                                                     $ionicModal,Proxy,$stateParams,$cordovaFileTransfer,$ionicPopup,
+                                                          $ionicLoading){
 
     $scope.go_back=function(){
       window.history.back();
@@ -103,6 +104,40 @@ angular.module('starter')
       }
     }
 
+      $scope.fetchRelativePersons=function () {
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">拉取关联人...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data:
+                  {
+                      request:'getRelativePersonsWithinPerName',
+                      info:
+                          {
+                              perName:''
+                          }
+                  }
+          }).then(function(res) {
+              $ionicLoading.hide();
+              var json=res.data;
+              if(json.re==1){
+                  $scope.relativePersons=json.data;
+              }
+          }).catch(function (err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('err=\r\n'+str);
+              $ionicLoading.hide();
+          })
+      }
+
+      $scope.fetchRelativePersons();
 
     $scope.ActionSheet= function (options,item,field,addon_field) {
       var buttons = [];
