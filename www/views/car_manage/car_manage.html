@@ -72,7 +72,7 @@
                                  style="height: 40px;position: relative;margin-top:1px;margin-bottom: 1px;
                                         border:1px solid rgba(88, 73, 58, 0.95);border-top-left-radius: 8px;border-top-right-radius: 8px;">
 
-                                <div style="position: absolute;width: 30.3%;height: 100%;left:0;top:0;border-right:1px solid rgba(88, 73, 58, 0.95);">
+                                <div style="position: absolute;width:25.5%;height: 100%;left:0;top:0;border-right:1px solid rgba(88, 73, 58, 0.95);">
                                     <div style="width:100%;height: 100%;display: table;">
                                         <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;
                                               text-align: center;color:rgba(88, 73, 58, 0.95)">
@@ -81,10 +81,10 @@
                                     </div>
                                 </div>
 
-                                <span style="position: absolute;left:32%;width: 45%;height: 100%;top:0;border-right: 1px solid rgba(88, 73, 58, 0.95)">
+                                <span style="position: absolute;left:26%;width: 45%;height: 100%;top:0;border-right: 1px solid rgba(88, 73, 58, 0.95)">
                                     <div style="width: 100%;height: 100%;display: table;">
                                       <div style="display: table-cell;vertical-align: middle;text-align: center;">
-                                        <div style="font-size: 0.8em;color:rgba(88, 73, 58, 0.95);">
+                                        <div style="font-size: 1em;color:rgba(88, 73, 58, 0.95);">
                                           车辆摘要
                                         </div>
                                       </div>
@@ -104,22 +104,22 @@
                             <div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"
                                  ng-style="$index==0?firstRowStyle:notFirstRowStyle">
 
-                                <div style="position: absolute;width: 30%;height: 100%;left:0;top:0;">
+                                <div style="position: absolute;width: 25%;height: 100%;left:0;top:0;">
                                     <div style="width:100%;height: 100%;display: table;">
-                                        <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;padding-left: 10px;">
+                                        <span style="display: table-cell;vertical-align: middle;font-size: 1em;padding-left: 15px;">
                                             <div style="display:inline-block;width:100%;text-align: center" ng-if="car.idle==true" ng-click="Mutex(car,'checked',relativeCars)">
-                                                <i ng-if="car.checked!=true" class="fa fa-square-o" style="font-size:200%"></i>
-                                                <i ng-if="car.checked==true" class="fa fa-check-square-o" style="font-size:200%"></i>
+                                                <i ng-if="car.checked!=true" class="fa fa-circle-o" style="font-size:180%"></i>
+                                                <i ng-if="car.checked==true" class="fa fa-check-circle" style="font-size:180%"></i>
                                             </div>
 
                                             <div style="display: inline-block;width: 20%;" ng-if="car.idle!=true">
-                                                <span style="color:#ff5c3c">处于订单状态</span>
+                                                <span style="color:#ff5c3c">已完成</span>
                                             </div>
                                         </span>
                                     </div>
                                 </div>
 
-                                <div style="position: absolute;width: 1px;height: 100%;left:30%;top:0;background: #aaa;">
+                                <div style="position: absolute;width: 1px;height: 100%;left:25%;top:0;background: #aaa;">
                                     <div style="width: 100%;height: 100%;position: relative;">
                                         <div style=" position: absolute;top: 40%;margin-left: -6px;z-index: 9999;background: #fff;">
                                             <span style="font-size:0.8em;"><i class="fa fa-circle-o"></i></span>
@@ -128,10 +128,10 @@
                                 </div>
 
                                 <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
-                                <span style="position: absolute;left:35%;width: 45%;height: 100%;top:0;">
+                                <span style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
                                     <div style="width: 100%;height: 100%;display: table;">
                                       <div style="display: table-cell;vertical-align: middle;">
-                                          <div style="font-size: 0.8em;color:#222;">
+                                          <div style="font-size: 1em;color:#222;">
                                               车牌号:{{car.carNum}}
                                           </div>
 

@@ -64,20 +64,16 @@
 
       <ion-scroll style="height: 95%;" delegate-handle="products_scroll">
 
-        <div class="list list-inset padding" style="border:0">
+        <div class="list list-inset padding" style="border:0;margin-bottom:5px;">
 
-          <div class="item" style="border-left:0;border-right:0"
+          <div class="item" style="border-left:0;border-right:0;padding:0"
                ng-repeat="(key, product) in tabs[tabIndex].products"
                ng-if="product.productId==30">
 
             <div class="row"
-                 style="padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
-
-              <div style="display:inline-block;width: 3%;background-color: red;">
-
-              </div>
+                 style="padding:0px;margin-top:6px;padding-top: 4px;padding-bottom: 4px;">
               <div style="display:inline-block;width:70%;margin-left:5%">
-                <span style="font-size: 1em;">{{product.productName}}</span>
+                <span style="font-size: 1.3em;">{{product.productName}}</span>
               </div>
 
               <div style="display:inline-block;width:25%;padding-left:5%"
@@ -94,16 +90,13 @@
         </div>
 
 
-        <div class="list list-inset padding" style="border:0;pading:0">
+        <div class="list list-inset padding" style="border:0;pading:0;margin-top:5px">
 
-          <div class="item" style="padding: 5px;border-left: 0;border-right: 0;">
+          <div class="item" style="padding: 5px;border-left: 0;border-right: 0;margin-top: 5px;padding-left: 0;">
             <div class="row"
                  style="padding:0px;margin-bottom:6px;padding-top: 4px;padding-bottom: 4px;">
-              <div style="display:inline-block;width: 3%;background-color: red;">
-
-              </div>
               <div style="display:inline-block;width:35%; margin-left:5%">
-                <span>商业险</span>
+                <span style="font-size: 1.3em;">商业险</span>
               </div>
 
             </div>
@@ -123,7 +116,7 @@
 
               <div style="display:inline-block;width:48%;">
 
-                <span style="font-size: 0.8em;">{{product.productName}}</span>
+                <span style="font-size: 0.95em;">{{product.productName}}</span>
               </div>
 
               <div style="display:inline-block;width:25%;"
