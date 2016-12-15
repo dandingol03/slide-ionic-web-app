@@ -358,4 +358,14 @@ angular.module('starter')
         $scope.scrolldown=function () {
             $ionicScrollDelegate.$getByHandle('maintain').scrollBottom(true);
         }
+
+        $scope.module='text';
+
+        $scope.moduleSelectedStyle={padding: '8px',background: '#00c9ff','border-top-right-radius': '6px',width: '43px'};
+        $scope.moduleUnSelectedStyle={padding: '8px',background: '#aaa','border-top-right-radius': '6px',width: '43px'};
+
+        $scope.moduleSelect=function (module) {
+            $scope.module=module;
+        }
+
     })

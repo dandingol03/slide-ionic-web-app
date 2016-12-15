@@ -122,6 +122,46 @@ angular.module('starter')
 
     }
 
+    $scope.fetchRelativePersons=function () {
+        $ionicLoading.show({
+            template:'<p class="item-icon-left">拉取关联人...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+        });
+
+
+        $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data:
+                {
+                    request:'getRelativePersonsWithinPerName',
+                    info:
+                        {
+                            perName:''
+                        }
+                }
+        }).then(function(res) {
+            $ionicLoading.hide();
+            var json=res.data;
+            if(json.re==1){
+                $scope.relativePersons=json.data;
+            }
+        }).catch(function(err) {
+            var str='';
+            for(var field in err)
+                str+=err[field];
+            console.error('err=\r\n'+str);
+            $ionicLoading.hide();
+        })
+    }
+
+    $scope.fetchRelativePersons();
+
+
+
+
 
     $scope.ActionSheet= function (options,item,field,addon_field) {
       var buttons = [];
@@ -439,8 +479,6 @@ angular.module('starter')
             if($scope.insurer.perIdCard2_img!==undefined&&$scope.insurer.perIdCard2_img!==null)
             {
 
-                if($scope.insurer.relation!==undefined&&$scope.insurer.relation!==null)
-                {
                     //TODO:checkPerNameRedundancy
                     $http({
                         method: "POST",
@@ -759,12 +797,6 @@ angular.module('starter')
                         }
                     });
 
-                }else{
-                    var myPopup = $ionicPopup.alert({
-                        template: '请选择亲属关系后再点击关联',
-                        title: '<strong style="color:red">错误</strong>'
-                    });
-                }
             }
             else{
                 var myPopup = $ionicPopup.alert({

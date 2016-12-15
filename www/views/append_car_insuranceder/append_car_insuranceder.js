@@ -116,9 +116,11 @@ angular.module('starter')
                   $ionicLoading.hide();
               })
           }
-
-
       }
+
+
+      $scope.selectCarInsuranceder();
+
 
 
       $scope.ActionSheet = function (options, item, field, addon_field) {
