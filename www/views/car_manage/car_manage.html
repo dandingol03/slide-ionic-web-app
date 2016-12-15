@@ -41,10 +41,10 @@
                         <span style="width: 82%;display: inline-block;position: absolute;left:0%;top:0px;
                              height: 100%;text-align: center">
                             <input type="text" placeholder="请输入车牌号作为搜索条件"
-
                                    style="display:inline-block;background-color: transparent;width: 80%;margin-left:10%;"
                                    ng-value="car.carNum"
                                    ng-model="car.carNum"
+                                   ng-change="carNumChange()"
                             />
                         </span>
 
@@ -104,7 +104,7 @@
                             <div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"
                                  ng-style="$index==0?firstRowStyle:notFirstRowStyle">
 
-                                <div style="position: absolute;width: 30%;height: 100%;left:0;top:0;">
+                                <div style="position: absolute;width: 18%;height: 100%;left:0;top:0;">
                                     <div style="width:100%;height: 100%;display: table;">
                                         <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;padding-left: 10px;">
                                             <div style="display:inline-block;width:100%;text-align: center" ng-if="car.idle==true" ng-click="Mutex(car,'checked',relativeCars)">
@@ -112,14 +112,14 @@
                                                 <i ng-if="car.checked==true" class="fa fa-check-square-o" style="font-size:200%"></i>
                                             </div>
 
-                                            <div style="display: inline-block;width: 20%;" ng-if="car.idle!=true">
-                                                <span style="color:#ff5c3c">处于订单状态</span>
+                                            <div style="display: inline-block;width: 20%;margin-left:7%;" ng-if="car.idle!=true">
+                                                <span style="color:#ff5c3c">已完成</span>
                                             </div>
                                         </span>
                                     </div>
                                 </div>
 
-                                <div style="position: absolute;width: 1px;height: 100%;left:30%;top:0;background: #aaa;">
+                                <div style="position: absolute;width: 1px;height: 100%;left:18%;top:0;background: #aaa;">
                                     <div style="width: 100%;height: 100%;position: relative;">
                                         <div style=" position: absolute;top: 40%;margin-left: -6px;z-index: 9999;background: #fff;">
                                             <span style="font-size:0.8em;"><i class="fa fa-circle-o"></i></span>
@@ -127,21 +127,21 @@
                                     </div>
                                 </div>
 
-                                <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
-                                <span style="position: absolute;left:35%;width: 45%;height: 100%;top:0;">
-                                    <div style="width: 100%;height: 100%;display: table;">
-                                      <div style="display: table-cell;vertical-align: middle;">
-                                          <div style="font-size: 0.8em;color:#222;">
-                                              车牌号:{{car.carNum}}
-                                          </div>
+                                <div style="position: absolute;width: 4%;height: 100%;left:19%;top:0;"></div>
+                                    <span style="position: absolute;left:35%;width: 45%;height: 100%;top:0;">
+                                        <div style="width: 100%;height: 100%;display: table;">
+                                          <div style="display: table-cell;vertical-align: middle;">
+                                              <div style="font-size: 0.8em;color:#222;">
+                                                  车牌号:{{car.carNum}}
+                                              </div>
 
-                                          <div style="font-size: 0.8em;color:#222;"
-                                               ng-if="car.firstRegisterDate!==undefined&&car.firstRegisterDate!==null">
-                                              注册日期:{{car.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}
+                                              <div style="font-size: 0.8em;color:#222;"
+                                                   ng-if="car.firstRegisterDate!==undefined&&car.firstRegisterDate!==null">
+                                                  注册日期:{{car.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}
+                                              </div>
                                           </div>
-                                      </div>
-                                    </div>
-                                </span>
+                                        </div>
+                                    </span>
 
 
 
