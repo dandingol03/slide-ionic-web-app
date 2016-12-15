@@ -22,19 +22,22 @@ angular.module('starter')
         localStorage.pwdPersisted='false';
         $ionicHistory.clearHistory();
         $ionicHistory.clearCache();
-        $cordovaPreferences.store('username', '')
-            .success(function(value) {
-                $cordovaPreferences.store('password', '')
-                    .success(function(value) {
-                        $state.go('login');
-                    })
-                    .error(function(error) {
-                        console.error("Error: " + error);
-                    })
-            })
-            .error(function(error) {
-                console.error("Error: " + error);
-            })
+        if(window.cordova)
+        {
+            $cordovaPreferences.store('username', '')
+                .success(function(value) {
+                    $cordovaPreferences.store('password', '')
+                        .success(function(value) {
+                            $state.go('login');
+                        })
+                        .error(function(error) {
+                            console.error("Error: " + error);
+                        })
+                })
+                .error(function(error) {
+                    console.error("Error: " + error);
+                })
+        }
     }
 
     $scope.gotoNotificationPanel=function () {

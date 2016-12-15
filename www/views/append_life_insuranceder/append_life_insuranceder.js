@@ -116,7 +116,26 @@ angular.module('starter')
         buttonClicked: function (index) {
           item[field] = buttons[index].text;
           if (addon_field !== undefined && addon_field !== null)
-            item[addon_field] = (index + 1);
+          {
+              item[addon_field] = (index + 1);
+              switch(item[field])
+              {
+                  case '父母':
+                      item[addon_field]=1;
+                      break;
+                  case '子女':
+                      item[addon_field]=2;
+                      break;
+                  case '配偶':
+                      item[addon_field]=3;
+                      break;
+                  case '本人':
+                      item[addon_field]=7;
+                      break;
+                  default:
+                      break;
+              }
+          }
           return true;
         },
         cssClass: 'motor_insurance_actionsheet'

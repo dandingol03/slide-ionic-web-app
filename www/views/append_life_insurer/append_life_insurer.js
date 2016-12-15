@@ -439,8 +439,6 @@ angular.module('starter')
             if($scope.insurer.perIdCard2_img!==undefined&&$scope.insurer.perIdCard2_img!==null)
             {
 
-                if($scope.insurer.relation!==undefined&&$scope.insurer.relation!==null)
-                {
                     //TODO:checkPerNameRedundancy
                     $http({
                         method: "POST",
@@ -759,12 +757,6 @@ angular.module('starter')
                         }
                     });
 
-                }else{
-                    var myPopup = $ionicPopup.alert({
-                        template: '请选择亲属关系后再点击关联',
-                        title: '<strong style="color:red">错误</strong>'
-                    });
-                }
             }
             else{
                 var myPopup = $ionicPopup.alert({

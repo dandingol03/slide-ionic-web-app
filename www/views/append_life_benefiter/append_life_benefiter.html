@@ -28,7 +28,7 @@
                         <span style="display: inline-block;">
                             <i class="fa fa-hand-pointer-o"></i>
                         </span>
-          <span style="font-size: 0.9em;display: inline-block;">提交关联亲属信息</span>
+          <span style="font-size: 0.9em;display: inline-block;">保存</span>
         </button>
       </div>
 
@@ -73,7 +73,7 @@
             </span>
 
             <span style="width: 55%;display: inline-block;text-align: left;">
-             <input type="text" placeholder="输入亲属姓名"
+             <input type="text" placeholder="请输入受益人姓名"
                     ng-value="order.benefiter.perName"
                     ng-model="order.benefiter.perName"/>
             </span>
@@ -151,7 +151,7 @@
              <span class="input-label" style="display: inline-block;">
               姓名:
             </span>
-            <input type="text" placeholder="输入亲属姓名"
+            <input type="text" placeholder="请输入受益人姓名"
                    style="display: inline-block"
                    ng-value="benefiter.perName"
                    ng-model="benefiter.perName"/>
@@ -160,13 +160,13 @@
           <div class="item"
                style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:4px 10px 4px 10px;">
             <span class="input-label" style="display: inline-block;width:55%;">
-              选择亲属关系:
+              与投保人关系:
             </span>
             <span class="input-label" style="display: inline-block;">
                   {{benefiter.relation}}
             </span>
             <div style="position: absolute;right: 15%;top:30%;bottom: 30%;">
-                <span ng-click="ActionSheet(['父母','子女','配偶'],benefiter,'relation','relType')">
+                <span ng-click="ActionSheet(['父母','子女','配偶','本人'],benefiter,'relation','relType')">
                   <i class="ion-chevron-down"></i>
                 </span>
             </div>
