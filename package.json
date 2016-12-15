@@ -44,7 +44,14 @@
     "cordova-plugin-geolocation",
     "cordova-plugin-media-capture",
     "cordova-plugin-compat",
-    "cordova-plugin-tts"
+    "cordova-plugin-tts",
+    {
+      "variables": {
+        "wechatappid": "wx26a483ed528c3e04"
+      },
+      "locator": "cordova-plugin-wechat",
+      "id": "cordova-plugin-wechat"
+    }
   ],
   "cordovaPlatforms": [
     "ios",
