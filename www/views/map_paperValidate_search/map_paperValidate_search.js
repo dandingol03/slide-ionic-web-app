@@ -208,17 +208,21 @@ angular.module('starter')
 
                     //render circle
                     $scope.renderCircle(map.getCenter(),0.22,0.2);
+
                     $scope.contentInfo=$scope.places;
+
                     $ionicLoading.hide();
+
                     if($scope.places.length==1)
                     {
                         //默认定位第一个搜索结果
                         var firstPlace=$scope.places[0];
                         map.panTo(new BMap.Point(firstPlace.longitude, firstPlace.latitude) );
-                    }else{
+                    }else if($scope.places.length>1){
                         $scope.gravity.longitude=$scope.gravity.longitude/$scope.places.length;
                         $scope.gravity.latitude=$scope.gravity.latitude/$scope.places.length;
                         map.panTo(new BMap.Point(center.lng+$scope.gravity.longitude, center.lat+$scope.gravity.latitude) );
+                    }else{
                     }
                     $scope.contentInfoPanel.show();
                 }else{

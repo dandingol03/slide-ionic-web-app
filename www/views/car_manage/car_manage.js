@@ -23,6 +23,11 @@ angular.module('starter')
 
         };
 
+        //TODO:改为大写过滤
+        $scope.carNumChange=function () {
+            $scope.carInfo.carNum=$scope.carInfo.carNum.toString().toUpperCase();
+        }
+
         $scope.clear_search=function () {
             $scope.tempCarNum=null;
         }
