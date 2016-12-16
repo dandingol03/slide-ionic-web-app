@@ -22,11 +22,6 @@ angular.module('starter')
         $scope.carInfo={
         };
 
-        //TODO:改为大写过滤
-        $scope.carNumChange=function () {
-            if($scope.car.carNum!==undefined&&$scope.car.carNum!==null)
-                $scope.car.carNum=$scope.car.carNum.toString().toUpperCase();
-        }
 
         $scope.clear_search=function () {
             $scope.tempCarNum=null;

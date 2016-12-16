@@ -962,6 +962,37 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       }
     })
 
+    .directive('textTransform', function() {
+        var transformConfig = {
+            uppercase: function(input){
+                return input.toUpperCase();
+            },
+            capitalize: function(input){
+                return input.replace(
+                    /([a-zA-Z])([a-zA-Z]*)/gi,
+                    function(matched, $1, $2){
+                        return $1.toUpperCase() + $2;
+                    });
+            },
+            lowercase: function(input){
+                return input.toLowerCase();
+            }
+        };
+        return {
+            require: 'ngModel',
+            link: function(scope, element, iAttrs, modelCtrl) {
+                var transform = transformConfig[iAttrs.textTransform];
+                if(transform){
+                    modelCtrl.$parsers.push(function(input) {
+                        return transform(input || "");
+                    });
+
+                    element.css("text-transform", iAttrs.textTransform);
+                }
+            }
+        };
+    })
+
     .factory('$WebSocket',function(){
           var self=this;
 
