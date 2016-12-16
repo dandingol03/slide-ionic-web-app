@@ -527,7 +527,7 @@ angular.module('starter')
                                   var orderId = json.data;
                                   if (orderId !== undefined && orderId !== null) {
                                       $ionicLoading.hide();
-                                      $rootScope.carOrderModify=false;
+                                      $rootScope.carOrderModify.flag=false;
                                       alert('订单已修改,请等待报价');
                                       $rootScope.car_orders_tabIndex = 0;
                                       $state.go('car_orders');
