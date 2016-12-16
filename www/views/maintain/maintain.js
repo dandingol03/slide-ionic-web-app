@@ -270,6 +270,30 @@ angular.module('starter')
                     var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
                     alert('filename=' + filename);
                     $scope.videoData=videoData[0];
+
+                    function success(result) {
+                        // result is the path to the jpeg image on the device
+                        $scope.videoThumbnail=result;
+                        $scope.$apply();
+                        console.log('video thumbnail='+result);
+                    }
+
+                    function  error(err) {
+                        console.log('create thumbnail encounter error=\r\n'+err);
+                    }
+
+                    //TODO:generate a snapshot
+                    VideoEditor.createThumbnail(
+                        success, // success cb
+                        error, // error cb
+                        {
+                            fileUri:videoData[0].fullPath, // the path to the video on the device
+                            outputFileName: 'thumbnail', // the file name for the JPEG image
+                            width: 320, // optional, width of the thumbnail
+                            height: 480, // optional, height of the thumbnail
+                            quality: 40 // optional, quality of the thumbnail (between 1 and 100)
+                        }
+                    );
                 }, function(err) {
                     // An error occurred. Show a message to the user
                     var str='';
@@ -367,5 +391,33 @@ angular.module('starter')
         $scope.moduleSelect=function (module) {
             $scope.module=module;
         }
+
+        $scope.moviePlay=function () {
+            if(  $scope.maintain.description.video!==undefined&&  $scope.maintain.description.video!==null&&  $scope.maintain.description.video!='')
+            {
+                var open = cordova.plugins.disusered.open;
+                function success() {
+                    console.log('Success');
+                }
+
+                function error(code) {
+                    if (code === 1) {
+                        console.log('No file handler found');
+                    } else {
+                        console.log('Undefined error');
+                    }
+                }
+
+                var filepath=$scope.maintain.description.video;
+                open(filepath, success, error);
+            }else{
+                var myPopup = $ionicPopup.alert({
+                    template: '您还未录制视频，不能进行播放',
+                    title: '<strong style="color:red">错误</strong>'
+                });
+            }
+        }
+
+
 
     })

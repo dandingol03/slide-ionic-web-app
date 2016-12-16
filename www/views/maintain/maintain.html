@@ -283,24 +283,55 @@
                              background-color:transparent;width: 100%;">
                             <span>故障视频描述:</span>
                         </div>
+
+                        <!-- 视频预览 -->
                         <div class="item"
-                             style="margin-bottom: 1px;border:0px;padding:10px;position: relative;
-                             background-color:#aaaaaa;width: 100%;height: 180px;">
+                             style="margin-bottom: 1px;border:0px;padding: 0;position: relative;
+                             background-color:#aaaaaa;width: 100%;height: 240px;">
+
+                            <img ng-if="videoThumbnail!==undefined&&videoThumbnail!==null"
+                                 ng-src="{{videoThumbnail}}" style="width: 100%;max-height: 240px;">
+
+
                             <div style="position: absolute;top:40%;width: 50px;height: 50px;
-                                    left:45%;background: rgba(34, 34, 34, 0.28);;border-radius: 50px;border:1px solid #eee;">
+                                    left:45%;background: rgba(34, 34, 34, 0.28);;border-radius: 50px;border:1px solid #eee;"
+                                    ng-if="maintain.description.video!==undefined&&maintain.description.video!==null"
+                                    ng-click="moviePlay()">
                                 <div style="width: 100%;height: 100%;display: table;">
                                     <div style="display: table-cell;vertical-align: middle;text-align: center">
-                                        <span style="font-size: 2em;margin-left:4px;">
+                                        <span style="font-size: 2em;margin-left:4px;color:#fff;">
                                             <i class="fa fa-play"></i>
                                         </span>
                                     </div>
                                 </div>
                             </div>
+                            <div style="position: absolute;top:35%;width: 50px;height: 50px;
+                                        left:40%;"
+                                 ng-if="maintain.description.video==undefined||maintain.description.video==null||maintain.description.video==''"
+                                ng-click="startCapture()">
+                                <span style="font-size: 7em;color:#fff;"><i class="ion-videocamera"></i></span>
+                            </div>
                         </div>
+
+                        <div class="item"
+                             style="border:0px;padding:10px;position: relative;
+                             ;width: 100%;">
+                            <button class="button button-block button-calm" style="width: 50%;margin-left:25%;line-height: 32px;margin-bottom: 0;min-height: 0px;"
+                                    ng-click="startCapture()">
+                                <span ng-if=" maintain.description.video!==undefined&& maintain.description.video!==null">
+                                    重新录制视频
+                                </span>
+                                <span ng-if="maintain.description.video==undefined||maintain.description.video==null||
+                                                maintain.description.video==''">
+                                    录制视频
+                                </span>
+                            </button>
+                        </div>
+
                     </div>
 
-
                 </div>
+
                 <div style="width: 12%;display: inline-block;text-align: center;float: left;margin-top: 20px;">
                     <ul style="list-style: none;padding: 0;">
                         <li>
@@ -330,87 +361,9 @@
             </div>
 
 
-
             <div class="list list-inset padding"
                  style="margin-bottom:40px;padding:3px;background-color: transparent;overflow: initial;margin-top:0px;"
                  ng-if="tabIndex==1">
-
-                <div class="item item-divider" style="background-color:transparent;border: 0px;text-align: center;">
-                    故障描述
-                </div>
-
-                <ion-slide-box on-slide-changed="slideChanged($index)" style="background-color:transparent;">
-                    <ion-slide>
-                        <div class="item"
-                                 style="margin:1px;border:0px;padding:10px;position: relative;background-color:transparent;">
-                            <span class="input-label" style="display: inline-block;width: 35%;text-align: left;">
-                                   故障文字描述:
-                            </span>
-
-                            <div style="width: 90%;margin-left:5%;margin-right:5%;border:1px solid #222;">
-
-                              <textarea
-                                      style="width:100%;height:80px;background-color: transparent;"
-                                      placeholder="请描述故障..."
-                                      ng-model=" maintain.description.text"
-                                      ng-value="maintain.description.text"
-                              ></textarea>
-                            </div>
-                        </div>
-                    </ion-slide>
-
-                    <ion-slide>
-                        <div class="item"
-                             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-                   padding:10px;position: relative;background-color:transparent;"
-                        >
-                            <span class="input-label" style="display: inline-block;width: 55%;text-align: left;">
-                                   上传故障描述视频:
-                            </span>
-                            <span class="camera"
-                                  style="width:45%;display: inline-block;font-size: 1.4em;"
-                            >
-                                <i class="ion-android-camera" ng-click="startCapture()"></i>
-                            </span>
-
-                        </div>
-                    </ion-slide>
-
-                    <ion-slide>
-                        <div class="item"
-                             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;position: relative;background-color:transparent;"
-                             ng-click=""
-                        >
-                <span class="input-label" style="display: inline-block;width: 55%;text-align: left;">
-                       上传故障描述音频:
-                </span>
-
-                            <div class="item" style="background-color: transparent;">
-                                <button class="button "
-                                        ng-click="startRecord()"
-                                        style="background-color: transparent;">
-                    <span>
-                    <i class="ion-mic-a"></i>
-                    </span>
-                                    <span>record</span>
-                                </button>
-                                <button class="button" ng-click="stopRecord()" style="background-color: transparent;">
-                    <span>
-                    <i class="ion-pause"></i>
-                    </span>
-                                    <span>stop</span>
-                                </button>
-                                <button class="button" ng-click="play()" style="background-color: transparent;">
-                    <span>
-                    <i class="ion-play"></i>
-                    </span>
-                                    <span>play</span>
-                                </button>
-                            </div>
-                        </div>
-                    </ion-slide>
-                </ion-slide-box>
-
 
                 <button class="button button-block button-balanced" style="width: 70%;margin-left:15%;"
                         ng-click="pickMaintainDaily('maintain',1)">

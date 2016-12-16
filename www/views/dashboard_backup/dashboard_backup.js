@@ -64,13 +64,24 @@ angular.module('starter')
                         $state.go('car_insurance',{carInfo:JSON.stringify($rootScope.carInfo)});
                     }else{
                         //TODO:inject toast message
-                        $cordovaToast
-                            .show('您绑定的车辆已处于订单状态,请重新进入车辆管理界面选择车辆', 'long', 'center')
-                            .then(function(success) {
-                                $state.go('car_manage');
-                            }, function (error) {
-                                // error
+                        if(window.cordova)
+                        {
+                            $cordovaToast
+                                .show('您绑定的车辆已处于订单状态,请重新进入车辆管理界面选择车辆', 'long', 'center')
+                                .then(function(success) {
+                                    $state.go('car_manage');
+                                }, function (error) {
+                                    // error
+                                });
+                        }else{
+                            var popup=$ionicPopup.alert({
+                                title: '信息',
+                                template: '您绑绑定的车辆已处于订单状态，请进入车辆管理界面选择车辆'
                             });
+                            popup.then(function(res) {
+                                $state.go('car_manage');
+                            })
+                        }
                     }
                 })
             }else{
