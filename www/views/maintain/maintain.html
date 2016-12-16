@@ -274,39 +274,49 @@
                                    故障音频描述:
                             </span>
 
-                            <div style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 20%;margin-right: 15%;
-                            border-radius: 100%;border: 1px solid indianred;background-color:indianred;position:absolute;bottom:35%;">
-                                <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;padding:8px;border: 1px solid red;border-radius: 100%;background-color:red">
+                            <div style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 25%;margin-right: 17%;
+                            border-radius: 100%;border: 1px solid transparent;background-color:rgba(255, 116, 116, 0.41);position:absolute;bottom:35%;">
+                                <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;padding:8px;border: 1px solid transparent;border-radius: 100%;background-color:rgba(255, 116, 116, 0.64);">
                                     <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;border: 1px solid white;border-radius: 100%;background-color:white"
                                          ng-click="startRecord()">
                                         <div style="margin-top: 15%;font-size: 4em;">
-                                            <i class="ion-mic-a"></i>
+                                            <i style="color: #a2a2a2;" class="ion-mic-a"></i>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
 
-                            <div style="padding-left: 20%;margin-top: 5%;background-color:indianred;position:absolute;bottom:12%;width:93%;height:15%;padding: 4%;">
+                            <div style="margin-top: 2px;background-color:rgba(255, 116, 116, 0.41);
+                                        position:absolute;bottom:12%;width:93%;height:15%;padding: 4%;padding-top:5px;">
 
-                                <div style="display:inline-block;width:30%;padding-left:10%"
+                                <div style="display:inline-block;width:33%;text-align: center;"
                                      ng-click="startRecord()">
-                                    <div style="height: 30px;width: 30px;text-align: center;border-radius: 100%;border: 1px solid white;padding-top: 6%;">
-                                        <i class="ion-mic-a" style="color:white"></i>
+                                    <div style="height: 40px;width: 40px;border-radius: 30px;border: 1px solid white;
+                                            margin-left:30%;padding-top: 5%;padding-left: 1%;">
+                                        <span style="font-size: 2em;">
+                                            <i class="ion-mic-a" style="color:white"></i>
+                                        </span>
                                     </div>
                                 </div>
 
-                                <div style="display:inline-block;width:30%;padding-left:10%"
+                                <div style="display:inline-block;width:32%;text-align: center;"
                                      ng-click="stopRecord()">
-                                    <div style="height: 30px;width: 30px;text-align: center;border-radius: 100%;border: 1px solid white;padding-top: 6%;">
-                                        <i class="ion-pause" style="color:white"></i>
+                                    <div style="height: 40px;width: 40px;border-radius: 30px;border: 1px solid white;
+                                            margin-left: 30%;padding-top: 5%;padding-left:1%;">
+                                        <span style="font-size: 2em;">
+                                            <i class="ion-pause" style="color:white"></i>
+                                        </span>
                                     </div>
                                 </div>
 
-                                <div style="display:inline-block;width:30%;padding-left:10%"
+                                <div style="display:inline-block;width:32%;text-align: center;"
                                      ng-click="play()">
-                                    <div style="height: 30px;width: 30px;text-align: center;border-radius: 100%;border: 1px solid white;padding-top: 6%;">
-                                        <i class="ion-play" style="color:white"></i>
+                                    <div style="width: 40px;height: 40px;border-radius: 30px;border: 1px solid #fff;
+                                            margin-left:30%;padding-top: 5%;padding-left:3%;">
+                                        <span style="font-size: 2em">
+                                            <i class="ion-play" style="color:white"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -320,7 +330,7 @@
                          ng-if="module=='video'">
 
                         <div class="item"
-                             style="margin-top:10px;margin-bottom: 15px;border:0px;padding:10px;position: relative;
+                             style="margin-top:6px;margin-bottom: 2px;border:0px;padding:10px;padding-left: 11px;padding-top:12px;position: relative;
                              background-color:transparent;width: 100%;">
                             <span>故障视频描述:</span>
                         </div>
@@ -402,6 +412,7 @@
             </div>
 
 
+
             <div class="list list-inset padding"
                  style="margin-bottom:40px;padding:3px;background-color: transparent;overflow: initial;margin-top:0px;"
                  ng-if="tabIndex==1">
@@ -412,6 +423,7 @@
                 </button>
 
             </div>
+
 
             <!-- 事故维修 -->
             <div ng-if="tabIndex==2" class="list list-inset padding" style="margin-top:0px;">
