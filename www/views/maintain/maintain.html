@@ -235,8 +235,8 @@
             </div>
 
             <!-- 故障维修 -->
-            <div ng-if='tabIndex==1' style="width: 100%;height: 300px">
-                <div  class="card" style="width: 85%;display: inline-block;float: left;margin-top: 20px;margin-right: 0px;">
+            <div ng-if='tabIndex==1' style="width: 100%;height: 350px">
+                <div  class="card" style="width: 85%;display: inline-block;float: left;margin-top: 20px;margin-right: 0px;height:100%">
 
                     <!-- 文本描述 -->
                     <div class="list list-inset padding"
@@ -252,7 +252,7 @@
                             <div style=";border:1px solid #aaa;margin-top: 20px;">
 
                               <textarea
-                                      style="width:100%;height:170px;background-color: transparent;"
+                                      style="width:100%;height:230px;background-color: transparent;"
                                       placeholder="请描述故障..."
                                       ng-model=" maintain.description.text"
                                       ng-value="maintain.description.text"
@@ -268,15 +268,17 @@
 
                         <div class="item"
                              style="margin:1px;border:0px;padding:10px;position: relative;
-                             background-color:transparent;width: 100%;height: 240px;">
+                             background-color:transparent;width: 100%;height: 340px;">
 
                             <span class="input-label" style="display: inline-block;width: 35%;text-align: left;">
                                    故障音频描述:
                             </span>
 
-                            <div style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 20%;margin-right: 15%;border-radius: 100%;border: 1px solid indianred;background-color:indianred">
+                            <div style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 20%;margin-right: 15%;
+                            border-radius: 100%;border: 1px solid indianred;background-color:indianred;position:absolute;bottom:35%;">
                                 <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;padding:8px;border: 1px solid red;border-radius: 100%;background-color:red">
-                                    <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;border: 1px solid white;border-radius: 100%;background-color:white">
+                                    <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;border: 1px solid white;border-radius: 100%;background-color:white"
+                                         ng-click="startRecord()">
                                         <div style="margin-top: 15%;font-size: 4em;">
                                             <i class="ion-mic-a"></i>
                                         </div>
@@ -285,17 +287,27 @@
                                 </div>
                             </div>
 
-                            <div style="padding-left: 20%;margin-top: 5%;background-color:indianred">
-                                <div style="display:inline-block;width:30%">
-                                    <i class="ion-mic-a" style="color:white"></i>
+                            <div style="padding-left: 20%;margin-top: 5%;background-color:indianred;position:absolute;bottom:12%;width:93%;height:15%;padding: 4%;">
+
+                                <div style="display:inline-block;width:30%;padding-left:10%"
+                                     ng-click="startRecord()">
+                                    <div style="height: 30px;width: 30px;text-align: center;border-radius: 100%;border: 1px solid white;padding-top: 6%;">
+                                        <i class="ion-mic-a" style="color:white"></i>
+                                    </div>
                                 </div>
 
-                                <div style="display:inline-block;width:30%">
-                                    <i class="ion-pause" style="color:white"></i>
+                                <div style="display:inline-block;width:30%;padding-left:10%"
+                                     ng-click="stopRecord()">
+                                    <div style="height: 30px;width: 30px;text-align: center;border-radius: 100%;border: 1px solid white;padding-top: 6%;">
+                                        <i class="ion-pause" style="color:white"></i>
+                                    </div>
                                 </div>
 
-                                <div style="display:inline-block;width:30%">
-                                    <i class="ion-play" style="color:white"</i>
+                                <div style="display:inline-block;width:30%;padding-left:10%"
+                                     ng-click="play()">
+                                    <div style="height: 30px;width: 30px;text-align: center;border-radius: 100%;border: 1px solid white;padding-top: 6%;">
+                                        <i class="ion-play" style="color:white"></i>
+                                    </div>
                                 </div>
                             </div>
 
