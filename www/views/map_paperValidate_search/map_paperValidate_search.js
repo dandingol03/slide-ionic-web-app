@@ -112,20 +112,32 @@ angular.module('starter')
             var map=$scope.map;
             var center=map.getCenter();
             $scope.gravity={longitude:0,latitude:0};
-            //仅容许根据区进行搜索
-            var reg=/\s*(.*区)/
-            var re=reg.exec($scope.root.query);
-            if(re!==undefined&&re!==null)
+            if($scope.root.query!==undefined&&$scope.root.query!==null&&$scope.root.query!='')
             {
-                var district=re[1];
-                //区搜索
-                if(district==undefined||district==null||district=='')
+                var reg=/\d|\w/
+                var re=reg.exec($scope.root.query);
+                if(re!==undefined&&re!==null)
                 {
-                    return;
+                    var myPopup = $ionicPopup.alert({
+                        template: '您输入的搜索条件不能包含数字或字母',
+                        title: '错误'
+                    });
+                    return ;
+                }else{
+                    reg=/\s/;
+                    re=reg.exec($scope.root.query);
+                    if(re!==undefined&&re!==null)
+                    {
+                        var myPopup = $ionicPopup.alert({
+                            template: '您输入的搜索条件不能包含空格',
+                            title: '错误'
+                        });
+                        return;
+                    }else{}
                 }
             }else{
-                return ;
             }
+
 
             $ionicLoading.show({
                 template: '<p class="item-icon-left">搜索...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
@@ -140,7 +152,7 @@ angular.module('starter')
                 data: {
                     request: 'fetchServicePlacesInArea',
                     info: {
-                        townName: district
+                        townName: $scope.root.query
                     }
                 }
             }).then(function (res) {
@@ -283,7 +295,7 @@ angular.module('starter')
         }
 
         $scope.clear_search=function () {
-            $scope.query=null;
+            $scope.root.query=null;
         }
 
         $scope.clickFunc=function (e) {

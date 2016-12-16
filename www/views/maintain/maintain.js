@@ -418,6 +418,9 @@ angular.module('starter')
             }
         }
 
+        //维修平铺新界面
+        $scope.notFirstRowStyle={height: '120px',width:'100%',position: 'relative','border':'0px'};
+
 
 
     })
