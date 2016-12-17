@@ -92,7 +92,7 @@ angular.module('starter')
 
         //车驾管选择种类
         $scope.carDrivingManageSelect=function() {
-            var buttons=[{text:'审车'},{text:'审证'},{text:'接送机'},{text:'接送站'}];
+            var buttons=[{text:'审车'},{text:'审证'},{text:'接送机'},{text:'接送站'},{text:'高德地图'}];
             $ionicActionSheet.show({
                 buttons:buttons,
                 titleText: '选择车驾管类型',
@@ -119,6 +119,9 @@ angular.module('starter')
                             break;
                         case 3:
                             $state.go('map_parkCar_search');
+                            break;
+                        case 4:
+                            $state.go('gaoDeHome');
                             break;
                         default:
                             break;

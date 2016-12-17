@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker','LocalStorageModule'])
+angular.module('starter', ['ionic', 'ngCordova','baiduMap','ngBaiduMap','ionic-datepicker','LocalStorageModule'])
 
     .config(function(baiduMapApiProvider) {
       baiduMapApiProvider.version('2.0').accessKey('hxMVpPXqcpdNGMrLTGLxN3mBBKd6YiT6');
@@ -907,6 +907,40 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
+          .state('gaoDeHome',{
+              url:'/gaoDeHome',
+              controller:'gaoDeHomeController',
+              templateUrl:'views/gaoDeHome/gaoDeHome.html'
+          })
+
+
+          .state('gaode_service_select',{
+              url:'/gaode_service_select',
+              controller:'gaodeServiceSelectController',
+              templateUrl:'views/gaode_service_select/gaode_service_select.html'
+          })
+
+          .state('map_district_result',{
+              url:'/map_district_result:params',
+              controller:'mapDistrictResultController',
+              templateUrl:'views/map_district_result/map_district_result.html'
+          })
+
+
+          .state('map_administrator_show',{
+              url:'/map_administrator_show:params',
+              controller:'mapAdministrateShowController',
+              templateUrl:'views/map_administrator_show/map_administrator_show.html'
+          })
+
+
+            .state('angular_baidu_map',{
+                url:'/angular_baidu_map:params',
+                controller:'abmController',
+                templateUrl:'views/angular_baidu_map/angular_baidu_map.html'
+            })
+
+
 
 
         // if none of the above states are matched, use this as the fallback
@@ -932,7 +966,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://139.129.96.231:3000";
+            return "http://192.168.1.121:3000";
           else
             return "/proxy/node_server";
             

@@ -1,0 +1,75 @@
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view  hide-nav-bar="true">
+
+        <ion-content style="width: 100%;padding: 0px;position: relative;height: 100%;" scroll="false">
+            <div class="list list-inset " style="margin-bottom: 0px;height: 100%;margin:0;position: relative;">
+
+                <!-- map -->
+                <div class="item"
+                     style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;
+                 padding:0px;background-color:transparent;position: relative">
+                    <div ng-style="mapStyle">
+                        <div id="map_administrator_show"  style="width: 100%;height: 100%;display: block;"></div>
+                    </div>
+                </div>
+
+                <!-- 结果面板 -->
+                <div ng-style="resultPanelStyle">
+                    <div class="list padding">
+                        <ion-scroll style="width: 100%;height: 90%;">
+                            <div class="item" ng-repeat="result in places">
+                                <span style="font-weight: bolder;color:#444;">
+                                    {{$index}}.{{result.name}}
+                                </span>
+                            </div>
+                        </ion-scroll>
+                    </div>
+                </div>
+
+
+                <!-- 搜索框 -->
+                <div class="item" style="position: absolute;top:2%;width: 90%;margin-left: 5%;
+                    height: 60px;padding-bottom: 0px;padding-top: 0px;padding-left: 10px;padding-right: 0px;">
+                    <div style="width:100%;height: 100%;position: relative;">
+                      <span style="width: 67%;display: inline-block;position: absolute;left:0%;top:0px;
+                        height: 100%; padding-top: 10px;padding-bottom: 10px;">
+                            <input type="text" placeholder="请输入搜索条件"
+                                   style="display:inline-block;background-color: transparent;width: 100%;"
+                                   ng-value="root.query"
+                                   ng-model="root.query"
+                            />
+                      </span>
+
+                        <span style="width: 18%;height: 100%;display: inline-block;
+                            position: absolute;left:0%;top:0px;">
+                            <div style="width: 100%;height: 100%;display: table;text-align: center;background: #00c9ff"
+                                 ng-click="goBack()">
+                                <span style="display: table-cell;vertical-align: middle;font-size: 1.8em;color:#fff;">
+                                    <i class="fa fa-chevron-left"></i>
+                                </span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 取车、送车 -->
+            <div style="position: absolute;right: 10px;top:20%;height:45px;z-index: 1000;">
+                <div class="card" style="display: table;width: 45px;height: 100%;margin:0px;text-align: center;">
+                    <div ng-style="mode=='servicePlace'?blockInStyle:blockOffStyle" ng-click="modeSwitch('servicePlace')">
+                        <div>
+                        <span style="font-size: 2em;">
+                            <i class="ion-arrow-graph-up-right"></i>
+                        </span>
+                        </div>
+                        <div>
+                            <span style="font-weight: bolder;">检测点</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </ion-content>
+
+    </ion-view>
+</ion-nav-view>
