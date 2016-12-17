@@ -4,7 +4,7 @@ angular.module('starter')
                                                $rootScope,$ionicModal,$timeout,
                                                $cordovaCamera,ionicDatePicker,
                                                $ionicActionSheet,$q,$cordovaFile,
-                                               BaiduMapService,$ionicLoading,$cordovaMedia,$cordovaCapture,
+                                               $ionicLoading,$cordovaMedia,$cordovaCapture,
                                                Proxy,$stateParams,$anchorScroll,
                                                $cordovaFileTransfer,$ionicPopup,$ionicSlideBoxDelegate,
                                                $cordovaImagePicker,$cordovaDatePicker,$cordovaToast){

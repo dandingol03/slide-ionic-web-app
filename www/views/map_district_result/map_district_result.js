@@ -5,7 +5,7 @@
 angular.module('starter')
     .controller('mapDistrictResultController',function($scope,$state,$ionicActionSheet,
                                                        $rootScope,$ionicPopup,$http, Proxy,
-                                                       $stateParams,$ionicLoading,BaiduMapService){
+                                                       $stateParams,$ionicLoading){
 
         $scope.go_back=function(){
             window.history.back();
@@ -118,6 +118,89 @@ angular.module('starter')
             })
         }
 
+        $scope.fetchCarManageStation=function () {
+            $ionicLoading.show({
+                template: '<p class="item-icon-left">搜索车管所数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            });
+
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data: {
+                    request: 'fetchServicePlacesInArea',
+                    info: {
+                    }
+                }
+            }).then(function (res) {
+                var json = res.data;
+                var map=null;
+                var center=null;
+                var BMap=null;
+                if($scope.BMap!==undefined&&$scope.BMap!==null)
+                    BMap=$scope.BMap;
+                else
+                    BMap=window.BMap;
+                if (json.re == 1) {
+                    $scope.records = {};
+                    $scope.recordCount=0;
+
+                    $scope.places = [];
+
+                    if($rootScope.gaodeHome!==undefined&&$rootScope.gaodeHome!==null)
+                    {
+                        map=$rootScope.gaodeHome;
+                        center = map.getCenter();
+                    }
+                    json.data.map(function (station, i) {
+                        if (station.longitude !== undefined && station.longitude !== null &&
+                            station.latitude !== undefined && station.latitude !== null&&
+                            station.town!==undefined&&station.town!==null&&station.town!='') {
+
+
+                            var distance = map.getDistance(center, new BMap.Point(station.longitude, station.latitude)).toFixed(2);
+
+                            if (distance <= 25000)
+                            {
+                                $scope.recordCount++;
+                                station.distance=distance;
+                                if($scope.records[station.town]==undefined||$scope.records[station.town]==null)
+                                    $scope.records[station.town]=[station];
+                                else
+                                    $scope.records[station.town].push(station);
+                            }
+                        }
+                    });
+                    $ionicLoading.hide();
+
+                }else{
+                    $ionicLoading.hide();
+                    if(window.cordova)
+                    {
+                        $cordovaToast
+                            .show('未搜索出任何结果', 'short', 'center')
+                            .then(function(success) {
+                            }, function (error) {
+                            });
+                    }else{
+                        var myPopup = $ionicPopup.alert({
+                            template: '未搜索出任何结果',
+                            title: '<strong style="color:red">信息</strong>'
+                        });
+                    }
+                }
+
+            }).catch(function (err) {
+                var str = '';
+                for (var field in err)
+                    str += err[field];
+                console.error('error=\r\n' + str);
+                $ionicLoading.hide();
+            })
+        }
+
 
 
         //范围搜索
@@ -128,7 +211,7 @@ angular.module('starter')
                     $scope.fetchDetectUnitsInArea();
                     break;
                 case 'paper_validate':
-
+                    $scope.fetchCarManageStation();
                     break;
                 case 'airport':
 
@@ -141,14 +224,26 @@ angular.module('starter')
             }
         }
 
-        //拉取数据
-        BaiduMapService.getBMap().then(function (res) {
-            $scope.BMap = res;
-            $scope.fetchDistrictRecords();
-        });
+        // //拉取数据
+        // BaiduMapService.getBMap().then(function (res) {
+        //     $scope.BMap = res;
+        //     $scope.fetchDistrictRecords();
+        // });
 
 
-
+        if($rootScope.gaodeHome!==undefined&&$rootScope.gaodeHome!==null)
+        {
+            $scope.map=$rootScope.gaodeHome;
+            if(window.BMap!==undefined&&window.BMap!==null)
+            {
+                $scope.BMap=window.BMap;
+                $scope.fetchDistrictRecords();
+            }else{
+                BMapService.getBMap().then(function(BMap) {
+                    console.log('BMap has loaded into window Object');
+                })
+            }
+        }
 
         $scope.results=[
             {name:'北京市'},{name:'深圳市'}
@@ -156,7 +251,7 @@ angular.module('starter')
 
         $scope.navigate=function (town) {
             //$state.go('map_administrator_show', {params: JSON.stringify({town: town})});
-            $state.go('angular_baidu_map', {params: JSON.stringify({town: town})});
+            $state.go('angular_baidu_map', {params: JSON.stringify({service:$scope.service,town: town})});
         }
 
 

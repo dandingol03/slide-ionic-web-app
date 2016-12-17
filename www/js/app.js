@@ -5,15 +5,15 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova','baiduMap','ngBaiduMap','ionic-datepicker','LocalStorageModule'])
+angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker','LocalStorageModule'])
 
     .config(function(baiduMapApiProvider) {
-      baiduMapApiProvider.version('2.0').accessKey('hxMVpPXqcpdNGMrLTGLxN3mBBKd6YiT6');
+        baiduMapApiProvider.version('2.0').accessKey('hxMVpPXqcpdNGMrLTGLxN3mBBKd6YiT6');
     })
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-                  $ionicPopup,Proxy,$http,$state,$q,$timeout) {
+                  $ionicPopup,Proxy,$http,$state,BMapService) {
 
 
 
@@ -31,6 +31,14 @@ angular.module('starter', ['ionic', 'ngCordova','baiduMap','ngBaiduMap','ionic-d
           // org.apache.cordova.statusbar required
           StatusBar.styleDefault();
         }
+
+          // //init bmap api
+          // BMapService.getBMap().then(function(BMap) {
+          //     console.log('BMap has loaded into window Object');
+          // })
+          //
+
+
 
         $rootScope.car_orders=[
           [
@@ -961,6 +969,28 @@ angular.module('starter', ['ionic', 'ngCordova','baiduMap','ngBaiduMap','ionic-d
         }
       };
     })
+
+
+    .factory('BMapService', ['$document', '$q', '$rootScope',
+        function($document, $q, $rootScope) {
+            var map = $q.defer();
+
+            var scriptTag = $document[0].createElement('script');
+            scriptTag.type = 'text/javascript';
+            scriptTag.async = true;
+            window.BMapLoaded=function () {
+                map.resolve(window.BMap);
+            }
+            scriptTag.src = 'http://api.map.baidu.com/api?v=2.0&ak=hxMVpPXqcpdNGMrLTGLxN3mBBKd6YiT6&callback=BMapLoaded';
+            var s = $document[0].getElementsByTagName('body')[0];
+            s.appendChild(scriptTag);
+
+            return {
+                getBMap: function() { return map.promise; }
+            };
+        }])
+
+
 
     .factory('Proxy', function() {
       var ob={

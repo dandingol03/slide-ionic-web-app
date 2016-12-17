@@ -8,14 +8,16 @@
  */
 angular.module('starter')
 
-    .controller('abmController',function($scope,$state,$http,$timeout,$rootScope,
-                                                         BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                         Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
+    .controller('abmController',function($scope,$state,$http,$rootScope,
+                                         $cordovaGeolocation,$ionicPopup,
+                                         Proxy,$stateParams, $q,$ionicLoading,
+                                         BaiduMapService) {
 
         $scope.goBack=function () {
             window.history.back();
         }
 
+        //路由参数同步
         if($stateParams.params!==undefined&&$stateParams.params!==null&&$stateParams.params!='')
         {
             var params=$stateParams.params;
@@ -23,15 +25,19 @@ angular.module('starter')
                 params=JSON.parse(params);
             if(params.town!==undefined&&params.town!==null&&params.town!='')
                 $scope.town=params.town;
+            if(params.service!==undefined&&params.service!==null&&params.service!='')
+                $scope.service=params.service;
         }
 
-
+        //$rootScope同步
+        if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
+            $scope.carInfo=$rootScope.carInfo;
 
         $scope.containerStyle={width:'100%',height:(screen.height*3)/5+'px'};
-        $scope.mapStyle = {width: '100%', height: '100%', display: 'block'};
+        $scope.mapStyle = {width: '100%', height: (screen.height*3)/5+'px', display: 'block'};
 
 
-        $scope.resultPanelStyle={border:'0px',padding: '0px',width:'100%',height:(screen.height*2)/5};
+        $scope.resultPanelStyle={border:'0px',padding: '0px',width:'100%',height:(screen.height-475)+'px'};
 
         $scope.root={
         };
@@ -61,7 +67,21 @@ angular.module('starter')
             item[field] = value;
         }
 
-
+        $scope.navigate=function (place) {
+            switch($scope.service)
+            {
+                case 'administrator':
+                    $state.go('map_administrate_confirm',
+                        {contentInfo: JSON.stringify({detectUnit: place,carInfo:$scope.carInfo})});
+                    break;
+                case 'paper_validate':
+                    $state.go('map_paperValidate_confirm',
+                        {contentInfo: JSON.stringify({place: place,carInfo:$scope.carInfo})});
+                    break;
+                default:
+                    break;
+            }
+        }
 
         //根据所传参数搜索周边
         $scope.fetchDistrict=function () {
@@ -76,6 +96,27 @@ angular.module('starter')
                 template: '<p class="item-icon-left">搜索...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
             });
 
+            var cmd=null;
+            switch($scope.service)
+            {
+                case 'administrator':
+                    cmd='fetchDetectUnitsInArea';
+                    break;
+                case 'paper_validate':
+                    cmd='fetchServicePlacesInArea';
+                    break;
+                case 'airport':
+
+                    break;
+                case 'park_car':
+
+                    break;
+                default:
+                    cmd='fetchDetectUnitsInArea';
+                    break;
+            }
+
+
             $http({
                 method: "POST",
                 url: Proxy.local() + "/svr/request",
@@ -83,7 +124,7 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token,
                 },
                 data: {
-                    request: 'fetchDetectUnitsInArea',
+                    request: cmd,
                     info: {
                         townName: $scope.town
                     }
@@ -177,11 +218,6 @@ angular.module('starter')
 
 
 
-
-
-
-
-
         $scope.clickFunc=function (e) {
             console.log('click point=' + e.point.lng + ',' + e.point.lat);
             $scope.destiny={lng: e.point.lng,lat: e.point.lat};
@@ -231,8 +267,15 @@ angular.module('starter')
             var deferred=$q.defer();
 
             var cb=function () {
-                var map = new BMap.Map("map_administrator_show");          // 创建地图实例
-                var point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
+                var map = new BMap.Map("angular_baidu_map");          // 创建地图实例
+                var point=null;
+                if($rootScope.gaodeHome!==undefined&&$rootScope.gaodeHome!==null)
+                {
+                    var personLocate=$rootScope.gaodeHome;
+                    point=personLocate.getCenter();
+                }else{
+                    point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
+                }
                 // $scope.point=point;
                 map.centerAndZoom(point, 12);
                 map.addControl(new BMap.NavigationControl());
@@ -252,41 +295,15 @@ angular.module('starter')
         }
 
 
-        var longitude = 121.506191;
-        var latitude = 31.245554;
-        $scope.mapOptions = {
-            center: {
-                longitude: longitude,
-                latitude: latitude
-            },
-            zoom: 17,
-            city: 'ShangHai',
-            markers: [{
-                longitude: longitude,
-                latitude: latitude,
-                icon: 'img/mappiont.png',
-                width: 49,
-                height: 60,
-                title: 'Where',
-                content: 'Put description here'
-            }]
-        };
+        BaiduMapService.getBMap().then(function (res) {
 
-        $scope.mapLoaded=function (map) {
-            $scope.map=map;
-        }
-
-        //
-        // BaiduMapService.getBMap().then(function (res) {
-        //
-        //     $scope.BMap = res;
-        //     var BMap = $scope.BMap;
-        //     $scope.init_map(BMap).then(function(json) {
-        //         if(json.re==1) {
-        //             $scope.fetchDistrict();
-        //         }
-        //     });
-        //
-        //
-        // });
+            $scope.BMap = res;
+            var BMap = $scope.BMap;
+            $scope.init_map(BMap).then(function(json) {
+                if(json.re==1) {
+                    $scope.fetchDistrict();
+                }
+            });
+            
+        });
     })

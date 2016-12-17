@@ -8,7 +8,7 @@ angular.module('starter')
                                                         $cordovaToast){
 
 
-        $scope.go_back=function () {
+        $scope.goBack=function () {
             window.history.back();
         }
 

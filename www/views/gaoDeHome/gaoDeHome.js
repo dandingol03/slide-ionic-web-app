@@ -6,8 +6,8 @@
 angular.module('starter')
 
     .controller('gaoDeHomeController',function($scope,$state,$http,$rootScope,
-                                                           BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                                           Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
+                                               BaiduMapService,$cordovaGeolocation,$ionicModal,
+                                               Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
 
 
 
@@ -59,6 +59,38 @@ angular.module('starter')
             $scope.mode=mode;
         }
 
+        $scope.renderCircle=function (cen,x,y) {
+            var BMap=$scope.bMap;
+            var map=$scope.map;
+            if($scope.distanceMax>10000)
+            {
+                var zoomLevel=map.getZoom();
+                if(zoomLevel!=11)
+                    map.setZoom(11);
+            }
+            var center=null;
+            if(cen!==undefined&&cen!==null)
+                center=cen;
+            else
+                center=$scope.map.getCenter();
+            var assemble=[];
+            var angle;
+            var dot;
+            var tangent=x/y;
+            for(var i=0;i<36;i++)
+            {
+                angle = (2* Math.PI / 36) * i;
+                dot = new BMap.Point(center.lng+Math.sin(angle)*y*tangent, center.lat+Math.cos(angle)*y);
+                assemble.push(dot);
+            }
+
+            var oval = new BMap.Polygon(assemble, {fillColor:'rgba(211, 199, 220, 0.39)',strokeColor:"#fff", strokeWeight:6, strokeOpacity:0.5});
+            if($scope.oval!==undefined&&$scope.oval!==null)
+                map.removeOverlay($scope.oval);
+            $scope.oval=oval;
+            map.addOverlay(oval);
+
+        }
 
 
         //搜索发式
@@ -164,7 +196,7 @@ angular.module('starter')
                     });
 
                     //render circle
-
+                    $scope.renderCircle(map.getCenter(),0.22,0.2);
                     $scope.contentInfo=$scope.places;
                     $ionicLoading.hide();
                     if($scope.places.length==1)
@@ -298,8 +330,29 @@ angular.module('starter')
         }
 
 
+        $scope.contentInfo=null;
 
+        /*** 绑定信息窗口模态框 ***/
+        $ionicModal.fromTemplateUrl('views/modal/popupContentInfoPanel.html',{
+            scope:  $scope,
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.contentInfoPanel = modal;
+        });
 
+        $scope.openContentInfoPanel= function(){
+            try{
+                $scope.contentInfoPanel.show();
+            }catch(e){
+                alert('error=\r\n'+ e.toString());
+            }
+        };
+
+        $scope.closeContentInfoPanel= function() {
+            $scope.contentInfoPanel.hide();
+        };
+        /*** 绑定信息窗口模态框 ***/
 
         $scope.serviceSelect=function () {
             $state.go('gaode_service_select');
