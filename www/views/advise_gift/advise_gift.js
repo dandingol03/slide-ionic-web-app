@@ -66,6 +66,8 @@ angular.module('starter')
       //分享至指定朋友
       $scope.wxShareText=function () {
 
+        $scope.wx.text = 'http://139.129.96.231:3000/wx';
+
         if($scope.wx.text!==undefined&&$scope.wx.text!==null&&$scope.wx.text!='')
         {
             Wechat.isInstalled(function (installed) {
@@ -73,7 +75,7 @@ angular.module('starter')
                 {
                     var ob={
                         scene:Wechat.Scene.SESSION,
-                        text :text
+                        text :$scope.wx.text
                     };
                     Wechat.share(ob, function () {
                         alert('share success')

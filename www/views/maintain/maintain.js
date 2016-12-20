@@ -37,17 +37,22 @@ angular.module('starter')
 
 
         $scope.dailys = [
-            {subServiceId:'1',subServiceTypes:'机油,机滤',serviceType:'11'},
-            {subServiceId:'2',subServiceTypes:'检查制动系统,更换刹车片',serviceType:'11'},
-            {subServiceId:'3',subServiceTypes:'雨刷片更换',serviceType:'11'},
-            {subServiceId:'4',subServiceTypes:'轮胎更换',serviceType:'11'},
-            {subServiceId:'5',subServiceTypes:'燃油添加剂',serviceType:'11'},
-            {subServiceId:'6',subServiceTypes:'空气滤清器',serviceType:'11'},
-            {subServiceId:'7',subServiceTypes:'检查火花塞',serviceType:'11'},
-            {subServiceId:'8',subServiceTypes:'检查驱动皮带',serviceType:'11'},
-            {subServiceId:'9',subServiceTypes:'更换空调滤芯',serviceType:'11'},
-            {subServiceId:'10',subServiceTypes:'更换蓄电池,防冻液',serviceType:'11'}
+            {subServiceId:'1',subServiceTypes:'机油,机滤',serviceType:'11',checked:false},
+            {subServiceId:'2',subServiceTypes:'检查制动系统,更换刹车片',serviceType:'11',checked:false},
+            {subServiceId:'3',subServiceTypes:'雨刷片更换',serviceType:'11',checked:false},
+            {subServiceId:'4',subServiceTypes:'轮胎更换',serviceType:'11',checked:false},
+            {subServiceId:'5',subServiceTypes:'燃油添加剂',serviceType:'11',checked:false},
+            {subServiceId:'6',subServiceTypes:'空气滤清器',serviceType:'11',checked:false},
+            {subServiceId:'7',subServiceTypes:'检查火花塞',serviceType:'11',checked:false},
+            {subServiceId:'8',subServiceTypes:'检查驱动皮带',serviceType:'11',checked:false},
+            {subServiceId:'9',subServiceTypes:'更换空调滤芯',serviceType:'11',checked:false},
+            {subServiceId:'10',subServiceTypes:'更换蓄电池,防冻液',serviceType:'11',checked:false}
         ];
+
+
+        $scope.dailys.map(function(daily,i) {
+            daily.checked=false;
+        })
 
 
         /**
@@ -60,7 +65,10 @@ angular.module('starter')
             if($rootScope.maintain.unit!==undefined&&$rootScope.maintain.unit!==null)
                 $scope.maintain.unit=$rootScope.maintain.unit;
             if($rootScope.maintain.dailys!==undefined&&$rootScope.maintain.dailys!==null)
+            {
                 $scope.dailys=$rootScope.maintain.dailys;
+
+            }
             if($rootScope.maintain.serviceType!==undefined&&$rootScope.maintain.serviceType!==null)
                 $scope.maintain.serviceType=$rootScope.maintain.serviceType;
 
