@@ -7,7 +7,8 @@ angular.module('starter')
 
     .controller('gaoDeHomeController',function($scope,$state,$http,$rootScope,
                                                BaiduMapService,$cordovaGeolocation,$ionicModal,
-                                               Proxy,$stateParams, $q,$ionicLoading,$ionicPopup) {
+                                               Proxy,$stateParams, $q,$ionicLoading,$ionicPopup,
+                                                $timeout) {
 
 
 
@@ -367,23 +368,150 @@ angular.module('starter')
             $scope.init_map(BMap).then(function(json) {
                 if(json.re==1) {
                     var map=$scope.map;
-                    //添加指派中心覆盖物
-                    var point=$scope.point;
-                    var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
-                    var mk = new BMap.Marker(point,{icon:bIcon});
-                    mk.setAnimation(BMAP_ANIMATION_BOUNCE);
-                    map.addOverlay(mk);
-                    var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
-                    label.setStyle({
-                        color: '#222',
-                        fontSize: "12px",
-                        height: "20px",
-                        lineHeight: "20px",
-                        fontFamily: "微软雅黑",
-                        border: '0px'
-                    });
-                    mk.setLabel(label);
-                    $scope.mk=mk;
+
+                    if(window.cordova)
+                    {
+                        $ionicLoading.show({
+                            content: 'Loading',
+                            animation: 'fade-in',
+                            showBackdrop: true,
+                            maxWidth: 200,
+                            showDelay: 0
+                        });
+                        var posOptions = {timeout: 10000, enableHighAccuracy: false};
+                        $cordovaGeolocation
+                            .getCurrentPosition(posOptions)
+                            .then(function (position) {
+                                var lat = position.coords.latitude;
+                                var lng = position.coords.longitude;
+                                console.log(lng + ',' + lat);
+                                var ggPoint = new BMap.Point(lng, lat);
+                                var convertor = new BMap.Convertor();
+                                var pointArr = [];
+                                pointArr.push(ggPoint);
+
+                                var translateCallback = function (data) {
+                                    if (data.status === 0) {
+                                        var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+                                        var marker = new BMap.Marker(data.points[0],{icon:bIcon});
+                                        map.addOverlay(marker);
+                                        var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
+                                        label.setStyle({
+                                            color: '#222',
+                                            fontSize: "12px",
+                                            height: "20px",
+                                            lineHeight: "20px",
+                                            fontFamily: "微软雅黑",
+                                            border: '0px'
+                                        });
+                                        marker.setLabel(label); //添加百度label
+                                        $scope.mk=marker;
+                                        map.centerAndZoom(data.points[0],12);
+                                        $ionicLoading.hide();
+                                    }
+                                }
+                                convertor.translate(pointArr, 1, 5, translateCallback)
+                            }, function (err) {
+                                $ionicLoading.hide();
+                                console.error('error=\r\n' + err.toString());
+                            });
+
+                    }else{
+
+                        if(navigator.geolocation)
+                        {
+                            $ionicLoading.show({
+                                content: 'Loading',
+                                animation: 'fade-in',
+                                showBackdrop: true,
+                                maxWidth: 200,
+                                showDelay: 0
+                            });
+                            var timeout=true;
+                            navigator.geolocation.getCurrentPosition(function(data) {
+                                timeout=false;
+                                console.log('get data');
+                                //TODO:fetch data
+                                var coordinate=data.coords;
+                                var point={lat:coordinate.latitude,lng:coordinate.longitude};
+                                var ggPoint = new BMap.Point(point.lng, point.lat);
+                                var convertor = new BMap.Convertor();
+                                var pointArr = [];
+                                pointArr.push(ggPoint);
+
+                                var translateCallback = function (data) {
+                                    if (data.status === 0) {
+                                        var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+                                        var marker = new BMap.Marker(data.points[0],{icon:bIcon});
+                                        map.addOverlay(marker);
+                                        var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
+                                        label.setStyle({
+                                            color: '#222',
+                                            fontSize: "12px",
+                                            height: "20px",
+                                            lineHeight: "20px",
+                                            fontFamily: "微软雅黑",
+                                            border: '0px'
+                                        });
+                                        marker.setLabel(label); //添加百度label
+                                        $scope.mk=marker;
+                                        map.centerAndZoom(data.points[0],12);
+                                    }
+                                    $ionicLoading.hide();
+                                }
+                                convertor.translate(pointArr, 1, 5, translateCallback)
+                            },function (err) {
+                                console.log('encounter error');
+                            });
+
+                            $timeout(function () {
+                                if(timeout)
+                                {
+                                    $ionicLoading.hide();
+                                    //添加指派中心覆盖物
+                                    var point=$scope.point;
+                                    var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+                                    var mk = new BMap.Marker(point,{icon:bIcon});
+                                    mk.setAnimation(BMAP_ANIMATION_BOUNCE);
+                                    map.addOverlay(mk);
+                                    var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
+                                    label.setStyle({
+                                        color: '#222',
+                                        fontSize: "12px",
+                                        height: "20px",
+                                        lineHeight: "20px",
+                                        fontFamily: "微软雅黑",
+                                        border: '0px'
+                                    });
+                                    mk.setLabel(label);
+                                    $scope.mk=mk;
+                                }
+                            },4000);
+
+
+                        }else{
+                            //添加指派中心覆盖物
+                            var point=$scope.point;
+                            var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+                            var mk = new BMap.Marker(point,{icon:bIcon});
+                            mk.setAnimation(BMAP_ANIMATION_BOUNCE);
+                            map.addOverlay(mk);
+                            var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
+                            label.setStyle({
+                                color: '#222',
+                                fontSize: "12px",
+                                height: "20px",
+                                lineHeight: "20px",
+                                fontFamily: "微软雅黑",
+                                border: '0px'
+                            });
+                            mk.setLabel(label);
+                            $scope.mk=mk;
+                        }
+                    }
+
+
+
                 }
             });
 

@@ -8,7 +8,7 @@ angular.module('starter')
 
   .controller('serviceOrderDetailController',function($scope,$stateParams,$http,
                                                       $rootScope,$ionicLoading,Proxy,
-                                                        $ionicPopup){
+                                                        $ionicPopup,$state){
 
     $scope.order=$stateParams.order;
 
@@ -19,6 +19,15 @@ angular.module('starter')
     $scope.go_back=function(){
       window.history.back();
     };
+
+    $scope.goTo=function (state) {
+        if(state=='evaluate')
+        {
+            $state.go('evaluate', {order: JSON.stringify($scope.order)});
+        }else{
+            $state.go(state);
+        }
+    }
 
     $scope.candidateColors=[{background:'rgb(220, 171, 106)',color:'#fff'},{background:'rgba(220, 171, 106,0.7)',color:'#fff'},
         {background:'rgba(220, 171, 106,0.4)',color:'#fff'},{background:'rgba(220, 171, 106,0.1)',color:'#fff'}];

@@ -162,7 +162,7 @@ angular.module('starter')
                 }
             }
 
-            if($scope.subTabIndex==1)
+            if($scope.tabIndex==1)
             {
                 var threshold=0;
                 if($scope.maintain.description.text!==undefined&&$scope.maintain.description.text!==null&&$scope.maintain.description.text!='')

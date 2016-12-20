@@ -11,11 +11,83 @@ angular.module('starter')
     .controller('abmController',function($scope,$state,$http,$rootScope,
                                          $cordovaGeolocation,$ionicPopup,
                                          Proxy,$stateParams, $q,$ionicLoading,
-                                         BaiduMapService) {
+                                         BaiduMapService,$cordovaToast,$ionicScrollDelegate) {
 
         $scope.goBack=function () {
             window.history.back();
         }
+
+        $scope.reRender=function () {
+            var map=$scope.map;
+            var BMap=$scope.BMap;
+            var center=map.getCenter();
+
+            //获取所有覆盖物
+            var overlays=map.getOverlays();
+
+            map = new BMap.Map("angular_baidu_map");          // 创建地图实例
+            // $scope.point=point;
+            if($scope.service=='airport'||$scope.service=='park_car')
+            {
+                map.centerAndZoom(center, 13);
+            }else{
+                map.centerAndZoom(center, 12);
+            }
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.ScaleControl());
+            map.enableScrollWheelZoom(true);
+            $scope.tpMarkers=[];
+            $scope.dragF=false;
+
+            $scope.places.map(function (place, i) {
+                var name=null;
+                if(place.name!==undefined&&place.name!==null)
+                    name=place.name;
+                else
+                    name=place.unitName;
+                var mk = new BMap.Marker(new BMap.Point(place.longitude, place.latitude));
+                var label = new BMap.Label(name, {offset: new BMap.Size(20, -10)});
+                label.setStyle({
+                    color: '#222',
+                    fontSize: "12px",
+                    height: "20px",
+                    lineHeight: "20px",
+                    fontFamily: "微软雅黑",
+                    border: '0px'
+                });
+                mk.setLabel(label);
+                map.addOverlay(mk);
+            });
+
+
+        }
+
+        $scope.contentPanelVisible=true;
+        $scope.scaffoldResultPanel=function () {
+            if($scope.contentPanelVisible)
+            {
+                var ele=angular.element(document.querySelector('#angular_baidu_map'));
+                ele.css('height',(screen.height-110)+'px' );
+                //TODO:re-render map
+                $scope.reRender();
+            }else{
+                var ele=angular.element(document.querySelector('#angular_baidu_map'));
+                ele.css('height',(screen.height-425)+'px' );
+                //TODO:re-render map
+                $scope.reRender();
+            }
+            $scope.contentPanelVisible=!$scope.contentPanelVisible;
+
+        }
+
+        // $timeout(function () {
+        //     var ele=angular.element(document.querySelector('#angular_baidu_map'));
+        //     ele.css('height',(screen.height-110)+'px' );
+        //     $scope.init_map($scope.BMap);
+        //     //TODO:re-render map
+        // }, 2000);
+
+
 
         //路由参数同步
         if($stateParams.params!==undefined&&$stateParams.params!==null&&$stateParams.params!='')
@@ -37,10 +109,56 @@ angular.module('starter')
         $scope.mapStyle = {width: '100%', height: (screen.height*3)/5+'px', display: 'block'};
 
 
-        $scope.resultPanelStyle={border:'0px',padding: '0px',width:'100%',height:(screen.height-475)+'px'};
+        $scope.resultPanelStyle={border:'0px',padding: '0px',width:'100%',height:(screen.height-425)+'px'};
 
         $scope.root={
         };
+
+        if($scope.service=='airport'||$scope.service=='park_car')
+            $scope.mode='pickUp';
+
+
+        $scope.blockInStyle={display: 'table-cell','vertical-align': 'middle',background:'#11c1f3',color:'#fff'};
+        $scope.blockOffStyle={display: 'table-cell','vertical-align': 'middle',background:'#fff',color:'#666'};
+
+        $scope.tag='A';
+
+
+        $scope.modeSwitch=function (mode) {
+            if(mode===$scope.mode)
+                return;
+            $scope.mode=mode;
+            if(window.cordova)
+            {
+                var serviceName=null;
+                switch($scope.service)
+                {
+                    case 'airport':
+                        switch(mode)
+                        {
+                            case 'pickUp':
+                                serviceName='接机服务';
+                                break;
+                            case 'seeOff':
+                                serviceName='送机服务';
+                                break;
+                        }
+                        break;
+                    case 'park_car':
+                        switch(mode)
+                        {
+                            case 'pickUp':
+                                serviceName='接站服务';
+                                break;
+                            case 'seeOff':
+                                serviceName='送站服务';
+                                break;
+                        }
+                        break;
+                }
+
+            }
+        }
 
         $scope.Mutex = function (item, field, cluster) {
             if (item[field]) {
@@ -78,6 +196,50 @@ angular.module('starter')
                     $state.go('map_paperValidate_confirm',
                         {contentInfo: JSON.stringify({place: place,carInfo:$scope.carInfo})});
                     break;
+                case 'airport':
+                    var serviceName=null;
+                    switch($scope.mode)
+                    {
+                        case 'pickUp':
+                            serviceName='接机服务';
+                            break;
+                        case 'seeOff':
+                            serviceName='送机服务';
+                            break;
+                    }
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: '信息',
+                        template: '您目前选择的是'+serviceName+'，确认之后按下OK'
+                    });
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            $state.go('map_airport_confirm', {contentInfo: JSON.stringify({mode:$scope.mode,unit: place,carInfo:$scope.carInfo})});
+                        } else {
+                        }
+                    });
+                    break;
+                case 'park_car':
+                    var serviceName=null;
+                    switch($scope.mode)
+                    {
+                        case 'pickUp':
+                            serviceName='接站服务';
+                            break;
+                        case 'seeOff':
+                            serviceName='送站服务';
+                            break;
+                    }
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: '信息',
+                        template: '您目前选择的是'+serviceName+'，确认之后按下OK'
+                    });
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            $state.go('map_parkCar_confirm', {contentInfo: JSON.stringify({mode:$scope.mode,unit: place,carInfo:$scope.carInfo})});
+                        } else {
+                        }
+                    });
+                    break;
                 default:
                     break;
             }
@@ -106,10 +268,10 @@ angular.module('starter')
                     cmd='fetchServicePlacesInArea';
                     break;
                 case 'airport':
-
+                    cmd='fetchMaintenanceInArea';
                     break;
                 case 'park_car':
-
+                    cmd='fetchMaintenanceInArea';
                     break;
                 default:
                     cmd='fetchDetectUnitsInArea';
@@ -138,6 +300,9 @@ angular.module('starter')
                 var BMap=$scope.BMap;
                 if (json.re == 1) {
                     $scope.places = [];
+                    //群体初始化
+                    $scope.populations={};
+                    var tagIndex=0;
                     json.data.map(function (place, i) {
                         if (place.longitude !== undefined && place.longitude !== null &&
                             place.latitude !== undefined && place.latitude !== null) {
@@ -153,7 +318,56 @@ angular.module('starter')
                             if (distance <= 25000)
                             {
                                 place.distance=distance;
-                                place.unitName=place.name;
+                                var flagOfBia=true;
+                                for(var tag in $scope.populations)
+                                {
+                                    var population=$scope.populations[tag];
+                                    if(population!==undefined&&population!==null)
+                                    {
+                                        var bias=map.getDistance(new BMap.Point(population.center.lng,population.center.lat),
+                                                            new BMap.Point(place.longitude, place.latitude)).toFixed(2);
+                                        if(bias<=12000)
+                                        {
+
+                                            population.center={
+                                                lng:(population.center.lng*population.plots.length+place.longitude)/(population.plots.length+1),
+                                                lat:(population.center.lat*population.plots.length+place.latitude)/(population.plots.length+1)
+                                            }
+                                            population.plots.push(
+                                                {
+                                                    name:place.name!==undefined&&place.name!==null?place.name:place.unitName,
+                                                    distance:place.distance,
+                                                    address:place.address,
+                                                    phone:place.phone}
+                                                    );
+                                            flagOfBia=false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                //如果为离群点
+                                if(flagOfBia)
+                                {
+
+                                    var tag=String.fromCharCode(tagIndex+65);
+                                    tagIndex++;
+                                    $scope.populations[tag]={
+                                        plots:[
+                                            {
+                                                name:place.name!==undefined&&place.name!==null?place.name:place.unitName,
+                                                distance:place.distance,
+                                                address:place.address,
+                                                phone:place.phone
+                                            }],
+                                        center:{
+                                            lng:place.longitude,
+                                            lat:place.latitude
+                                        }
+                                    };
+                                }
+
+                                if(place.unitName!==undefined&&place.unitName!==null)
+                                    place.name=place.unitName;
                                 $scope.gravity.longitude+=place.longitude;
                                 $scope.gravity.latitude+=place.latitude;
                                 $scope.places.push(place);
@@ -181,8 +395,13 @@ angular.module('starter')
                     //render new markers
                     $scope.labels = [];
                     $scope.places.map(function (place, i) {
+                        var name=null;
+                        if(place.name!==undefined&&place.name!==null)
+                            name=place.name;
+                        else
+                            name=place.unitName;
                         var mk = new BMap.Marker(new BMap.Point(place.longitude, place.latitude));
-                        var label = new BMap.Label(place.name, {offset: new BMap.Size(20, -10)});
+                        var label = new BMap.Label(name, {offset: new BMap.Size(20, -10)});
                         label.setStyle({
                             color: '#222',
                             fontSize: "12px",
@@ -245,8 +464,31 @@ angular.module('starter')
             $scope.maintain.center = map.getCenter();
 
         }
+        
+        $scope.tabReDefine=function () {
+            var tagIndex=$scope.tag-'A';
+            tagIndex++;
+            if($scope.populations[String.fromCharCode(tagIndex+65)]!==undefined&&$scope.populations[String.fromCharCode(tagIndex+65)]!==null)
+                $scope.tag=String.fromCharCode(tagIndex+65);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
 
 
+
+        $scope.scrollChange=function () {
+            var delegate = $ionicScrollDelegate.$getByHandle('scroll-handle');
+            var position=delegate.getScrollPosition();
+            //TODO:algorithm
+
+            if(position.top<=10)
+            {
+                $scope.pagePreviousTip=true;
+            }else if(position.top>90){
+                $scope.pageNextTip=true;
+            }else{}
+        }
+        
+        //更改为群体定位
         $scope.mapPanTo=function () {
             var map=$scope.map;
             if($scope.places.length==1)
@@ -255,11 +497,17 @@ angular.module('starter')
                 var firstPlace=$scope.places[0];
                 map.panTo(new BMap.Point(firstPlace.longitude, firstPlace.latitude) );
             }else{
-                $scope.gravity.longitude=$scope.gravity.longitude/$scope.places.length;
-                $scope.gravity.latitude=$scope.gravity.latitude/$scope.places.length;
-                //map pan to gravity center
-                map.panTo(new BMap.Point($scope.gravity.longitude, $scope.gravity.latitude) );
+                //map pan to populations center
+                map.panTo(new BMap.Point($scope.populations[$scope.tag].center.lng, $scope.populations[$scope.tag].center.lat) );
             }
+        }
+
+        $scope.tagChange=function (tag) {
+            $scope.tag=tag;
+            var map=$scope.map;
+            var BMap=$scope.BMap;
+            var population=$scope.populations[$scope.tag];
+            map.panTo(new BMap.Point(population.center.lng,population.center.lat));
         }
 
         $scope.init_map=function (BMap) {
@@ -277,7 +525,12 @@ angular.module('starter')
                     point = new BMap.Point(117.144816, 36.672171);  // 创建点坐标
                 }
                 // $scope.point=point;
-                map.centerAndZoom(point, 12);
+                if($scope.service=='airport'||$scope.service=='park_car')
+                {
+                    map.centerAndZoom(point, 13);
+                }else{
+                    map.centerAndZoom(point, 12);
+                }
                 map.addControl(new BMap.NavigationControl());
                 map.addControl(new BMap.ScaleControl());
                 map.enableScrollWheelZoom(true);
@@ -306,4 +559,10 @@ angular.module('starter')
             });
             
         });
+
+        $scope.selectedTagStyle={
+            width: '30px',height: '30px',background: '#328bff',float: 'left',
+            'text-align': 'center',margin:'0px 4px'
+        };
+        $scope.unSelectedTagStyle={width: '30px',height: '30px',background: '#fff',float: 'left','text-align': 'center',margin:'0px 4px'};
     })

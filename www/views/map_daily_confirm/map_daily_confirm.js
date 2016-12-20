@@ -12,7 +12,6 @@ angular.module('starter')
 
 
         $scope.go_back = function () {
-            alert('go back');
             window.history.back();
         }
 
@@ -110,11 +109,14 @@ angular.module('starter')
             $scope.getServicePersonByUnitId();
 
 
-        //查询已绑定车辆,并显示车牌信息
+        //查询已绑定的空闲车辆,并显示车牌信息
         $scope.selectCarInfoByCarNum=function(item,modal){
 
             var data={
-                request:'fetchInsuranceCarInfoByCustomerId'
+                request:'fetchInsuranceCarInfoByCustomerId',
+                info:{
+                    carNum:null
+                }
             };
 
 
@@ -128,7 +130,11 @@ angular.module('starter')
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
-                    var cars=json.data;
+                    var cars=[];
+                    json.data.map(function (car,i) {
+                        if(car.idle==true)
+                            cars.push (car);
+                    })
                     var buttons=[];
                     buttons.push({text: "<b>创建新车</b>"});
                     cars.map(function(car,i) {

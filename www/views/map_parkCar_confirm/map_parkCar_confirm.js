@@ -36,7 +36,6 @@ angular.module('starter')
 
 
         $scope.go_back = function () {
-            alert('go back');
             window.history.back();
         }
 
