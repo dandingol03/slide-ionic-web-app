@@ -1,0 +1,46 @@
+
+<ion-view view-title='{{title}}' >
+
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr" style="font-size: 2.4em;"
+                    ng-click="go_back()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content scroll="false" >
+
+        <div style="width: 100%;height: 35px;padding:6px 0px;text-align: center;background: #eee;">
+                <span style="color:#444;font-size: 1em;">当前区域共搜索出{{recordCount}}条结果</span>
+        </div>
+
+        <div ng-if="records!==undefined&&records!==null">
+            <div class="list padding">
+
+                <div class="item item-divider" style="background: #fff;border:0px;border-bottom: 1px solid #ddd;
+                    font-weight: inherit;font-size: 1em;margin-bottom:1px ;text-align: center;">
+                    <span>您可以选择以下区或者县的搜索结果:</span>
+                </div>
+
+                <div class="item" style="border:0px;border-bottom:1px solid #ddd;font-weight:bolder;
+                            margin-bottom:1px;padding-top:3px;padding-bottom: 3px;"
+                     ng-repeat="(town, item) in records">
+                    <div style="width: 70%;display: inline-block;">
+                        <span style="vertical-align: middle;">
+                            {{town}}
+                        </span>
+                    </div>
+                    <div style="width: 30%;display: inline-block;" ng-click="navigate(town)">
+                        <span style="vertical-align: middle;">共{{item.length}}条</span>
+                        <span style="color:#666;font-size: 2.7em;vertical-align: middle;"><i class="fa fa-angle-right"></i></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </ion-content>
+</ion-view>

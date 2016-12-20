@@ -267,7 +267,7 @@ angular.module('starter')
         }
 
         $scope.clear_search=function () {
-            $scope.query=null;
+            $scope.root.query=null;
         }
 
         $scope.clickFunc=function (e) {

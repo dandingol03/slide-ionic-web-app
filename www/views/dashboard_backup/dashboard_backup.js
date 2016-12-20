@@ -4,7 +4,7 @@ angular.module('starter')
                                                $rootScope,$ionicModal,$timeout,
                                                $cordovaCamera,ionicDatePicker,
                                                $ionicActionSheet,$q,$cordovaFile,
-                                               BaiduMapService,$ionicLoading,$cordovaMedia,$cordovaCapture,
+                                               $ionicLoading,$cordovaMedia,$cordovaCapture,
                                                Proxy,$stateParams,$anchorScroll,
                                                $cordovaFileTransfer,$ionicPopup,$ionicSlideBoxDelegate,
                                                $cordovaImagePicker,$cordovaDatePicker,$cordovaToast){
@@ -64,13 +64,24 @@ angular.module('starter')
                         $state.go('car_insurance',{carInfo:JSON.stringify($rootScope.carInfo)});
                     }else{
                         //TODO:inject toast message
-                        $cordovaToast
-                            .show('您绑定的车辆已处于订单状态,请重新进入车辆管理界面选择车辆', 'long', 'center')
-                            .then(function(success) {
-                                $state.go('car_manage');
-                            }, function (error) {
-                                // error
+                        if(window.cordova)
+                        {
+                            $cordovaToast
+                                .show('您绑定的车辆已处于订单状态,请重新进入车辆管理界面选择车辆', 'long', 'center')
+                                .then(function(success) {
+                                    $state.go('car_manage');
+                                }, function (error) {
+                                    // error
+                                });
+                        }else{
+                            var popup=$ionicPopup.alert({
+                                title: '信息',
+                                template: '您绑绑定的车辆已处于订单状态，请进入车辆管理界面选择车辆'
                             });
+                            popup.then(function(res) {
+                                $state.go('car_manage');
+                            })
+                        }
                     }
                 })
             }else{
@@ -81,7 +92,7 @@ angular.module('starter')
 
         //车驾管选择种类
         $scope.carDrivingManageSelect=function() {
-            var buttons=[{text:'审车'},{text:'审证'},{text:'接送机'},{text:'接送站'}];
+            var buttons=[{text:'审车'},{text:'审证'},{text:'接送机'},{text:'接送站'},{text:'高德地图'}];
             $ionicActionSheet.show({
                 buttons:buttons,
                 titleText: '选择车驾管类型',
@@ -108,6 +119,9 @@ angular.module('starter')
                             break;
                         case 3:
                             $state.go('map_parkCar_search');
+                            break;
+                        case 4:
+                            $state.go('gaoDeHome');
                             break;
                         default:
                             break;

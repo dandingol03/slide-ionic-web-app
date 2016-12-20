@@ -113,18 +113,19 @@ angular.module('starter')
             var center=map.getCenter();
             $scope.gravity={longitude:0,latitude:0};
             //仅容许根据区进行搜索
-            var reg=/\s*(.*区)/
-            var re=reg.exec($scope.root.query);
-            if(re!==undefined&&re!==null)
+            if($scope.root.query!==undefined&&$scope.root.query!==null&&$scope.root.query!='')
             {
-                var district=re[1];
-                //区搜索
-                if(district==undefined||district==null||district=='')
+                var reg=/\d|\w/;
+                var re=reg.exec($scope.root.query);
+                if(re!==undefined&&re!==null)
                 {
-                    return;
+                    var myPopup = $ionicPopup.alert({
+                        template: '您不能输入数字或字母',
+                        title: 'info'
+                    });
+                    return ;
+                }else{
                 }
-            }else{
-                return ;
             }
 
             $ionicLoading.show({
@@ -140,7 +141,7 @@ angular.module('starter')
                 data: {
                     request: 'fetchDetectUnitsInArea',
                     info: {
-                        townName: district
+                        townName: $scope.root.query
                     }
                 }
             }).then(function (res) {
@@ -280,7 +281,7 @@ angular.module('starter')
         }
 
         $scope.clear_search=function () {
-            $scope.query=null;
+            $scope.root.query=null;
         }
 
         $scope.clickFunc=function (e) {
