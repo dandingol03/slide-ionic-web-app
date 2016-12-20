@@ -3,7 +3,7 @@
  */
 angular.module('starter')
   .controller('integrationController',function($scope,$state,$http
-                                               ,$rootScope,$ionicLoading,$ionicPopup){
+                                               ,$rootScope,$ionicLoading,$ionicPopup,$ionicModal){
 
     $scope.go_back=function(){
       window.history.back();
