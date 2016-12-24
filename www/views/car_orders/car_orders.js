@@ -68,6 +68,7 @@ angular.module('starter')
               $scope.applyedList = [];
               if(json.re==1) {
                   $scope.orderUnpricedList=json.data;
+
                   $scope.orderUnpricedList.map(function(order,i){
                       if(order.orderState==2){
                           $scope.orderPricedList.push(order);

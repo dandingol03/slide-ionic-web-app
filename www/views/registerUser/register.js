@@ -107,6 +107,10 @@ angular.module('starter')
                         '&&password='+$scope.info.password+'&&mobilePhone='+$scope.info.mobilePhone;
                 }
 
+                if($scope.info.mail!==undefined&&$scope.info.mail!==null&&$scope.info.mail!='')
+                {
+                    url+='&&EMAIL='+$scope.info.mail;
+                }
 
                 $http({
                     method:"POST",
