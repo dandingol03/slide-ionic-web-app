@@ -107,6 +107,10 @@ angular.module('starter')
                         '&&password='+$scope.info.password+'&&mobilePhone='+$scope.info.mobilePhone;
                 }
 
+                if($scope.info.mail!==undefined&&$scope.info.mail!==null&&$scope.info.mail!='')
+                {
+                    url+='&&EMAIL='+$scope.info.mail;
+                }
 
                 $http({
                     method:"POST",
@@ -198,6 +202,8 @@ angular.module('starter')
         //登录
         $scope.login = function() {
 
+
+
             $ionicLoading.show({
                 template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
             });
@@ -205,7 +211,7 @@ angular.module('starter')
 
             $http({
                 method: "POST",
-                data: "grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
+                data: "grant_type=password&password=" + $scope.info.password + "&username=" + $scope.info.username,
                 url: Proxy.local() + '/login',
                 headers: {
                     'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
@@ -219,13 +225,13 @@ angular.module('starter')
                 var access_token = json.access_token;
 
                 if(window.plugins!==undefined&&window.plugins!==null) {
-                    $cordovaPreferences.store('username', $scope.user.username)
+                    $cordovaPreferences.store('username', $scope.info.username)
                         .success(function(value) {
                         })
                         .error(function(error) {
                             alert("Error: " + error);
                         });
-                    $cordovaPreferences.store('password', $scope.user.password)
+                    $cordovaPreferences.store('password', $scope.info.password)
                         .success(function(value) {
                         })
                         .error(function(error) {
@@ -298,7 +304,7 @@ angular.module('starter')
 
                         $http({
                             method: "POST",
-                            url: Proxy.local() + "/validateUser?username="+$scope.user.username+'&'+'password='+$scope.user.password,
+                            url: Proxy.local() + "/validateUser?username="+$scope.info.username+'&'+'password='+$scope.info.password,
                             headers: {
                                 'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
                                 'Content-Type': 'application/x-www-form-urlencoded'
