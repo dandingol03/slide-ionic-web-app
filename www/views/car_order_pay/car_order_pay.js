@@ -691,7 +691,41 @@ angular.module('starter')
 
         //提交车险方案
         $scope.apply=function() {
-            $scope.checkCarNeedValidateWhetherOrNot();
+            //TODO:check if order has been payed
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request: 'getOrderStateByOrderId',
+                    info: {
+                        orderId:$scope.order.orderId,
+                        type:'car'
+                    }
+                }
+            }).then(function (res) {
+                var json=res.data;
+                if(json.re==1) {
+                    var state=json.data;
+                    if(state!=3)
+                    {
+                        var alertPopup = $ionicPopup.alert({
+                            title: '信息',
+                            template: '您已支付过一次'
+                        });
+                    }else{
+                        $scope.checkCarNeedValidateWhetherOrNot();
+                    }
+                }else{
+                    var alertPopup = $ionicPopup.alert({
+                        title: '错误',
+                        template: '无效的orderId'
+                    });
+                }
+            })
+
         }
 
 
