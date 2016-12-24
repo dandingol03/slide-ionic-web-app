@@ -15,9 +15,6 @@ angular.module('starter')
 
       $scope.users=[];
 
-
-
-
       if($rootScope.username!==undefined&&$rootScope.username!==null){
           $scope.user.username = $rootScope.username;
       }

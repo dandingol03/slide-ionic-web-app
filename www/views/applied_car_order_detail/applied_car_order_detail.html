@@ -21,11 +21,11 @@
             </div>
             <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
                 车牌号:
-                <span style="position: absolute;right:20%;">{{order.carInfo.carNum}}</span>
+                <span style="position: absolute;left: 35%;">{{order.carInfo.carNum}}</span>
             </div>
             <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
                 订单号:
-                <span style="position: absolute;right:20%;">{{order.orderNum}}</span>
+                <span style="position: absolute;left: 35%;">{{order.orderNum}}</span>
             </div>
 
         </div>
@@ -37,11 +37,11 @@
             <div class="item item-divider">
                 订单产品
             </div>
-            <div class="item" style="padding: 16px;" ng-repeat="product in order.products">
+            <div class="item" style="padding: 16px;position: relative;" ng-repeat="product in order.products">
                 <span>
-                  {{product.productName}}
+                  {{product.productName}}:
                 </span>
-                <span style="margin-left: 15%;" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
+                <span style="position:absolute;left:35%" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
                   (保额){{product.insuranceType}}
                 </span>
 
@@ -53,11 +53,11 @@
             <div class="item" style="padding:16px;position: relative;border-left:0px;border-top:0px;
             border-right:0px;color:rgba(228, 93, 46, 0.87);font-size: 1em;">
                 被保险人:
-                <span style="position: absolute;right:20%;">{{order.insuranceder.perName}}</span>
+                <span style="position: absolute;left:35%;">{{order.insuranceder.perName}}</span>
             </div>
             <div class="item" style="padding:16px;font-size: 1em;color:rgba(228, 93, 46, 0.87);">
                 申请日期:
-                <span style="position: absolute;right:20%;">
+                <span style="position: absolute;left:35%;">
                     {{order.applyTime|date:'yyyy-MM-dd HH:mm'}}
                 </span>
             </div>

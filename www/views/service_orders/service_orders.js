@@ -7,7 +7,12 @@ angular.module('starter')
                                                  $rootScope,Proxy,$ionicLoading,
                                                  $ionicHistory){
 
-    $scope.tabIndex=0;
+      if($rootScope.flags.serviceOrders.clear==true){
+          $state.go('tabs.my');
+          $rootScope.flags.serviceOrders.clear==false;
+      }
+
+      $scope.tabIndex=0;
 
     $scope.goto=function(url){
       $location.path(url);

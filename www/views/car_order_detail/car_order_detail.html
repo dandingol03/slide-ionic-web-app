@@ -22,15 +22,15 @@
     <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
       <div class="item" style="padding:16px;position: relative">
         车牌号:
-        <span style="position: absolute;right:20%;">{{order.carInfo.carNum}}</span>
+        <span style="position: absolute;left:35%;">{{order.carInfo.carNum}}</span>
       </div>
       <div class="item" style="padding:16px;">
         投保人:
-        <span style="position: absolute;right:20%;">{{order.insurer.perName}}</span>
+        <span style="position: absolute;left:35%;">{{order.insurer.perName}}</span>
       </div>
       <div class="item" style="padding:16px;">
         被保险人:
-        <span style="position: absolute;right:20%;">{{order.insuranceder.perName}}</span>
+        <span style="position: absolute;left:35%;">{{order.insuranceder.perName}}</span>
       </div>
     </div>
 
@@ -43,10 +43,10 @@
         订单产品
       </div>
       <div class="item" style="padding: 16px;" ng-repeat="item in order.items">
-          <span style="width: 55%;display: inline-block;">
-            {{item.productName}}
+          <span>
+            {{item.productName}}:
           </span>
-          <span style="width: 45%;display: inline-block;text-align: center">
+          <span style="position:absolute;left:35%;text-align: center">
             {{item.insuranceFee}}
           </span>
       </div>
@@ -56,13 +56,13 @@
     <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
       <div class="item" href="" style="padding:16px;color: rgba(228, 93, 46, 0.87);">
         总保费:
-        <span style="position: absolute;right:20%;color: rgba(228, 93, 46, 0.87);">
+        <span style="position: absolute;left:35%;color: rgba(228, 93, 46, 0.87);">
           {{order.insuranceFeeTotal}}
         </span>
       </div>
       <div class="item" href="" style="padding:16px;">
         生效日期:
-        <span style="position: absolute;right:20%;">
+        <span style="position: absolute;left:35%">
           {{order.orderDate|date:'yyyy-MM-dd HH:mm'}}
         </span>
       </div>

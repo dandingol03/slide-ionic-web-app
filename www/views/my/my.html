@@ -3,100 +3,107 @@
 
 
         <ion-content   lazy-scroll style="position: relative">
-
-          <!--<div class="list padding">-->
-            <!--<div class="item"-->
-                 <!--style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;-->
-             <!--padding:10px;background-color:transparent;overflow:initial">-->
-              <!--<span ng-click="toggleLeft()" style="font-size: 1.8em;">-->
-                <!--<i class="ion-navicon-round"></i>-->
-              <!--</span>-->
-            <!--</div>-->
-          <!--</div>-->
-
             <div style="width: 100%;height: 100%;">
-                <div class="my-info-bk" style="width: 100%;height:20%;position: relative;">
-                    <div style="position: absolute;bottom:10px;left: 8px;">
+                <div class="my-info-bk" style="width: 100%;height:40%;position: relative;">
+                    <div style="position: absolute;top:40%;left:38%;">
                         <div style="width: 95px;text-align: center;">
                         <span style="max-height: 95px;max-width: 95px;font-size: 6em;color:#fff;">
-                            <i class="fa fa-user-circle-o"></i>
+                            <img src="img/my_face.png"/>
                         </span>
-                            <h5 style="width: 100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;">
+                            <h5 style="width:100%;text-align: center;margin-top:0px;margin-bottom:0px;color:#fff;">
                                 {{userInfo.perName}}
                             </h5>
                         </div>
                     </div>
 
-                    <div style="position: absolute;right: 10%;bottom: 10%;">
-                        <span style="color:#fff;">积分</span>
-                        <span style="color:#fff;font-size: 2em;">${{score}}</span>
+                    <div style="height: 10%;width: 100%;background-color:transparent">
+                        <div class="item" style="padding:4px;border-bottom:1px solid white;background-color: transparent;">
+                            <ul>
+                                <li style="width:15%;float: right;text-align: center;margin-top:3%"
+                                    ng-click="go_to('passwordModify')">
+                                    <div style="font-size: 2em;">
+                                        <img src="img/my_menue.png"/>
+                                    </div>
+                                    <div style="font-size: 0.8em">
+                                        密码修改
+                                    </div>
+                                </li>
+
+                                <li style="width:15%;float:right;text-align:center;margin-top:3%" ng-click="quit()">
+                                    <div style="font-size: 2em;">
+                                        <img src="img/my_exit.png"/>
+                                    </div>
+                                    <div style="font-size: 0.8em">
+                                        退出
+                                    </div>
+                                </li>
+
+                                <li style="width:60%;float:right;text-align:center;margin-top:5%;padding-left:23%;">
+                                    <div style="color: white;font-size: 1.2em;">
+                                        个人中心
+                                    </div>
+                                </li>
+
+                                <li style="width:10%;float:right;text-align:left;margin-top:5%;padding-left:3%"
+                                    ng-click="go_to('tabs.dashboard_backup')">
+                                    <i class="ion-ios-arrow-thin-left" style="color:white;font-size:2em"></i>
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
-                <div style="height: 10%;width: 100%;">
+                    <div style="position: absolute;right:5%;bottom:5%;" ng-click="gotoNotificationPanel()">
 
+                            <div style="color:white;display:inline-block;">
+                                通知
+                            </div>
 
-                    <div class="item" style="padding: 4px;border-bottom:0px;">
-                        <ul>
-                            <li style="width: 20%;float: right;text-align: center"
-                                ng-click="go_to('passwordModify')">
-                                <div style="font-size: 2em;">
-                                    <i class="ion-locked"></i>
-                                </div>
-                                <div>
-                                    密码修改
-                                </div>
-                            </li>
-                            <li style="width: 20%;float:right;text-align: center;" ng-click="quit()">
-                                <div style="font-size: 2em;">
-                                    <i class="ion-power"></i>
-                                </div>
-                                <div>
-                                    退出
-                                </div>
-                            </li>
-                            <li style="width: 20%;float:right;text-align: center;"
-                                ng-click="gotoNotificationPanel()">
-                                <div ng-if="$rootScope.notifications!==undefined&&$rootScope.notifications!==null&&$rootScope.notifications.length>0">
-                                    <div style="width: 100%;height: 100%;position: relative;">
+                            <div ng-if="$rootScope.notifications!==undefined&&$rootScope.notifications!==null&&$rootScope.notifications.length>0">
+                                <div style="width: 100%;height: 100%;position: relative;">
                                         <span style="font-size: 2em;color:rgb(21, 232, 228);">
                                             <i class=" ion-chatbox-working"></i>
                                         </span>
                                         <span style="position: absolute;right: 20%;top:-12%;
                                             color:#fff;width: 20px;height: 17px;background:#ff3b30;border-radius: 10px;">
-                                            {{$rootScope.notifications.length}}
+                                            {{notification_count}}
                                         </span>
-                                    </div>
                                 </div>
-                                <div ng-if="$rootScope.notifications==undefined||$rootScope.notifications==null||$rootScope.notifications.length==0">
-                                    <div style="width: 100%;height: 100%;position: relative;">
-                                        <span style="font-size: 2em;">
+                            </div>
+
+                            <div ng-if="$rootScope.notifications==undefined||$rootScope.notifications==null||$rootScope.notifications.length==0"
+                                 style="display:inline-block;">
+                                <div style="width: 100%;height: 100%;position: relative;">
+                                        <span style="font-size: 2em;color: white;">
                                             <i class=" ion-chatbox-working"></i>
                                         </span>
-                                    </div>
                                 </div>
-                                <div>
-                                    通知
-                                </div>
-                            </li>
+                            </div>
 
-
-                        </ul>
                     </div>
 
+
+
+                    <div style="position: absolute;left:5%;bottom:5%;">
+                        <span style="color:#fff;font-size:1.2em">积分:</span>
+                        <span style="color:#fff;font-size:1.2em;">${{score}}</span>
+                    </div>
                 </div>
 
-                <div style="height: 70%;width: 100%;">
+
+                <div style="height: 60%;width: 100%;">
                     <div class="item" style="padding: 9px;padding-left:4px;padding-right:11px;margin-top:2px;background: transparent;
                         width: 100%;border:0px;">
                         <ul style="margin-bottom:6px;">
                             <li style="width: 33.333%;min-height:104px;display: inline-block;text-align: center;background: #fff;"
                                 ng-click="go_to('contact_information')">
                                 <div style="font-size: 2em;margin-top:14%;color:rgba(255, 0, 0, 0.52);">
-                                    <i class="fa fa-phone"></i>
+                                    <img src="img/my_connect.png"/>
                                 </div>
-                                <div>
-                                    联系方式
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                      联系方式
+                                    </span>
                                 </div>
                             </li>
 
@@ -104,10 +111,12 @@
                             text-align: center;background: #fff;"
                                 ng-click="go_to('myWallet')">
                                 <div style="font-size: 2em;margin-top:14%;color:#f1c300">
-                                    <i class="fa fa-dollar"></i>
+                                    <img src="img/my_redBag.png"/>
                                 </div>
-                                <div>
-                                    我的红包
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                      我的红包
+                                    </span>
                                 </div>
                             </li>
 
@@ -115,10 +124,12 @@
                             text-align: center;background: #fff;"
                                 ng-click="go_to('integration')">
                                 <div style="font-size: 2em;margin-top:14%;color:rgba(187, 110, 50, 0.94);">
-                                    <i class="ion-ribbon-b"></i>
+                                    <img src="img/my_credit.png"/>
                                 </div>
-                                <div>
-                                    我的积分
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                       我的积分
+                                    </span>
                                 </div>
                             </li>
                         </ul>
@@ -128,20 +139,24 @@
                             text-align: center;background: #fff;"
                                 ng-click="go_to('car_orders')">
                                 <div style="font-size: 2em;margin-top:14%;color:#6f357b">
-                                    <i class="fa fa-car"></i>
+                                    <img src="img/my_carInsurance.png"/>
                                 </div>
-                                <div>
-                                    车险订单
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                        车险订单
+                                    </span>
                                 </div>
                             </li>
                             <li style="width: 33.3333%;min-height:104px;display: inline-block;
                             text-align: center;background: #fff;"
                                 ng-click="go_to('life_insurance_orders')">
                                 <div style="font-size: 2em;margin-top:14%;color:rgba(255, 116, 116, 0.81);">
-                                    <i class="fa fa-heart-o"></i>
+                                    <img src="img/my_life.png"/>
                                 </div>
-                                <div>
-                                    寿险订单
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                       寿险订单
+                                    </span>
                                 </div>
                             </li>
 
@@ -149,10 +164,12 @@
                             text-align: center;background: #fff;"
                                 ng-click="go_to('service_orders')">
                                 <div style="font-size: 2em;margin-top:14%;color:#0023f1">
-                                    <i class="fa fa-handshake-o"></i>
+                                    <img src="img/my_serviceOrder.png"/>
                                 </div>
-                                <div>
-                                    服务订单
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                       服务订单
+                                    </span>
                                 </div>
                             </li>
                         </ul>
@@ -162,30 +179,36 @@
                             text-align: center;background: #fff;"
                                 ng-click="go_to('advise_gift')">
                                 <div style="font-size: 2em;margin-top:14%;color:#85bb32">
-                                    <i class="fa fa-gift"></i>
+                                    <img src="img/my_gift.png"/>
                                 </div>
-                                <div>
-                                    推荐有礼
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                      推荐有礼
+                                    </span>
                                 </div>
                             </li>
                             <li style="width: 33.3333%;min-height:104px;display: inline-block;
                             text-align: center;background: #fff;"
                                 ng-click="go_to('about_us')">
                                 <div style="font-size: 2em;margin-top:14%;color:#111">
-                                    <i class="fa fa-users"></i>
+                                    <img src="img/my_aboutUs.png"/>
                                 </div>
-                                <div>
-                                    关于我们
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                        关于我们
+                                    </span>
                                 </div>
                             </li>
                             <li style="width: 33.3333%;min-height:104px;display: inline-block;
                             text-align: center;background: #fff;"
                                 ng-click="go_to('car_manage')">
                                 <div style="font-size: 2em;margin-top:14%;color:#ef70ff">
-                                    <i class="fa fa-gear"></i>
+                                    <img src="img/my_carManage.png"/>
                                 </div>
-                                <div>
-                                    车辆管理
+                                <div style="margin-top:8%">
+                                    <span style="font-size: 0.9em;color: #7B7575;">
+                                        车辆管理
+                                    </span>
                                 </div>
                             </li>
                         </ul>

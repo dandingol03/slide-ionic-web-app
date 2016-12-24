@@ -97,12 +97,13 @@ angular.module('starter')
         $scope.selectCarInfoByCarNum=function(item,modal){
 
             var data={
-                request:'fetchInsuranceCarInfoByCustomerId'
+                request:'fetchInsuranceCarInfoByCustomerId',
+                info:{carNum:''}
             };
+
             data.info = {
                 carNum: $scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null&&$scope.carInfo.carNum!=''?$scope.carInfo.carNum:null
             };
-
 
             $http({
                 method: "POST",
@@ -115,6 +116,7 @@ angular.module('starter')
                 var json=res.data;
                 if(json.re==1) {
                     var cars=[];
+
                     if(json.data!==undefined&&json.data!==null)
                     {
                         json.data.map(function (car, i) {
@@ -272,10 +274,13 @@ angular.module('starter')
             $scope.carManage.serviceType=21;
             if(detectUnit!==undefined&&detectUnit!==null)//已选检测公司
             {
+
                 $scope.carManage.servicePlaceId=detectUnit.placeId;
+
                 if( $scope.carManage.servicePerson.servicePersonId!==undefined&& $scope.carManage.servicePerson.servicePersonId!==null){
                     $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
                 }
+
 
                 $scope.carManage.orderState=2;
 
@@ -425,6 +430,8 @@ angular.module('starter')
                             template: '服务订单生成成功'
                         });
 
+                       $rootScope.flags.serviceOrders.onFresh=true;
+                       $rootScope.flags.serviceOrders.clear=true;
                         myAlert.then(function(res) {
                             $state.go('service_orders');
                         });

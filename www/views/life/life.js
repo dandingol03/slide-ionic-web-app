@@ -209,6 +209,7 @@ angular.module('starter')
                                 if(res){
                                     $rootScope.flags.lifeOrders.onFresh=true;
                                     $state.go('life_insurance_orders',{tabIndex:0});
+                                    $rootScope.flags.lifeOrders.clear=true;
                                 }else {
                                     console.log('You are not sure');
                                 }

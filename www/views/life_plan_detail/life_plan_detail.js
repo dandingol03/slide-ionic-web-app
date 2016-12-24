@@ -89,11 +89,11 @@ angular.module('starter')
           cancelText: 'Cancel',
           buttonClicked: function(index) {
             $scope.item.main.feeYearTypeName = buttons[index].text;
-            $scope.item.main.feeYearType = index+1;
             if(index!=5){
+              $scope.item.main.feeYearType = buttons[index].year;
               $scope.item.main.feeYear=buttons[index].year;
             }else{
-
+              $scope.item.main.feeYearType = 60-$scope.age;
               $scope.item.main.feeYear = 60-$scope.age;
             }
             $scope.changeInsuranceFee();
@@ -116,8 +116,8 @@ angular.module('starter')
           request: 'getLifeInsuranceFee',
           info:{
             productId:$scope.item.main.product.productId,
-            feeYearType:$scope.item.feeYearType,
-            insurancederId:insurancederId
+            feeYearType:$scope.item.main.feeYearType,
+            insurancederId: insurancederId
           }
 
         }

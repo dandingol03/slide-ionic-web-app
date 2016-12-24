@@ -108,13 +108,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             carOrders:{
                 onFresh:true,
                 data:{
-                }
+                },
+                clear:false
             },
             lifeOrders:{
                 onFresh:true
             },
             serviceOrders:{
-                onFresh:true
+                onFresh:true,
+                clear:false
             }
         }
 

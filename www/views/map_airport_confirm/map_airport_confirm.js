@@ -379,10 +379,10 @@ angular.module('starter')
                             title: '信息',
                             template: '服务订单生成成功'
                         });
+
                         $rootScope.flags.serviceOrders.onFresh=true;
+                        $rootScope.flags.serviceOrders.clear=true;
                         myAlert.then(function(res) {
-                            $ionicHistory.clearHistory();
-                            $ionicHistory.clearCache();
                             $state.go('service_orders');
                         });
                     }

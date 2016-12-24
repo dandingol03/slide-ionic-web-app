@@ -7,6 +7,11 @@ angular.module('starter')
                                                        $location,$rootScope,$stateParams,
                                                        $ionicPopup,Proxy,$ionicLoading){
 
+      if($rootScope.flags.lifeOrders.clear==true){
+          $state.go('tabs.my');
+          $rootScope.flags.lifeOrders.clear==false;
+      }
+
     $scope.changedState= false;
 
       //tabIndex选定
