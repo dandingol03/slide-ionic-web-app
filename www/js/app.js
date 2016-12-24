@@ -119,7 +119,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 clear:false
             },
             carManage:{
-                onFresh:true
+                onFresh:true,
+                data:{
+
+                }
             }
         }
 
