@@ -117,6 +117,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             serviceOrders:{
                 onFresh:true,
                 clear:false
+            },
+            carManage:{
+                onFresh:true
             }
         }
 
@@ -662,6 +665,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_manage',{
+            cache: false,
             url:'/car_manage',
             controller:'carManageController',
             templateUrl:'views/car_manage/car_manage.html'

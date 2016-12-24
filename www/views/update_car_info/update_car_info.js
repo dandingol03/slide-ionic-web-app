@@ -490,11 +490,13 @@ angular.module('starter')
                                                                       template: '车辆信息保存成功'
                                                                   });
                                                                   popup.then(function(res) {
+                                                                      $rootScope.flags.carManage.onFresh=true;
                                                                       $state.go('car_manage');
                                                                   })
                                                                   $timeout(function(){
                                                                       if(popup.$$state==0){
                                                                           popup.close();
+                                                                          $rootScope.flags.carManage.onFresh=true;
                                                                           $state.go('car_manage');
                                                                       }
                                                                   },300);
