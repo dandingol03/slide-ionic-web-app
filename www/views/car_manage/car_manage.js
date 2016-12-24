@@ -141,8 +141,10 @@ angular.module('starter')
             });
         }
 
-        $scope.fetchRelativeCars();
-
+        if($rootScope.flags.carManage.onFresh==true){
+            $scope.fetchRelativeCars();
+            $rootScope.flags.carManage.onFresh=false;
+        }
 
         $scope.Mutex=function(item,field,cluster) {
                            // car checked relativeCars
