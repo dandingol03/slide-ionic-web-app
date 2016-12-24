@@ -4,7 +4,8 @@
 angular.module('starter')
     .controller('maintainController',function($scope,$state,$stateParams,
                                               $ionicModal,$ionicPopup,$rootScope,
-                                              $cordovaCapture,$cordovaMedia,$ionicScrollDelegate){
+                                              $cordovaCapture,$cordovaMedia,$ionicScrollDelegate,
+                                              $timeout,$interval){
 
         $scope.goBack=function () {
             window.history.back();
@@ -37,7 +38,7 @@ angular.module('starter')
 
 
         $scope.dailys = [
-            {subServiceId:'1',subServiceTypes:'机油,机滤',serviceType:'11',checked:false},
+            {subServiceId:'1',subServiceTypes:'机油,机滤',serviceType:'11',checked:true},
             {subServiceId:'2',subServiceTypes:'检查制动系统,更换刹车片',serviceType:'11',checked:false},
             {subServiceId:'3',subServiceTypes:'雨刷片更换',serviceType:'11',checked:false},
             {subServiceId:'4',subServiceTypes:'轮胎更换',serviceType:'11',checked:false},
@@ -48,11 +49,6 @@ angular.module('starter')
             {subServiceId:'9',subServiceTypes:'更换空调滤芯',serviceType:'11',checked:false},
             {subServiceId:'10',subServiceTypes:'更换蓄电池,防冻液',serviceType:'11',checked:false}
         ];
-
-
-        $scope.dailys.map(function(daily,i) {
-            daily.checked=false;
-        })
 
 
         /**
@@ -157,7 +153,7 @@ angular.module('starter')
 
             var checkFlag=false;
 
-            if($scope.dailys!==undefined&&$scope.dailys!==null)
+            if($scope.dailys!==undefined&&$scope.dailys!==null&&$scope.tabIndex==0)
             {
                 for(var i=0;i<$scope.dailys.length;i++)
                 {
@@ -170,9 +166,9 @@ angular.module('starter')
                 }
             }
 
+            var threshold=0;
             if($scope.tabIndex==1)
             {
-                var threshold=0;
                 if($scope.maintain.description.text!==undefined&&$scope.maintain.description.text!==null&&$scope.maintain.description.text!='')
                     threshold++;
                 if($scope.maintain.description.audio!==undefined&&$scope.maintain.description.audio!==null)
@@ -191,14 +187,14 @@ angular.module('starter')
 
 
 
-            if(checkFlag||$scope.subTabIndex!=0)
+            if(checkFlag||$scope.tabIndex!=0)
             {
 
                 $rootScope.maintain.dailys=$scope.dailys;
                 console.log('subTabIndex='+$scope.subTabIndex);
                 var serviceType=null;
                 var maintain=$scope.maintain;
-                switch($scope.subTabIndex){
+                switch($scope.tabIndex){
                     case 0:
                         serviceType='11';
                         var subServiceTypes=[];
@@ -316,23 +312,50 @@ angular.module('starter')
 
         //开始录音
 
+        $scope.isRecording=false;
+
         $scope.startRecord=function(){
             try{
 
-                if (ionic.Platform.isIOS()) {
-                    CordovaAudio.startRecordAudio(function(data) {
-                        alert('data=\r\n'+data);
-                    })
-                } else if(ionic.Platform.isAndroid()) {
-                    var src = "danding.mp3";
-                    var media = $cordovaMedia.newMedia(src);
-                    media.startRecord();
-                    $scope.media=media;
+                if(window.cordova)
+                {
+                    if (ionic.Platform.isIOS()) {
+                        CordovaAudio.startRecordAudio(function(data) {
+                            alert('data=\r\n'+data);
+                        })
+                    } else if(ionic.Platform.isAndroid()) {
+
+                        if($scope.isRecording==true)
+                        {}else{
+
+                            alert('begin record');
+                            //var src = "/danding.mp3";
+                            var src=null;
+                            if(cordova.file!==undefined&&cordova.file!==null)
+                            {
+                                src='danding.mp3';
+                            }else{
+                                src='/storage/emulated/0/danding.mp3';
+                                src='danding.mp3';
+                            }
+                            var media = $cordovaMedia.newMedia(src);
+                            media.startRecord();
+                            $scope.media_record_start=new Date();
+                            $scope.media=media;
+                            $scope.isRecording=true;
+                        }
+                    }else{}
+                }
+                else{
+                    $scope.isRecording=true;
                 }
             }catch(e) {
                 alert('error=\r\n'+ e.toString());
             }
         }
+
+        $scope.recordFlag='record';
+
 
         //暂停录音
         $scope.stopRecord=function(){
@@ -342,16 +365,31 @@ angular.module('starter')
             //  alert('data=\r\n' + $scope.mediaRec.media[field]);
             //}
             try{
-                if( ionic.Platform.isIOS()){
-                    CordovaAudio.stopRecordAudio(function(success) {
-                        $scope.maintain.description.audio=success;
-                        alert('url=\r\n' + $scope.maintain.description.audio);
 
-                    })
-                }else if(ionic.Platform.isAndroid()){
-
-                    $scope.media.stopRecord();
-                    $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.mp3';
+                if(window.cordova)
+                {
+                    if( ionic.Platform.isIOS()){
+                        CordovaAudio.stopRecordAudio(function(success) {
+                            $scope.maintain.description.audio=success;
+                            alert('url=\r\n' + $scope.maintain.description.audio);
+                            $scope.isRecording=false;
+                        })
+                    }else if(ionic.Platform.isAndroid()){
+                        if($scope.isRecording==false) {
+                        }else{
+                            alert('stop record');
+                            $scope.media.stopRecord();
+                            $scope.media_record_finish=new Date();
+                            $timeout(function () {
+                                var timeling=($scope.media_record_finish.getTime()-$scope.media_record_start)/1000;
+                                alert('time length=' + timeling);
+                            });
+                            $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.mp3';
+                            $scope.isRecording=false;
+                        }
+                    }else{}
+                }else{
+                    $scope.isRecording=false;
                 }
 
             }catch(e)
@@ -364,14 +402,25 @@ angular.module('starter')
         $scope.play=function(){
             //$scope.mediaRec.play();
             try{
+                $scope.media.media.getCurrentPosition(function (pos) {
+                    if(pos>0)
+                    {
+                        alert('音频仍在播放');
+                    }
+                    else{
+                        if($scope.isRecording==false&&$scope.media!==undefined&&$scope.media!==null)
+                        {
+                            if( ionic.Platform.isIOS()){
+                                CordovaAudio.playingRecorder(function(success) {
+                                    alert('success=\r\n'+success);
+                                })
+                            }else if(ionic.Platform.isAndroid()){
+                                $scope.media.play();
+                            }
+                        }
+                    }
+                });
 
-                if( ionic.Platform.isIOS()){
-                    CordovaAudio.playingRecorder(function(success) {
-                        alert('success=\r\n'+success);
-                    })
-                }else if(ionic.Platform.isAndroid()){
-                    $scope.media.play();
-                }
             }catch(e)
             {
                 alert('error=\r\n' + e.toString());

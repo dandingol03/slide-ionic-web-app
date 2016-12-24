@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                         </div>
-                        <ion-scroll style="width: 100%;height: 90%;" delegate-handle="scroll-handle" on-scroll="scrollChange()">
+                        <ion-scroll style="width: 100%;height: 94%;" delegate-handle="scroll-handle" on-scroll="scrollChange()">
 
                             <div class="item" ng-repeat="plot in populations[tag].plots" ng-click="navigate(plot)">
                                 <div>
@@ -79,6 +79,7 @@
                                     </li>
                                 </ul>
                             </div>
+                            <div style="width: 100%;height: 20px;"></div>
                         </ion-scroll>
                     </div>
                 </div>
@@ -184,6 +185,24 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 全选 -->
+                <div style="position: absolute;left: 7px;top:25%;height:35px;z-index: 1000;">
+                    <div class="card" style="display: table;width: 45px;height: 100%;margin:0px;text-align: center;">
+                        <div style="display:table-cell;vertical-align: middle;background:#00c9ff;color:#666"
+                             ng-click="SelectAll(places )">
+                            <div>
+                                <span style="font-size: 2em;color:#fff;">
+                                    <i class="ion-checkmark-round"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <span style="font-weight: bolder;color:#fff;">全选</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
 

@@ -59,6 +59,7 @@ angular.module('starter')
                 map.addOverlay(mk);
             });
 
+            $scope.map=map;
 
         }
 
@@ -72,7 +73,7 @@ angular.module('starter')
                 $scope.reRender();
             }else{
                 var ele=angular.element(document.querySelector('#angular_baidu_map'));
-                ele.css('height',(screen.height-425)+'px' );
+                ele.css('height',(screen.height-335)+'px' );
                 //TODO:re-render map
                 $scope.reRender();
             }
@@ -184,6 +185,74 @@ angular.module('starter')
         $scope.Set = function (item, field, value) {
             item[field] = value;
         }
+
+        $scope.SelectAll=function (set) {
+            //选择全集
+            if(set!==undefined&&set!==null&&set.length>0) {
+                switch($scope.service)
+                {
+                    case 'administrator':
+                        $state.go('map_administrate_confirm',
+                            {contentInfo: JSON.stringify({detectUnites: set,carInfo:$scope.carInfo})});
+                        break;
+                    case 'paper_validate':
+                        $state.go('map_paperValidate_confirm',
+                            {contentInfo: JSON.stringify({places: set,carInfo:$scope.carInfo})});
+                        break;
+                    case 'airport':
+                        var serviceName=null;
+                        switch($scope.mode)
+                        {
+                            case 'pickUp':
+                                serviceName='接机服务';
+                                break;
+                            case 'seeOff':
+                                serviceName='送机服务';
+                                break;
+                        }
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '信息',
+                            template: '您目前选择的是'+serviceName+'，确认之后按下OK'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res) {
+                                $state.go('map_airport_confirm', {
+                                    contentInfo: JSON.stringify({mode:$scope.mode,units: set,carInfo:$scope.carInfo
+                                    })});
+                            } else {
+                            }
+                        });
+                        break;
+                    case 'park_car':
+                        var serviceName=null;
+                        switch($scope.mode)
+                        {
+                            case 'pickUp':
+                                serviceName='接站服务';
+                                break;
+                            case 'seeOff':
+                                serviceName='送站服务';
+                                break;
+                        }
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '信息',
+                            template: '您目前选择的是'+serviceName+'，确认之后按下OK'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res) {
+                                $state.go('map_parkCar_confirm', {
+                                    contentInfo: JSON.stringify({mode:$scope.mode,units: set,carInfo:$scope.carInfo
+                                    })});
+                            } else {
+                            }
+                        });
+                        break;
+                }
+            }
+        }
+
+
+
 
         $scope.navigate=function (place) {
             switch($scope.service)
@@ -338,8 +407,9 @@ angular.module('starter')
                                                     name:place.name!==undefined&&place.name!==null?place.name:place.unitName,
                                                     distance:place.distance,
                                                     address:place.address,
-                                                    phone:place.phone}
-                                                    );
+                                                    phone:place.phone,
+                                                    placeId:place.placeId!==undefined&&place.placeId!==null?place.placeId:place.unitId
+                                                });
                                             flagOfBia=false;
                                             break;
                                         }
@@ -357,7 +427,8 @@ angular.module('starter')
                                                 name:place.name!==undefined&&place.name!==null?place.name:place.unitName,
                                                 distance:place.distance,
                                                 address:place.address,
-                                                phone:place.phone
+                                                phone:place.phone,
+                                                placeId:place.placeId!==undefined&&place.placeId!==null?place.placeId:place.unitId
                                             }],
                                         center:{
                                             lng:place.longitude,

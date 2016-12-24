@@ -58,8 +58,13 @@
             <!-- 日常保养 -->
             <div ng-if="tabIndex==0" style="height: 100%;width: 100%;">
                 <div class="item item-divider"
-                     style="background-color: transparent;border-top:0px;border-bottom:0px;text-align: center;">
-                    服务项目列表
+                     style="background-color: transparent;border-top:0px;border-bottom:0px;text-align: left;margin-top:20px;padding-left:0px;">
+                    <span style="padding-right: 35px;padding-top:10px;padding-bottom:10px;background: #ffd324;
+                    border-top-right-radius: 25px;border-bottom-right-radius: 25px;">
+                        <span style="color:#fff;">
+                            请点选以下日常保养项目
+                        </span>
+                    </span>
                 </div>
 
 
@@ -92,7 +97,7 @@
                             <li style="width: 33.3333%;min-height:104px;display: inline-block;
                             text-align: center;background: #fff;"
                                 ng-click="grid_check(1)">
-                                <div style="font-size: 2em;margin-top:14%;color:#f1c300">
+                                <div style="font-size: 2em;margin-top:14%;color:#e6be1f">
                                     <img src="img/maintain2.png"/>
                                 </div>
                                 <div style="margin-top:5%">
@@ -342,13 +347,13 @@
 
 
             <div class="list list-inset padding"
-                 style="margin-bottom:40px;padding:3px;background-color: transparent;overflow: initial;margin-top:0px;
+                 style="margin-bottom:40px;padding:3px 3px 3px 0px;background-color: transparent;overflow: initial;margin-top:0px;
                         width: 100%;margin-left:0px;"
                  ng-if="tabIndex==1">
 
 
                 <!-- 1 -->
-                <div class="item" style="height: 130px;width:100%;position: relative;border:0px;">
+                <div class="item" style="height: 130px;width:100%;position: relative;border:0px;margin-top:20px;">
 
                     <div style="position: absolute;width: 4%;height: 100%;left:0;top:0;">
                         <div style="width:100%;height: 100%;display: table;">
@@ -379,12 +384,12 @@
 
                     <div style="position: absolute;left:10%;width: 80%;height: 100%;top:0;">
                         <div style="width: 100%;">
-                            <span style="color:#222;">故障文本描述:</span>
+                            <span style="color:#222;">文本描述:</span>
                         </div>
                         <div style="width: 100%;display: table;height: 90px;">
                           <div style="display: table-cell;vertical-align: middle;padding-top: 10px;padding-left: 0px;padding-right: 10px;">
                               <div style="width: 100%;height: 90px;position: relative;margin: 0;" class="card">
-                                  <textarea style="width:100%;height:90px;background-color: transparent;"
+                                  <textarea style="width:100%;height:90px;background-color: transparent;padding: 10px;"
                                             placeholder="请对故障进行文本描述..."
                                             ng-model="maintain.description.text"
                                   ></textarea>
@@ -432,12 +437,12 @@
                              background-color:transparent;width: 100%;height: 320px;">
 
                             <span class="input-label" style="display: inline-block;width: 35%;text-align: left;">
-                                   故障音频描述:
+                                   音频描述:
                             </span>
 
-                            <div style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 25%;margin-right: 17%;
-                                border-radius: 100%;border: 1px solid transparent;background-color:rgba(255, 116, 116, 0.41);position:absolute;top:80px;">
-                                <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;padding:8px;border: 1px solid transparent;border-radius: 100%;background-color:rgba(255, 116, 116, 0.64);">
+                            <div ng-class="{true:'vibrate-pink',false:''}[isRecording]" style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 25%;margin-right: 17%;
+                                border-radius: 100%;border: 1px solid transparent;background-color:rgba(255, 168, 204, 0.64);position:absolute;top:80px;">
+                                <div ng-class="{true:'vibrate-red',false:''}[isRecording]" style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;padding:8px;border: 1px solid transparent;border-radius: 100%;background-color:rgba(255, 116, 116, 0.64);">
                                     <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;border: 1px solid white;border-radius: 100%;background-color:white"
                                          ng-click="startRecord()">
                                         <div style="margin-top: 15%;font-size: 4em;">
@@ -520,7 +525,7 @@
                         <div class="item"
                              style="margin-top:6px;margin-bottom: 2px;border:0px;padding:10px;padding-left: 11px;padding-top:12px;position: relative;
                              background-color:transparent;width: 100%;">
-                            <span>故障视频描述:</span>
+                            <span>视频描述:</span>
                         </div>
 
                         <!-- 视频预览 -->

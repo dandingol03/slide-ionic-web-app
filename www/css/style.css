@@ -1269,3 +1269,40 @@ ion-header-bar.dashboard-nav {
   to {top:20%;}
 }
 
+
+
+
+.vibrate-red{
+  animation:color-transform 1s infinite;
+  animation-timing-function: ease;
+}
+
+.vibrate-pink{
+  animation:color-pink-transform 2s infinite;
+  animation-timing-function: ease;
+}
+
+
+@keyframes color-pink-transform {
+  from {background-color:rgba(255, 168, 204, 0.64);}
+  to {background-color: rgba(244, 171, 255, 0.64);}
+}
+
+@-webkit-keyframes color-pink-transform {
+  from {background-color:rgba(255, 168, 204, 0.64);}
+  to {background-color: rgba(244, 171, 255, 0.64);}
+}
+
+@keyframes color-transform {
+  from {background-color:rgba(255, 116, 116, 0.64);}
+  to {background-color: rgba(255, 168, 204, 0.64);}
+}
+
+@-webkit-keyframes color-transform {
+  from {
+    background-color: rgba(255, 116, 116, 0.64);
+  }
+  to {
+    background-color: rgba(255, 168, 204, 0.64);
+  }
+}

@@ -8,7 +8,7 @@ angular.module('starter')
     .controller('mapParkCarConfirmController',function($scope,$state,$http,$timeout,$rootScope,
                                                        $ionicModal, Proxy,$stateParams,$q,
                                                        $ionicActionSheet,$cordovaDatePicker,$ionicLoading,
-                                                       $ionicPopup) {
+                                                       $ionicPopup,$ionicHistory) {
 
 
 
@@ -91,9 +91,11 @@ angular.module('starter')
                 {
                     case 'pickUp':
                         $scope.viewTitle='生成接站订单';
+                        $scope.carManage.subServiceTypes=1;
                         break;
                     case 'seeOff':
                         $scope.viewTitle='生成送站订单';
+                        $scope.carManage.subServiceTypes=2;
                         break;
                     default:
                         break;
@@ -115,7 +117,7 @@ angular.module('starter')
                 data: {
                     request: 'getServicePersonByUnitId',
                     info: {
-                        unitId: $scope.unit.unitId
+                        unitId: $scope.unit.placeId
                     }
                 }
             }).then(function (res) {
@@ -277,10 +279,12 @@ angular.module('starter')
             {
 
                 $scope.carManage.servicePlaceId=$scope.servicePlace.placeId;
-                if($scope.carManage.servicePersonId!==undefined&&$scope.carManage.servicePersonId!==null){
+                if($scope.carManage.servicePerson.servicePersonId!==undefined&&$scope.carManage.servicePerson.servicePersonId!==null)
+                {
                     $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
                 }
 
+                $scope.carManage.orderState=2;
                 $http({
                     method: "POST",
                     url: Proxy.local() + "/svr/request",
@@ -321,6 +325,14 @@ angular.module('starter')
                     } else {
                         return ({re: -1});
                     }
+                }).then(function (res) {
+                    var json=res.data;
+                    if(json.re==1) {
+
+                        $ionicHistory.clearHistory();
+                        $ionicHistory.clearCache();
+                        $state.go('service_orders');
+                    }
                 }).catch(function (err) {
                     var str = '';
                     for (var field in err)
@@ -358,7 +370,7 @@ angular.module('starter')
                             data: {
                                 request: 'getServicePersonsByUnits',
                                 info: {
-                                    detectUnites: units
+                                    units: units
                                 }
                             }
                         });
@@ -390,7 +402,7 @@ angular.module('starter')
                     var json = res.data;
                     if (json.re == 1) {
                         //TODO:append address and serviceType and serviceTime
-                        var serviceName = '车驾管-审车';
+                        var serviceName = '车驾管-接送站';
                         return $http({
                             method: "POST",
                             url: Proxy.local() + "/svr/request",
@@ -414,12 +426,14 @@ angular.module('starter')
                 }).then(function(res) {
                     var json=res.data;
                     if(json.re==1) {
-                        $ionicPopup.alert({
+                       var myAlert=$ionicPopup.alert({
                             title: '信息',
                             template: '服务订单生成成功'
                         });
-
-                        $ionicPopup.then(function(res) {
+                        $rootScope.flags.serviceOrders.onFresh=true;
+                        myAlert.then(function(res) {
+                            $ionicHistory.clearHistory();
+                            $ionicHistory.clearCache();
                             $state.go('service_orders');
                         });
                     }
@@ -439,9 +453,9 @@ angular.module('starter')
 
             var score = null;
             var fee = null;
+            $scope.carManage.serviceType=24;
             if($scope.carManage.destination&&$scope.carManage.destination.address)
             {
-                $scope.carManage.estimateTime = new Date();
 
                 if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null)
                 {
@@ -481,6 +495,7 @@ angular.module('starter')
                             var json = res.data;
                             if(json.re==1){
                                 fee = json.data;
+                                $scope.carManage.fee=fee;
                                 if(fee<=score){
                                     $scope.generateServiceOrder();
                                 }
