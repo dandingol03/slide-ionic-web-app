@@ -106,6 +106,8 @@ angular.module('starter')
                 var json=res.data;
                 if(json.re==1) {
                     $scope.relativeCars=json.data;
+                    $rootScope.flags.carOrders.data.relativeCars=$scope.relativeCars;
+                    $rootScope.flags.carManage.onFresh=false;
                     $scope.relativeCars.map(function(car,i) {
                         car.checked = false;
                     })
@@ -143,7 +145,8 @@ angular.module('starter')
 
         if($rootScope.flags.carManage.onFresh==true){
             $scope.fetchRelativeCars();
-            $rootScope.flags.carManage.onFresh=false;
+        }else{
+           $scope.relativeCars=$rootScope.flags.carOrders.data.relativeCars;
         }
 
         $scope.Mutex=function(item,field,cluster) {
