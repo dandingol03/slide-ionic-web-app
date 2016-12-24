@@ -69,7 +69,10 @@ angular.module('starter')
               $ionicLoading.hide();
               var json=res.data;
               if(json.re==1)
+              {
                   $scope.orders=json.data;
+                  $rootScope.service_orders=$scope.orders;
+              }
               $scope.orders.map(function(order,i) {
                   order.serviceName=$scope.serviceTypeMap[order.serviceType];
 
@@ -96,6 +99,7 @@ angular.module('starter')
 
               });
               console.log('success');
+              $rootScope.flags.serviceOrders.onFresh=false;
           }).catch(function(err) {
               var str='';
               for(var field in err)
@@ -107,7 +111,45 @@ angular.module('starter')
 
 
 
+
+
       if($scope.orders!==undefined&&$scope.orders!==null&&$scope.orders.length>0) {
+          if($rootScope.flags.serviceOrders.onFresh==true){
+              $ionicLoading.show({
+                  template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+              });
+              $scope.fetchServiceOrders();
+          }else{
+              $scope.orders=$rootScope.service_orders;
+              if($scope.orders!==undefined&&$scope.orders!==null)
+              {
+                  $scope.orders.map(function(order,i) {
+                      order.serviceName=$scope.serviceTypeMap[order.serviceType];
+
+                      var subServiceTypes=order.subServiceTypes;
+                      var serviceContent='';
+                      if(subServiceTypes!==undefined&&subServiceTypes!==null)
+                      {
+                          var types=subServiceTypes.split(',');
+                          types.map(function(type,i) {
+                              serviceContent+=$scope.subServiceTypeMap[type];;
+                          });
+                          order.subServiceContent=serviceContent;
+                      }
+
+                      var date=new Date(order.estimateTime);
+                      order.time=date.getFullYear().toString()+'-'
+                          +date.getMonth().toString()+'-'+date.getDate().toString();
+                      if(order.orderState==1)
+                          $scope.orders1.push(order);
+                      if(order.orderState==2)
+                          $scope.orders2.push(order);
+                      if(order.orderState==3)
+                          $scope.orders3.push(order);
+
+                  });
+              }
+          }
       }else{
           $ionicLoading.show({
               template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'

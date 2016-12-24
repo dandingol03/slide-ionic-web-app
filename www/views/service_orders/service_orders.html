@@ -319,9 +319,9 @@
                     <div style="display:inline-block;width:80%;">
                       <div>订单号:{{order.orderNum}}</div>
                     </div>
-                    <div style="display: inline-block;width: 20%;">
+                    <div style="display: inline-block;width: 20%;"  ng-if='order.evaluate==undefined||order.evaluate==null'>
                       <div style="border: 1px solid;border-radius: 6px;text-align: center;color:rgb(255, 82, 0)"
-                          ng-click="evaluate()" ng-if='order.evaluate==undefined||order.evaluate==null'>
+                          ng-click="evaluate()">
                         <span style="font-size: 0.8em;">等待评价</span>
                       </div>
                     </div>

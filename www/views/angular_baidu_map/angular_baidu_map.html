@@ -8,34 +8,83 @@
                 <div class="item"
                      style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;
                  padding:0px;background-color:transparent;position: relative;width: 100%;">
-                    <div id="angular_baidu_map" style="width:100%;height:400px;"></div>
+                    <div id="angular_baidu_map" style="width:100%;height:350px;"></div>
                 </div>
 
                 <!-- 结果面板 -->
+                <!--<div ng-style="resultPanelStyle">-->
+                    <!--<div class="list" style="height: 100%;">-->
+                        <!--<ion-scroll style="width: 100%;height: 94%;">-->
+                            <!--<div class="item" ng-repeat="result in places" ng-click="navigate(result)">-->
+                                <!--<div>-->
+                                    <!--<span style="font-weight: bolder;color:#444;">-->
+                                        <!--{{($index+1)}}.{{result.name}}-->
+                                    <!--</span>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<div style="color:#666;font-size: 0.9em;">-->
+                                        <!--距离:{{(result.distance/1000).toFixed(2)}}km-->
+                                    <!--</div>-->
+                                    <!--<div style="color:#666;font-size: 0.9em;">-->
+                                        <!--地址:{{result.address}}-->
+                                    <!--</div>-->
+                                    <!--<div style="color:#666;font-size: 0.9em;" ng-if="result.phone!==undefined&&result.phone!==null">-->
+                                        <!--电话:{{result.phone}}-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</ion-scroll>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div ng-style="resultPanelStyle">
                     <div class="list" style="height: 100%;">
-                        <ion-scroll style="width: 100%;height: 94%;">
-                            <div class="item" ng-repeat="result in places" ng-click="navigate(result)">
+                        <div class="item" style="text-align: center;margin:0;padding: 4px;">
+                            <div style="width: 100%;height: 100%;display: table;" ng-click="scaffoldResultPanel()">
+                                <div style="display: table-cell;vertical-align: middle;">
+                                    <span style="background: rgba(170, 170, 170, 0.48);border-radius: 4px;height: 5px;width: 100px;display: inline-block;">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <ion-scroll style="width: 100%;height: 94%;" delegate-handle="scroll-handle" on-scroll="scrollChange()">
+
+                            <div class="item" ng-repeat="plot in populations[tag].plots" ng-click="navigate(plot)">
                                 <div>
                                     <span style="font-weight: bolder;color:#444;">
-                                        {{($index+1)}}.{{result.name}}
+                                        {{($index+1)}}.{{plot.name}}
                                     </span>
                                 </div>
                                 <div>
                                     <div style="color:#666;font-size: 0.9em;">
-                                        距离:{{(result.distance/1000).toFixed(2)}}km
+                                        距离:{{(plot.distance/1000).toFixed(2)}}km
                                     </div>
                                     <div style="color:#666;font-size: 0.9em;">
-                                        地址:{{result.address}}
+                                        地址:{{plot.address}}
                                     </div>
-                                    <div style="color:#666;font-size: 0.9em;" ng-if="result.phone!==undefined&&result.phone!==null">
-                                        电话:{{result.phone}}
+                                    <div style="color:#666;font-size: 0.9em;" ng-if="plot.phone!==undefined&&plot.phone!==null">
+                                        电话:{{plot.phone}}
                                     </div>
                                 </div>
                             </div>
+                            <div class="item" style="background: #ddd;padding: 4px;">
+                                <ul style="width: 100%;list-style: none;">
+                                    <li ng-repeat="(tagName, population) in populations" class="card"
+                                        ng-style="tagName==tag?selectedTagStyle:unSelectedTagStyle"  ng-click="tagChange(tagName)">
+                                        <span ng-if="tagName==tag" style="color:#fff;vertical-align: middle;">
+                                            {{tagName}}
+                                        </span>
+                                        <span ng-if="tagName!=tag" style="color:#666;vertical-align: middle;">
+                                            {{tagName}}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div style="width: 100%;height: 20px;"></div>
                         </ion-scroll>
                     </div>
                 </div>
+
+
 
 
                 <!-- 搜索框 -->
@@ -60,28 +109,105 @@
                                       ng-if="service=='administrator'">审车</span>
                                 <span style="display: table-cell;vertical-align: middle;color:#222;font-weight: bolder;"
                                       ng-if="service=='paper_validate'">审证</span>
+                                <span style="display: table-cell;vertical-align: middle;color:#222;font-weight: bolder;"
+                                       ng-if="service=='airport'">接送机</span>
+                                <span style="display: table-cell;vertical-align: middle;color:#222;font-weight: bolder;"
+                                      ng-if="service=='park_car'">接送站</span>
                             </div>
                         </span>
 
                     </div>
                 </div>
-            </div>
 
-            <!-- 取车、送车 -->
-            <div style="position: absolute;right: 10px;top:20%;height:45px;z-index: 1000;">
-                <div class="card" style="display: table;width: 45px;height: 100%;margin:0px;text-align: center;">
-                    <div ng-style="mode=='servicePlace'?blockInStyle:blockOffStyle" ng-click="modeSwitch('servicePlace')">
-                        <div>
+
+                <!-- 接机、送机 -->
+                <div ng-if="service=='airport'">
+                    <div style="position: absolute;right: 10px;top:20%;height:50px;z-index: 1000;">
+                        <div class="card" style="display: table;width: 50px;height: 100%;margin:0px;text-align: center;">
+                            <div ng-style="mode=='pickUp'?blockInStyle:blockOffStyle" ng-click="modeSwitch('pickUp')">
+                                <div>
                         <span style="font-size: 2em;">
                             <i class="ion-arrow-graph-up-right"></i>
                         </span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bolder;">接机</span>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <span style="font-weight: bolder;">检测点</span>
+                    </div>
+
+                    <div style="position: absolute;right: 10px;top:29%;height:50px;z-index: 1000;">
+                        <div class="card" style="display: table;width: 50px;height: 100%;margin:0px;text-align: center;">
+                            <div ng-style="mode=='seeOff'?blockInStyle:blockOffStyle" ng-click="modeSwitch('seeOff')">
+                                <div>
+                        <span style="font-size: 2em;">
+                            <i class="ion-arrow-graph-up-right"></i>
+                        </span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bolder;">送机</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 取站、送站 -->
+                <div ng-if="service=='park_car'">
+                    <div style="position: absolute;right: 10px;top:20%;height:50px;z-index: 1000;">
+                        <div class="card" style="display: table;width: 50px;height: 100%;margin:0px;text-align: center;">
+                            <div ng-style="mode=='pickUp'?blockInStyle:blockOffStyle" ng-click="modeSwitch('pickUp')">
+                                <div>
+                        <span style="font-size: 2em;">
+                            <i class="ion-arrow-graph-up-right"></i>
+                        </span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bolder;">接站</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute;right: 10px;top:29%;height:50px;z-index: 1000;">
+                        <div class="card" style="display: table;width: 50px;height: 100%;margin:0px;text-align: center;">
+                            <div ng-style="mode=='seeOff'?blockInStyle:blockOffStyle" ng-click="modeSwitch('seeOff')">
+                                <div>
+                        <span style="font-size: 2em;">
+                            <i class="ion-arrow-graph-down-left"></i>
+                        </span>
+                                </div>
+                                <div>
+                                    <span style="font-weight: bolder;">送站</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 全选 -->
+                <div style="position: absolute;left: 7px;top:25%;height:35px;z-index: 1000;">
+                    <div class="card" style="display: table;width: 45px;height: 100%;margin:0px;text-align: center;">
+                        <div style="display:table-cell;vertical-align: middle;background:#00c9ff;color:#666"
+                             ng-click="SelectAll(places )">
+                            <div>
+                                <span style="font-size: 2em;color:#fff;">
+                                    <i class="ion-checkmark-round"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <span style="font-weight: bolder;color:#fff;">全选</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
+
+
+
 
         </ion-content>
 

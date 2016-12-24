@@ -1,0 +1,124 @@
+
+<ion-view title="服务人员选择">
+
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    ng-click="go_back()"
+                    style="font-size: 2.4em;"
+            >
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+
+    </ion-nav-bar>
+
+    <ion-content scroll="false">
+
+
+
+        <div style="width: 100%;height: 70%;">
+            <ion-scroll style="height: 95%;">
+                <div class="list padding" ng-if="order!==undefined&&order!==null">
+                    <div class="item card" style="margin:0;padding: 11px 16px;height: 120px;border-radius: 8px;"
+                         ng-repeat="servicePerson in order.servicePersons">
+                        <div style="width: 100%;height: 100%;position: relative;">
+
+                            <div style="position: absolute;left:0;top:0;width: 70%;">
+                                <div ng-if="servicePerson.unit!==undefined&&servicePerson.unit!==null">
+                                    <div>
+                                        地址: <span style="font-weight: bolder;">{{servicePerson.unit.address}}</span>
+                                    </div>
+                                    <div>
+                                        联系人:<span style="font-weight: bolder;">{{servicePerson.perName}}</span>
+                                    </div>
+                                    <div>
+                                        电话:
+                                        <span ng-if="servicePerson.unit.phone!==undefined&&servicePerson.unit.phone!==null"
+                                            style="font-weight: bolder;">
+                                            {{servicePerson.unit.phone}}
+                                        </span>
+                                        <span ng-if="servicePerson.unit.phone==undefined&&servicePerson.unit.phone==null&&
+                                                servicePerson.unit.mobilePhone!==undefined&&servicePerson.unit.mobilePhone!==null"
+                                              style="font-weight: bolder;"
+                                        >
+                                            {{servicePerson.unit.mobilePhone}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div ng-if="servicePerson.place!==undefined&&servicePerson.place!==null">
+                                    <div>{{servicePerson.place.address}}</div>
+                                    <div>
+                                        联系人:<span style="font-weight: bolder;">{{servicePerson.perName}}</span>
+                                    </div>
+                                    <div>
+                                        电话:
+                                        <span ng-if="servicePerson.unit.phone!==undefined&&servicePerson.unit.phone!==null"
+                                            style="font-weight: bolder;">
+                                            {{servicePerson.unit.phone}}
+                                        </span>
+                                        <span ng-if="servicePerson.unit.phone==undefined&&servicePerson.unit.phone==null&&
+                                                servicePerson.unit.mobilePhone!==undefined&&servicePerson.unit.mobilePhone!==null"
+                                              style="font-weight: bolder;"
+                                        >
+                                            {{servicePerson.unit.mobilePhone}}
+                                        </span>
+                                    </div>
+                                </div>
+
+
+
+                                <div>
+                                    评价:
+                                    <span ng-if="servicePerson.evaluate!==undefined&&servicePerson.evaluate!==null" style="font-weight: bolder;">
+                                    {{servicePerson.evaluate}}
+                                </span>
+                                    <span ng-if="servicePerson.evaluate==undefined||servicePerson.evaluate==null"
+                                          style="color:#ff3b30;font-weight: bolder;">
+                                    没有有效评价
+                                </span>
+                                </div>
+                            </div>
+                            <div style="position: absolute;left:70%;width: 30%;top:0;height: 100%;">
+                                <div style="width: 100%;height: 100%;position: relative;">
+
+                                    <div style="width: 100%;position: absolute;top:0px;text-align: right;"
+                                         ng-if="servicePerson.checked==true">
+                                        <span style="font-size: 2.4em;color:#ffd324;"><i class="ion-checkmark"></i></span>
+                                    </div>
+
+
+                                    <div style="width: 100%;position: absolute;bottom: 2px;text-align: center;" ng-if="order.orderState==1">
+                                        <div style="width: 100px;height: 40px;padding:9px;border-radius: 6px;background: #ff7231;"
+                                             ng-click="Mutex(servicePerson,'checked',order.servicePersons)"
+                                            >
+                                            <span style="color:#fff;">选中</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ion-scroll>
+        </div>
+
+        <div style="width: 100%;height: 30%;">
+            <div style="width: 100%;height: 100%;display: table;" ng-if="order.orderState==1">
+                <div style="display: table-cell;vertical-align: middle;text-align: center;">
+                    <button class="button button-block button-positive" style="width: 70%;margin-left:15%;"
+                            ng-click="confirm()"
+                    >
+                        确认<span><i class="fa fa-hand-pointer-o"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </ion-content>
+
+
+</ion-view>
+

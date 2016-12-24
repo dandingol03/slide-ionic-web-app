@@ -92,44 +92,7 @@ angular.module('starter')
 
         //车驾管选择种类
         $scope.carDrivingManageSelect=function() {
-            var buttons=[{text:'审车'},{text:'审证'},{text:'接送机'},{text:'接送站'},{text:'高德地图'}];
-            $ionicActionSheet.show({
-                buttons:buttons,
-                titleText: '选择车驾管类型',
-                cancelText: '取消',
-                buttonClicked: function(index) {
-                    switch (index) {
-                        case 0:
-                            //审车页面跳转
-                            if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
-                                $state.go('map_administrate_search',{ob:JSON.stringify({carInfo:$rootScope.carInfo})});
-                            else
-                                $state.go('map_administrate_search');
-                            break;
-                        case 1:
-                            //审证
-                            if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
-                            $state.go('map_paperValidate_search',
-                                {ob:JSON.stringify({carInfo:$rootScope.carInfo})});
-                            else
-                                $state.go('map_paperValidate_search');
-                            break;
-                        case 2:
-                            $state.go('map_airport_search');
-                            break;
-                        case 3:
-                            $state.go('map_parkCar_search');
-                            break;
-                        case 4:
-                            $state.go('gaoDeHome');
-                            break;
-                        default:
-                            break;
-                    }
-                    return true;
-                },
-                cssClass:'carDriving_manage_actionsheet'
-            });
+            $state.go('gaoDeHome');
         }
 
 

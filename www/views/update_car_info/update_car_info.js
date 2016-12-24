@@ -352,7 +352,7 @@ angular.module('starter')
             $timeout(function(){
                 $scope.firstTabHint='hidden list';
                 $scope.firstTabStyle={display:'none'};
-            },1000);
+            },2000);
         }
 
         $scope.secondTabHint='list';
@@ -368,7 +368,7 @@ angular.module('starter')
             $scope.secondTabHint='list';
             $timeout(function(){
                 $scope.secondTabHint='hidden list';
-            },1000);
+            },2000);
 
         }
 

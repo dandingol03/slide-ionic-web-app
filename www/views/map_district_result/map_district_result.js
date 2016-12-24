@@ -118,6 +118,7 @@ angular.module('starter')
             })
         }
 
+        //车管所搜索
         $scope.fetchCarManageStation=function () {
             $ionicLoading.show({
                 template: '<p class="item-icon-left">搜索车管所数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
@@ -201,6 +202,89 @@ angular.module('starter')
             })
         }
 
+        //维修厂搜索
+        $scope.fetchMaintenance=function () {
+            $ionicLoading.show({
+                template: '<p class="item-icon-left">拉取维修厂数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            });
+
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data: {
+                    request: 'fetchMaintenanceInArea',
+                    info: {
+                    }
+                }
+            }).then(function (res) {
+                var json = res.data;
+                var map=null;
+                var center=null;
+                var BMap=null;
+                if($scope.BMap!==undefined&&$scope.BMap!==null)
+                    BMap=$scope.BMap;
+                else
+                    BMap=window.BMap;
+                if (json.re == 1) {
+                    $scope.records={};
+                    $scope.recordCount=0;
+                    $scope.units = [];
+                    if($rootScope.gaodeHome!==undefined&&$rootScope.gaodeHome!==null)
+                    {
+                        map=$rootScope.gaodeHome;
+                        center=map.getCenter();
+                    }
+
+                    json.data.map(function (unit, i) {
+                        if (unit.longitude !== undefined && unit.longitude !== null &&
+                            unit.latitude !== undefined && unit.latitude !== null&&
+                            unit.town!==undefined&&unit.town!==null&&unit!='') {
+
+                            var center = map.getCenter();
+                            var distance = map.getDistance(center, new BMap.Point(unit.longitude, unit.latitude)).toFixed(2);
+                            if (distance <= 20000)
+                            {
+                                $scope.recordCount++;
+                                unit.distance=distance;
+
+                                    if($scope.records[unit.town]==undefined||$scope.records[unit.town]==null)
+                                        $scope.records[unit.town]=[unit];
+                                    else
+                                        $scope.records[unit.town].push(unit);
+
+                            }
+                        }
+                    });
+                    $ionicLoading.hide();
+                }else{
+                    $ionicLoading.hide();
+                    if(window.cordova)
+                    {
+                        $cordovaToast
+                            .show('未搜索出任何结果', 'short', 'center')
+                            .then(function(success) {
+                            }, function (error) {
+                            });
+                    }else{
+                        var myPopup = $ionicPopup.alert({
+                            template: '未搜索出任何结果',
+                            title: '<strong style="color:red">信息</strong>'
+                        });
+                    }
+                }
+
+            }).catch(function (err) {
+                var str = '';
+                for (var field in err)
+                    str += err[field];
+                console.error('error=\r\n' + str);
+                $ionicLoading.hide();
+            })
+        }
+
 
 
         //范围搜索
@@ -214,10 +298,10 @@ angular.module('starter')
                     $scope.fetchCarManageStation();
                     break;
                 case 'airport':
-
+                    $scope.fetchMaintenance();
                     break;
                 case 'park_car':
-
+                    $scope.fetchMaintenance();
                     break;
                 default:
                     break;

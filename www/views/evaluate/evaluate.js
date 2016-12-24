@@ -3,9 +3,34 @@
  */
 angular.module('starter')
 
-    .controller('evaluateController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
-        ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover,$cordovaPreferences,$ionicPlatform){
+    .controller('evaluateController',function($scope,$state,$ionicLoading,
+                                              $http,$ionicPopup,$rootScope,
+                                              $ionicActionSheet,Proxy,$stateParams)
+    {
+
+        $scope.goBack=function () {
+            window.history.back();
+        }
+
+
+
+        $scope.serviceTypeMap={11:'维修-日常保养',12:'维修-故障维修',13:'维修-事故维修',
+            21:'车驾管-审车',22:'车驾管-审证',23:'车驾管-接送机',24:'车驾管-取送车'};
+
+        $scope.subServiceTypeMap={1:'机油,机滤',2:'检查制动系统,更换刹车片',3:'雨刷片更换',
+            4:'轮胎更换',5:'燃油添加剂',6:'空气滤清器',7:'检查火花塞',8:'检查驱动皮带',9:'更换空调滤芯',10:'更换蓄电池,防冻液'};
+
+
+
+
+        if($stateParams.order!==undefined&&$stateParams.order!==null)
+        {
+            var order=$stateParams.order;
+            if(Object.prototype.toString.call(order)=='[object String]')
+                order=JSON.parse(order);
+            order.serviceName=$scope.serviceTypeMap[order.serviceType];
+            $scope.order=order;
+        }
 
 
         $scope.stars=[
@@ -57,8 +82,12 @@ angular.module('starter')
                 data: {
                     request: 'updateServiceOrder',
                     info: {
-                        evaluate: $scope.evaluate,
-                        option:$scope.option
+                        order:{
+                            orderId:$scope.order.orderId,
+                            evaluate: $scope.evaluate,
+                            proposal:$scope.proposal,
+                            evaluateTime:new Date()
+                        }
                     }
                 }
             })

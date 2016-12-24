@@ -6,7 +6,7 @@
 angular.module('starter')
 
     .controller('notificationController',function($scope,$state,$http,$timeout,$rootScope,
-                                                          Proxy,$stateParams,$q) {
+                                                          Proxy,$stateParams,$ionicLoading) {
 
 
         $scope.go_back=function () {
@@ -15,7 +15,11 @@ angular.module('starter')
 
         $scope.notyTypes={0:'车险',1:'寿险',2:'服务'};
 
+        //默认tab页，该页默认缓存
         $scope.tabIndex=2;
+
+        $scope.notifications={0:[],1:[],2:[]};
+
         $scope.tab_change = function(i){
             $scope.tabIndex=i;
         }
@@ -30,10 +34,64 @@ angular.module('starter')
 
         $scope.notifications=$rootScope.notifications;
 
+        //获取该用户的所有推送消息
+        $scope.getNotifications=function () {
+            $ionicLoading.show({
+                template: '<p class="item-icon-left">拉取用户消息...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            });
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request: 'fetchNotifications',
+                    info:{
+                        side:'customer'
+                    }
+                }
+            }).then(function (res) {
+                var json=res.data;
+                if(json.re==1) {
+                    if(json.data!==undefined&&json.data!==null)
+                    {
+                        json.data.map(function (item, i) {
+                            switch(item.type)
+                            {
+                                case 'car':
+                                    $scope.notifications[0].push(item);
+                                    break;
+                                case 'life':
+                                    $scope.notifications[1].push(item);
+                                    break;
+                                case 'service':
+                                    $scope.notifications[2].push(item);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        });
+                    }
+                }
+                $ionicLoading.hide();
+            }).catch(function (err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+                $ionicLoading.hide();
+            })
+        }
+
+        $scope.getNotifications();
+
+
         $scope.showNotyDetail=function (noty) {
             switch (noty.type) {
                 case 'service':
-
+                    //目前服务订单对于用户app来说,1.接单请求
+                    $state.go('select_candidate_servicePerson', {params: JSON.stringify({orderId: noty.ownerId})});
                     break;
                 default:
                     break;

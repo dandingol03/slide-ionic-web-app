@@ -95,8 +95,10 @@ angular.module('starter')
             var data={
                 request:'fetchInsuranceCarInfoByCustomerId'
             };
-            if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null)
-                data.carNum=$scope.carInfo.carNum;
+
+            data.info={
+                carNum:$scope.carInfo.carNum
+            };
 
 
             $http({
@@ -109,7 +111,14 @@ angular.module('starter')
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
-                    var cars=json.data;
+                    var cars=[];
+                    if(json.data!==undefined&&json.data!==null)
+                    {
+                        json.data.map(function (car,i) {
+                            if(car.idle==true)
+                                cars.push(car);
+                        })
+                    }
                     var buttons=[];
                     buttons.push({text: "<b>创建新车</b>"});
                     cars.map(function(car,i) {
@@ -260,9 +269,11 @@ angular.module('starter')
             if(place!==undefined&&place!==null)//已选检测公司
             {
                 $scope.carManage.servicePlaceId=place.placeId;
-                if($scope.carManage.servicePersonId!=undefined&&$scope.carManage.servicePersonId!=null){
+                if($scope.carManage.servicePerson.servicePersonId!=undefined&&$scope.carManage.servicePerson.servicePersonId!=null){
                     $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
                 }
+
+                $scope.carManage.orderState=2;
 
                 $http({
                     method: "POST",
@@ -303,6 +314,14 @@ angular.module('starter')
                         });
                     } else {
                         return ({re: -1});
+                    }
+                }).then(function (res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        $ionicHistory.clearHistory();
+                        $ionicHistory.clearCache();
+                        $rootScope.flags.serviceOrders.onFresh=true;
+                        $state.go('service_orders');
                     }
                 }).catch(function (err) {
                     var str = '';
@@ -397,13 +416,14 @@ angular.module('starter')
                 }).then(function(res) {
                     var json=res.data;
                     if(json.re==1) {
-                        $ionicPopup.alert({
+                       var myAlert=$ionicPopup.alert({
                             title: '信息',
                             template: '服务订单生成成功'
                         });
 
-                        $ionicPopup.then(function(res) {
-                            $rootScope.flags.serviceOrders.clear=true;
+                        $rootScope.flags.serviceOrders.onFresh=true;
+                        $rootScope.flags.serviceOrders.clear=true;
+                        myAlert.then(function(res) {
                             $state.go('service_orders');
                         });
                     }
@@ -425,120 +445,128 @@ angular.module('starter')
 
             $scope.carManage.carId=$scope.carInfo.carId;
 
-            $scope.carManage.estimateTime = new Date();
 
-            if($scope.carManage.destination&&$scope.carManage.destination.address)
+
+            if($scope.carManage.isAgent==true)
             {
-                if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
-                    &&$scope.carManage.carId!=undefined&&$scope.carManage.estimateTime!=null)
-                {
+               if($scope.carManage.destination==undefined||$scope.carManage.destination==null||
+                    $scope.carManage.destination.address==undefined||$scope.carManage.destination.address==null)
+               {
 
-                    //TODO:scoreVerify
-                    $http({
-                        method: "POST",
-                        url: Proxy.local() + "/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data: {
-                            request: 'fetchScoreTotal'
-                        }
-                    }).then(function (res) {
-                        var json=res.data;
-                        if(json.re==1) {
-                            var score=json.data;
+                   $ionicPopup.alert({
+                       title: '错误',
+                       template: '请先选择取车地点'
+                   });
+                   return ;
+               }
+            }
 
-                            $http({
-                                method: "POST",
-                                url: Proxy.local() + "/svr/request",
-                                headers: {
-                                    'Authorization': "Bearer " + $rootScope.access_token
-                                },
-                                data: {
-                                    request: 'generateCarServiceOrderFee',
-                                    info: {
-                                        serviceType: $scope.carManage.serviceType,
-                                        subServiceTypes: null
-                                    }
+
+            if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
+                &&$scope.carManage.carId!=undefined&&$scope.carManage.estimateTime!=null)
+            {
+
+                //TODO:scoreVerify
+                $http({
+                    method: "POST",
+                    url: Proxy.local() + "/svr/request",
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                    },
+                    data: {
+                        request: 'fetchScoreTotal'
+                    }
+                }).then(function (res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        var score=json.data;
+
+                        $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data: {
+                                request: 'generateCarServiceOrderFee',
+                                info: {
+                                    serviceType: $scope.carManage.serviceType,
+                                    subServiceTypes: null
                                 }
-                            }).then(function (res) {
-                                var json=res.data;
-                                if(json.re==1) {
-                                    var fee=json.data;
-                                    $scope.carManage.fee=fee;
-                                    if(fee<=score)
-                                    {
-                                        $http({
-                                            method: "POST",
-                                            url: Proxy.local() + "/svr/request",
-                                            headers: {
-                                                'Authorization': "Bearer " + $rootScope.access_token
-                                            },
-                                            data: {
-                                                request: 'validateCarServiceStateFree',
-                                                info: {
-                                                    carManage: $scope.carInfo.carId
-                                                }
+                            }
+                        }).then(function (res) {
+                            var json=res.data;
+                            if(json.re==1) {
+                                var fee=json.data;
+                                $scope.carManage.fee=fee;
+                                if(fee<=score)
+                                {
+                                    $http({
+                                        method: "POST",
+                                        url: Proxy.local() + "/svr/request",
+                                        headers: {
+                                            'Authorization': "Bearer " + $rootScope.access_token
+                                        },
+                                        data: {
+                                            request: 'validateCarServiceStateFree',
+                                            info: {
+                                                carManage: $scope.carInfo.carId
                                             }
-                                        }).then(function(res) {
-                                            var json=res.data;
-                                            if(json.re==1) {
-                                                if(json.data==true)
-                                                {
-                                                    var confirmPopup = $ionicPopup.confirm({
-                                                        title:'信息',
-                                                        template:  '您的车辆已有正在进行的服务订单,是否仍要生成审车订单'
-                                                    });
-                                                    confirmPopup.then(function (res) {
-                                                        if(res)
-                                                        {
-                                                            $scope.generateServiceOrder();
-                                                        }
-                                                    })
-                                                }else{
-                                                    $scope.generateServiceOrder();
-                                                }
+                                        }
+                                    }).then(function(res) {
+                                        var json=res.data;
+                                        if(json.re==1) {
+                                            if(json.data==true)
+                                            {
+                                                var confirmPopup = $ionicPopup.confirm({
+                                                    title:'信息',
+                                                    template:  '您的车辆已有正在进行的服务订单,是否仍要生成审车订单'
+                                                });
+                                                confirmPopup.then(function (res) {
+                                                    if(res)
+                                                    {
+                                                        $scope.generateServiceOrder();
+                                                    }
+                                                })
+                                            }else{
+                                                $scope.generateServiceOrder();
                                             }
-                                        });
+                                        }
+                                    });
 
-                                    }else{
-                                        var alertPopup = $ionicPopup.alert({
-                                            title: '警告',
-                                            template: '服务订单的费用超过您现在的积分'
-                                        });
-                                    }
+                                }else{
+                                    var alertPopup = $ionicPopup.alert({
+                                        title: '警告',
+                                        template: '服务订单的费用超过您现在的积分'
+                                    });
                                 }
-                            })
+                            }
+                        })
 
 
-                        }else{
-                            var alertPopup = $ionicPopup.alert({
-                                title: '警告',
-                                template: '您没有合法积分'
-                            });
-                        }
-                    })
-
-
-                }else{
-                    if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
-                        $ionicPopup.alert({
-                            title: '',
-                            template: '请选择预约时间'
-                        });
                     }else{
-                        $ionicPopup.alert({
-                            title: '',
-                            template: '请选择车辆信息'
+                        var alertPopup = $ionicPopup.alert({
+                            title: '警告',
+                            template: '您没有合法积分'
                         });
                     }
-                }
+                })
+
+
             }else{
-                $ionicPopup.alert({
-                    title: '错误',
-                    template: '请先选择取车地点'
-                });
+                if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
+                    $ionicPopup.alert({
+                        title: '',
+                        template: '请选择预约时间'
+                    });
+                }else{
+                    $ionicPopup.alert({
+                        title: '',
+                        template: '请选择车辆信息'
+                    });
+                }
             }
+
 
         }
 

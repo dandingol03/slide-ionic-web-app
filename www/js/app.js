@@ -13,7 +13,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-                  $ionicPopup,Proxy,$http,$state,BMapService) {
+                  $ionicPopup,Proxy,$http,$state) {
 
 
 
@@ -112,10 +112,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 clear:false
             },
             lifeOrders:{
-                onFresh:true,
-                clear:false
+                onFresh:true
             },
             serviceOrders:{
+                onFresh:true,
                 clear:false
             },
             carManage:{
@@ -196,40 +196,69 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               switch(message.type){
 
                 case 'from-service':
-                  var order=message.order;
-                  var servicePersonId=message.servicePersonId;
-                  var date=message.date;
-                  var confirmPopup = $ionicPopup.confirm({
-                    title:'信息',
-                    template:  '订单号为'+order.orderNum+'的订单有新的服务人员愿意接单,是否进入通知页面进行查看'
-                  });
+                    var order=message.order;
+                    var servicePersonId=message.servicePersonId;
+                    var date=message.date;
+                    var content='工号为'+servicePersonId+'的服务人员发出接单请求';
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'createNotification',
+                            info: {
+                                type: 'service',
+                                ownerId: order.orderId,
+                                content: content,
+                                notyTime:new Date(),
+                                side:'customer'
+                            }
+                        }
+                    }).then(function (res) {
+                        var json = res.data;
+                        if (json.re == 1) {
+                            var confirmPopup = $ionicPopup.confirm({
+                                title:'信息',
+                                template:  '订单号为'+order.orderNum+'的订单有新的服务人员愿意接单,是否进入通知页面进行查看'
+                            });
 
-                  confirmPopup.then(function(res) {
-                    var ob=null;
-                    if(res) {
-                        ob={
-                            type:'service',
-                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
-                            msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
-                            servicePersonId:servicePersonId,
-                            visited:true,
-                            date:date
+                            confirmPopup.then(function(res) {
+                                var ob=null;
+                                if(res) {
+                                    ob={
+                                        type:'service',
+                                        order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
+                                        msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
+                                        servicePersonId:servicePersonId,
+                                        visited:true,
+                                        date:date
+                                    }
+                                    //$rootScope.notifications代表新消息
+                                    $rootScope.notifications[2].push(ob);
+                                    $state.go('notification');
+                                } else {
+                                    ob={
+                                        type:'service',
+                                        order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
+                                        msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
+                                        servicePersonId:servicePersonId,
+                                        visited:false,
+                                        date:date
+                                    }
+                                    $rootScope.notifications[2].push(ob);
+                                    console.log('didn\'t give a shit about this notification');
+                                }
+                            });
                         }
-                        $rootScope.notifications[2].push(ob);
-                        $state.go('notification');
-                    } else {
-                        ob={
-                            type:'service',
-                            order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
-                            msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
-                            servicePersonId:servicePersonId,
-                            visited:false,
-                            date:date
-                        }
-                        $rootScope.notifications[2].push(ob);
-                      console.log('didn\'t give a shit about this notification');
-                    }
-                  });
+                    }).catch(function (err) {
+                        var str='';
+                        for(var field in err)
+                            str+=err[field];
+                        console.error('err=\r\n'+str);
+                    });
+
                   break;
 
                   case 'from-background':
@@ -951,11 +980,17 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
-            .state('angular_baidu_map',{
-                url:'/angular_baidu_map:params',
-                controller:'abmController',
-                templateUrl:'views/angular_baidu_map/angular_baidu_map.html'
-            })
+          .state('angular_baidu_map',{
+              url:'/angular_baidu_map:params',
+              controller:'abmController',
+              templateUrl:'views/angular_baidu_map/angular_baidu_map.html'
+          })
+
+          .state('select_candidate_servicePerson',{
+              url:'/select_candidate_servicePerson:params',
+              controller:'selectCandidateServicePersonController',
+              templateUrl:'views/select_candidate_servicePerson/select_candidate_servicePerson.html'
+          })
 
 
 
@@ -1005,7 +1040,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.1.148:3000";
+            return "http://192.168.1.121:3000";
           else
             return "/proxy/node_server";
             
