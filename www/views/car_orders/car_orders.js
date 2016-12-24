@@ -67,16 +67,20 @@ angular.module('starter')
               var json=res.data;
               $scope.applyedList = [];
               if(json.re==1) {
-                  $scope.orderUnpricedList=json.data;
+                  $scope.orderUnpricedList=[];
 
-                  $scope.orderUnpricedList.map(function(order,i){
-                      if(order.orderState==2){
-                          $scope.orderPricedList.push(order);
-                      }
-                      if(order.orderState==1){
-                          $scope.applyedList.push(order);
-                      }
-                  })
+                  if(json.data!==undefined&&json.data!==null&&json.data.length>0)
+                  {
+                      $scope.orderUnpricedList=json.data;
+                      $scope.orderUnpricedList.map(function(order,i){
+                          if(order.orderState==2){
+                              $scope.orderPricedList.push(order);
+                          }
+                          if(order.orderState==1){
+                              $scope.applyedList.push(order);
+                          }
+                      })
+                  }else{}
               }
               $rootScope.flags.carOrders.data.orderPricedList=$scope.orderPricedList;
               $rootScope.flags.carOrders.data.applyedList=$scope.applyedList;
