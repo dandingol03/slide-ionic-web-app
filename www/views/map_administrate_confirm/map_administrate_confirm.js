@@ -97,11 +97,12 @@ angular.module('starter')
         $scope.selectCarInfoByCarNum=function(item,modal){
 
             var data={
-                request:'fetchInsuranceCarInfoByCustomerId'
+                request:'fetchInsuranceCarInfoByCustomerId',
+                info:{carNum:''}
             };
             if($scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null) {
                 data.info = {
-                    carNum: $scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null&&$scope.carInfo.carNum!=''?$scope.carInfo.carNum:null
+                    carNum: $scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null&&$scope.carInfo.carNum!=''?$scope.carInfo.carNum:''
                 };
             }
 
@@ -115,7 +116,11 @@ angular.module('starter')
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
-                    var cars=json.data;
+                    var cars=[];
+                    json.data.map(function (car,i) {
+                        if(car.idle==true)
+                            cars.push (car);
+                    })
                     var buttons=[];
                     buttons.push({text: "<b>创建新车</b>"});
                     cars.map(function(car,i) {
@@ -265,11 +270,12 @@ angular.module('starter')
             $scope.carManage.serviceType=21;
             if(detectUnit!==undefined&&detectUnit!==null)//已选检测公司
             {
+                $scope.carManage.servicePerson
                 $scope.carManage.servicePlaceId=detectUnit.placeId;
-                if( $scope.carManage.servicePersonId!==undefined&& $scope.carManage.servicePersonId!==null){
+                if( $scope.carManage.servicePerson!==undefined&& $scope.carManage.servicePerson!==null){
                     $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
                 }
-
+                $scope.carManage.orderState=2;
                 $http({
                     method: "POST",
                     url: Proxy.local() + "/svr/request",
@@ -409,6 +415,7 @@ angular.module('starter')
                         });
 
                         $ionicPopup.then(function(res) {
+                            $rootScope.flags.serviceOrders.clear=true;
                             $state.go('service_orders');
                         });
                     }

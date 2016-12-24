@@ -4,6 +4,10 @@ angular.module('starter')
                                              $location, $rootScope,Proxy,
                                              $ionicLoading,$ionicHistory){
 
+      if($rootScope.flags.carOrders.clear==true){
+          $state.go('tabs.my');
+          $rootScope.flags.carOrders.clear==false;
+      }
 
       $scope.getOrders=function () {
 

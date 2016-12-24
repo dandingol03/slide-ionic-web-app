@@ -421,6 +421,7 @@ angular.module('starter')
                         });
 
                         $ionicPopup.then(function(res) {
+                            $rootScope.flags.serviceOrders.clear=true;
                             $state.go('service_orders');
                         });
                     }

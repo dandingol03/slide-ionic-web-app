@@ -531,6 +531,7 @@ angular.module('starter')
                                       alert('订单已修改,请等待报价');
                                       $rootScope.car_orders_tabIndex = 0;
                                       $state.go('car_orders');
+                                      $rootScope.flags. carOrders.clear=true;
                                   }
                               }
 

@@ -4,7 +4,7 @@
 angular.module('starter')
     .controller('maintainController',function($scope,$state,$stateParams,
                                               $ionicModal,$ionicPopup,$rootScope,
-                                              $cordovaCapture,$cordovaMedia,$ionicScrollDelegate){
+                                              $cordovaCapture,$cordovaMedia,$ionicScrollDelegate,$http, Proxy){
 
         $scope.goBack=function () {
             window.history.back();

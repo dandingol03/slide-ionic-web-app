@@ -40,6 +40,20 @@ angular.module('starter')
         }
     }
 
+    $scope.notification_count=0;
+    if($rootScope.notifications!==undefined&& $rootScope.notifications!==null&& $rootScope.notifications.length>0){
+        if($rootScope.notifications[0]!==undefined&& $rootScope.notifications[0]!==null&& $rootScope.notifications[0].length>0){
+            $scope.notification_count =  $rootScope.notifications[0].length;
+        }
+        if($rootScope.notifications[1]!==undefined&& $rootScope.notifications[1]!==null&& $rootScope.notifications[1].length>0){
+            $scope.notification_count +=  $rootScope.notifications[1].length;
+        }
+        if($rootScope.notifications[2]!==undefined&& $rootScope.notifications[2]!==null&& $rootScope.notifications[2].length>0){
+            $scope.notification_count +=  $rootScope.notifications[2].length;
+        }
+    }
+
+
     $scope.gotoNotificationPanel=function () {
         $state.go('notification');
     }

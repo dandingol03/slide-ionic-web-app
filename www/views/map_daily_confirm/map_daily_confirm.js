@@ -560,6 +560,7 @@ angular.module('starter')
                             {}
                         });
 
+                        $rootScope.flags.serviceOrders.clear=true;
                         $state.go('service_orders');
                     }).catch(function (err) {
                         var str = '';

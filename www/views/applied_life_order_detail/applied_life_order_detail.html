@@ -21,7 +21,7 @@
             </div>
             <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
                 订单号:
-                <span style="position: absolute;right:20%;">{{order.orderNum}}</span>
+                <span style="position: absolute;left: 35%;">{{order.orderNum}}</span>
             </div>
 
         </div>
@@ -33,37 +33,37 @@
                 订单信息
             </div>
 
-            <div class="item" style="padding: 16px;">
-                <span style="width: 45%;display: inline-block;text-align: left">投保人:</span>
-                <span style="width: 55%;display: inline-block;text-align: left;">
+            <div class="item" style="padding: 16px;position:relative">
+                <span>投保人:</span>
+                <span style="position:absolute;left: 35%;">
                     {{order.insurer.perName}}
                 </span>
             </div>
 
-            <div class="item" style="padding: 16px;">
-                <span style="width: 45%;display: inline-block;text-align: left">被保险人:</span>
-                <span style="width: 55%;display: inline-block;text-align: left;">
+            <div class="item" style="padding: 16px;position:relative">
+                <span>被保险人:</span>
+                <span style="position:absolute;left: 35%;">
                     {{order.insuranceder.perName}}
                 </span>
             </div>
 
-            <div class="item" style="padding: 16px;" >
-                <span style="width: 45%;display: inline-block;text-align: left">受益人:</span>
-                <span style="width: 55%;display: inline-block;text-align: left;" >
+            <div class="item" style="padding: 16px;position:relative" >
+                <span>受益人:</span>
+                <span style="position:absolute;left: 35%;">
                     {{order.benefiter.perName}}
                 </span>
             </div>
 
-            <div class="item" style="padding: 16px;">
-                <span style="width: 45%;display: inline-block;text-align: left">保障类型:</span>
-                <span style="width: 55%;display: inline-block;text-align: left;" >
+            <div class="item" style="padding: 16px;position:relative">
+                <span>保障类型:</span>
+                <span style="position:absolute;left: 35%;" >
                     {{order.insuranceType}}
                 </span>
             </div>
 
-            <div class="item" style="padding: 16px;">
-                <span style="width: 45%;display: inline-block;text-align: left">计划保费:</span>
-                <span style="width: 55%;display: inline-block;text-align: left;" >
+            <div class="item" style="padding: 16px;position:relative">
+                <span >计划保费:</span>
+                <span style="position:absolute;left: 35%;">
                     {{order.planInsuranceFee}}
                 </span>
             </div>
@@ -75,7 +75,7 @@
         <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
             <div class="item" style="padding:16px;font-size: 1.4em;color:rgba(228, 93, 46, 0.87);">
                 申请日期:
-                <span style="position: absolute;right:20%;">
+                <span style="position: absolute;left:35%;">
                     {{order.applyTime|date:'yyyy-MM-dd HH:mm'}}
                 </span>
             </div>
