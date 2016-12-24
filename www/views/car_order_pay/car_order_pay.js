@@ -94,8 +94,6 @@ angular.module('starter')
             });
         };
 
-
-
         //添加附件
         $scope.addAttachment=function(item,field)
         {
