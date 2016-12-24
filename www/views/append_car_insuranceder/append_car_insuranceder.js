@@ -107,6 +107,15 @@ angular.module('starter')
                   }
                   $scope.sheild = false;
                   $ionicLoading.hide();
+                  if($scope.car_insurance.relativePersons.length==0){
+
+                      var myPopup = $ionicPopup.alert({
+                          template: '没有已绑定的被保险人，请新建被保险人！',
+                          title: '<strong style="color:red">信息</strong>'
+                      });
+
+                  }
+
               }).catch(function (err) {
                   var str = '';
                   for (var field in err)
@@ -434,7 +443,6 @@ angular.module('starter')
       //提交车险意向
       $scope.confirm = function () {
 
-
           if ($scope.tabIndex == 0) {
               //选择已有被保险人,提交车险订单
 
@@ -443,7 +451,7 @@ angular.module('starter')
 
                   if ($scope.car_insurance.insuranceder.personId == null || $scope.car_insurance.insuranceder.personId == undefined) {
                       var myPopup = $ionicPopup.alert({
-                          template: '被选择被保险人后点击提交',
+                          template: '被勾选被保险人后点击提交',
                           title: '<strong style="color:red">错误</strong>'
                       });
                   } else {
@@ -546,7 +554,7 @@ angular.module('starter')
 
               } else {
                   var myPopup = $ionicPopup.alert({
-                      template: '被输入被保险人后点击提交',
+                      template: '请输入姓名后搜索后选择被保险人进行提交',
                       title: '<strong style="color:red">错误</strong>'
                   });
               }
