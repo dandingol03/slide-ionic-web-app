@@ -628,6 +628,7 @@ angular.module('starter')
                                                         title: '<strong style="color:red">信息</strong>'
                                                     });
                                                     myAlert.then(function(res) {
+                                                        alert('go into then');
                                                         $scope.car_insurance.insuranceder.personId=$scope.new.personId;
                                                         $scope.tabIndex=0;
                                                     });
