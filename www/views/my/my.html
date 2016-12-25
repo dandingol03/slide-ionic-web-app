@@ -24,7 +24,7 @@
                                     <div style="font-size: 2em;">
                                         <img src="img/my_menue.png"/>
                                     </div>
-                                    <div style="font-size: 0.8em">
+                                    <div style="font-size: 0.8em;color: white;">
                                         密码修改
                                     </div>
                                 </li>
@@ -33,7 +33,7 @@
                                     <div style="font-size: 2em;">
                                         <img src="img/my_exit.png"/>
                                     </div>
-                                    <div style="font-size: 0.8em">
+                                    <div style="font-size: 0.8em;color: white;">
                                         退出
                                     </div>
                                 </li>
@@ -55,10 +55,6 @@
 
                     <div style="position: absolute;right:5%;bottom:5%;" ng-click="gotoNotificationPanel()">
 
-                            <div style="color:white;display:inline-block;">
-                                通知
-                            </div>
-
                             <div ng-if="$rootScope.notifications!==undefined&&$rootScope.notifications!==null&&$rootScope.notifications.length>0">
                                 <div style="width: 100%;height: 100%;position: relative;">
                                         <span style="font-size: 2em;color:rgb(21, 232, 228);">
@@ -79,6 +75,11 @@
                                         </span>
                                 </div>
                             </div>
+
+                            <div style="color:white;display:inline-block;">
+                                通知
+                            </div>
+
 
                     </div>
 

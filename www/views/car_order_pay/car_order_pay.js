@@ -95,6 +95,7 @@ angular.module('starter')
         };
 
 
+
         $scope.flags={
             'carAttachId1_img':false,
             'carAttachId2_img':false,
@@ -103,6 +104,7 @@ angular.module('starter')
             'carAttachId5_img':false,
             'carAttachId6_img':false
         }
+
 
         //添加附件
         $scope.addAttachment=function(item,field)
