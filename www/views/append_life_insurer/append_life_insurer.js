@@ -33,7 +33,7 @@ angular.module('starter')
       $scope.unSelectedCellStyle={color:'#eee','text-align': 'center'};
 
 
-    $scope.insurer={};
+    $scope.insurer={perTypeCode:'I'};
 
     if($stateParams.info!==undefined&&$stateParams.info!==null)
     {
@@ -501,9 +501,8 @@ angular.module('starter')
                       var json =res.data;
 
                       if(json.re==1){
-
                           personId=json.data.personId;
-
+                          alert('personId='+ personId);
                           $scope.insurer.personId=personId;
 
                           var suffix='';
@@ -672,14 +671,6 @@ angular.module('starter')
 
 
       }
-
-
-
-
-
-
-
-
 
 
 
@@ -1040,9 +1031,6 @@ angular.module('starter')
       }
 
     }
-
-
-
 
 
   })
