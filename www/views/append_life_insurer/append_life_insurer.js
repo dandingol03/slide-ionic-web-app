@@ -669,7 +669,6 @@ angular.module('starter')
           });
       }
 
-
       }
 
 

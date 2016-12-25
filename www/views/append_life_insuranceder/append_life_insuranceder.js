@@ -756,6 +756,7 @@ angular.module('starter')
                                            myAlert.then(function (res) {
                                                $scope.tabIndex=0;
                                                $scope.order.insuranceder=json.data;
+
                                            });
                                        }else{
                                            var myAlert = $ionicPopup.alert({
