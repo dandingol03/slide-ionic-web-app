@@ -102,15 +102,23 @@ angular.module('starter')
               $ionicLoading.hide();
               var json=res.data;
               if(json.re==1){
-                  $scope.relativePersons=json.data;
 
-                  if(json.data==null){
+                  $scope.relativePersons=[];
 
+                  if(json.data==null||json.data==undefined||json.data.length==0){
                       var myPopup = $ionicPopup.alert({
                           template: '没有已绑定的投保人，请新建投保人！',
                           title: '<strong style="color:red">信息</strong>'
                       });
-
+                  }else{
+                      json.data.map(function (person, i) {
+                          if(i==0)
+                          {
+                              person.checked=true;
+                              $scope.insuranceder=person;
+                          }
+                      });
+                      $scope.relativePersons=json.data;
                   }
 
               }
@@ -155,15 +163,25 @@ angular.module('starter')
             $ionicLoading.hide();
             var json=res.data;
             if(json.re==1){
-                $scope.relativePersons=json.data;
-                if(json.data==null){
 
+                $scope.relativePersons=[];
+
+                if(json.data==null||json.data==undefined||json.data.length==0){
                     var myPopup = $ionicPopup.alert({
                         template: '没有已绑定的投保人，请新建投保人！',
                         title: '<strong style="color:red">信息</strong>'
                     });
-
+                }else{
+                    json.data.map(function (person, i) {
+                        if(i==0)
+                        {
+                            person.checked=true;
+                            $scope.insuranceder=person;
+                        }
+                    });
+                    $scope.relativePersons=json.data;
                 }
+
             }
         }).catch(function(err) {
             var str='';
@@ -486,6 +504,7 @@ angular.module('starter')
           {
               if($scope.insurer.perIdCard2_img!==undefined&&$scope.insurer.perIdCard2_img!==null)
               {
+
                   var personId=null;
                   $http({
                       method: "POST",
@@ -633,7 +652,6 @@ angular.module('starter')
                                                   });
                                               }
                                           }).then(function(res) {
-                                              alert('go life');
                                               var json=res.data;
                                               if(json.re==1) {
                                                   $rootScope.life_insurance.insurer=json.data;

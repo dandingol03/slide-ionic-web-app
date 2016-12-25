@@ -61,56 +61,37 @@
         style="height: 61%;"
         >
 
-        <div class="item"
-             style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-                 padding:10px;background-color:transparent;overflow:initial">
-
-            <span
-              class="input-label"
-              style="display: inline-block;width: 25%;text-align: left"
-              >
-              姓名:
-            </span>
-
-            <span style="width: 55%;display: inline-block;text-align: left;">
-             <input type="text" placeholder="请输入受益人姓名"
-                    ng-value="order.benefiter.perName"
-                    ng-model="order.benefiter.perName"/>
-            </span>
-
-            <span
-              style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
-              ng-click="selectLifeBenefiter()"
-              >
-              <button class="button button-small button-assertive">
-                查询
-              </button>
-            </span>
-
-        </div>
-
         <ion-scroll style="height: 85%;">
 
 
-          <div class="item"  ng-click="checkLegal()" style="border:1px solid;">
+          <div class="item"   ng-click="checkLegal()"
+               style="border:1px solid;border-left:0px;border-right: 0px;border-top:0px;padding-top: 4px;padding-bottom: 4px;">
             <div style="display:inline-block;width:70%">
                <span>
                 {{legal.perName}}
                </span>
             </div>
-            <i ng-if="legal.checked!=true" class="ion-ios-checkmark-outline" ></i>
-            <i ng-if="legal.checked==true" class="ion-ios-checkmark" ></i>
+
+            <span style="font-size: 2em;">
+              <i ng-if="legal.checked!=true" class="ion-ios-circle-outline"></i>
+              <i ng-if="legal.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
+            </span>
+
           </div>
 
 
-          <div class="item" ng-repeat="person in relativePersons" ng-click="mutex(person,relativePersons)">
+          <div class="item" style="border-left:0px;border-right: 0px;border-top:0px;padding-top: 4px;padding-bottom: 4px;"
+               ng-repeat="person in relativePersons" ng-click="mutex(person,relativePersons)">
             <div style="display:inline-block;width:70%">
                <span>
                 {{person.perName}}
                </span>
             </div>
-            <i ng-if="person.checked!=true" class="ion-ios-checkmark-outline" ></i>
-            <i ng-if="person.checked==true" class="ion-ios-checkmark" ></i>
+
+            <span style="font-size: 2em;">
+              <i ng-if="person.checked!=true" class="ion-ios-circle-outline"></i>
+              <i ng-if="person.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
+            </span>
           </div>
 
 

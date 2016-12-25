@@ -71,47 +71,6 @@ angular.module('starter')
 
     $scope.car_insurance.relativePersons={};
 
-    $scope.selectLifeInsuranceder=function(){
-      var reg=/\d|\w/;
-      if($scope.order.insuranceder.perName!==undefined&&$scope.order.insuranceder.perName!==null&&$scope.order.insuranceder.perName!==''
-          &&reg.exec($scope.order.insuranceder.perName)==null)
-      {
-        $http({
-          method: "POST",
-          url: Proxy.local()+"/svr/request",
-          headers: {
-            'Authorization': "Bearer " + $rootScope.access_token
-          },
-          data:
-          {
-            request:'getRelativePersonsWithinPerName',
-            info:
-            {
-              perName:$scope.order.insuranceder.perName
-            }
-          }
-        }).then(function(res) {
-          var json=res.data;
-          if(json.re==1){
-            $scope.relativePersons=json.data;
-              if(json.data==null){
-
-                  var myPopup = $ionicPopup.alert({
-                      template: '没有已绑定的被保险人，请新建被保险人！',
-                      title: '<strong style="color:red">信息</strong>'
-                  });
-
-              }
-          }
-        })
-      }else{
-        var myPopup = $ionicPopup.alert({
-          template: '请填入被保险人的姓名后点击查询',
-          title: '<strong style="color:red">错误</strong>'
-        });
-      }
-    }
-
       $scope.fetchRelativePersons=function () {
           $ionicLoading.show({
               template:'<p class="item-icon-left">拉取关联人...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
@@ -134,15 +93,24 @@ angular.module('starter')
               $ionicLoading.hide();
               var json=res.data;
               if(json.re==1){
-                  $scope.relativePersons=json.data;
-                  if(json.data==null){
 
+                  $scope.relativePersons=[];
+
+                  if(json.data==null||json.data==undefined||json.data.length==0){
                       var myPopup = $ionicPopup.alert({
                           template: '没有已绑定的被保险人，请新建被保险人！',
                           title: '<strong style="color:red">信息</strong>'
                       });
-
+                  }else{
+                      json.data.map(function (person, i) {
+                          if(i==0)
+                          {
+                              person.checked=true;
+                          }
+                      });
+                      $scope.relativePersons=json.data;
                   }
+
               }
           }).catch(function (err) {
               var str='';

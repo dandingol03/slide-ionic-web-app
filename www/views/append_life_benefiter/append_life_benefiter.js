@@ -74,7 +74,9 @@ angular.module('starter')
         cluster.map(function(cell,i) {
           if(cell.personId!=item.personId)
             cell.checked=false;
-        })
+        });
+        item.checked=true;
+        $scope.legal.checked=false;
       }
       else{
         if(item.checked==true)
@@ -96,49 +98,6 @@ angular.module('starter')
 
 
     $scope.car_insurance.relativePersons={};
-
-    $scope.selectLifeBenefiter=function(){
-
-      var reg=/\d|\w/;
-      if($scope.order.benefiter.perName!==undefined&&$scope.order.benefiter.perName!==null
-          &&$scope.order.benefiter.perName!==''&&reg.exec($scope.order.benefiter.perName)==null)
-      {
-          $http({
-              method: "POST",
-              url: Proxy.local()+"/svr/request",
-              headers: {
-                  'Authorization': "Bearer " + $rootScope.access_token
-              },
-              data:
-                  {
-                      request:'getRelativePersonsWithinPerName',
-                      info:
-                          {
-                              perName:$scope.order.benefiter.perName
-                          }
-                  }
-          }).then(function(res) {
-              var json=res.data;
-              if(json.re==1){
-                  $scope.relativePersons=json.data;
-                  if(json.data==null){
-
-                      var myPopup = $ionicPopup.alert({
-                          template: '没有已绑定的受益人，请新建受益人！',
-                          title: '<strong style="color:red">信息</strong>'
-                      });
-
-                  }
-              }
-          })
-      }else{
-          var myPopup = $ionicPopup.alert({
-              template: '所填的关联人姓名有误\r\n'+'请填入关联人姓名后再点击查询',
-              title: '<strong style="color:red">错误</strong>'
-          });
-      }
-
-    }
 
       $scope.fetchRelativePersons=function () {
           $ionicLoading.show({
@@ -162,15 +121,25 @@ angular.module('starter')
               $ionicLoading.hide();
               var json=res.data;
               if(json.re==1){
-                  $scope.relativePersons=json.data;
-                  if(json.data==null){
 
+
+                  $scope.relativePersons=[];
+
+                  if(json.data==null||json.data==undefined||json.data.length==0){
                       var myPopup = $ionicPopup.alert({
                           template: '没有已绑定的受益人，请新建受益人！',
                           title: '<strong style="color:red">信息</strong>'
                       });
-
+                  }else{
+                      json.data.map(function (person, i) {
+                          if(i==0)
+                          {
+                              person.checked=true;
+                          }
+                      });
+                      $scope.relativePersons=json.data;
                   }
+
               }
           }).catch(function (err) {
               var str='';
