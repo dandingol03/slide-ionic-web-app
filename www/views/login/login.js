@@ -258,7 +258,6 @@ angular.module('starter')
                   template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
           });
 
-
           $http({
               method: "POST",
               data: "grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,

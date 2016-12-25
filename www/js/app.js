@@ -513,13 +513,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('tabs.my',{
-            url:'/my',
-            views:{
-              'my-tab':{
-                controller:'myController',
-                templateUrl:'views/my/my.html'
+              cache:false,
+              url:'/my',
+              views:{
+                  'my-tab':{
+                      controller:'myController',
+                      templateUrl:'views/my/my.html'
+                  }
               }
-            }
           })
 
           .state('tabs.handpicked_product',{

@@ -63,11 +63,13 @@
 
                     <ion-scroll style="height: 85%;">
 
-                        <div class="item" style="border:0px;text-align: center;">
+                        <div class="item" style="border:0px;text-align: center;"
+                             ng-if="car_insurance.relativePersons==undefined||car_insurance.relativePersons==null||car_insurance.relativePersons.length==0">
                             <span style="color:#ff3b30;font-weight: bolder;">您目前没有已关联的保险人</span>
                         </div>
 
-                        <div class="item" ng-repeat="person in car_insurance.relativePersons" ng-click="mutex(person,car_insurance.relativePersons)">
+                        <div class="item" style="border-top:0px;border-left:0px;border-right: 0px;margin-bottom: 1px;padding-top: 4px;padding-bottom: 4px;"
+                             ng-repeat="person in car_insurance.relativePersons" ng-click="mutex(person,car_insurance.relativePersons)">
 
                             <div style="display:inline-block;width:70%">
                                <span>
@@ -75,8 +77,10 @@
                                </span>
                             </div>
 
-                            <i ng-if="person.checked!=true" class="ion-ios-checkmark-outline" ></i>
-                            <i ng-if="person.checked==true" class="ion-ios-checkmark" ></i>
+                            <span style="font-size: 2em;">
+                                <i ng-if="person.checked!=true" class="ion-ios-circle-outline"></i>
+                                <i ng-if="person.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
+                            </span>
 
                         </div>
                         <div style="height: 20px;">

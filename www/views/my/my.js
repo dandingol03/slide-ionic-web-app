@@ -29,6 +29,7 @@ angular.module('starter')
                     $cordovaPreferences.store('password', '')
                         .success(function(value) {
                             $state.go('login');
+                            $rootScope.flags.carManage.onFresh=true;
                         })
                         .error(function(error) {
                             console.error("Error: " + error);
@@ -39,6 +40,7 @@ angular.module('starter')
                 })
         }else{
             //浏览器环境
+            $rootScope.flags.carManage.onFresh=true;
             $state.go('login');
         }
     }

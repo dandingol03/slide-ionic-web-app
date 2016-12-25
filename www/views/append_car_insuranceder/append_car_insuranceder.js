@@ -6,7 +6,7 @@ angular.module('starter')
     .controller('appendCarInsurancederController',function($scope,$state,$http, $location,
                                                            $rootScope,$ionicActionSheet,$cordovaCamera,$cordovaImagePicker,
                                                            $ionicModal,Proxy,$stateParams,$cordovaFileTransfer,
-                                                           $q,$ionicPopup,$ionicLoading) {
+                                                           $q,$ionicPopup,$ionicLoading,$timeout) {
 
         $scope.go_back = function () {
             window.history.back();
@@ -78,9 +78,9 @@ angular.module('starter')
             perTypeCode:'I'
         };
 
-        $scope.car_insurance.relativePersons = {};
+        $scope.car_insurance.relativePersons = [];
 
-        $scope.selectCarInsuranceder = function () {
+        $scope.selectCarInsuranceder = function (personId) {
 
             if ($scope.sheild !== true) {
 
@@ -89,6 +89,10 @@ angular.module('starter')
                 });
 
                 $scope.sheild = true;
+
+                //TODO:contrast personId with
+
+
                 $http({
                     method: "POST",
                     url: Proxy.local() + "/svr/request",
@@ -98,17 +102,37 @@ angular.module('starter')
                     data: {
                         request: 'getRelativePersonsWithinPerName',
                         info: {
-                            perName: $scope.car_insurance.insuranceder.perName
+                            perName: ''
                         }
                     }
                 }).then(function (res) {
                     var json = res.data;
                     if (json.re == 1) {
-                        $scope.car_insurance.relativePersons = json.data;
+                        if(json.data!==undefined&&json.data!==null)
+                        {
+                            $scope.car_insurance.relativePersons = json.data;
+                            json.data.map(function (person,i) {
+                                //默认首个选中
+                                if(i==0)
+                                {
+                                    person.checked=true;
+                                    $scope.car_insurance.insuranceder = person;
+                                }
+                                //当新增完被保险人后,自动刷新被保险人列表并选中
+                                if(personId!==undefined&&personId!==null&&person.personId==personId)
+                                {
+                                    person.checked=true;
+                                    $scope.car_insurance.insuranceder = person;
+                                }
+                            });
+                        }
                     }
                     $scope.sheild = false;
                     $ionicLoading.hide();
-                    if($scope.car_insurance.relativePersons.length==0){
+
+
+                    if($scope.car_insurance.relativePersons==null||$scope.car_insurance.relativePersons==undefined
+                        ||$scope.car_insurance.relativePersons.length==0){
 
 
                         $timeout(function () {
@@ -628,8 +652,8 @@ angular.module('starter')
                                                         title: '<strong style="color:red">信息</strong>'
                                                     });
                                                     myAlert.then(function(res) {
-                                                        alert('go into then');
-                                                        $scope.car_insurance.insuranceder.personId=$scope.new.personId;
+                                                        $scope.car_insurance.insuranceder.personId= $scope.insuranceder.personId;
+                                                        $scope.selectCarInsuranceder($scope.insuranceder.personId);
                                                         $scope.tabIndex=0;
                                                     });
                                                 } else {
