@@ -121,6 +121,14 @@ angular.module('starter')
               var json=res.data;
               if(json.re==1){
                   $scope.relativePersons=json.data;
+                  if(json.data==null){
+
+                      var myPopup = $ionicPopup.alert({
+                          template: '没有已绑定的受益人，请新建受益人！',
+                          title: '<strong style="color:red">信息</strong>'
+                      });
+
+                  }
               }
           })
       }else{
@@ -155,6 +163,14 @@ angular.module('starter')
               var json=res.data;
               if(json.re==1){
                   $scope.relativePersons=json.data;
+                  if(json.data==null){
+
+                      var myPopup = $ionicPopup.alert({
+                          template: '没有已绑定的受益人，请新建受益人！',
+                          title: '<strong style="color:red">信息</strong>'
+                      });
+
+                  }
               }
           }).catch(function (err) {
               var str='';
