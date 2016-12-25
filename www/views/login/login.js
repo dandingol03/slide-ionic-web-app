@@ -56,6 +56,22 @@ angular.module('starter')
             $ionicPlatform.ready (function () {
                 $scope.fetch();
             })
+        }else{
+            //浏览器环境
+            if(window.localStorage.user!==undefined&&window.localStorage.user!==null&&window.localStorage.user!='')
+            {
+                try{
+                    var user=JSON.parse(window.localStorage.user);
+                    if(user.username!==null&&user.username!==undefined)
+                        $scope.user.username=user.username;
+                    if(user.password!==null&&user.password!==undefined)
+                        $scope.user.password=user.password;
+                }catch(e)
+                {
+                    console.error(e.toString());
+                }
+
+            }
         }
 
         $scope.goto = function(){
@@ -270,9 +286,12 @@ angular.module('starter')
                       })
                       .error(function(error) {
                           alert("Error: " + error);
-                      });
-
-
+                      })
+              }else{
+                  window.localStorage.user = JSON.stringify({
+                      username: $scope.user.username,
+                      password: $scope.user.password
+                  });
               }
 
 

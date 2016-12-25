@@ -54,9 +54,9 @@
 
 
     <!-- 已申请订单 -->
-    <div class="list list-inset padding" style="margin-bottom: 0px;height: 100%;" ng-if="tabIndex==0">
+    <div class="list list-inset padding" style="margin-bottom: 0px;height: 100%;width: 100%;" ng-if="tabIndex==0">
 
-      <ion-scroll style="height: 90%;">
+      <ion-scroll style="height: 90%;width: 100%;">
 
         <!-- 已申请 新界面 -->
 
@@ -123,9 +123,9 @@
 
     <!-- 估价列表 -->
     <div class="list list-inset padding"
-         style="margin-bottom: 0px;height: 100%;"
+         style="margin-bottom: 0px;height: 100%;width: 100%;"
          ng-if="tabIndex==1">
-      <ion-scroll style="height: 90%;">
+      <ion-scroll style="height: 90%;width: 100%;">
 
         <!-- 已完成报价 新界面 -->
 
@@ -194,8 +194,8 @@
     </div>
 
     <!-- 已完成 -->
-    <div class="list list-inset padding" style="margin-bottom: 0px;height: 100%;" ng-if="tabIndex==2">
-      <ion-scroll style="height: 90%;">
+    <div class="list list-inset padding" style="margin-bottom: 0px;height: 100%;width: 100%;" ng-if="tabIndex==2">
+      <ion-scroll style="height: 90%;width: 100%;">
 
         <!-- 已完成 新界面 -->
         <div class="item" ng-repeat="order in historyOrders | orderBy:'-orderTime'"
