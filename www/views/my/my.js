@@ -37,6 +37,9 @@ angular.module('starter')
                 .error(function(error) {
                     console.error("Error: " + error);
                 })
+        }else{
+            //浏览器环境
+            $state.go('login');
         }
     }
 
