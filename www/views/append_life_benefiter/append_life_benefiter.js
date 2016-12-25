@@ -42,7 +42,7 @@ angular.module('starter')
 
 
 
-    $scope.benefiter={};
+    $scope.benefiter={perTypeCode:'I'};
     $scope.legal={perName:'法定',checked:false};
 
     $scope.checkLegal=function(){
@@ -121,6 +121,14 @@ angular.module('starter')
               var json=res.data;
               if(json.re==1){
                   $scope.relativePersons=json.data;
+                  if(json.data==null){
+
+                      var myPopup = $ionicPopup.alert({
+                          template: '没有已绑定的受益人，请新建受益人！',
+                          title: '<strong style="color:red">信息</strong>'
+                      });
+
+                  }
               }
           })
       }else{
@@ -155,6 +163,14 @@ angular.module('starter')
               var json=res.data;
               if(json.re==1){
                   $scope.relativePersons=json.data;
+                  if(json.data==null){
+
+                      var myPopup = $ionicPopup.alert({
+                          template: '没有已绑定的受益人，请新建受益人！',
+                          title: '<strong style="color:red">信息</strong>'
+                      });
+
+                  }
               }
           }).catch(function (err) {
               var str='';
@@ -482,7 +498,205 @@ angular.module('starter')
     }
 
 
-    //提交统一函数
+
+      //寿险新建受益人 新"保存"方法
+
+      $scope.uploadNew=function(cmd,item){
+
+          if($scope.benefiter.perIdCard1_img!==undefined&&$scope.benefiter.perIdCard1_img!==null)
+          {
+              if($scope.benefiter.perIdCard2_img!==undefined&&$scope.benefiter.perIdCard2_img!==null)
+              {
+                  var personId=null;
+                  $http({
+                      method: "POST",
+                      url: Proxy.local()+'/svr/request',
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token,
+                      },
+                      data: {
+                          request:cmd,
+                          info:item
+                      }
+                  }).then(function(res) {
+                      var json =res.data;
+
+                      if(json.re==1){
+                          personId=json.data.personId;
+                          alert('personId='+ personId);
+                          $scope.benefiter.personId=personId;
+
+                          var suffix='';
+                          var imageType='perIdCard';
+                          if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
+                              suffix='jpg';
+                          else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
+                              suffix='png';
+                          else{}
+                          var server=Proxy.local()+'/svr/request?request=uploadPhoto' +
+                              '&imageType='+imageType+'&suffix='+suffix+
+                              '&filename='+'perIdCard1_img'+'&personId='+personId;
+                          var options = {
+                              fileKey:'file',
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              }
+                          };
+
+                          var perIdAttachId1=null;
+                          var perIdAttachId2=null;
+
+                          $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard1_img, options)
+                              .then(function(res) {
+                                  alert('upload perIdCard1 success');
+                                  for(var field in res) {
+                                      alert('field=' + field + '\r\n' + res[field]);
+                                  }
+                                  var su=null
+                                  if($scope.benefiter.perIdCard1_img.indexOf('.jpg')!=-1)
+                                      su='jpg';
+                                  else if($scope.benefiter.perIdCard1_img.indexOf('.png')!=-1)
+                                      su='png';
+                                  alert('suffix=' + su);
+                                  return $http({
+                                      method: "POST",
+                                      url: Proxy.local()+"/svr/request",
+                                      headers: {
+                                          'Authorization': "Bearer " + $rootScope.access_token,
+                                      },
+                                      data:
+                                          {
+                                              request:'createPhotoAttachment',
+                                              info:{
+                                                  imageType:'perIdCard',
+                                                  filename:'perIdAttachId1',
+                                                  suffix:su,
+                                                  docType:'I1' ,
+                                                  personId:personId
+                                              }
+                                          }
+                                  });
+                              })
+                              .then(function(res) {
+                                  var json=res.data;
+                                  if(json.re==1) {
+                                      perIdAttachId1=json.data;
+                                      alert('perIdAttachId1=' + perIdAttachId1);
+                                      var su=null;
+                                      if($scope.benefiter.perIdCard2_img.indexOf('.jpg')!=-1)
+                                          su='jpg';
+                                      else if($scope.benefiter.perIdCard2_img.indexOf('.png')!=-1)
+                                          su='png';
+                                      server=Proxy.local()+'/svr/request?request=uploadPhoto' +
+                                          '&imageType='+imageType+'&suffix='+su+'&filename='+'perIdAttachId2'+'&personId='+personId;
+                                      return  $cordovaFileTransfer.upload(server, $scope.benefiter.perIdCard2_img, options)
+                                          .then(function(res) {
+                                              alert('upload perIdCard2 success');
+                                              for(var field in res) {
+                                                  alert('field=' + field + '\r\n' + res[field]);
+                                              }
+                                              return $http({
+                                                  method: "POST",
+                                                  url: Proxy.local()+"/svr/request",
+                                                  headers: {
+                                                      'Authorization': "Bearer " + $rootScope.access_token,
+                                                  },
+                                                  data:
+                                                      {
+                                                          request:'createPhotoAttachment',
+                                                          info:{
+                                                              imageType:'perIdCard',
+                                                              filename:'perIdAttachId2',
+                                                              suffix:su,
+                                                              docType:'I1' ,
+                                                              personId:personId
+                                                          }
+                                                      }
+                                              });
+                                          }) .then(function(res) {
+                                              var json=res.data;
+                                              if(json.re==1){
+                                                  perIdAttachId2=json.data;
+                                                  return $http({
+                                                      method: "POST",
+                                                      url: Proxy.local()+"/svr/request",
+                                                      headers: {
+                                                          'Authorization': "Bearer " + $rootScope.access_token,
+                                                      },
+                                                      data:
+                                                          {
+                                                              request:'createInsuranceInfoPersonInfo',
+                                                              info:{
+                                                                  perIdAttachId1:perIdAttachId1,
+                                                                  perIdAttachId2:perIdAttachId2,
+                                                                  personId:personId
+                                                              }
+                                                          }
+                                                  });
+                                              }
+                                          }).then(function(res) {
+                                              alert('insuranceInfoPersonInfo create successfully');
+                                              var json=res.data;
+                                              if(json.re==1) {
+                                                  return $http({
+                                                      method: "POST",
+                                                      url: Proxy.local()+"/svr/request",
+                                                      headers: {
+                                                          'Authorization': "Bearer " + $rootScope.access_token,
+                                                      },
+                                                      data:
+                                                          {
+                                                              request:'getInfoPersonInfoByPersonId',
+                                                              info:{
+                                                                  personId:personId
+                                                              }
+                                                          }
+                                                  });
+                                              }
+                                          }).then(function(res) {
+                                              alert('go life');
+                                              var json=res.data;
+                                              if(json.re==1) {
+                                                  $rootScope.life_insurance.benefiter=json.data;
+                                                  $state.go('life');
+                                              }
+                                          });
+                                  }
+                              })
+                      }else{}
+
+
+                  }).then(function(res) {
+
+                  }).catch(function(err) {
+                      var str='';
+                      for(var field in err)
+                          str+=err[field];
+                      alert('error=\r\n' + str);
+                  });
+
+              }
+              else{
+                  var myPopup = $ionicPopup.alert({
+                      template: '请拍入关联人的身份证反面再点击关联',
+                      title: '<strong style="color:red">错误</strong>'
+                  });
+              }
+          }
+          else{
+              var myPopup = $ionicPopup.alert({
+                  template: '请拍入关联人的身份证正面再点击关联',
+                  title: '<strong style="color:red">错误</strong>'
+              });
+          }
+
+
+      }
+
+
+
+
+      //提交统一函数
     $scope.upload=function(cmd,item){
 
       var reg=/\d|\w/;

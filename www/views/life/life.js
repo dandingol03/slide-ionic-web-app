@@ -17,9 +17,9 @@ angular.module('starter')
                 benefiter:{perTypeCode:'I'},
                 intend:{},
                 order:{
-                    insurer:{},
-                    insuranceder:{},
-                    benefiter:{}
+                    insurer:{perTypeCode:'I'},
+                    insuranceder:{perTypeCode:'I'},
+                    benefiter:{perTypeCode:'I'}
                 }
             };
 
