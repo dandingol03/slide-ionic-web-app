@@ -5,10 +5,11 @@ angular.module('starter')
  */
   .controller('lifeInsuranceOrdersController',function($scope,$state,$http,
                                                        $location,$rootScope,$stateParams,
-                                                       $ionicPopup,Proxy,$ionicLoading){
+                                                       $ionicPopup,Proxy,$ionicLoading,$ionicHistory){
 
       if($rootScope.flags.lifeOrders.clear==true){
-          $state.go('tabs.my');
+          $ionicHistory.clearHistory();
+          $ionicHistory.clearCache();
           $rootScope.flags.lifeOrders.clear==false;
       }
 
@@ -29,7 +30,12 @@ angular.module('starter')
       }
 
       $scope.go_back=function(){
-          window.history.back();
+          if($ionicHistory.backView())
+          {
+              window.history.back();
+          }else{
+              $state.go('tabs.my');
+          }
       }
 
       $scope.tab_change=function(i){

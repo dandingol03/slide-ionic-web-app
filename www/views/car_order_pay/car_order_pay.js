@@ -61,10 +61,10 @@ angular.module('starter')
                 .then(function (results) {
                     item[field]=results[0];
                     alert('img url=' + results[0]);
-                    $scope.attachmentSheild=false;
+                    $scope.flags[field]=false;
                 }, function (error) {
                     alert("error="+error);
-                    $scope.attachmentSheild=false;
+                    $scope.flags[field]=false;
                     // error getting photos
                 });
         };
@@ -87,21 +87,30 @@ angular.module('starter')
             $cordovaCamera.getPicture(options).then(function(imageURI) {
                 item[field] = imageURI;
                 alert('image url=' + item[field]);
-                $scope.attachmentSheild=false;
+                $scope.flags[field]=false;
             }, function(err) {
-                $scope.attachmentSheild=false;
+                $scope.flags[field]=false;
                 // error
             });
         };
 
 
+        $scope.flags={
+            'carAttachId1_img':false,
+            'carAttachId2_img':false,
+            'carAttachId3_img':false,
+            'carAttachId4_img':false,
+            'carAttachId5_img':false,
+            'carAttachId6_img':false
+        }
 
         //添加附件
         $scope.addAttachment=function(item,field)
         {
-            //add attachment flag
-            if($scope.attachmentSheild!=true)
+
+            if($scope.flags[field]==false)
             {
+                $scope.flags[field]=true;
                 $ionicActionSheet.show({
                     buttons: [
                         {text:'图库'},
@@ -127,7 +136,6 @@ angular.module('starter')
                     }
                 });
             }else{}
-
         }
 
 
@@ -670,8 +678,8 @@ angular.module('starter')
                 if(json.re==1) {
 
                     var alertPopup = $ionicPopup.alert({
-                        title: '提示',
-                        template: '订单已支付完成'
+                        title: '信息',
+                        template: '目前没有网上支付,请到公司进行付款'
                     });
 
                     alertPopup.then(function(res) {

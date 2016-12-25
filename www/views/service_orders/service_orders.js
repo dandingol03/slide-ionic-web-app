@@ -8,7 +8,8 @@ angular.module('starter')
                                                  $ionicHistory){
 
       if($rootScope.flags.serviceOrders.clear==true){
-          $state.go('tabs.my');
+          $ionicHistory.clearHistory();
+          $ionicHistory.clearCache();
           $rootScope.flags.serviceOrders.clear==false;
       }
 
@@ -20,9 +21,12 @@ angular.module('starter')
 
 
       $scope.goBack=function(){
-          $ionicHistory.clearHistory();
-          $ionicHistory.clearCache();
-          $state.go('tabs.my');
+          if($ionicHistory.backView())
+          {
+              window.history.back();
+          }else{
+              $state.go('tabs.my');
+          }
       }
 
     $scope.tab_change=function(i)
@@ -68,11 +72,14 @@ angular.module('starter')
           }).then(function (res) {
               $ionicLoading.hide();
               var json=res.data;
+
               if(json.re==1)
               {
                   $scope.orders=json.data;
-                  $rootScope.service_orders=$scope.orders;
+              }else{
+                  $scope.orders=[];
               }
+              $rootScope.service_orders=$scope.orders;
               $scope.orders.map(function(order,i) {
                   order.serviceName=$scope.serviceTypeMap[order.serviceType];
 

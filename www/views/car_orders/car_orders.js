@@ -5,7 +5,8 @@ angular.module('starter')
                                              $ionicLoading,$ionicHistory){
 
       if($rootScope.flags.carOrders.clear==true){
-          $state.go('tabs.my');
+          $ionicHistory.clearHistory();
+          $ionicHistory.clearCache();
           $rootScope.flags.carOrders.clear==false;
       }
 
@@ -129,9 +130,12 @@ angular.module('starter')
     };
 
     $scope.go_back=function(){
-        $ionicHistory.clearHistory();
-        $ionicHistory.clearCache();
-        $state.go('tabs.my');
+        if($ionicHistory.backView())
+        {
+            window.history.back();
+        }else{
+            $state.go('tabs.my');
+        }
     }
 
     $scope.tab_change=function(i)
