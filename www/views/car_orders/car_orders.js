@@ -109,6 +109,7 @@ angular.module('starter')
               console.error('err=\r\n'+str);
               $scope.doingGetOrders = false;
               $ionicLoading.hide();
+              $scope.doingGetOrders=false;
           });
       }
 
