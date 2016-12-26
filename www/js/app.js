@@ -997,6 +997,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
+          .state('life_order_pay',{
+              url:'/life_order_pay:info',
+              controller:'lifeOrderPayController',
+              templateUrl:'views/life_order_pay/life_order_pay.html'
+          })
 
 
         // if none of the above states are matched, use this as the fallback

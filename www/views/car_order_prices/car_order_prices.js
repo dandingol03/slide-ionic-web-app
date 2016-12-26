@@ -18,8 +18,6 @@ angular.module('starter')
       $scope.order=JSON.parse($scope.order);
 
 
-
-
     if($scope.order.orderState==2){
         $scope.getOrder=function () {
             $ionicLoading.show({

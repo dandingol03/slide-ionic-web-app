@@ -65,7 +65,7 @@ angular.module('starter')
 
 
         $scope.haveModifyOrder=false;
-        if($scope.haveModifyOrder=false)
+        if($scope.haveModifyOrder==false)
         {
 
             $scope.modifyOrder = function(){

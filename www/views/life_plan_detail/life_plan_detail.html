@@ -65,7 +65,7 @@
                 </div>
               </ion-item>
             </ion-list>
-            <h4>投保规则</h4>
+            <h4>适用人群</h4>
             <ion-list>
               <ion-item>
                 <div class="row">
@@ -110,16 +110,16 @@
                     <i class="ion-record"></i>缴费年限:
                   </label>
                   <div
-                    ng-if="item.main.feeYearType==undefined||item.main.feeYearType==null"
+                    ng-if="item.feeYearType==undefined||item.feeYearType==null"
                     style="display: inline-block;width: 40%;color: rgba(17, 17, 17, 0.42);font-size: 14px;text-align: left;"
                   >
                     <span>请选择缴费年限</span>
                   </div>
                   <div
-                    ng-if="item.main.feeYearTypeName!==undeifned&&item.main.feeYearTypeName!==null"
+                    ng-if="item.feeYearTypeName!==undeifned&&item.feeYearTypeName!==null"
                     style="display: inline-block;width: 40%;font-size: 14px;text-align: left;"
                   >
-                    {{item.main.feeYearTypeName}}
+                    {{item.feeYearTypeName}}
                   </div>
                   <div style="display: inline-block;width: 15%;text-align: left;"
                        ng-click="feeYearType_select()">
@@ -155,7 +155,7 @@
                   <div class="col">
                     <p style="color:#f00"><i class="ion-record"></i>主险保费:</p>
                   </div>
-                  <div class="col"><p>{{item.main.insuranceFee}}</p></div>
+                  <div class="col"><p>{{item.insuranceFee}}</p></div>
                 </div>
               </ion-item>
 
@@ -213,7 +213,7 @@
             <div class="col det_content">
 
               <h4 style="color:#f00">
-                主险保费合计&nbsp;&nbsp;:   <span>{{item.main.insuranceFee}}</span>
+                主险保费合计&nbsp;&nbsp;:   <span>{{item.insuranceFee}}</span>
               </h4>
             </div>
           </div>
