@@ -28,6 +28,7 @@ angular.module('starter')
           });
 
           $scope.doingGetOrders = true;
+
           //获取已完成订单,估价列表
           $http({
               method: "POST",
@@ -106,6 +107,7 @@ angular.module('starter')
               for(var field in err)
                   str+=err[field];
               console.error('err=\r\n'+str);
+              $scope.doingGetOrders = false;
               $ionicLoading.hide();
           });
       }
