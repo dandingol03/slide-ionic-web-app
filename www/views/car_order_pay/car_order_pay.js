@@ -681,7 +681,8 @@ angular.module('starter')
 
                     var alertPopup = $ionicPopup.alert({
                         title: '信息',
-                        template: '目前没有网上支付,请到公司进行付款'
+                        template: '核保已通过,请至就近网点刷卡或银行转账:'+'\r\n'+'户名:青岛海纳汽车保险销售有限公司济南分公司高新营业部'+'\r\n'+
+                            '开户行:招商银行济南分行济南高新支行'+'\r\n'+'帐号:531904581010801'
                     });
 
                     alertPopup.then(function(res) {

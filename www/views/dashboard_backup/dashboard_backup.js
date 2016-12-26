@@ -166,26 +166,6 @@ angular.module('starter')
                 $scope.licenseIndex=$rootScope.dashboard.licenseIndex;
             else
                 $scope.licenseIndex=0;
-            //同步寿险信息
-            if($rootScope.life_insurance.insurer!==undefined&&$rootScope.life_insurance.insurer!==null){
-                $scope.life_insurance.order.insurer=$rootScope.life_insurance.insurer;
-            }
-            if($rootScope.life_insurance.insuranceder!==undefined&&$rootScope.life_insurance.insuranceder!==null)
-            {
-                $scope.life_insurance.order.insuranceder=$rootScope.life_insurance.insuranceder;
-            }
-            if($rootScope.life_insurance.benefiter!==undefined&&$rootScope.life_insurance.benefiter!==null)
-            {
-                $scope.life_insurance.order.benefiter=$rootScope.life_insurance.benefiter;
-            }
-            if($rootScope.life_insurance.isLegalBenefiter!==undefined&&$rootScope.life_insurance.isLegalBenefiter!==null)
-            {
-                $scope.life_insurance.order.isLegalBenefiter=$rootScope.life_insurance.isLegalBenefiter;
-            }
-            if($rootScope.life_insurance.planInsuranceFee!==undefined&&$rootScope.life_insurance.planInsuranceFee!==null)
-            {
-                $scope.life_insurance.order.planInsuranceFee=$rootScope.life_insurance.planInsuranceFee;
-            }
 
         }else{
             $scope.subTabIndex=0;
