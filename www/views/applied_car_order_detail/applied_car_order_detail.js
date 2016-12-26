@@ -64,6 +64,7 @@ angular.module('starter')
 
 
 
+
         //同步全局的车险订单取消标志
         if($rootScope.carOrderModify.flag==true)
             $scope.haveModifyOrder=true;
