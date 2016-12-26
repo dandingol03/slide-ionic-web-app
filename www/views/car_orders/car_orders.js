@@ -2,7 +2,7 @@ angular.module('starter')
 
   .controller('carOrdersController',function($scope,$state,$http,
                                              $location, $rootScope,Proxy,
-                                             $ionicLoading,$ionicHistory){
+                                             $ionicLoading,$ionicHistory,$ionicPlatform){
 
       if($rootScope.flags.carOrders.clear==true){
           $ionicHistory.clearHistory();
@@ -10,12 +10,24 @@ angular.module('starter')
           $rootScope.flags.carOrders.clear==false;
       }
 
+      var deregister = $ionicPlatform.registerBackButtonAction(
+          function () {
+              console.log("close the popup");
+              if($scope.doingGetOrders==true){
+                  $ionicLoading.hide();
+              }
+          }, 505
+      );
+
+      $scope.$on('$destroy', deregister)
+
       $scope.getOrders=function () {
 
           $ionicLoading.show({
               template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
           });
 
+          $scope.doingGetOrders = true;
           //获取已完成订单,估价列表
           $http({
               method: "POST",
@@ -86,6 +98,8 @@ angular.module('starter')
               $rootScope.flags.carOrders.data.orderPricedList=$scope.orderPricedList;
               $rootScope.flags.carOrders.data.applyedList=$scope.applyedList;
               $rootScope.flags.carOrders.onFresh=false;
+
+              $scope.doingGetOrders = false;
               $ionicLoading.hide();
           }).catch(function(err) {
               var str='';
@@ -100,19 +114,20 @@ angular.module('starter')
       if($rootScope.flags.carOrders.onFresh==true)
       {
           $scope.getOrders();
-      }else{
+      }
+      else
+      {
           $scope.historyOrders=$rootScope.flags.carOrders.data.historyOrders;
           $scope.orderPricedList=$rootScope.flags.carOrders.data.orderPricedList;
           $scope.applyedList=$rootScope.flags.carOrders.data.applyedList;
       }
 
 
+
       //车险订单  0.已完成;1.估价列表;2.已申请
 
       //最新改动
       //车险订单 0.已申请;1.估价列表;2.已完成
-
-
 
 
     $scope.tabIndex=$rootScope.car_orders_tabIndex;
