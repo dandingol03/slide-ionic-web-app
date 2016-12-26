@@ -100,19 +100,20 @@ angular.module('starter')
       if($rootScope.flags.carOrders.onFresh==true)
       {
           $scope.getOrders();
-      }else{
+      }
+      else
+      {
           $scope.historyOrders=$rootScope.flags.carOrders.data.historyOrders;
           $scope.orderPricedList=$rootScope.flags.carOrders.data.orderPricedList;
           $scope.applyedList=$rootScope.flags.carOrders.data.applyedList;
       }
 
 
+
       //车险订单  0.已完成;1.估价列表;2.已申请
 
       //最新改动
       //车险订单 0.已申请;1.估价列表;2.已完成
-
-
 
 
     $scope.tabIndex=$rootScope.car_orders_tabIndex;

@@ -107,7 +107,7 @@ angular.module('starter')
 
                   if(json.data==null||json.data==undefined||json.data.length==0){
                       var myPopup = $ionicPopup.alert({
-                          template: '没有已绑定的投保人，请新建投保人！',
+                          template: '没有已绑定的投保人，请选择新建投保人！',
                           title: '<strong style="color:red">信息</strong>'
                       });
                   }else{
