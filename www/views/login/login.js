@@ -222,11 +222,18 @@ angular.module('starter')
       }
 
 
+        // var deregister = $ionicPlatform.registerBackButtonAction(
+        //     function () {
+        //         console.log("close the popup")
+        //     }, 505
+        // );
+        //
+        // $scope.$on('$destroy', deregister)
 
 
 
 
-      $scope.doLogin=function(){
+        $scope.doLogin=function(){
         if($rootScope.registrationId==undefined||$rootScope.registrationId==null||$rootScope.registrationId=='')
         {
 
