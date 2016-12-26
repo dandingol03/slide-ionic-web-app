@@ -102,6 +102,8 @@ angular.module('starter')
                 ||($scope.life_insurance.order.isLegalBenefiter!=undefined&&$scope.life_insurance.order.isLegalBenefiter!=null))
                 &&$scope.life_insurance.order.planInsuranceFee!=undefined&&$scope.life_insurance.order.planInsuranceFee!=null
                 &&$scope.life_insurance.order.insuranceTypeCode!=undefined&&$scope.life_insurance.order.insuranceTypeCode!=null
+                &&$scope.life_insurance.order.hasSocietyInsurance!=undefined&&scope.life_insurance.order.hasSocietyInsurance!=null
+                &&$scope.life_insurance.order.hasCommerceInsurance!=undefined&&$scope.life_insurance.order.hasCommerceInsurance!=null
             )
             {
                 //TDOO:校验是否已有寿险订单
