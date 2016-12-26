@@ -64,18 +64,27 @@
 
         <ion-scroll style="height: 85%;">
 
-          <div class="item" style="padding-top:4px;padding-bottom: 4px;border-left:0px;border-top:0px;border-right: 0px;" ng-repeat="person in relativePersons" ng-click="mutex(person,relativePersons)">
+          <div class="item card" style="padding-top:4px;padding-bottom: 4px;border-left:0px;border-top:0px;border-right: 0px;margin-top: 1px;margin-bottom: 4px;"
+               ng-repeat="person in relativePersons" ng-click="mutex(person,relativePersons)">
 
-            <div style="display:inline-block;width:70%">
-               <span>
-                {{person.perName}}
-               </span>
+            <div style="display:inline-block;width:85%">
+              <div>
+                姓名: <span style="font-weight: bolder;">{{person.perName}}</span>
+              </div>
+              <div>
+                <span style="font-size: 0.9em;color:#888;">
+                  证件号:<span style="font-weight: bolder;">{{person.perIdCard}}</span>
+                </span>
+              </div>
             </div>
 
-            <span style="font-size: 2em;">
-              <i ng-if="person.checked!=true" class="ion-ios-circle-outline"></i>
-              <i ng-if="person.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
-            </span>
+
+            <div style="display: inline-block;width: 15%;text-align: center;">
+              <span style="font-size: 2em;">
+                <i ng-if="person.checked!=true" class="ion-ios-circle-outline"></i>
+                <i ng-if="person.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
+              </span>
+            </div>
 
           </div>
           <div style="height: 20px;">

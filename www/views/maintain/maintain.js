@@ -334,10 +334,10 @@ angular.module('starter')
                             var src=null;
                             if(cordova.file!==undefined&&cordova.file!==null)
                             {
-                                src='danding.mp3';
+                                src='danding.wav';
                             }else{
                                 src='/storage/emulated/0/danding.mp3';
-                                src='danding.mp3';
+                                src='danding.wav';
                             }
                             var media = $cordovaMedia.newMedia(src);
                             media.startRecord();
@@ -385,7 +385,7 @@ angular.module('starter')
                                 var timeling=($scope.media_record_finish.getTime()-$scope.media_record_start)/1000;
                                 alert('time length=' + timeling);
                             });
-                            $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.mp3';
+                            $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.wav';
                             $scope.isRecording=false;
                         }
                     }else{}
