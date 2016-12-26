@@ -65,7 +65,7 @@ angular.module('starter')
         $scope.lifeInsuranceder_insuranceType_select=function()
         {
 
-            var buttons=[{text:'重疾险'},{text:'意外险'},{text:'养老险'},{text:'理财险'},,{text:'医疗险'}];
+            var buttons=[{text:'重疾险'},{text:'意外险'},{text:'养老险'},{text:'理财险'},{text:'医疗险'}];
             $ionicActionSheet.show({
                 buttons:buttons,
                 titleText: '选择你需要的保障',
@@ -78,6 +78,10 @@ angular.module('starter')
                 cssClass:'motor_insurance_actionsheet'
             });
         }
+
+
+        $scope.life_insurance.order.hasSocietyInsurance=false;
+        $scope.life_insurance.order.hasCommerceInsurance=false;
 
         $scope.Toggle=function(type,item,field)
         {
@@ -102,8 +106,6 @@ angular.module('starter')
                 ||($scope.life_insurance.order.isLegalBenefiter!=undefined&&$scope.life_insurance.order.isLegalBenefiter!=null))
                 &&$scope.life_insurance.order.planInsuranceFee!=undefined&&$scope.life_insurance.order.planInsuranceFee!=null
                 &&$scope.life_insurance.order.insuranceTypeCode!=undefined&&$scope.life_insurance.order.insuranceTypeCode!=null
-                &&$scope.life_insurance.order.hasSocietyInsurance!=undefined&&scope.life_insurance.order.hasSocietyInsurance!=null
-                &&$scope.life_insurance.order.hasCommerceInsurance!=undefined&&$scope.life_insurance.order.hasCommerceInsurance!=null
             )
             {
                 //TDOO:校验是否已有寿险订单
