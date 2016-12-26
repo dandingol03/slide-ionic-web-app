@@ -8,7 +8,7 @@ angular.module('starter')
     .controller('mapAdministrateConfirmController',function($scope,$state,$http,$timeout,$rootScope,
                                                           $ionicModal, Proxy,$stateParams,$q,
                                                           $ionicActionSheet,$cordovaDatePicker,$ionicLoading,
-                                                            $ionicPopup,$ionicHistory) {
+                                                            $ionicPopup,$ionicHistory,BaiduMapService) {
 
         $scope.selectTime=true;
         $scope.datetimepicker=function (item,field) {
@@ -70,12 +70,108 @@ angular.module('starter')
             }
         };
 
-
         $scope.carManage={
 
         };
 
         $scope.servicePlace=null;
+
+        /*****模态框高度计算****/
+        $scope.screenHeight=window.screen.height;
+        $scope.contentHeight=$scope.screenHeight-140;
+
+        $scope.resultsStyle={width:'100%',height:$scope.contentHeight+'px'};
+
+        $scope.customerPlace={
+        };
+
+        $scope.results=[];
+        /*** 选择目的地模态框 ***/
+        $ionicModal.fromTemplateUrl('views/modal/select_customerPlace_modal.html',{
+            scope:  $scope,
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.customerPlace_modal = modal;
+        });
+
+        $scope.openCustomerPlaceModal= function(){
+            try{
+                $scope.customerPlace_modal.show();
+            }catch(e){
+                alert('error=\r\n'+ e.toString());
+            }
+        };
+
+        $scope.closeCustomerPlaceModal= function() {
+            $scope.customerPlace_modal.hide();
+        };
+        /*** 选择目的地模态框 ***/
+
+
+        //选择目的地的回调函数
+        $scope.Select=function (item) {
+            if(item!==undefined&&item!==null)
+            {
+                $scope.carManage.destination=item;
+                $scope.closeCustomerPlaceModal();
+            }
+        }
+
+        //基于百度地图api的接口搜索
+        $scope.search=function () {
+
+            if($rootScope.gaodeHome!==undefined&&$rootScope.gaodeHome!==null)
+            {
+                $ionicLoading.show({
+                    template: '<p class="item-icon-left">拉取搜索结果...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                });
+
+
+
+                var BMap=null;
+                if($scope.BMap!==undefined&&$scope.BMap!==null)
+                    BMap=$scope.BMap;
+                else
+                    BMap=window.BMap;
+                var map=$rootScope.gaodeHome;
+                var options = {
+                    onSearchComplete: function(results){
+                        // 判断状态是否正确
+                        if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                            $ionicLoading.hide();
+                            var s = [];
+                            $scope.results=[];
+                            if(results.getCurrentNumPois()!==undefined&&results.getCurrentNumPois()!==null&&results.getCurrentNumPois()>0)
+                            {
+                                for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                                    var poi=results.getPoi(i);
+                                    $scope.results.push({
+                                        title:poi.title,
+                                        address:poi.address,
+                                        lat:poi.point.lat,
+                                        lng:poi.point.lng
+                                    });
+                                }
+                            }else{
+                            }
+                        }else{
+                            $ionicLoading.hide();
+                        }
+                    }
+                };
+
+                var local = new BMap.LocalSearch(map, options);
+                local.search($scope.customerPlace.address);
+            }else{}
+        }
+
+        /**** 获取百度地图api接口 ****/
+        BaiduMapService.getBMap().then(function (res) {
+            var BMap = res;
+            $scope.BMap=BMap;
+        });
+
 
 
         if ($stateParams.contentInfo !== undefined && $stateParams.contentInfo !== null) {
@@ -215,7 +311,7 @@ angular.module('starter')
                         buttons.push({text:"创建新地址"});
                         destinations.map(function (destination) {
                             var item=destination;
-                            item.text=destination.address;
+                            item.text=destination.title;
                             buttons.push(item);
                         })
                         var destinationSheet = $ionicActionSheet.show({
@@ -228,7 +324,8 @@ angular.module('starter')
 
                             buttonClicked: function(index) {
                                 if(index==0){
-                                    $scope.go_to('create_new_customerPlace');
+                                    //$scope.go_to('create_new_customerPlace');
+                                    $scope.openCustomerPlaceModal();
                                 }else{
                                     $scope.carManage.destination=buttons[index];
                                 }
@@ -248,7 +345,8 @@ angular.module('starter')
                     });
                     confirmPopup.then(function(res) {
                         if(res) {
-                            $scope.go_to('create_new_customerPlace')
+                            //$scope.go_to('create_new_customerPlace')
+                            $scope.openCustomerPlaceModal();
                         } else {}
                     });
 
@@ -445,10 +543,92 @@ angular.module('starter')
 
             }
 
+        }
 
+
+
+        //创建新的用户地址
+        $scope.createNewCustomerPlace=function () {
+            var deferred=$q.defer();
+            var destination=$scope.carManage.destination;
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
+                    {
+                        request:'createNewCustomerPlace',
+                        info:{
+                            title:destination.title,
+                            address:destination.address,
+                            longitude:destination.lng,
+                            latitude:destination.lat
+                        }
+
+                    }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1) {
+                    deferred.resolve({re: 1,data:json.data});
+                }else{
+
+                    $timeout(function () {
+                        var myPopup = $ionicPopup.alert({
+                            template: '选择地点错误，请重新选择您的取车地点',
+                            title: '错误'
+                        });
+                    },400);
+                    deferred.resolve({re: 2, data: null});
+                }
+
+            }).catch(function (err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+                deferred.reject({});
+            })
+            return deferred.promise;
+        }
+
+        $scope.preCheck=function () {
+            if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
+                &&$scope.carInfo.carId!=undefined&&$scope.carInfo.carId!=null)
+            {
+                if($scope.carManage.destination!==undefined&&$scope.carManage.destination!==null&&
+                    ($scope.carManage.destination.placeId==undefined||$scope.carManage.destination.placeId==null))
+                {
+                    //TODO:create a new destination
+                    $scope.createNewCustomerPlace().then(function (json) {
+                        if(json.re==1) {
+                            var customerPlace=json.data;
+                            $scope.carManage.destination=customerPlace;
+                            $scope.applyCarServiceOrder();
+                        }else if(json.re==2) {
+                        }else{}
+                    })
+                }else{
+                    $scope.applyCarServiceOrder();
+                }
+            }else{
+                if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
+                    $ionicPopup.alert({
+                        title: '',
+                        template: '请选择预约时间'
+                    });
+                }else{
+                    $ionicPopup.alert({
+                        title: '',
+                        template: '请选择车辆信息'
+                    });
+                }
+            }
         }
 
         $scope.applyCarServiceOrder=function () {
+
 
             var fee = null;
             var scoreTotal = null;
@@ -505,9 +685,7 @@ angular.module('starter')
                             }
                         }
 
-                        if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
-                            &&$scope.carManage.carId!=undefined&&$scope.carManage.estimateTime!=null)
-                        {
+
 
                             $http({
                                 method: "POST",
@@ -543,19 +721,7 @@ angular.module('starter')
                             });
 
 
-                        }else{
-                            if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
-                                $ionicPopup.alert({
-                                    title: '',
-                                    template: '请选择预约时间'
-                                });
-                            }else{
-                                $ionicPopup.alert({
-                                    title: '',
-                                    template: '请选择车辆信息'
-                                });
-                            }
-                        }
+
 
 
                     }else{

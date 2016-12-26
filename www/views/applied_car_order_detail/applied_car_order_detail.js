@@ -64,10 +64,14 @@ angular.module('starter')
 
 
 
-        $scope.haveModifyOrder=false;
-        if($scope.haveModifyOrder=false)
-        {
+        //同步全局的车险订单取消标志
+        if($rootScope.carOrderModify.flag==true)
+            $scope.haveModifyOrder=true;
+        else
+            $scope.haveModifyOrder=false;
 
+        if($scope.haveModifyOrder==false)
+        {
             $scope.modifyOrder = function(){
 
                 $scope.haveModifyOrder=true;
@@ -93,7 +97,6 @@ angular.module('starter')
                 })
 
             }
-
         }
 
 

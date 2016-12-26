@@ -138,13 +138,13 @@
 
                 <span  style="display: inline-block;width:40%;vertical-align: text-bottom;
                 color:#aaa;text-align: center;font-size: 0.9em;"
-                       ng-if="carManage.destination.address===undefined||carManage.destination.address==null||carManage.destination.address==''">
+                       ng-if="carManage.destination.title===undefined||carManage.destination.title==null||carManage.destination.title==''">
                     地点
                 </span>
 
                 <span style="display: inline-block;width:40%;vertical-align: text-bottom;text-align: center;"
-                      ng-if="carManage.destination.address!==undefined&&carManage.destination.address!==null&&carManage.destination.address!=''">
-                    {{carManage.destination.address}}
+                      ng-if="carManage.destination.title!==undefined&&carManage.destination.title!==null&&carManage.destination.title!=''">
+                    {{carManage.destination.title}}
                 </span>
 
 
@@ -163,7 +163,7 @@
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #eee;
                         padding:10px;background-color:transparent;position: relative"
-                 ng-click="applyCarServiceOrder()"
+                 ng-click="preCheck()"
             >
                 <button class="button button-calm " style="width: 80%;margin-left:10%;margin-right:10%;">
                     提交审车订单

@@ -301,6 +301,7 @@ angular.module('starter')
                 //地图添加点击事件
                 //map.addEventListener("click", $scope.clickFunc);
                 $scope.map=map;
+                $rootScope.MAP_maintain=map;
                 deferred.resolve({re: 1});
             }
             cb();

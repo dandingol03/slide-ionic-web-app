@@ -52,6 +52,19 @@ angular.module('starter')
         ];
 
 
+
+        $scope.selectedTabStyle=
+            {
+                display:'inline-block',color:'#fff',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': '#11c1f3','background-color':'#11c1f3'
+            };
+        $scope.unSelectedTabStyle=
+            {
+                display:'inline-block',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': '#11c1f3'
+            };
+
+
+
+
         /**
          * $rootScope数据同步
          */

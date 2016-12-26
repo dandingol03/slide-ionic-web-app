@@ -9,49 +9,31 @@
     </ion-nav-bar>
     <ion-content delegate-handle="maintain" >
 
-        <div class="list" style="margin-bottom: 0px;margin-top:10px;">
-            <ul class="ul-tabs transparent"
-                style="background: rgb(203,203,203);background-color: transparent;border-bottom: 0px;">
-                <li style="width:33.3%;">
-                    <div class="cell"
-                         ng-class="{true: 'selected', false: ''}[tabIndex==0]"
-                         ng-click="tabChange(0)"
-                         style="background-color: transparent;"
-                    >
-                        <span style="position:absolute;left: 20%;top:40%;color: black;">
-                            日常保养
-                        </span>
-                    </div>
-                </li>
 
-                <li style="width:33.3%;overflow:initial;">
-                    <div class="cell"
-                         ng-class="{true: 'selected', false: ''}[tabIndex==1]"
-                         ng-click="tabChange(1)"
-                         style="background-color: transparent;position: relative"
-                    >
-                        <span style="position:absolute;left: 20%;top:40%;color: black;">
-                            故障维修
-                        </span>
+        <div style="margin:5%;margin-left:7%;margin-right:3%;width:90%;height: 40px;padding: 0;">
 
-                    </div>
+            <div style="width: 2%;display: inline-block;height: 100%"></div>
 
-                </li>
-
-                <li style="width:33.3%">
-                    <div class="cell"
-                         ng-class="{true: 'selected', false: ''}[tabIndex==2]"
-                         ng-click="tabChange(2)"
-                         style="background-color: transparent;"
-                    >
-                        <span style="position:absolute;left: 25%;top:40%;color: black;">
-                            事故维修
-                        </span>
-
-                    </div>
-                </li>
-
-            </ul>
+            <div ng-style="tabIndex==0?selectedTabStyle:unSelectedTabStyle"
+                 style="border-top-left-radius: 7px;border-bottom-left-radius: 7px;"
+                 ng-click="tabChange(0)">
+                <div style="width: 100%;height: 100%;display: table;">
+                    <span style="display: table-cell;vertical-align: middle;text-align: center;font-weight: bolder;">日常保养</span>
+                </div>
+            </div>
+            <div ng-style="tabIndex==1?selectedTabStyle:unSelectedTabStyle" ng-click="tabChange(1)">
+                <div style="width: 100%;height: 100%;display: table;">
+                    <span style="display: table-cell;vertical-align: middle;text-align: center;font-weight: bolder;">故障维修</span>
+                </div>
+            </div>
+            <div ng-style="tabIndex==2?selectedTabStyle:unSelectedTabStyle"
+                 style="border-top-right-radius: 7px;border-bottom-right-radius: 7px;"
+                 ng-click="tabChange(2)">
+                <div style="width: 100%;height: 100%;display: table;">
+                    <span style="display: table-cell;vertical-align: middle;text-align: center;font-weight: bolder;">事故维修</span>
+                </div>
+            </div>
+            <div style="width: 1%;display: inline-block;height: 100%;"></div>
         </div>
 
         <div style="margin-top:2px;">

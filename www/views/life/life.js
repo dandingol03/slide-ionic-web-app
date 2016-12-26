@@ -65,7 +65,7 @@ angular.module('starter')
         $scope.lifeInsuranceder_insuranceType_select=function()
         {
 
-            var buttons=[{text:'重疾险'},{text:'意外险'},{text:'养老险'},{text:'理财险'},,{text:'医疗险'}];
+            var buttons=[{text:'重疾险'},{text:'意外险'},{text:'养老险'},{text:'理财险'},{text:'医疗险'}];
             $ionicActionSheet.show({
                 buttons:buttons,
                 titleText: '选择你需要的保障',

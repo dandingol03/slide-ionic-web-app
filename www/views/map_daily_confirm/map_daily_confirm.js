@@ -9,7 +9,7 @@ angular.module('starter')
                                                      Proxy,$stateParams, ionicDatePicker,
                                                      $ionicActionSheet, $cordovaDatePicker,$q,
                                                      $cordovaFileTransfer, $ionicPopup,$ionicLoading,
-                                                     $ionicHistory) {
+                                                     $ionicHistory,BaiduMapService,$ionicModal) {
 
 
         $scope.go_back = function () {
@@ -75,6 +75,135 @@ angular.module('starter')
                 });
             }
         }
+
+
+
+
+        /*****模态框高度计算****/
+        $scope.screenHeight=window.screen.height;
+        $scope.contentHeight=$scope.screenHeight-140;
+
+        $scope.resultsStyle={width:'100%',height:$scope.contentHeight+'px'};
+
+        $scope.customerPlace={
+        };
+
+        $scope.results=[];
+
+        /*** 选择目的地模态框 ***/
+        $ionicModal.fromTemplateUrl('views/modal/select_customerPlace_modal.html',{
+            scope:  $scope,
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.customerPlace_modal = modal;
+        });
+
+        $scope.openCustomerPlaceModal= function(){
+            try{
+                $scope.customerPlace_modal.show();
+            }catch(e){
+                alert('error=\r\n'+ e.toString());
+            }
+        };
+
+        $scope.closeCustomerPlaceModal= function() {
+            $scope.customerPlace_modal.hide();
+        };
+        /*** 选择目的地模态框 ***/
+
+        //选择目的地的回调函数
+        $scope.Select=function (item) {
+            if(item!==undefined&&item!==null)
+            {
+                //TODO:contrast item with database
+                $http({
+                    method: "POST",
+                    url: Proxy.local() + "/svr/request",
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                    },
+                    data: {
+                        request: 'selectDestinationByPersonId'
+                    }
+                }).then(function (res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        var destinations=json.data;
+                        if(destinations!==undefined&&destinations!==null&&destinations.length>0) {
+                            destinations.map(function (place,i) {
+                                if(place.title==item.title)
+                                    item=place;
+                            })
+                        }
+                        $scope.maintain.destination=item;
+                    }
+                })
+
+                $scope.closeCustomerPlaceModal();
+            }
+        }
+
+        //基于百度地图api的接口搜索
+        $scope.search=function () {
+
+            if($rootScope.MAP_maintain!==undefined&&$rootScope.MAP_maintain!==null)
+            {
+                $ionicLoading.show({
+                    template: '<p class="item-icon-left">拉取搜索结果...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                });
+
+
+
+                var BMap=null;
+                if($scope.BMap!==undefined&&$scope.BMap!==null)
+                    BMap=$scope.BMap;
+                else
+                    BMap=window.BMap;
+                var map=$rootScope.MAP_maintain;
+                var options = {
+                    onSearchComplete: function(results){
+                        // 判断状态是否正确
+                        if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                            $ionicLoading.hide();
+                            var s = [];
+                            $scope.results=[];
+                            if(results.getCurrentNumPois()!==undefined&&results.getCurrentNumPois()!==null&&results.getCurrentNumPois()>0)
+                            {
+                                for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                                    var poi=results.getPoi(i);
+                                    $scope.results.push({
+                                        title:poi.title,
+                                        address:poi.address,
+                                        lat:poi.point.lat,
+                                        lng:poi.point.lng
+                                    });
+                                }
+                            }else{
+                            }
+                        }else{
+                            $ionicLoading.hide();
+                        }
+                    }
+                };
+
+                var local = new BMap.LocalSearch(map, options);
+                local.search($scope.customerPlace.address);
+            }else{}
+        }
+
+        /**** 获取百度地图api接口 ****/
+        BaiduMapService.getBMap().then(function (res) {
+            var BMap = res;
+            $scope.BMap=BMap;
+        });
+
+
+
+
+
+
+
 
         $scope.getServicePersonByUnitId=function () {
             $ionicLoading.show({
@@ -206,7 +335,7 @@ angular.module('starter')
                         buttons.push({text:"创建新地址"});
                         destinations.map(function (destination) {
                             var item=destination;
-                            item.text=destination.address;
+                            item.text=destination.title;
                             buttons.push(item);
                         })
                         var destinationSheet = $ionicActionSheet.show({
@@ -219,7 +348,8 @@ angular.module('starter')
 
                             buttonClicked: function(index) {
                                 if(index==0){
-                                    $scope.go_to('create_new_customerPlace');
+                                    //$scope.go_to('create_new_customerPlace');
+                                    $scope.openCustomerPlaceModal();
                                 }else{
                                     $scope.maintain.destination=buttons[index];
                                 }
@@ -239,7 +369,8 @@ angular.module('starter')
                     });
                     confirmPopup.then(function(res) {
                         if(res) {
-                            $scope.go_to('create_new_customerPlace')
+                            $scope.openCustomerPlaceModal();
+                            //$scope.go_to('create_new_customerPlace')
                         } else {}
                     });
 
@@ -711,59 +842,160 @@ angular.module('starter')
             }
 
 
-            //提交维修服务订单
-            $scope.applyMaintainDailyOrder=function() {
 
-                if ($scope.maintain.estimateTime !== undefined && $scope.maintain.estimateTime !== null) {
-
-                    var flag=false;
-                    if($scope.unit==undefined||$scope.unit==null)
+        //创建新的用户地址
+        $scope.createNewCustomerPlace=function () {
+            var deferred=$q.defer();
+            var destination=$scope.maintain.destination;
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
                     {
-                        if(!$scope.appointMode)
-                        {
-                            flag=true;
-                            var confirmPopup = $ionicPopup.confirm({
-                                title: '信息',
-                                template: '您未选择维修厂\r\n切换到指派模式可以由系统负责指派维修厂，是否现在切换'
-                            });
-                            confirmPopup.then(function(res) {
-                                if(res)
-                                {
-                                    $scope.appointMode=true;
-                                }else{
-                                }
-                            })
-                        }else
-                        {
-                            if($scope.units!==undefined&&$scope.units!==null)
-                            {}
-
-
+                        request:'createNewCustomerPlace',
+                        info:{
+                            title:destination.title,
+                            address:destination.address,
+                            longitude:destination.lng,
+                            latitude:destination.lat
                         }
 
                     }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1) {
+                    deferred.resolve({re: 1,data:json.data});
+                }else{
 
-                    if(flag)
-                        return true;
+                    $timeout(function () {
+                        var myPopup = $ionicPopup.alert({
+                            template: '选择地点错误，请重新选择您的取车地点',
+                            title: '错误'
+                        });
+                    },400);
+                    deferred.resolve({re: 2, data: null});
+                }
 
-                    if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined&&$scope.carInfo.carId!==null)
+            }).catch(function (err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+                deferred.reject({});
+            })
+            return deferred.promise;
+        }
+
+
+
+
+        $scope.preCheck=function () {
+            if ($scope.maintain.estimateTime !== undefined && $scope.maintain.estimateTime !== null) {
+                var flag=false;
+                if($scope.unit==undefined||$scope.unit==null)
+                {
+                    if(!$scope.appointMode)
                     {
-
-                        //TODO:fetch scoreTotal from insurance_customer
-                        $http({
-                            method: "POST",
-                            url: Proxy.local() + "/svr/request",
-                            headers: {
-                                'Authorization': "Bearer " + $rootScope.access_token
-                            },
-                            data: {
-                                request: 'fetchScoreTotal'
+                        flag=true;
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '信息',
+                            template: '您未选择维修厂\r\n切换到指派模式可以由系统负责指派维修厂，是否现在切换'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res)
+                            {
+                                $scope.appointMode=true;
+                            }else{
                             }
-                        }).then(function (res) {
-                            var json=res.data;
-                            if(json.re==1) {
-                                var score=json.data;
+                        })
+                    }else
+                    {
+                        if($scope.units!==undefined&&$scope.units!==null)
+                        {}
 
+
+                    }
+
+                }
+
+                if(flag)
+                    return true;
+
+
+                if($scope.carInfo!==undefined&&$scope.carInfo!==null&&$scope.carInfo.carId!==undefined&&$scope.carInfo.carId!==null)
+                {
+                    if($scope.maintain.destination!==undefined&&$scope.maintain.destination!==null&&
+                        ($scope.maintain.destination.placeId==undefined||$scope.maintain.destination.placeId==null))
+                    {
+                        //TODO:create a new destination
+                        $scope.createNewCustomerPlace().then(function (json) {
+                            if(json.re==1) {
+                                var customerPlace=json.data;
+                                $scope.maintain.destination=customerPlace;
+                                $scope.applyMaintainDailyOrder();
+                            }else if(json.re==2) {
+                            }else{}
+                        })
+                    }else{
+                        $scope.applyMaintainDailyOrder();
+                    }
+                }else{
+                    var alertPopup = $ionicPopup.alert({
+                        title: '警告',
+                        template: '请填写车牌'
+                    });
+                }
+            }else{
+                var alertPopup = $ionicPopup.alert({
+                    title: '警告',
+                    template: '请填写预约时间'
+                });
+            }
+        }
+
+
+        //提交维修服务订单
+        $scope.applyMaintainDailyOrder=function() {
+
+
+            //TODO:fetch scoreTotal from insurance_customer
+            $http({
+                method: "POST",
+                url: Proxy.local() + "/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request: 'fetchScoreTotal'
+                }
+            }).then(function (res) {
+                var json=res.data;
+                if(json.re==1) {
+                    var score=json.data;
+
+                    $http({
+                        method: "POST",
+                        url: Proxy.local() + "/svr/request",
+                        headers: {
+                            'Authorization': "Bearer " + $rootScope.access_token
+                        },
+                        data: {
+                            request: 'generateCarServiceOrderFee',
+                            info: {
+                                serviceType: $scope.maintain.serviceType,
+                                subServiceTypes: $scope.maintain.subServiceTypes
+                            }
+                        }
+                    }).then(function (res) {
+                        var json=res.data;
+                        if(json.re==1) {
+                            var fee=json.data;
+                            $scope.maintain.fee=fee;
+                            if(fee<=score)
+                            {
                                 $http({
                                     method: "POST",
                                     url: Proxy.local() + "/svr/request",
@@ -771,89 +1003,56 @@ angular.module('starter')
                                         'Authorization': "Bearer " + $rootScope.access_token
                                     },
                                     data: {
-                                        request: 'generateCarServiceOrderFee',
+                                        request: 'validateCarServiceStateFree',
                                         info: {
-                                            serviceType: $scope.maintain.serviceType,
-                                            subServiceTypes: $scope.maintain.subServiceTypes
+                                            carId: $scope.carInfo.carId
                                         }
                                     }
                                 }).then(function (res) {
                                     var json=res.data;
-                                    if(json.re==1) {
-                                        var fee=json.data;
-                                        $scope.maintain.fee=fee;
-                                        if(fee<=score)
-                                        {
-                                            $http({
-                                                method: "POST",
-                                                url: Proxy.local() + "/svr/request",
-                                                headers: {
-                                                    'Authorization': "Bearer " + $rootScope.access_token
-                                                },
-                                                data: {
-                                                    request: 'validateCarServiceStateFree',
-                                                    info: {
-                                                        carId: $scope.carInfo.carId
-                                                    }
-                                                }
-                                            }).then(function (res) {
-                                                var json=res.data;
-                                                if(json.data==true)
-                                                {
+                                    if(json.data==true)
+                                    {
 
 
-                                                    var confirmPopup = $ionicPopup.confirm({
-                                                        title: '信息',
-                                                        template: '您所选的车已有还未完成的服务订单\r\n是否仍要继续提交订单'
-                                                    });
-                                                    confirmPopup.then(function(res) {
-                                                        if(res) {
-                                                            $scope.generateMaintainDailyOrder();
-                                                        } else {
-                                                            return;
-                                                        }
-                                                    });
-                                                }else{
-                                                    //车是自由状态
-                                                    $scope.generateMaintainDailyOrder();
+                                        var confirmPopup = $ionicPopup.confirm({
+                                            title: '信息',
+                                            template: '您所选的车已有还未完成的服务订单\r\n是否仍要继续提交订单'
+                                        });
+                                        confirmPopup.then(function(res) {
+                                            if(res) {
+                                                $scope.generateMaintainDailyOrder();
+                                            } else {
+                                                return;
+                                            }
+                                        });
+                                    }else{
+                                        //车是自由状态
+                                        $scope.generateMaintainDailyOrder();
 
-                                                }
-                                            });
-                                        }else{
-                                            var alertPopup = $ionicPopup.alert({
-                                                title: '警告',
-                                                template: '服务订单的费用超过您现在的积分'
-                                            });
-                                        }
                                     }
                                 });
                             }else{
                                 var alertPopup = $ionicPopup.alert({
                                     title: '警告',
-                                    template: '您没有合法积分'
+                                    template: '服务订单的费用超过您现在的积分'
                                 });
                             }
-                        }).catch(function(err) {
-                            var str='';
-                            for(var field in err)
-                                str+=err[field];
-                            console.error('err=\r\n'+str);
-                        })
-
-                    }else{
-                        var alertPopup = $ionicPopup.alert({
-                            title: '警告',
-                            template: '请填写车牌'
-                        });
-                    }
-
+                        }
+                    });
                 }else{
                     var alertPopup = $ionicPopup.alert({
                         title: '警告',
-                        template: '请填写预约时间'
+                        template: '您没有合法积分'
                     });
                 }
-            }
+            }).catch(function(err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
+            })
+
+        }
 
 
 
