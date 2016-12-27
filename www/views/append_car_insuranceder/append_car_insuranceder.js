@@ -182,12 +182,14 @@ angular.module('starter')
 
         //1.附件,通过图库
         $scope.pickImage = function (item, field) {
+
             var options = {
                 maximumImagesCount: 1,
                 width: 800,
                 height: 800,
                 quality: 80
             };
+
 
             $cordovaImagePicker.getPictures(options)
                 .then(function (results) {

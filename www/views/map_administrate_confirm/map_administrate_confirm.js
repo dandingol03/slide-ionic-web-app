@@ -113,7 +113,30 @@ angular.module('starter')
         $scope.Select=function (item) {
             if(item!==undefined&&item!==null)
             {
-                $scope.carManage.destination=item;
+
+                $http({
+                    method: "POST",
+                    url: Proxy.local() + "/svr/request",
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                    },
+                    data: {
+                        request: 'selectDestinationByPersonId'
+                    }
+                }).then(function (res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        var destinations=json.data;
+                        if(destinations!==undefined&&destinations!==null&&destinations.length>0) {
+                            destinations.map(function (place,i) {
+                                if(place.title==item.title)
+                                    item=place;
+                            })
+                        }
+                        $scope.carManage.destination=item;
+                    }
+                })
+
                 $scope.closeCustomerPlaceModal();
             }
         }

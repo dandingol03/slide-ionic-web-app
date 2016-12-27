@@ -155,6 +155,7 @@ angular.module('starter')
             if(item.idle)
             {
                 if(item[field]==false){
+
                     item[field]=true;
                     $rootScope.carInfo=item;
                     cluster.map(function(cell,i) {
@@ -167,7 +168,9 @@ angular.module('starter')
                             $scope.engineNum = car.engineNum;
                             $scope.frameNum = car.frameNum;
                         }
-                    })
+                    });
+
+                    $state.go('car_insurance',{carInfo:JSON.stringify($rootScope.carInfo)});
                 }
                 else{
                     item[field]=false;

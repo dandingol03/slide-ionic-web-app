@@ -59,11 +59,15 @@ angular.module('starter')
         item.checked=false;
       }
       else{
-        item.checked=true;
-        cluster.map(function(cell,i) {
-          if(cell.personId!=item.personId)
-            cell.checked=false;
-        })
+          item.checked=true;
+          cluster.map(function(cell,i) {
+              if(cell.personId!=item.personId)
+                  cell.checked=false;
+          });
+
+          $rootScope.dashboard.tabIndex=1;
+          $rootScope.life_insurance.insuranceder=item;
+          $state.go('life');
       }
     }
 
@@ -102,11 +106,19 @@ angular.module('starter')
                           title: '<strong style="color:red">信息</strong>'
                       });
                   }else{
+
+                      var insuranceder=null;
+
+                      if($rootScope.life_insurance.insuranceder!==undefined&&$rootScope.life_insurance.insuranceder!==null)
+                          insuranceder=$rootScope.life_insurance.insuranceder;
+
+
                       json.data.map(function (person, i) {
-                          if(i==0)
-                          {
-                              person.checked=true;
-                          }
+                         if(insuranceder!==null)
+                         {
+                             if(person.personId==insuranceder.personId)
+                                 person.checked=true;
+                         }
                       });
                       $scope.relativePersons=json.data;
                   }
@@ -604,6 +616,7 @@ angular.module('starter')
                                               alert('go life');
                                               var json=res.data;
                                               if(json.re==1) {
+
                                                   $rootScope.life_insurance.insuranceder=json.data;
                                                   $state.go('life');
                                               }
