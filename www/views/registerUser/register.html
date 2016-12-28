@@ -24,7 +24,7 @@
                       text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
                   <i class="fa fa-user-o"></i>
                 </span>
-                <input type="text" placeholder="请输入昵称,该项选填"
+                <input type="text" placeholder="请输入用户名"
                        style="display: inline-block;width:80%;vertical-align: super"
                        ng-model="info.username"
                        ng-value="info.username"/>
@@ -37,16 +37,18 @@
             <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
                 <span class="input-label"
                       style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
-                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;vertical-align: middle;">
                     <i class="fa fa-lock"></i>
                 </span>
                 <input type="password" placeholder="请输入密码"
-                       style="display: inline-block;width:80%;vertical-align: super"
+                       style="display: inline-block;width:53%;vertical-align: middle;"
                        ng-model="info.password"
-                       ng-value="info.password"/>
+                       ng-value="info.password"
+                />
 
-                <span class="input-label"
-                      style="display: inline-block;width:5%;">
+                <span class="input-label" ng-if="info['password_error']==true"
+                      style="display: inline-block;width:32%;vertical-align: middle;color:#de5b2e;font-size: 0.9em;">
+                    密码不能含中文
                 </span>
             </div>
 

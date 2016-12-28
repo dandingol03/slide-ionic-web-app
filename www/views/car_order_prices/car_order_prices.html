@@ -178,10 +178,10 @@
                     </div>
 
                     <div class="item"  style="padding: 16px;position:relative" ng-repeat="product in order.products">
-                      <span>
+                      <span style="display: inline-block;width: 60%;">
                         {{product.productName}}:
                       </span>
-                      <span style="position:absolute;left: 35%;" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
+                      <span style="display: inline-block;width: 40%;" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
                         (保额){{product.insuranceType}}
                       </span>
                     </div>
@@ -198,7 +198,7 @@
                     </div>
                     <div class="item" style="padding:16px;font-size: 1em;color:rgba(228, 93, 46, 0.87);">
                       申请日期:
-                      <span style="position: absolute;left:35%;font-size: 1.2em;">
+                      <span style="position: absolute;left:35%;font-size: 1em;">
                       {{order.applyTime|date:'yyyy-MM-dd HH:mm'}}
                   </span>
                     </div>

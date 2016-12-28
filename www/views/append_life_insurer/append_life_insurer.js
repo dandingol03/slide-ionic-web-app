@@ -63,81 +63,21 @@ angular.module('starter')
         item.checked=false;
       }
       else{
-        item.checked=true;
-        $scope.insuranceder=item;
-        cluster.map(function(cell,i) {
-          if(cell.personId!=item.personId)
-            cell.checked=false;
-        })
-      }
-    }
-
-
-    $scope.selectLifeInsurer=function(){
-
-      var reg=/\d|\w/;
-      if($scope.order.insurer.perName!==undefined&&$scope.order.insurer.perName!==null&&$scope.order.insurer.perName!==''
-      &&reg.exec($scope.order.insurer.perName)==null)
-      {
-          $ionicLoading.show({
-              template:'<p class="item-icon-left">拉取关联人...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-          });
-
-
-          $http({
-              method: "POST",
-              url: Proxy.local()+"/svr/request",
-              headers: {
-                  'Authorization': "Bearer " + $rootScope.access_token
-              },
-              data:
-                  {
-                      request:'getRelativePersonsWithinPerName',
-                      info:
-                          {
-                              perName:$scope.order.insurer.perName
-                          }
-                  }
-          }).then(function(res) {
-              $ionicLoading.hide();
-              var json=res.data;
-              if(json.re==1){
-
-                  $scope.relativePersons=[];
-
-                  if(json.data==null||json.data==undefined||json.data.length==0){
-                      var myPopup = $ionicPopup.alert({
-                          template: '没有已绑定的投保人，请新建投保人！',
-                          title: '<strong style="color:red">信息</strong>'
-                      });
-                  }else{
-                      json.data.map(function (person, i) {
-                          if(i==0)
-                          {
-                              person.checked=true;
-                              $scope.insuranceder=person;
-                          }
-                      });
-                      $scope.relativePersons=json.data;
-                  }
-
-              }
-          }).catch(function(err) {
-              var str='';
-              for(var field in err)
-                  str+=err[field];
-              console.error('err=\r\n'+str);
-              $ionicLoading.hide();
+          item.checked=true;
+          $scope.insuranceder=item;
+          cluster.map(function(cell,i) {
+              if(cell.personId!=item.personId)
+                  cell.checked=false;
           })
-      }else{
-          var myPopup = $ionicPopup.alert({
-              template: '请填入投保人后的姓名点击查询',
-              title: '<strong style="color:red">错误</strong>'
-          });
+
+
+
+          $rootScope.dashboard.tabIndex=1;
+          $rootScope.life_insurance.insurer=item;
+          $state.go('life');
+
       }
-
     }
-
 
     $scope.fetchRelativePersons=function () {
         $ionicLoading.show({
@@ -172,11 +112,21 @@ angular.module('starter')
                         title: '<strong style="color:red">信息</strong>'
                     });
                 }else{
+
+                    var insurer=null;
+                    if( $rootScope.life_insurance.insurer!==undefined&&$rootScope.life_insurance.insurer!==null)
+                    {
+                        insurer=$rootScope.life_insurance.insurer;
+                    }
+
                     json.data.map(function (person, i) {
-                        if(i==0)
+
+                        if(insurer!=null)
                         {
-                            person.checked=true;
-                            $scope.insuranceder=person;
+                            if(person.personId==insurer.personId)
+                            {
+                                person.checked=true;
+                            }
                         }
                     });
                     $scope.relativePersons=json.data;
@@ -654,7 +604,9 @@ angular.module('starter')
                                           }).then(function(res) {
                                               var json=res.data;
                                               if(json.re==1) {
-                                                  $rootScope.life_insurance.insurer=json.data;
+                                                  var person=json.data;
+                                                  $scope.insurer=person;
+                                                  $rootScope.life_insurance.insurer=person;
                                                   $state.go('life');
                                               }
                                           });

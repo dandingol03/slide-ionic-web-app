@@ -48,12 +48,18 @@ angular.module('starter')
     $scope.checkLegal=function(){
       if($scope.legal.checked==false){
         $scope.legal.checked=true;
-        $scope.order.benefiter.perName=$scope.legal.perName;
+
         if($scope.relativePersons!==undefined&&$scope.relativePersons!==null){
             $scope.relativePersons.map(function(person,i) {
                 person.checked=false;
             });
         }
+        $rootScope.dashboard.tabIndex=1;
+        $rootScope.life_insurance.benefiter=null;
+        $rootScope.life_insurance.isLegalBenefiter=1;
+        $state.go('life');
+
+
       }else{
         $scope.legal.checked=false;
         $scope.order.benefiter.perName=null;
@@ -77,6 +83,9 @@ angular.module('starter')
         });
         item.checked=true;
         $scope.legal.checked=false;
+          $rootScope.dashboard.tabIndex=1;
+          $rootScope.life_insurance.benefiter=item;
+          $state.go('life');
       }
       else{
         if(item.checked==true)
@@ -88,9 +97,12 @@ angular.module('starter')
           cluster.map(function(cell,i) {
             if(cell.personId!=item.personId)
               cell.checked=false;
-          })
-        }
+          });
+          $rootScope.dashboard.tabIndex=1;
+          $rootScope.life_insurance.benefiter=item;
+            $state.go('life');
 
+        }
       }
 
     }
@@ -131,10 +143,20 @@ angular.module('starter')
                           title: '<strong style="color:red">信息</strong>'
                       });
                   }else{
+                      var benefiter=null;
+
+                      if($rootScope.life_insurance.benefiter!==undefined&&$rootScope.life_insurance.benefiter!==null)
+                          benefiter=$rootScope.life_insurance.benefiter;
+                      else if($rootScope.life_insurance.isLegalBenefiter==1)
+                      {
+                          $scope.legal.checked=true;
+                      }else{}
+
                       json.data.map(function (person, i) {
-                          if(i==0)
+                          if(benefiter!=null)
                           {
-                              person.checked=true;
+                              if(person.personId==benefiter.personId)
+                                  person.checked=true;
                           }
                       });
                       $scope.relativePersons=json.data;
@@ -290,7 +312,6 @@ angular.module('starter')
       else{
           if(benefiter!==null)
           {
-              $scope.order.benefiter=benefiter;
               $rootScope.dashboard.tabIndex=1;
               $rootScope.life_insurance.benefiter=benefiter;
               $state.go('life');

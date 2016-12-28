@@ -1,9 +1,9 @@
-<ion-view view-title="联系方式" >
+<ion-view class="passwordForget-view" view-title="个人资料" >
 
   <ion-nav-bar class="bar-stable" align-title="center" >
     <ion-nav-buttons side="left">
       <button class="button button-icon button-clear bar_arr"
-              style="font-size: 2.4em;"
+              style="font-size: 2.4em;color:#bf530c"
               ng-click="go_back()">
         <i class="ion-chevron-left"></i>
       </button>
@@ -14,96 +14,114 @@
   <ion-content class=" cart_detail" >
 
 
-    <!-- 昵称区 -->
-    <div class="list" style="margin-bottom:0px;">
-      <div class="item item-divider" style="padding-top:18px;padding-bottom:18px;">
-        <span style="width: 20%;display: inline-block;color:#f1c300;font-size: 1.4em;">
-          昵称:
+
+    <div class="list list-inset padding" style="margin-bottom:40px;">
+
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+        <span class="input-label"
+              style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
+              text-align: center;padding-bottom: 5px;padding-top:5px;">
+          <i class="fa fa-user-o"></i>
         </span>
-        <span style="width: 80%;display: inline-block;color:#f1c300;font-size: 1.4em;">
+        <span style="width: 15%;display: inline-block;">
+          用户名:
+        </span>
+        <span style="width: 60%;display: inline-block;padding-left: 5px;font-weight:bolder;">
           {{contactInfo.perName}}
         </span>
-      </div>
-    </div>
-
-
-    <!-- 可编辑内容区 -->
-    <div class="list" style="padding-top:0px;">
-
-      <!-- 电话 -->
-      <div class="item"
-           style="margin:1px;border:1px solid #aaa;border-bottom:0px;border-top:0px;border-left:0px;border-right:0px;
-             padding:10px;background-color:transparent;overflow:initial">
-        <span class="input-label"
-                  style="display: inline-block;width: 15%;text-align: left;border-right:1px solid #aaa;">
-          电话 :
-        </span>
-        <span style="width: 40%;display: inline-block;text-align: left;">
-          <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
-                 ng-value="contactInfo.mobilePhone"
-                 ng-model="contactInfo.mobilePhone"
-                 ng-change="validate(contactInfo,'mobilePhone','/^\\d{11}$/')"
-          />
-        </span>
-        <span
-                style="display: inline-block;width: 45%;text-align: left;color:#ff3b30" ng-if="contactInfo.mobilePhone_error==true">
-          请输入11位的手机号
+        <span class="input-label" style="display: inline-block;width:10%;">
         </span>
       </div>
 
-      <!-- 邮箱 -->
-      <div class="item"
-           style="margin:1px;border:1px solid #aaa;border-bottom:0px;border-left:0px;border-right:0px;
-             padding:10px;background-color:transparent;overflow:initial">
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
         <span class="input-label"
-              style="display: inline-block;width: 15%;text-align: left;border-right:1px solid #aaa;">
+              style="display: inline-block;font-size: 1.5em;color:#bf530c;width: 8%;
+              text-align: center;padding-bottom: 5px;padding-top:5px;">
+          <i class="fa fa-address-card"></i>
+        </span>
+        <span style="width: 15%;display: inline-block;">
+          身份证:
+        </span>
+        <input type="text" style="width: 48%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+               ng-value="contactInfo.perIdCard"
+               ng-model="contactInfo.perIdCard"
+               ng-change="validate(contactInfo,'perIdCard','/^\\d{18}$/')"
+        />
+        <span class="input-label" style="display: inline-block;width:29%;">
+         <span ng-if="contactInfo.perIdCard_error==true" style="color:#ff3b30;font-size: 0.8em;">
+              证件位数错误
+         </span>
+        </span>
+      </div>
+
+
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+        <span class="input-label"
+              style="display: inline-block;font-size: 2.4em;color:#bf530c;width: 8%;
+              text-align: center;padding-bottom: 5px;padding-top:5px;">
+          <i class="fa fa-mobile"></i>
+        </span>
+        <span style="width: 15%;display: inline-block;">
+          电话:
+        </span>
+        <input type="text" style="width: 37%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+               ng-value="contactInfo.mobilePhone"
+               ng-model="contactInfo.mobilePhone"
+               ng-change="validate(contactInfo,'mobilePhone','/^\\d{11}$/')"
+        />
+        <span class="input-label" style="display: inline-block;width:33%;">
+         <span ng-if="contactInfo.mobilePhone_error==true" style="color:#ff3b30;font-size: 0.8em;">
+           请输入11位的手机号
+         </span>
+        </span>
+      </div>
+
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+        <span class="input-label"
+              style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
+              text-align: center;padding-bottom: 5px;padding-top:5px;">
+          <i class="ion-android-mail"></i>
+        </span>
+        <span style="width: 15%;display: inline-block;">
           邮箱:
         </span>
-
-
-        <span style="width: 40%;display: inline-block;text-align: left;">
-          <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
-                 ng-value="contactInfo.EMAIL"
-                 ng-model="contactInfo.EMAIL"
-                 ng-change="validate(contactInfo,'EMAIL','/^.*@.*\\.com$/')"
-          />
+        <input type="text" style="width: 50%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+               ng-value="contactInfo.EMAIL"
+               ng-model="contactInfo.EMAIL"
+               ng-change="validate(contactInfo,'EMAIL','/^.*@.*\\.com$/')"
+        />
+        <span class="input-label" style="display: inline-block;width:20%;color:#ff3b30;font-size: 0.8em;">
+          <span ng-if="contactInfo.EMAIL_error==true">格式错误</span>
         </span>
-        <span style="display: inline-block;width: 45%;text-align: left;color:#ff3b30"
-              ng-if="contactInfo.EMAIL_error==true">
-          请输入正确格式的邮箱
-        </span>
-
       </div>
 
-      <!-- 地址 -->
-      <div class="item"
-           style="margin:1px;border:1px solid #aaa;border-left:0px;border-right:0px;
-             padding:10px;background-color:transparent;overflow:initial;">
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
         <span class="input-label"
-              style="display: inline-block;width: 15%;text-align: left;border-right:1px solid #aaa;">
+              style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
+              text-align: center;padding-bottom: 5px;padding-top:5px;">
+          <i class="ion-home"></i>
+        </span>
+        <span style="width: 15%;display: inline-block;">
           地址:
         </span>
-
-
-        <span style="width: 85%;display: inline-block;text-align: left;">
-          <input type="text" style="display:inline-block;background: rgba(170, 170, 170, 0.14902);width: 100%;"
-                 ng-value="contactInfo.perAddress"
-                 ng-model="contactInfo.perAddress"/>
+        <input type="text" style="width: 70%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+               ng-value="contactInfo.perAddress"
+               ng-model="contactInfo.perAddress"
+        />
+        <span class="input-label" style="display: inline-block;width:10%;">
         </span>
       </div>
+
 
       <div class="item"
            style="margin:1px;border:1px solid #222;padding:10px;background-color:transparent;border:0px;">
-          <button class="button button-calm" style="width: 60%;margin-left:20%;"
-            ng-click="saveContactInfo()">
-            保存提交
-          </button>
+        <button class="button button-calm" style="width: 60%;margin-left:20%;font-weight: bolder;"
+                ng-click="saveContactInfo()">
+          保存提交
+        </button>
       </div>
 
-
     </div>
-
-
 
   </ion-content>
 

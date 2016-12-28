@@ -18,10 +18,10 @@ angular.module('starter')
       $scope.order=JSON.parse($scope.order);
 
 
-    if($scope.order.orderState==2){
-        $scope.getOrder=function () {
+    if($scope.order.orderState==2) {
+        $scope.getOrder = function () {
             $ionicLoading.show({
-                template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                template: '<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
             });
             //获取该订单的所有选中公司和产品
             $http({
@@ -44,9 +44,9 @@ angular.module('starter')
                 }
                 $ionicLoading.hide();
             }).catch(function (err) {
-                var str='';
-                for(var field in err)
-                    str+=err[field];
+                var str = '';
+                for (var field in err)
+                    str += err[field];
                 console.error('err=r\r\n' + str);
                 $ionicLoading.hide();
             });
@@ -56,10 +56,8 @@ angular.module('starter')
     }
 
 
-      //获取各公司的估价详请
+      //对于报价完成的订单,获取各公司的估价详请
       if($scope.order.orderState==3){
-
-
 
           $scope.order.prices.map(function (price, i) {
               var fee=0;
@@ -68,6 +66,8 @@ angular.module('starter')
               });
               price.insuranceFeeTotal=fee;
           });
+          if($scope.order.prices.length==1)
+              $scope.priceIndex=0;
       }
 
 
@@ -143,38 +143,6 @@ angular.module('starter')
     /*** bind select_relative modal ***/
 
 
-    $scope.fetchRelative=function(field) {
-      $http({
-        method: "POST",
-        url: Proxy.local()+'/svr/request',
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
-        {
-          request:'getRelativePersons'
-        }
-      }).then(function(res) {
-        var json=res.data;
-        if(json.re==1) {
-          if(json.data!=undefined&&json.data!=null){
-            $scope.relatives=json.data;
-
-            $scope.open_selectRelativeModal(field);
-          }
-        }else{
-          $scope.open_selectRelativeModal(field);
-        }
-
-      }).catch(function(err) {
-        var str='';
-        for(var field in err)
-          str+=err[field];
-        console.error('error=\r\n' + str);
-      });
-    };
-
-
     /*** bind apeend_carOrderPerson_modal***/
     $ionicModal.fromTemplateUrl('views/modal/append_carOrder_person.html',{
       scope:  $scope,
@@ -203,7 +171,15 @@ angular.module('starter')
                 selected_price = price;
         });
 
-        $state.go('car_order_pay',{info:JSON.stringify({order:order,price:selected_price})});
+        if(selected_price==null)
+        {
+            $ionicPopup.alert({
+                title: '错误',
+                template: '请至少选择一个报价方案后再点击提交'
+            });
+        }else{
+            $state.go('car_order_pay',{info:JSON.stringify({order:order,price:selected_price})});
+        }
     }
 
 
@@ -277,31 +253,41 @@ angular.module('starter')
     }
 
 
+    //加入修改屏蔽标志
+      if($rootScope.carOrdermodify&&$rootScope.carOrderModify.flag==true)
+          $scope.haveModifyOrder=true;
+      else
+          $scope.haveModifyOrder=false;
+
     //重选套餐
     $scope.reset_specials=function(){
-      $rootScope.Insurance={};
-      var carOrderState = 0;
 
-      $http({
-        method: "POST",
-        url: Proxy.local()+"/svr/request",
-        headers: {
-          'Authorization': "Bearer " + $rootScope.access_token
-        },
-        data:
+        if($scope.haveModifyOrder==false)
         {
-          request:'updateCarOrderState',
-          info:{
-            orderState:carOrderState,
-            orderId:$scope.order.orderId
-          }
-        }
-      }).then(function(res) {
-            if(res.data.re==1){
-                $rootScope.carOrderModify={orderId:$scope.orderId,carId:$scope.order.carId,flag:true};
-                $state.go('car_insurance');
-            }
-      })
+            $rootScope.Insurance={};
+            var carOrderState = 0;
+
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data:
+                    {
+                        request:'updateCarOrderState',
+                        info:{
+                            orderState:carOrderState,
+                            orderId:$scope.order.orderId
+                        }
+                    }
+            }).then(function(res) {
+                if(res.data.re==1){
+                    $rootScope.carOrderModify={orderId:$scope.order.orderId,carId:$scope.order.carId,flag:true};
+                    $state.go('car_insurance');
+                }
+            })
+        }else{}
     }
 
       $scope.checkedStyle={position: 'absolute',top:'12%',left:'4%','z-index': 1000,'font-size': '0.8em',color:'#222',

@@ -64,23 +64,25 @@
         <ion-scroll style="height: 85%;">
 
 
-          <div class="item"   ng-click="checkLegal()"
-               style="border:1px solid;border-left:0px;border-right: 0px;border-top:0px;padding-top: 4px;padding-bottom: 4px;">
-            <div style="display:inline-block;width:85%">
-               <span>
+          <div class="item card"   ng-click="checkLegal()"
+               style="padding-top: 8px;padding-bottom: 8px;
+                      margin-top:1px;margin-bottom: 4px;">
+            <div style="display:inline-block;width:85%;vertical-align: middle;">
+               <span style="font-size: 1.1em;font-weight:bolder;">
                 {{legal.perName}}
                </span>
             </div>
-
-            <span style="font-size: 2em;">
+            <span style="display: inline-block;width: 15%;text-align: left;font-size: 2em;vertical-align: middle;">
               <i ng-if="legal.checked!=true" class="ion-ios-circle-outline"></i>
               <i ng-if="legal.checked==true" class="ion-checkmark-circled" style="color:#00c9ff"></i>
             </span>
 
+
           </div>
 
 
-          <div class="item" style="border-left:0px;border-right: 0px;border-top:0px;padding-top: 4px;padding-bottom: 4px;"
+          <div class="item card" style="border-left:0px;border-right: 0px;border-top:0px;padding-top: 4px;padding-bottom: 4px;
+                margin-top:1px;margin-bottom: 4px;"
                ng-repeat="person in relativePersons" ng-click="mutex(person,relativePersons)">
             <div style="display:inline-block;width:85%">
               <div>

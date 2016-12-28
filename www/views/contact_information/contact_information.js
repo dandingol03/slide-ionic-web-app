@@ -33,14 +33,19 @@ angular.module('starter')
       $scope.validate=function(item,field,pattern) {
           if(pattern!==undefined&&pattern!==null)
           {
-              var reg=eval(pattern);
-              var re=reg.exec(item[field]);
-              if(re!==undefined&&re!==null)
+              if(item[field]!==undefined&&item[field]!==null&&item[field]!='')
               {
-                  item[field+'_error']=false;
-              }
-              else{
-                  item[field+'_error']=true;
+                  var reg=eval(pattern);
+                  var re=reg.exec(item[field]);
+                  if(re!==undefined&&re!==null)
+                  {
+                      item[field+'_error']=false;
+                  }
+                  else{
+                      item[field+'_error']=true;
+                  }
+              }else{
+                  item[field+'_error']=undefined;
               }
           }
       };
@@ -49,45 +54,46 @@ angular.module('starter')
     $scope.saveContactInfo=function() {
 
         var contactInfo=$scope.contactInfo;
-        if(contactInfo.mobilePhone_error!=true&&(contactInfo.mobilePhone_error!==undefined||contactInfo.mobilePhone_error!==null)
-            &&contactInfo.mobilePhone!=='')
+        if(contactInfo.mobilePhone_error!=true&&(contactInfo.mobilePhone_error==undefined||contactInfo.mobilePhone_error==null))
         {
-            if(contactInfo.EMAIL_error!=true&&(contactInfo.EMAIL_error==undefined||contactInfo.EMAIL_error!==null)
-                &&contactInfo.EMAIL!=='')
+            if(contactInfo.EMAIL_error!=true&&(contactInfo.EMAIL_error==undefined||contactInfo.EMAIL_error==null))
             {
-                if(contactInfo.perAddress!==undefined&&contactInfo.perAddress!==null&&contactInfo.perAddress!='')
+
+                if(contactInfo.perIdCard_error!=true&&(contactInfo.perIdCard_error==undefined||contactInfo.perIdCard_error==null))
                 {
-                    $http({
-                        method: "POST",
-                        url: Proxy.local()+"/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data: {
-                            request: 'saveContactInfo',
-                            info:{
-                                info:contactInfo
+
+                        $http({
+                            method: "POST",
+                            url: Proxy.local()+"/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data: {
+                                request: 'saveContactInfo',
+                                info:{
+                                    info:contactInfo
+                                }
                             }
-                        }
-                    }).then(function(res) {
-                        var json=res.data;
-                        if(json.re==1) {
+                        }).then(function(res) {
+                            var json=res.data;
+                            if(json.re==1) {
 
-                            var myPopup = $ionicPopup.alert({
-                                template: '保存联系方式成功',
-                                title: '<strong style="color:red">信息</strong>'
-                            });
+                                var myPopup = $ionicPopup.alert({
+                                    template: '保存个人资料成功',
+                                    title: '<strong style="color:red">信息</strong>'
+                                });
 
-                        }else {
-                            var myPopup = $ionicPopup.alert({
-                                template: '保存联系方式错误',
-                                title: '<strong style="color:red">错误</strong>'
-                            });
-                        }
-                    })
+                            }else {
+                                var myPopup = $ionicPopup.alert({
+                                    template: '保存个人资料错误',
+                                    title: '<strong style="color:red">错误</strong>'
+                                });
+                            }
+                        })
+
                 }else{
                     var myPopup = $ionicPopup.alert({
-                        template: '请填入地址后再点击保存',
+                        template: '请填入正确的身份证后再点击保存',
                         title: '<strong style="color:red">错误</strong>'
                     });
                 }

@@ -9,7 +9,7 @@ angular.module('starter')
     .controller('registerController',function($scope,$state,$http,$ionicPopup,
                                               $timeout,$rootScope,$cordovaFile,$cordovaFileTransfer,
                                               $ionicActionSheet,$cordovaCamera,Proxy,$cordovaPreferences,
-                                              $ionicLoading
+                                              $ionicLoading,$ionicPopup
     ){
 
 
@@ -26,12 +26,23 @@ angular.module('starter')
             {
                 var reg=eval(pattern);
                 var re=reg.exec(item[field]);
-                if(re!==undefined&&re!==null)
+                if(field!='password')
                 {
-                    item[field+'_error']=false;
-                }
-                else{
-                    item[field+'_error']=true;
+                    if(re!==undefined&&re!==null)
+                    {
+                        item[field+'_error']=false;
+                    }
+                    else{
+                        item[field+'_error']=true;
+                    }
+                }else{
+                    if(re!==undefined&&re!==null)
+                    {
+                        item[field+'_error']=true;
+                    }
+                    else{
+                        item[field+'_error']=false;
+                    }
                 }
             }
         };
@@ -42,7 +53,7 @@ angular.module('starter')
 
 
             //TODO:校验手机号长度
-            var reg=/\d{11}/;
+            var reg=/^\d{11}$/;
             var mobilePhone=$scope.info.mobilePhone;
             if(reg.exec(mobilePhone)!==null)
             {
@@ -103,89 +114,111 @@ angular.module('starter')
 
                 if($scope.code==$scope.info.code){
 
-                    $scope.registerDoing=true;
-
-                    $ionicLoading.show({
-                        template:'<p class="item-icon-left">注册业务进行中...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-                    });
-
-                    var url=null;
-                    if($scope.info.username!==undefined&&$scope.info.username!==null&&$scope.info.username!=='')
+                    if($scope.info.username!==undefined&&$scope.info.username!==null&&$scope.info.username!='')
                     {
-                        url=Proxy.local()+'/register?'+'username='+$scope.info.username+
-                            '&&password='+$scope.info.password+'&&mobilePhone='+$scope.info.mobilePhone;
-                    }else{
-                        url=Proxy.local()+'/register?'+'username='+$scope.info.mobilePhone+
-                            '&&password='+$scope.info.password+'&&mobilePhone='+$scope.info.mobilePhone;
-                    }
+                        if($scope.info.password!==undefined&&$scope.info.password!==null&&$scope.info.password!='')
+                        {
+                            $scope.registerDoing=true;
 
-                    if($scope.info.mail!==undefined&&$scope.info.mail!==null&&$scope.info.mail!='')
-                    {
-                        url+='&&EMAIL='+$scope.info.mail;
-                    }
-
-                    $http({
-                        method:"POST",
-                        url:url,
-                        headers: {
-                            'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        }
-
-                    }).then(function(res) {
-                        var json = res.data;
-                        if(json.re==1){
-                            var confirmPopup = $ionicPopup.confirm({
-                                title: '注册信息',
-                                template: '注册成功！是否要直接登录？'
+                            $ionicLoading.show({
+                                template:'<p class="item-icon-left">注册业务进行中...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
                             });
-                            if(window.plugins!==undefined&&window.plugins!==null)
+
+                            var url=null;
+                            if($scope.info.username!==undefined&&$scope.info.username!==null&&$scope.info.username!=='')
                             {
-                                $cordovaPreferences.store('username', $scope.info.username)
-                                    .success(function(value) {
-                                    })
-                                    .error(function(error) {
-                                        alert("Error: " + error);
-                                    });
-                                $cordovaPreferences.store('password', $scope.info.password)
-                                    .success(function(value) {
-                                    })
-                                    .error(function(error) {
-                                        alert("Error: " + error);
-                                    });
-                            }
-
-                            confirmPopup.then(function(res) {
-                                if(res) {
-
-                                    $timeout(function () {
-                                        $scope.doLogin();
-                                    },600)
-                                }
-                                else {
-
-                                }
-                            });
-
-                        }
-                        else{
-                            if(json.re==2){
-                                alert(json.data);
+                                url=Proxy.local()+'/register?'+'username='+$scope.info.username+
+                                    '&&password='+$scope.info.password+'&&mobilePhone='+$scope.info.mobilePhone;
                             }else{
-                                alert('注册失败');
+                                url=Proxy.local()+'/register?'+'username='+$scope.info.mobilePhone+
+                                    '&&password='+$scope.info.password+'&&mobilePhone='+$scope.info.mobilePhone;
                             }
 
+                            if($scope.info.mail!==undefined&&$scope.info.mail!==null&&$scope.info.mail!='')
+                            {
+                                url+='&&EMAIL='+$scope.info.mail;
+                            }
+
+                            $http({
+                                method:"POST",
+                                url:url,
+                                headers: {
+                                    'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            }).then(function(res) {
+                                var json = res.data;
+                                if(json.re==1){
+                                    var confirmPopup = $ionicPopup.confirm({
+                                        title: '注册信息',
+                                        template: '注册成功！是否要直接登录？'
+                                    });
+                                    if(window.plugins!==undefined&&window.plugins!==null)
+                                    {
+                                        $cordovaPreferences.store('username', $scope.info.username)
+                                            .success(function(value) {
+                                            })
+                                            .error(function(error) {
+                                                alert("Error: " + error);
+                                            });
+                                        $cordovaPreferences.store('password', $scope.info.password)
+                                            .success(function(value) {
+                                            })
+                                            .error(function(error) {
+                                                alert("Error: " + error);
+                                            });
+                                    }else{
+                                        window.localStorage.user = JSON.stringify({
+                                            username: $scope.info.username,
+                                            password: $scope.info.password
+                                        });
+                                    }
+
+                                    confirmPopup.then(function(res) {
+                                        if(res) {
+
+                                            $timeout(function () {
+                                                $scope.doLogin();
+                                            },600)
+                                        }
+                                        else {
+
+                                        }
+                                    });
+
+                                }
+                                else{
+                                    if(json.re==2){
+                                        alert(json.data);
+                                    }else{
+                                        alert('注册失败');
+                                    }
+
+                                }
+                                $scope.registerDoing=false;
+                                $ionicLoading.hide();
+                            }).catch(function (err) {
+                                var str='';
+                                for(var field in err)
+                                    str+=err[field];
+                                console.error('err=\r\n'+str);
+                                $scope.registerDoing=false;
+                                $ionicLoading.hide();
+                            });
+                        }else{
+                            $ionicPopup.alert({
+                                title: '错误',
+                                template: '请填入密码后再注册'
+                            });
                         }
-                        $scope.registerDoing=false;
-                        $ionicLoading.hide();
-                    }).catch(function (err) {
-                        var str='';
-                        for(var field in err)
-                            str+=err[field];
-                        console.error('err=\r\n'+str);
-                        $scope.registerDoing=false;
-                        $ionicLoading.hide();
-                    })
+                    }else{
+                        $ionicPopup.alert({
+                            title: '错误',
+                            template: '请填入用户名后再进行注册'
+                        });
+                    }
+
                 }
                 else{
                     alert('手机验证码输入错误');

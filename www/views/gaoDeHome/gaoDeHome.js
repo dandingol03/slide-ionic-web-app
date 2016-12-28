@@ -275,30 +275,35 @@ angular.module('starter')
 
         $scope.clickFunc=function (e) {
             console.log('click point=' + e.point.lng + ',' + e.point.lat);
-            $scope.destiny={lng: e.point.lng,lat: e.point.lat};
             var BMap=$scope.bMap;
-            var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
-            var mk = new BMap.Marker(e.point,{icon:bIcon});  // 创建标注
+            var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,80));
             var map=$scope.map;
-            if($scope.mk!=null&&$scope.mk!=undefined){
-                map.removeOverlay($scope.mk);
-            }
+            var convertor = new BMap.Convertor();
+            var pointArr = [];
+            pointArr.push(e.point);
 
-            map.addOverlay(mk);               // 将标注添加到地图中
-            var label = new BMap.Label("指派中心", {offset: new BMap.Size(20, -10)});
-            label.setStyle({
-                color: '#222',
-                fontSize: "12px",
-                height: "20px",
-                lineHeight: "20px",
-                fontFamily: "微软雅黑",
-                border: '0px'
-            });
-            mk.setLabel(label);
-            $scope.mk=mk;
-            map.panTo(e.point);
-            $scope.maintain.center = map.getCenter();
-            $scope.renderCircle(e.point,0.12, 0.1);
+            var translateCallback = function (data) {
+                if (data.status === 0) {
+                    if($scope.mk!=null&&$scope.mk!=undefined){
+                        map.removeOverlay($scope.mk);
+                    }
+                    var marker = new BMap.Marker(data.points[0],{icon:bIcon,offset:new BMap.Size(-20,-20)});
+                    map.addOverlay(marker);
+                    var label = new BMap.Label("中心", {offset: new BMap.Size(-20, -20)});
+                    label.setStyle({
+                        color: '#222',
+                        fontSize: "12px",
+                        height: "20px",
+                        lineHeight: "20px",
+                        fontFamily: "微软雅黑",
+                        border: '0px'
+                    });
+                    marker.setLabel(label); //添加百度label
+                    $scope.mk=marker;
+                    map.panTo(e.point);
+                }
+            }
+            convertor.translate(pointArr, 1, 5, translateCallback);
         }
 
 
@@ -321,7 +326,6 @@ angular.module('starter')
                 $scope.dragF=false;
 
                 //地图添加点击事件
-                //map.addEventListener("click", $scope.clickFunc);
                 $scope.map=map;
                 deferred.resolve({re: 1});
             }
@@ -368,6 +372,10 @@ angular.module('starter')
             $scope.init_map(BMap).then(function(json) {
                 if(json.re==1) {
                     var map=$scope.map;
+
+
+                    map.addEventListener("click", $scope.clickFunc);
+
 
                     if(window.cordova)
                     {
