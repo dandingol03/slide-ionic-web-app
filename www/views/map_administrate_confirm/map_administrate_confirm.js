@@ -22,8 +22,15 @@ angular.module('starter')
             if($scope.selectTime==true){
                 $scope.selectTime=false;
                 $cordovaDatePicker.show(options).then(function(date){
-                    alert(date);
-                    item[field]=date;
+                    if((date-new Date())<0)
+                    {
+                        $ionicPopup.alert({
+                            title: '错误',
+                            template: '您所选的日期不能比当前日期早,请重新选择'
+                        });
+                    }else{
+                        item[field]=date;
+                    }
                     $scope.selectTime=true;
 
                 }).catch(function(err) {
@@ -451,12 +458,15 @@ angular.module('starter')
                         $ionicHistory.clearHistory();
                         $ionicHistory.clearCache();
                         $rootScope.flags.serviceOrders.onFresh=true;
+                        $rootScope.flags.serviceOrders.tabIndex=1;
                         $state.go('service_orders');
                     }
+                    $scope.doingBusiness=false;
                 }).catch(function (err) {
                     var str = '';
                     for (var field in err)
                         str += err[field];
+                    $scope.doingBusiness=false;
                 });
             }else//未选定维修厂,批量选中
             {
@@ -553,6 +563,8 @@ angular.module('starter')
 
                        $rootScope.flags.serviceOrders.onFresh=true;
                        $rootScope.flags.serviceOrders.clear=true;
+                       $rootScope.flags.serviceOrders.tabIndex=0;
+                       $scope.doingBusiness=false;
                         myAlert.then(function(res) {
                             $state.go('service_orders');
                         });
@@ -562,6 +574,7 @@ angular.module('starter')
                     for (var field in err)
                         str += err[field];
                     console.error('error=\r\n' + str);
+                    $scope.doingBusiness=false;
                 });
 
             }
@@ -616,38 +629,50 @@ angular.module('starter')
             return deferred.promise;
         }
 
+        $scope.doingBusiness=false;
+
         $scope.preCheck=function () {
-            if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
-                &&$scope.carInfo.carId!=undefined&&$scope.carInfo.carId!=null)
+
+            if($scope.doingBusiness==false)
             {
-                if($scope.carManage.destination!==undefined&&$scope.carManage.destination!==null&&
-                    ($scope.carManage.destination.placeId==undefined||$scope.carManage.destination.placeId==null))
+                $scope.doingBusiness=true;
+                if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
+                    &&$scope.carInfo.carId!=undefined&&$scope.carInfo.carId!=null)
                 {
-                    //TODO:create a new destination
-                    $scope.createNewCustomerPlace().then(function (json) {
-                        if(json.re==1) {
-                            var customerPlace=json.data;
-                            $scope.carManage.destination=customerPlace;
-                            $scope.applyCarServiceOrder();
-                        }else if(json.re==2) {
-                        }else{}
-                    })
+                    if($scope.carManage.destination!==undefined&&$scope.carManage.destination!==null&&
+                        ($scope.carManage.destination.placeId==undefined||$scope.carManage.destination.placeId==null))
+                    {
+                        //TODO:create a new destination
+                        $scope.createNewCustomerPlace().then(function (json) {
+                            if(json.re==1) {
+                                var customerPlace=json.data;
+                                $scope.carManage.destination=customerPlace;
+                                $scope.applyCarServiceOrder();
+                            }else if(json.re==2) {
+                                $scope.doingBusiness=false;
+                            }else{
+                                $scope.doingBusiness=false;
+                            }
+                        })
+                    }else{
+                        $scope.applyCarServiceOrder();
+                    }
                 }else{
-                    $scope.applyCarServiceOrder();
+                    if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
+                        $scope.doingBusiness=false;
+                        $ionicPopup.alert({
+                            title: '',
+                            template: '请选择预约时间'
+                        });
+                    }else{
+                        $scope.doingBusiness=false;
+                        $ionicPopup.alert({
+                            title: '',
+                            template: '请选择车辆信息'
+                        });
+                    }
                 }
-            }else{
-                if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
-                    $ionicPopup.alert({
-                        title: '',
-                        template: '请选择预约时间'
-                    });
-                }else{
-                    $ionicPopup.alert({
-                        title: '',
-                        template: '请选择车辆信息'
-                    });
-                }
-            }
+            }else{}
         }
 
         $scope.applyCarServiceOrder=function () {
@@ -700,6 +725,7 @@ angular.module('starter')
                             if($scope.carManage.destination==undefined||$scope.carManage.destination==null||
                                 $scope.carManage.destination.address==undefined||$scope.carManage.destination.address==null)
                             {
+                                $scope.doingBusiness=false;
                                 $ionicPopup.alert({
                                     title: '错误',
                                     template: '请先选择取车地点'
@@ -707,8 +733,6 @@ angular.module('starter')
                                 return;
                             }
                         }
-
-
 
                             $http({
                                 method: "POST",
@@ -743,11 +767,8 @@ angular.module('starter')
                                 }
                             });
 
-
-
-
-
                     }else{
+                        $scope.doingBusiness=false;
                         var alertPopup = $ionicPopup.alert({
                             title: '警告',
                             template: '服务订单的费用超过您现在的积分'

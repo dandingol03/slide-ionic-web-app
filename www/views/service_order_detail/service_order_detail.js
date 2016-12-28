@@ -10,10 +10,49 @@ angular.module('starter')
                                                       $rootScope,$ionicLoading,Proxy,
                                                         $ionicPopup,$state){
 
+      $scope.serviceTypeMap={11:'维修-日常保养',12:'维修-故障维修',13:'维修-事故维修',
+          21:'车驾管-审车',22:'车驾管-审证',23:'车驾管-接送机',24:'车驾管-取送车',
+          31:'鈑喷'};
+
+      $scope.subServiceTypeMap={1:'机油,机滤',2:'检查制动系统,更换刹车片',3:'雨刷片更换',
+          4:'轮胎更换',5:'燃油添加剂',6:'空气滤清器',7:'检查火花塞',8:'检查驱动皮带',9:'更换空调滤芯',10:'更换蓄电池,防冻液'};
+
+
+
     $scope.order=$stateParams.order;
 
-    if(Object.prototype.toString.call($scope.order)=='[object String]')
-      $scope.order = JSON.parse($scope.order);
+    if($scope.order!==undefined&&$scope.order!==null)
+    {
+        if(Object.prototype.toString.call($scope.order)=='[object String]')
+        {
+            $scope.order = JSON.parse($scope.order);
+        }
+        if($scope.order.serviceType!==undefined&&$scope.order.serviceType!==null)
+        {
+            $scope.order.serviceName=$scope.serviceTypeMap[$scope.order.serviceType];
+        }
+        if($scope.order.subServiceTypes!==undefined&&$scope.order.subServiceTypes!==null)
+        {
+            if($scope.order.serviceType!='11'&&$scope.order.serviceType!='12'&&$scope.order.serviceType!='13')
+            {
+                switch($scope.order.serviceType)
+                {
+                    case '23':
+                        if($scope.order.subServiceTypes=='1')
+                            $scope.order.subServiceContent='接机';
+                        else
+                            $scope.order.subServiceContent='送机';
+                        break;
+                    case '24':
+                        if($scope.order.subServiceTypes=='1')
+                            $scope.order.subServiceContent='接站';
+                        else
+                            $scope.order.subServiceContent='送站';
+                        break;
+                }
+            }
+        }
+    }
 
 
     $scope.go_back=function(){
@@ -31,6 +70,7 @@ angular.module('starter')
 
     $scope.candidateColors=[{background:'rgb(220, 171, 106)',color:'#fff'},{background:'rgba(220, 171, 106,0.7)',color:'#fff'},
         {background:'rgba(220, 171, 106,0.4)',color:'#fff'},{background:'rgba(220, 171, 106,0.1)',color:'#fff'}];
+
 
 
     $scope.fetchRelativeInfo=function () {
@@ -102,7 +142,46 @@ angular.module('starter')
         }
 
     }
+
+
+      $scope.fetchPlaceInfo=function () {
+
+          $http({
+              method: "post",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token,
+              },
+              data:
+                  {
+                      request:'getServicePlaceNameByPlaceId',
+                      info:{
+                          type:'place',
+                          placeId:$scope.order.servicePlaceId
+                      }
+                  }
+          }).then(function (res) {
+              var json=res.data;
+              if(json.re==1) {
+                  $scope.order.servicePlace=json.data;
+              }
+          }).catch(function (err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('err=\r\n'+str);
+          })
+      }
+
+    //获取相关人员信息
     $scope.fetchRelativeInfo();
+
+    //获取地点信息
+      if($scope.order.servicePlaceId!==undefined&&$scope.order.servicePlaceId!==null)
+        $scope.fetchPlaceInfo();
+
+
+
 
       $scope.Setter=function (item,field,value) {
             item[field]=value;

@@ -13,11 +13,16 @@ angular.module('starter')
           $rootScope.flags.serviceOrders.clear==false;
       }
 
-      $scope.tabIndex=0;
 
-    $scope.goto=function(url){
-      $location.path(url);
-    };
+      if($rootScope.flags.serviceOrders.tabIndex!==undefined&&$rootScope.flags.serviceOrders.tabIndex!==null)
+            $scope.tabIndex=$rootScope.flags.serviceOrders.tabIndex;
+      else
+          $scope.tabIndex=0;
+
+
+      $scope.goto=function(url){
+          $location.path(url);
+      };
 
 
       $scope.goBack=function(){
@@ -34,10 +39,6 @@ angular.module('starter')
       $scope.tabIndex=i;
     };
 
-    $scope.orders1 = [];
-    $scope.orders2 = [];
-    $scope.orders3 = [];
-
 
       $scope.selectedTabStyle={
           display: 'table',width: '100%',height:'100%',position: 'relative',
@@ -51,14 +52,24 @@ angular.module('starter')
 
 
     $scope.serviceTypeMap={11:'维修-日常保养',12:'维修-故障维修',13:'维修-事故维修',
-      21:'车驾管-审车',22:'车驾管-审证',23:'车驾管-接送机',24:'车驾管-取送车',
+      21:'车驾管-审车',22:'车驾管-审证',23:'车驾管-接送机',24:'车驾管-接送站',
       31:'鈑喷'};
 
     $scope.subServiceTypeMap={1:'机油,机滤',2:'检查制动系统,更换刹车片',3:'雨刷片更换',
       4:'轮胎更换',5:'燃油添加剂',6:'空气滤清器',7:'检查火花塞',8:'检查驱动皮带',9:'更换空调滤芯',10:'更换蓄电池,防冻液'};
 
 
-    $scope.fetchServiceOrders=function () {
+      $scope.orders1 = [];
+      $scope.orders2 = [];
+      $scope.orders3 = [];
+
+
+      $scope.fetchServiceOrders=function () {
+
+          $scope.orders1 = [];
+          $scope.orders2 = [];
+          $scope.orders3 = [];
+
           $http({
               method: "post",
               url: Proxy.local()+"/svr/request",
@@ -120,7 +131,7 @@ angular.module('starter')
 
 
 
-      if($scope.orders!==undefined&&$scope.orders!==null&&$scope.orders.length>0) {
+
           if($rootScope.flags.serviceOrders.onFresh==true){
               $ionicLoading.show({
                   template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
@@ -157,12 +168,7 @@ angular.module('starter')
                   });
               }
           }
-      }else{
-          $ionicLoading.show({
-              template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-          });
-          $scope.fetchServiceOrders();
-      }
+
 
 
       $scope.evaluate=function () {

@@ -234,27 +234,36 @@ angular.module('starter')
 
 
         $scope.doLogin=function(){
-        if($rootScope.registrationId==undefined||$rootScope.registrationId==null||$rootScope.registrationId=='')
-        {
 
-          if(window.plugins!==undefined&&window.plugins!==null) {
-            try {
+          if($scope.user.password!==undefined&&$scope.user.password!==null&&$scope.user.password!='')
+          {
+              if($rootScope.registrationId==undefined||$rootScope.registrationId==null||$rootScope.registrationId=='')
+              {
 
-                window.plugins.jPushPlugin.getRegistrationID(function(data) {
-                    alert('registrationId=\r\n'+data);
-                    $rootScope.registrationId=data;
-                    $scope.login();
-                });
-            } catch (e) {
-              alert(e);
-            }
+                  if(window.plugins!==undefined&&window.plugins!==null) {
+                      try {
+
+                          window.plugins.jPushPlugin.getRegistrationID(function(data) {
+                              alert('registrationId=\r\n'+data);
+                              $rootScope.registrationId=data;
+                              $scope.login();
+                          });
+                      } catch (e) {
+                          alert(e);
+                      }
+                  }
+                  else{
+                      $scope.login();
+                  }
+              }else{
+                  $scope.login();
+              }
+          }else{
+              $ionicPopup.alert({
+                  title: '错误',
+                  template: '请填入密码后登录'
+              });
           }
-          else{
-            $scope.login();
-          }
-        }else{
-          $scope.login();
-        }
       }
 
 

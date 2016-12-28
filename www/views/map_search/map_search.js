@@ -277,7 +277,6 @@ angular.module('starter')
             $scope.mk=mk;
             map.panTo(e.point);
             $scope.maintain.center = map.getCenter();
-            $scope.renderCircle(e.point,0.12, 0.1);
         }
 
 

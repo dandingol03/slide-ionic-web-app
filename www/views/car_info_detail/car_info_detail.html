@@ -17,11 +17,11 @@
              padding:10px;background-color:transparent;overflow:initial">
 
                 <span class="input-label"
-                      style="display: inline-block;width: 25%;text-align: left">
+                      style="display: inline-block;width: 35%;text-align: left">
                   车牌:
                 </span>
 
-                <span style="width: 75%;display: inline-block;text-align: left;">
+                <span style="width: 65%;display: inline-block;text-align: left;">
                   <input type="text"
                          style="display:inline-block;background-color: transparent;"
                          ng-value="carInfo.carNum"
@@ -31,13 +31,12 @@
             </div>
 
 
-            <div class="item"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;"
-            >
-                <span class="input-label" style="display:inline-block;width: 25%;text-align: left">
+            <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                padding:10px;background-color:transparent;">
+                <span class="input-label" style="display:inline-block;width: 35%;text-align: left">
                   车主姓名:
                 </span>
-                <span style="width: 75%;display: inline-block;text-align: left;">
+                <span style="width: 65%;display: inline-block;text-align: left;">
                     {{carInfo.ownerName}}
                 </span>
             </div>
@@ -45,13 +44,12 @@
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
              padding:10px;background-color:transparent;"
-                 ng-click="datetimepicker(carInfo,'issueDate')"
-            >
-                <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
+                 ng-click="datetimepicker(carInfo,'issueDate')">
+                <span class="input-label" style="display: inline-block;width: 35%;text-align: left">
                     注册日期:
                 </span>
 
-                <span style="display: inline-block;width: 55%;color:#888;font-size: .9em;text-align: center;"
+                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: left;"
                       ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
                     {{carInfo.issueDate|date:'yyyy-MM-dd HH:mm'}}
                 </span>
@@ -59,38 +57,38 @@
 
             </div>
 
-            <div class="item"
+            <div class="item" ng-if="priority=='highest'"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-           padding:10px;background-color:transparent;overflow: initial">
-                <span  style="display: inline-block;width: 25%;text-align: left">
+                        padding:10px;background-color:transparent;overflow: initial">
+                <span  style="display: inline-block;width: 35%;text-align: left">
                     厂牌型号:
                 </span>
 
-                <span style="width: 75%;display: inline-block;text-align: left;">
+                <span style="width: 65%;display: inline-block;text-align: left;">
                     {{carInfo.factoryNum}}
                 </span>
             </div>
 
-            <div class="item"
+            <div class="item" ng-if="priority=='highest'"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
            padding:10px;background-color:transparent;overflow: initial">
 
-            <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
+            <span class="input-label" style="display: inline-block;width: 35%;text-align: left">
               发动机号:
             </span>
-                <span style="width: 75%;display: inline-block;text-align: left;">
+                <span style="width: 65%;display: inline-block;text-align: left;">
               {{carInfo.engineNum}}
             </span>
             </div>
 
-            <div class="item"
+            <div class="item" ng-if="priority=='highest'"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
            padding:10px;background-color:transparent;overflow: initial">
 
-            <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
+            <span class="input-label" style="display: inline-block;width: 35%;text-align: left">
               车架号:
             </span>
-                <span style="width: 75%;display: inline-block;text-align: left;">
+                <span style="width: 65%;display: inline-block;text-align: left;">
               {{carInfo.frameNum}}
             </span>
             </div>

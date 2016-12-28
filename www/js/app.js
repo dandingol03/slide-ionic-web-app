@@ -618,9 +618,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('service_orders',{
-            url:'/service_orders',
-            controller:'serviceOrdersController',
-            templateUrl:'views/service_orders/service_orders.html'
+              cache:false,
+              url:'/service_orders',
+              controller:'serviceOrdersController',
+              templateUrl:'views/service_orders/service_orders.html'
           })
 
           .state('service_order_detail',{
@@ -1054,7 +1055,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return "http://192.168.3.2:3000";
+            return "http://192.168.1.121:3000";
           else
             return "/proxy/node_server";
             
