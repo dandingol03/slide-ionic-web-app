@@ -105,9 +105,12 @@ angular.module('starter')
                 {
 
                     var personId=null;
-                    personId = $scope.insureId;
+                    var orderId = null;
 
-                    alert('personId ='+personId);
+                    personId = $scope.insureId;
+                    orderId = $scope.orderId;
+
+                    alert('orderId ='+orderId);
 
                     var suffix='';
                     var imageType='creditCard';
@@ -119,7 +122,7 @@ angular.module('starter')
 
                     var server=Proxy.local()+'/svr/request?request=uploadPhoto' +
                         '&imageType='+imageType+'&suffix='+suffix+
-                        '&filename='+'creditCard1_img'+'&personId='+personId;
+                        '&filename='+'creditCard1_img'+'&orderId='+orderId;
 
                     alert('server ='+server);
 
@@ -158,8 +161,9 @@ angular.module('starter')
                                                     imageType:'creditCard',
                                                     filename:'creditCardAttachId1',
                                                     suffix:su,
-                                                    docType:'I8' ,
-                                                    personId:personId
+                                                    docType:'I5' ,
+                                                    personId:personId,
+                                                    orderId:orderId
                                                 }
                                             }
                                     });
@@ -175,7 +179,7 @@ angular.module('starter')
                                         else if($scope.insurer.creditCard2_img.indexOf('.png')!=-1)
                                             su='png';
                                         server=Proxy.local()+'/svr/request?request=uploadPhoto' +
-                                            '&imageType='+imageType+'&suffix='+su+'&filename='+'creditCardAttachId2'+'&personId='+personId;
+                                            '&imageType='+imageType+'&suffix='+su+'&filename='+'creditCardAttachId2'+'&orderId='+orderId;
                                         return  $cordovaFileTransfer.upload(server, $scope.insurer.creditCard2_img, options)
                                             .then(function(res) {
                                                 alert('upload creditCard2_img success');
@@ -195,8 +199,9 @@ angular.module('starter')
                                                                 imageType:'creditCard',
                                                                 filename:'creditCardAttachId2',
                                                                 suffix:su,
-                                                                docType:'I8' ,
-                                                                personId:personId
+                                                                docType:'I5' ,
+                                                                personId:personId,
+                                                                orderId:orderId
                                                             }
                                                         }
                                                 });
@@ -212,7 +217,7 @@ angular.module('starter')
                                                         },
                                                         data:
                                                             {
-                                                                request:'updateLifePlanBankAttachId',
+                                                                request:'updateLifeOrderBankAttachId',
                                                                 info:{
                                                                     bankAttachId1:creditCardAttachId1,
                                                                     bankAttachId2:creditCardAttachId2,
