@@ -20,6 +20,15 @@ angular.module('starter')
 
       $scope.feeAccounts={0:[],1:[]};
 
+      $scope.selectedTabStyle=
+          {
+              display:'inline-block',color:'#fff',width:'49%',float:'left',height:'100%','border': '1px solid','border-color': '#11c1f3','background-color':'#11c1f3'
+          };
+      $scope.unSelectedTabStyle=
+          {
+              display:'inline-block',width:'49%',float:'left',height:'100%','border': '1px solid','border-color': '#11c1f3'
+          };
+
       $scope.fetchPersonalScore=function () {
           $ionicLoading.show({
               template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
