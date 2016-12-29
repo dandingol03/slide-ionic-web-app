@@ -311,6 +311,7 @@ angular.module('starter')
 
 
               if (access_token !== undefined && access_token !== null) {
+                  alert('access_token='+access_token);
                   $rootScope.access_token = access_token;
                   console.log('registrationId=\r\n' + $rootScope.registrationId);
 

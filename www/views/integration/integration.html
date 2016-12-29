@@ -50,38 +50,67 @@
       </li>
     </ul>
 
-    <!-- 积分tab 改为车驾管服务-->
-    <div class="list" scroll="true">
-      <div class="list" style="margin-bottom: 0px;">
-        <ul class="ul-tabs finance-theme">
-          <li style="width:50%;">
-            <div class="cell"
-                 ng-class="{true: 'selected', false: ''}[score_tab==0]"
-                 ng-click="change_scoreTab(0)"
-                 style="text-align: center"
-              >
-            <span style="position:absolute;left: 20%;right:20%;top:30%;">
-              积分收入
-            </span>
-            </div>
-          </li>
 
-          <li style="width:50%">
-            <div class="cell"
-                 ng-class="{true: 'selected', false: ''}[score_tab==1]"
-                 ng-click="change_scoreTab(1)"
-                 style="text-align: center"
-              >
-            <span style="position:absolute;left: 20%;right:20%;top:30%;">
-              积分支出
-            </span>
+    <!--积分新tab-->
+    <div style="margin:5%;margin-left:6%;margin-right:3%;width:90%;height: 40px;padding: 0;">
 
-            </div>
-          </li>
-
-        </ul>
+      <div ng-style="score_tab==0?selectedTabStyle:unSelectedTabStyle"
+           style="border-top-left-radius: 7px;border-bottom-left-radius: 7px;"
+           ng-click="change_scoreTab(0)">
+        <div style="width: 100%;height: 100%;display: table;">
+          <span style="display: table-cell;vertical-align: middle;text-align: center;font-weight: bolder;">积分收入</span>
+        </div>
+      </div>
+      <div ng-style="score_tab==1?selectedTabStyle:unSelectedTabStyle"
+           style="border-top-right-radius: 7px;border-bottom-right-radius: 7px;"
+           ng-click="change_scoreTab(1)">
+        <div style="width: 100%;height: 100%;display: table;">
+          <span style="display: table-cell;vertical-align: middle;text-align: center;font-weight: bolder;">积分支出</span>
+        </div>
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- 积分tab 改为车驾管服务-->
+    <!--<div class="list" scroll="true">-->
+      <!--<div class="list" style="margin-bottom: 0px;">-->
+        <!--<ul class="ul-tabs finance-theme">-->
+          <!--<li style="width:50%;">-->
+            <!--<div class="cell"-->
+                 <!--ng-class="{true: 'selected', false: ''}[score_tab==0]"-->
+                 <!--ng-click="change_scoreTab(0)"-->
+                 <!--style="text-align: center"-->
+              <!--&gt;-->
+            <!--<span style="position:absolute;left: 20%;right:20%;top:30%;">-->
+              <!--积分收入-->
+            <!--</span>-->
+            <!--</div>-->
+          <!--</li>-->
+
+          <!--<li style="width:50%">-->
+            <!--<div class="cell"-->
+                 <!--ng-class="{true: 'selected', false: ''}[score_tab==1]"-->
+                 <!--ng-click="change_scoreTab(1)"-->
+                 <!--style="text-align: center"-->
+              <!--&gt;-->
+            <!--<span style="position:absolute;left: 20%;right:20%;top:30%;">-->
+              <!--积分支出-->
+            <!--</span>-->
+
+            <!--</div>-->
+          <!--</li>-->
+
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</div>-->
 
 
     <div class="item" style="border: 0px;">
