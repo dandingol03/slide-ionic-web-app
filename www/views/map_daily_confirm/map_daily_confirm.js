@@ -969,7 +969,7 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token
                 },
                 data: {
-                    request: 'fetchScoreTotal'
+                    request: 'fetchScoreBalance'
                 }
             }).then(function (res) {
                 var json=res.data;

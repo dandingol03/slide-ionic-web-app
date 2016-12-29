@@ -4668,7 +4668,17 @@ angular.module('ngCordova.plugins.imagePicker', [])
         }, options);
 
         return q.promise;
-      }
+      },
+        hasPermission:function (suc,fail) {
+
+
+            $window.imagePicker.hasPermission(function (results) {
+                suc(results);
+            }, function (error) {
+                fail(error);
+            } );
+
+        }
     };
   }]);
 

@@ -482,6 +482,9 @@ angular.module('starter')
                 var servicePersonIds = [];
                 var personIds = [];
 
+                if($scope.servicePlace!==undefined&&$scope.servicePlace!==null)
+                    $scope.carManage.servicePlaceId=$scope.servicePlace.placeId;
+
                 $http({
                     method: "POST",
                     url: Proxy.local() + "/svr/request",
@@ -615,9 +618,20 @@ angular.module('starter')
                     deferred.resolve({re: 1,data:json.data});
                 }else{
 
+
                     $timeout(function () {
+                        var template=null;
+                        switch($scope.contentInfo.mode)
+                        {
+                            case 'pickUp':
+                                template='请先选择接站目的地'
+                                break;
+                            case 'seeOff':
+                                template='请先选择送站出发地'
+                                break;
+                        }
                         var myPopup = $ionicPopup.alert({
-                            template: '选择地点错误，请重新选择您的取车地点',
+                            template: template,
                             title: '错误'
                         });
                     },400);
@@ -684,9 +698,20 @@ angular.module('starter')
                     }
                 }else{
                     $scope.doingBusiness=false;
-                    $ionicPopup.alert({
-                        title: '错误',
-                        template: '请先选择取车地点'
+
+                    var template=null;
+                    switch($scope.contentInfo.mode)
+                    {
+                        case 'pickUp':
+                            template='请先选择接站目的地'
+                            break;
+                        case 'seeOff':
+                            template='请先选择送站出发地'
+                            break;
+                    }
+                    var myPopup = $ionicPopup.alert({
+                        template: template,
+                        title: '错误'
                     });
                 }
 
@@ -707,7 +732,7 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token
                 },
                 data: {
-                    request: 'fetchScoreTotal'
+                    request: 'fetchScoreBalance'
                 }
             }).then(function (res) {
                 var json = res.data;

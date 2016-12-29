@@ -65,8 +65,16 @@
                                         电话:{{plot.phone}}
                                     </div>
                                 </div>
+
+                                <div style="position: absolute;right: 4%;top:25px;padding-left:8px;padding-right: 8px;
+                                        padding-top:4px;padding-bottom: 4px;border-radius: 8px;border:1px solid #ff6528;">
+                                    <span style="font-size: 1.4em;"><i class="fa fa-hand-pointer-o"></i></span>
+                                    <span>选择这里</span>
+                                </div>
+
                             </div>
-                            <div class="item" style="background: #ddd;padding: 4px;">
+                            <div class="item" style="background: #ddd;padding: 4px;"
+                                 ng-if="populations.B!==undefined&&populations.B!==null">
                                 <ul style="width: 100%;list-style: none;">
                                     <li ng-repeat="(tagName, population) in populations" class="card"
                                         ng-style="tagName==tag?selectedTagStyle:unSelectedTagStyle"  ng-click="tagChange(tagName)">

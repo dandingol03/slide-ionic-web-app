@@ -660,7 +660,7 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token
                 },
                 data: {
-                    request: 'fetchScoreTotal'
+                    request: 'fetchScoreBalance'
                 }
             }).then(function (res) {
                 var json=res.data;
@@ -687,41 +687,7 @@ angular.module('starter')
                             $scope.carManage.fee=fee;
                             if(fee<=score)
                             {
-                                $http({
-                                    method: "POST",
-                                    url: Proxy.local() + "/svr/request",
-                                    headers: {
-                                        'Authorization': "Bearer " + $rootScope.access_token
-                                    },
-                                    data: {
-                                        request: 'validateCarServiceStateFree',
-                                        info: {
-                                            carManage: $scope.carInfo.carId
-                                        }
-                                    }
-                                }).then(function(res) {
-                                    var json=res.data;
-                                    if(json.re==1) {
-                                        if(json.data==true)
-                                        {
-                                            var confirmPopup = $ionicPopup.confirm({
-                                                title:'信息',
-                                                template:  '您的车辆已有正在进行的服务订单,是否仍要生成审车订单'
-                                            });
-                                            confirmPopup.then(function (res) {
-                                                if(res)
-                                                {
-                                                    $scope.generateServiceOrder();
-                                                }else{
-                                                    $scope.doingBusiness=false;
-                                                }
-                                            })
-                                        }else{
-                                            $scope.generateServiceOrder();
-                                        }
-                                    }
-                                });
-
+                                $scope.generateServiceOrder();
                             }else{
                                 $scope.doingBusiness=false;
                                 var alertPopup = $ionicPopup.alert({

@@ -359,7 +359,7 @@ angular.module('starter')
 
             //接送机----已指派服务人员
 
-            if(unit!==undefined&&unit!==null)//
+            if(unit!==undefined&&unit!==null)
             {
                 $scope.carManage.servicePlaceId=55;
                 if($scope.carManage.servicePerson.servicePersonId!==undefined&&$scope.carManage.servicePerson.servicePersonId!==null){
@@ -427,7 +427,7 @@ angular.module('starter')
                 var order = null;
                 var servicePersonIds = [];
                 var personIds = [];
-
+                $scope.carManage.servicePlaceId=55;
                 $http({
                     method: "POST",
                     url: Proxy.local() + "/svr/request",
@@ -643,7 +643,7 @@ angular.module('starter')
                             'Authorization': "Bearer " + $rootScope.access_token
                         },
                         data: {
-                            request: 'fetchScoreTotal'
+                            request: 'fetchScoreBalance'
                         }
                     }).then(function (res) {
                         var json=res.data;

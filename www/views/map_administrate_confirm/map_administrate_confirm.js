@@ -83,6 +83,9 @@ angular.module('starter')
 
         $scope.servicePlace=null;
 
+
+
+
         /*****模态框高度计算****/
         $scope.screenHeight=window.screen.height;
         $scope.contentHeight=$scope.screenHeight-140;
@@ -140,6 +143,8 @@ angular.module('starter')
                                     item=place;
                             })
                         }
+                        $scope.carManage.destination=item;
+                    }else{
                         $scope.carManage.destination=item;
                     }
                 })
@@ -245,10 +250,7 @@ angular.module('starter')
 
                     if(json.data!==undefined&&json.data!==null)
                     {
-                        json.data.map(function (car, i) {
-                            if(car.idle==true)
-                                cars.push(car);
-                        });
+                        cars=json.data;
                     }
 
                     var buttons=[];
@@ -270,7 +272,7 @@ angular.module('starter')
                                 //TODO:create new car info
                                 if(modal!==undefined&&modal!==null)
                                     modal.hide();
-                                $state.go('update_car_info');
+                                $state.go('update_car_info',{carNumInfo:JSON.stringify({})});
                             }else{
                                 var car=cars[index-1];
                                 $scope.carInfo=car;
@@ -455,8 +457,6 @@ angular.module('starter')
                 }).then(function (res) {
                     var json=res.data;
                     if(json.re==1) {
-                        $ionicHistory.clearHistory();
-                        $ionicHistory.clearCache();
                         $rootScope.flags.serviceOrders.onFresh=true;
                         $rootScope.flags.serviceOrders.tabIndex=1;
                         $state.go('service_orders');
@@ -679,7 +679,7 @@ angular.module('starter')
 
 
             var fee = null;
-            var scoreTotal = null;
+            var scoreBalance = null;
             //inject
             $scope.carManage.carId=$scope.carInfo.carId;
             $scope.carManage.serviceType='21';
@@ -691,12 +691,12 @@ angular.module('starter')
                     'Authorization': "Bearer " + $rootScope.access_token
                 },
                 data: {
-                    request: 'fetchScoreTotal',
+                    request: 'fetchScoreBalance'
                 }
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
-                    scoreTotal = json.data;
+                    scoreBalance = json.data;
 
                    return $http({
                         method: "POST",
@@ -718,7 +718,7 @@ angular.module('starter')
                 if(json.re==1){
                     fee=json.data;
                     $scope.carManage.fee=fee;
-                    if(scoreTotal>=fee){
+                    if(scoreBalance>=fee){
                         var flag=false;
                         if($scope.carManage.isAgent==true)
                         {

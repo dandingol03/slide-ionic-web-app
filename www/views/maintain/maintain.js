@@ -5,7 +5,7 @@ angular.module('starter')
     .controller('maintainController',function($scope,$state,$stateParams,
                                               $ionicModal,$ionicPopup,$rootScope,
                                               $cordovaCapture,$cordovaMedia,$ionicScrollDelegate,
-                                                $http, Proxy,$timeout,$interval){
+                                                $http, Proxy,$timeout,$interval,$ionicPlatform,$cordovaImagePicker){
 
 
         $scope.goBack=function () {
@@ -17,6 +17,15 @@ angular.module('starter')
         $scope.tabChange=function (i) {
             $scope.tabIndex=i;
         }
+
+        // $ionicPlatform.ready (function () {
+        //     $cordovaImagePicker.hasPermission(function (da) {
+        //         alert('permission=' + da);
+        //     }, function (err) {
+        //         alert('err='+err);
+        //     });
+        // })
+
 
         $scope.serviceTypeMap={
             11:'维修-日常保养',
