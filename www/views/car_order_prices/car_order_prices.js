@@ -8,7 +8,7 @@ angular.module('starter')
  */
   .controller('carOrderPricesController',function($scope,$state,$http,
                                             $location,$rootScope,$stateParams,
-                                            Proxy,$ionicModal,$ionicLoading){
+                                            Proxy,$ionicModal,$ionicLoading,$ionicPopup){
 
     $scope.insuranceder={};
 

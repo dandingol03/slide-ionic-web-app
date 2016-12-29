@@ -646,6 +646,7 @@ angular.module('starter')
                 }
             }).then(function (res) {
                 var json = res.data;
+                selected_price.discount = 1;
                 if (json.re == 1) {
                     alert("discount="+selected_price.discount);
                     return $http({

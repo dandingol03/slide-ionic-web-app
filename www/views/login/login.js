@@ -5,9 +5,7 @@ angular.module('starter')
 
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover,$cordovaPreferences,$ionicPlatform){
-
-
+        ,$WebSocket,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal){
 
       $scope.formUser = {};
 
