@@ -5554,6 +5554,14 @@ angular.module('ngCordova.plugins.media', [])
       return q2.promise;
   };
 
+  NewMedia.prototype.getDurationAudio=function () {
+      q2 = $q.defer();
+      this.media.getDurationAudio(function (position){
+          q2.resolve(position);
+      });
+      return q2.promise;
+  }
+
   NewMedia.prototype.getDuration = function () {
     q3 = $q.defer();
     this.media.getDuration(function (duration){

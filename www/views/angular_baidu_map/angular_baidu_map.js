@@ -100,6 +100,10 @@ angular.module('starter')
                 $scope.town=params.town;
             if(params.service!==undefined&&params.service!==null&&params.service!='')
                 $scope.service=params.service;
+            if(params.type!==undefined&&params.type!==null)
+                $scope.type=params.type;
+            if(params.maintain!==undefined&&params.maintain!==null)
+                $scope.maintain=params.maintain;
         }
 
         //$rootScope同步
@@ -247,6 +251,9 @@ angular.module('starter')
                             }
                         });
                         break;
+                    case 'maintain':
+                        $state.go('map_daily_confirm', {contentInfo: JSON.stringify({units: set,maintain:$scope.maintain})});
+                        break;
                 }
             }
         }
@@ -309,6 +316,9 @@ angular.module('starter')
                         }
                     });
                     break;
+                case 'maintain':
+                    $state.go('map_daily_confirm', {contentInfo: JSON.stringify({unit: place,maintain:$scope.maintain,type:$scope.type})});
+                    break;
                 default:
                     break;
             }
@@ -342,6 +352,9 @@ angular.module('starter')
                 case 'park_car':
                     cmd='fetchMaintenanceInArea';
                     break;
+                case 'maintain':
+                    cmd='fetchMaintenanceInArea';
+                    break;
                 default:
                     cmd='fetchDetectUnitsInArea';
                     break;
@@ -364,8 +377,14 @@ angular.module('starter')
                 var json = res.data;
                 var map=$scope.map;
                 var personHome=null;
-                if($rootScope.gaodeHome!==undefined&&$rootScope.gaodeHome!==null)
-                    personHome=$rootScope.gaodeHome;
+                if($scope.service!='maintain')
+                {
+                    if($rootScope.gaodeHome!==undefined&&$rootScope.gaodeHome!==null)
+                        personHome=$rootScope.gaodeHome;
+                }else{
+                    if($rootScope.maintainHome!==undefined&&$rootScope.maintainHome!==null)
+                        personHome=$rootScope.maintainHome;
+                }
                 var BMap=$scope.BMap;
                 if (json.re == 1) {
                     $scope.places = [];
@@ -630,6 +649,10 @@ angular.module('starter')
             });
             
         });
+
+        $scope.selectAll=function () {
+            console.log('select all......');
+        }
 
         $scope.selectedTagStyle={
             width: '30px',height: '30px',background: '#328bff',float: 'left',

@@ -5,12 +5,12 @@ angular.module('starter')
 
   .controller('serviceOrdersController',function($scope,$state,$http, $location,
                                                  $rootScope,Proxy,$ionicLoading,
-                                                 $ionicHistory){
+                                                 $ionicHistory,$ionicPopup){
 
       if($rootScope.flags.serviceOrders.clear==true){
           $ionicHistory.clearHistory();
           $ionicHistory.clearCache();
-          $rootScope.flags.serviceOrders.clear==false;
+          $rootScope.flags.serviceOrders.clear=false;
       }
 
 
@@ -18,6 +18,11 @@ angular.module('starter')
             $scope.tabIndex=$rootScope.flags.serviceOrders.tabIndex;
       else
           $scope.tabIndex=0;
+
+
+      var screenHeight=window.screen.height;
+
+      $scope.orderRemain={width:'100%',height:(screenHeight-140)+'px'};
 
 
       $scope.goto=function(url){
@@ -79,7 +84,8 @@ angular.module('starter')
               data:
                   {
                       request:'fetchServiceOrderByCustomerId',
-                  }
+                  },
+              timeout:9000
           }).then(function (res) {
               $ionicLoading.hide();
               var json=res.data;
@@ -119,10 +125,18 @@ angular.module('starter')
               console.log('success');
               $rootScope.flags.serviceOrders.onFresh=false;
           }).catch(function(err) {
-              var str='';
-              for(var field in err)
-                  str+=err[field];
-              console.error('error=\r\n'+str);
+              if(err.status==-1)
+              {
+                  var alertPopup = $ionicPopup.alert({
+                      title: '错误',
+                      template: '请求超时，请点击右上方的刷新按钮刷新数据'
+                  });
+              }else{
+                  var str='';
+                  for(var field in err)
+                      str+=err[field];
+                  console.error('error=\r\n'+str);
+              }
               $ionicLoading.hide();
           })
       }
@@ -179,7 +193,7 @@ angular.module('starter')
       $state.go('service_order_detail',{order:JSON.stringify(order)});
     }
 
-    $scope.notFirstRowStyle={height: '70px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd'};
-    $scope.firstRowStyle={height: '70px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd','border-top':'0px'};
+    $scope.notFirstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd'};
+    $scope.firstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd','border-top':'0px'};
 
   });

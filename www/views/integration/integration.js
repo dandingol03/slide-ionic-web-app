@@ -2,7 +2,7 @@
  * Created by apple-2 on 16/8/23.
  */
 angular.module('starter')
-  .controller('integrationController',function($scope,$state,$http
+  .controller('integrationController',function($scope,$state,$http,$timeout
                                                ,$rootScope,$ionicLoading,$ionicPopup,$ionicModal){
 
     $scope.go_back=function(){
@@ -46,14 +46,7 @@ angular.module('starter')
           }).then(function (res) {
               var json=res.data;
               if(json.re==1) {
-                  json.data.map(function (item,i) {
-                      if(item.feeType==3)
-                      {
-                          $scope.feeAccounts[1].push(item);
-                      }else{
-                          $scope.feeAccounts[0].push(item);
-                      }
-                  });
+                $scope.scoreBalance=json.data;
               }
               $ionicLoading.hide();
           }).catch(function (err) {
@@ -66,6 +59,45 @@ angular.module('starter')
       $scope.fetchPersonalScore();
 
 
+      $scope.fetchPayInfoHistory=function () {
+
+          $scope.pays={0:[],1:[]};
+
+          $http({
+              method: "POST",
+              url: "/proxy/node_server/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data: {
+                  request:'fetchInsuranceFeePayInfoHistory'
+              }
+          }).then(function (res) {
+              var json=res.data;
+              if(json.re==1) {
+                json.data.map(function (pay) {
+                    if(pay.feeType!=3)
+                        $scope.pays[0].push(pay);
+                    else
+                        $scope.pays[1].push(pay);
+                })
+
+              }else{
+                  $timeout(function () {
+                      var myPopup = $ionicPopup.alert({
+                          template: json.data,
+                          title: '错误'
+                      });
+                  }, 400);
+              }
+          }).catch(function (err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('err=\r\n'+str);
+          })
+      }
+      $scope.fetchPayInfoHistory();
 
       //
       // //返回积分项
@@ -112,58 +144,5 @@ angular.module('starter')
     $scope.change_scoreTab=function(i){
       $scope.score_tab=i;
     }
-
-    $scope.checkIdCard = function(){
-        $http({
-            method: "POST",
-            url: "/proxy/node_server/svr/request",
-            headers: {
-                'Authorization': "Bearer " + $rootScope.access_token
-            },
-            data: {
-                request:'checkcCustomerIdCard'
-            }
-        }).then(function(res) {
-            var json = res.data;
-            if(json.re==1){
-                var confirmPopup = $ionicPopup.confirm({
-                    title: '我的积分',
-                    template: '可以将积分提现，是否现在提取？'
-                });
-                confirmPopup.then(function(res) {
-
-                })
-            }else{
-                //上传身份证照片
-                alert('请先上传身份证照片！');
-
-            }
-
-        })
-    }
-
-
-      /*** 上传身份证模态框 ***/
-      $ionicModal.fromTemplateUrl('views/modal/append_maintainOrder_person.html',{
-          scope:  $scope,
-          animation: 'animated '+' bounceInUp',
-          hideDelay:920
-      }).then(function(modal) {
-          $scope.append_maintainOrderPerson_modal = modal;
-      });
-
-      $scope.open_appendMaintainServiceOrderModal= function(){
-          $scope.append_maintainOrderPerson_modal.show();
-      };
-
-      $scope.close_appendMaintainServiceOrderModal= function() {
-          $scope.append_maintainOrderPerson_modal.hide();
-      };
-      /*** 上传身份证模态框 ***/
-
-
-
-
-
 
   });

@@ -4,7 +4,8 @@
 angular.module('starter')
     .controller('carManageController',function($scope,$state,$http,
                                                $rootScope,$cordovaFileTransfer,Proxy,
-                                               $ionicModal,$ionicPopup,$ionicLoading){
+                                               $ionicModal,$ionicPopup,$ionicLoading,
+                                                $timeout){
 
 
         $scope.go_back=function () {
@@ -389,18 +390,20 @@ angular.module('starter')
                         var result = json.re;
                         switch (result){
                             case -1:
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '绑定车辆',
-                                    template: '数据库中未保存此车,是否要创建新车'
-                                });
-                                confirmPopup.then(function(res) {
-                                    if(res) {
-                                        $scope.closeBindCarModal();
-                                        $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
-                                    } else {
-                                        $scope.closeBindCarModal();
-                                    }
-                                });
+                                $timeout(function () {
+                                    var confirmPopup = $ionicPopup.confirm({
+                                        title: '绑定车辆',
+                                        template: '数据库中未保存此车,是否要创建新车'
+                                    });
+                                    confirmPopup.then(function(res) {
+                                        if(res) {
+                                            $scope.closeBindCarModal();
+                                            $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
+                                        } else {
+                                            $scope.closeBindCarModal();
+                                        }
+                                    });
+                                }, 400);
                                 break;
                             case -2:
                                 var confirmPopup = $ionicPopup.confirm({

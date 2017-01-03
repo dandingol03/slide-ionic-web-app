@@ -22,21 +22,51 @@ angular.module('starter')
             if($scope.selectTime==true){
                 $scope.selectTime=false;
                 $cordovaDatePicker.show(options).then(function(date){
-                    if((date-new Date())<0)
+
+                    var curDay=new Date();
+                    if((date-curDay)>0&&curDay.getDate()!=date.getDate())
                     {
+                        item[field]=date;
+                    }else{
                         $ionicPopup.alert({
                             title: '错误',
-                            template: '您所选的日期不能比当前日期早,请重新选择'
+                            template: '您所选的日期必须在当天之后,请重新选择'
                         });
-                    }else{
-                        item[field]=date;
+                        $scope.selectTime=true;
+                        return;
                     }
+
                     $scope.selectTime=true;
 
                 }).catch(function(err) {
                     $scope.selectTime=true;
                 });
             }
+        }
+
+        $scope.verifyServiceSegment=function (servicePerson) {
+
+            var estimateTime=$scope.maintain.estimateTime;
+            var day=estimateTime.getDay();
+            var hour=estimateTime.getHours();
+            var serviceSegments=servicePerson.serviceSegments;
+            var flag=false;
+            if(day==parseInt(serviceSegments.substring(0,1)))
+            {
+                var seg=serviceSegments.substring(1,2);
+                switch(seg)
+                {
+                    case '1':
+                        if(hour<=12)
+                            flag=true;
+                        break;
+                    case '2':
+                        if(hour>12)
+                            flag=true;
+                        break;
+                }
+            }
+            return flag;
         }
 
 
@@ -228,13 +258,9 @@ angular.module('starter')
         $scope.selectCarInfoByCarNum=function(item,modal){
 
             var data={
-                request:'fetchInsuranceCarInfoByCustomerId',
-                info:{carNum:''}
+                request:'fetchCarsNotInDetectState'
             };
 
-            data.info = {
-                carNum: $scope.carInfo.carNum!==undefined&&$scope.carInfo.carNum!==null&&$scope.carInfo.carNum!=''?$scope.carInfo.carNum:null
-            };
 
             $http({
                 method: "POST",
@@ -411,7 +437,6 @@ angular.module('starter')
                     $scope.carManage.servicePersonId=$scope.carManage.servicePerson.servicePersonId;
                 }
 
-
                 $scope.carManage.orderState=2;
 
                 $http({
@@ -486,32 +511,13 @@ angular.module('starter')
                             carManage: $scope.carManage
                         }
                     }
-                }).then(function (res) {
-                    var json = res.data;
-                    if (json.re == 1) {
-                        alert('json re==1');
-                        order=json.data;
-                        return $http({
-                            method: "POST",
-                            url: Proxy.local() + "/svr/request",
-                            headers: {
-                                'Authorization': "Bearer " + $rootScope.access_token
-                            },
-                            data: {
-                                request: 'getServicePersonsByDetectUnites',
-                                info: {
-                                    detectUnites: detectUnites
-                                }
-                            }
-                        });
-                    }
+
                 }).then(function(res) {
                     var json=res.data;
                     if(json.re==1) {
-                        json.data.map(function(servicePerson,i) {
-                            servicePersonIds.push(servicePerson.servicePersonId);
-                            personIds.push(servicePerson.personId);
-                        });
+                        order=json.data;
+                        servicePersonIds=$scope.verify.servicePersonIds;
+                        personIds=$scope.verify.personIds;
                         return $http({
                             method: "POST",
                             url: Proxy.local() + "/svr/request",
@@ -639,24 +645,110 @@ angular.module('starter')
                 if($scope.carManage.estimateTime!==undefined&&$scope.carManage.estimateTime!==null
                     &&$scope.carInfo.carId!=undefined&&$scope.carInfo.carId!=null)
                 {
-                    if($scope.carManage.destination!==undefined&&$scope.carManage.destination!==null&&
-                        ($scope.carManage.destination.placeId==undefined||$scope.carManage.destination.placeId==null))
+                    //TODO:inject serviceSegment check
+                    var detectUnit=$scope.detectUnit;
+                    var detectUnites=$scope.detectUnites;
+                    if(detectUnit!==undefined&&detectUnit!==null)//已选检测公司
                     {
-                        //TODO:create a new destination
-                        $scope.createNewCustomerPlace().then(function (json) {
-                            if(json.re==1) {
-                                var customerPlace=json.data;
-                                $scope.carManage.destination=customerPlace;
-                                $scope.applyCarServiceOrder();
-                            }else if(json.re==2) {
-                                $scope.doingBusiness=false;
+
+                        var access = $scope.verifyServiceSegment($scope.carManage.servicePerson);
+                        if (access == false) {
+                            var segmentAlert = $ionicPopup.alert({
+                                title: '错误',
+                                template: '你所选的预约时间不在工作人员时段,请重新选择'
+                            });
+                            return ;
+                        }else{
+                            if($scope.carManage.destination!==undefined&&$scope.carManage.destination!==null&&
+                                ($scope.carManage.destination.placeId==undefined||$scope.carManage.destination.placeId==null))
+                            {
+                                //TODO:create a new destination
+                                $scope.createNewCustomerPlace().then(function (json) {
+                                    if(json.re==1) {
+                                        var customerPlace=json.data;
+                                        $scope.carManage.destination=customerPlace;
+                                        $scope.applyCarServiceOrder();
+                                    }else if(json.re==2) {
+                                        $scope.doingBusiness=false;
+                                    }else{
+                                        $scope.doingBusiness=false;
+                                    }
+                                })
                             }else{
-                                $scope.doingBusiness=false;
+                                $scope.applyCarServiceOrder();
+                            }
+                        }
+
+                    }else{
+                        var servicePersonIds = [];
+                        var personIds = [];
+
+                        $http({
+                            method: "POST",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token
+                            },
+                            data: {
+                                request: 'getServicePersonsByDetectUnites',
+                                info: {
+                                    detectUnites: detectUnites
+                                }
+                            }
+                        }).then(function (res) {
+                            var json=res.data;
+                            if(json.re==1) {
+
+                                json.data.map(function(servicePerson,i) {
+                                    var flag=$scope.verifyServiceSegment(servicePerson);
+                                    if(flag==false)
+                                    {}else{
+                                        servicePersonIds.push(servicePerson.servicePersonId);
+                                        personIds.push(servicePerson.personId);
+                                    }
+                                });
+
+                                if(servicePersonIds.length==0)
+                                {
+                                    var segmentAlert = $ionicPopup.alert({
+                                        title: '错误',
+                                        template: '你所选的预约时间不在工作人员时段,请重新选择'
+                                    });
+                                    return {re: -1};
+                                }else {
+                                    $scope.verify={
+                                        servicePersonIds:servicePersonIds,
+                                        personIds:personIds
+                                    };
+                                    return {re: 1};
+                                }
+                            }
+                        }).then(function (json) {
+                            if(json.re==1) {
+
+                                if($scope.carManage.destination!==undefined&&$scope.carManage.destination!==null&&
+                                    ($scope.carManage.destination.placeId==undefined||$scope.carManage.destination.placeId==null))
+                                {
+                                    //TODO:create a new destination
+                                    $scope.createNewCustomerPlace().then(function (json) {
+                                        if(json.re==1) {
+                                            var customerPlace=json.data;
+                                            $scope.carManage.destination=customerPlace;
+                                            $scope.applyCarServiceOrder();
+                                        }else if(json.re==2) {
+                                            $scope.doingBusiness=false;
+                                        }else{
+                                            $scope.doingBusiness=false;
+                                        }
+                                    })
+                                }else{
+                                    $scope.applyCarServiceOrder();
+                                }
                             }
                         })
-                    }else{
-                        $scope.applyCarServiceOrder();
+
                     }
+
                 }else{
                     if($scope.carManage.estimateTime==undefined&&$scope.carManage.estimateTime==null){
                         $scope.doingBusiness=false;
@@ -734,38 +826,7 @@ angular.module('starter')
                             }
                         }
 
-                            $http({
-                                method: "POST",
-                                url: Proxy.local() + "/svr/request",
-                                headers: {
-                                    'Authorization': "Bearer " + $rootScope.access_token
-                                },
-                                data: {
-                                    request: 'validateCarServiceStateFree',
-                                    info: {
-                                        carManage: $scope.carInfo.carId
-                                    }
-                                }
-                            }).then(function(res) {
-                                var json=res.data;
-                                if(json.re==1) {
-                                    if(json.data==true)
-                                    {
-                                        var confirmPopup = $ionicPopup.confirm({
-                                            title:'信息',
-                                            template:  '您的车辆已有正在进行的服务订单,是否仍要生成审车订单'
-                                        });
-                                        confirmPopup.then(function (res) {
-                                            if(res)
-                                            {
-                                                $scope.generateServiceOrder();
-                                            }
-                                        })
-                                    }else{
-                                        $scope.generateServiceOrder();
-                                    }
-                                }
-                            });
+                        $scope.generateServiceOrder();
 
                     }else{
                         $scope.doingBusiness=false;

@@ -5,6 +5,14 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
+
+
+function isEmpty(value) {
+    return angular.isUndefined(value) || value === '' || value === null || value !== value;
+}
+
+
+
 angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker','LocalStorageModule'])
 
     .config(function(baiduMapApiProvider) {
@@ -1009,6 +1017,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/life_order_pay/life_order_pay.html'
           })
 
+          .state('maintainHome',{
+              url:'/maintainHome:params',
+              controller:'maintainHomeController',
+              templateUrl:'views/maintainHome/maintainHome.html'
+          })
+
 
         // if none of the above states are matched, use this as the fallback
 
@@ -1055,10 +1069,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.148:3000';
+            return 'http://139.129.96.231:3000';
           else
             return "/proxy/node_server";
-            
+
         },
         remote:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
@@ -1114,6 +1128,30 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 }
             }
         };
+    })
+
+    .directive('ngMax', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elem, attr, ctrl) {
+            scope.$watch(attr.ngMax, function () {
+                ctrl.$setViewValue(ctrl.$viewValue);
+            });
+            var maxValidator = function (value) {
+                var max = scope.$eval(attr.ngMax) || Infinity;
+                if (!isEmpty(value) && value > max) {
+                    ctrl.$setValidity('ngMax', false);
+                    return undefined;
+                } else {
+                    ctrl.$setValidity('ngMax', true);
+                    return value;
+                }
+            };
+
+            ctrl.$parsers.push(maxValidator);
+            ctrl.$formatters.push(maxValidator);
+        }};
     })
 
     .factory('$WebSocket',function(){

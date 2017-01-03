@@ -20,35 +20,39 @@
 
                 <div style="height: 10%;width: 100%;background-color:transparent">
                     <div class="item" style="padding:4px;border-bottom:1px solid white;background-color: transparent;">
-                        <ul>
-                            <li style="width:15%;float: right;text-align: center;margin-top:3%"
+                        <ul style="height: 40px;margin-top:10px;">
+                            <li style="width:15%;float: right;text-align: center;"
                                 ng-click="go_to('passwordModify')">
-                                <div style="font-size: 2em;">
-                                    <img src="img/my_menue.png"/>
+                                <div style="font-size: 1.2em;color:#fff;">
+                                    <span><i class="fa fa-unlock-alt"></i></span>
                                 </div>
-                                <div style="font-size: 0.8em;color: white;">
-                                    密码修改
-                                </div>
-                            </li>
-
-                            <li style="width:15%;float:right;text-align:center;margin-top:3%" ng-click="quit()">
-                                <div style="font-size: 2em;">
-                                    <img src="img/my_exit.png"/>
-                                </div>
-                                <div style="font-size: 0.8em;color: white;">
-                                    退出
+                                <div style="font-size: 0.8em;color: #fff;">
+                                    <span style="font-weight: bolder;">密码修改</span>
                                 </div>
                             </li>
 
-                            <li style="width:60%;float:right;text-align:center;margin-top:5%;padding-left:23%;">
-                                <div style="color: white;font-size: 1.2em;">
-                                    个人中心
+                            <li style="width:15%;float:right;text-align:center;" ng-click="quit()">
+                                <div style="font-size: 1.2em;color:#fff;">
+                                    <span><i class="fa fa-power-off"></i></span>
+                                </div>
+                                <div style="font-size: 0.8em;color: #fff;">
+                                    <span style="font-weight: bolder;">
+                                        退出
+                                    </span>
                                 </div>
                             </li>
 
-                            <li style="width:10%;float:right;text-align:left;margin-top:5%;padding-left:3%"
+                            <li style="width:60%;float:right;text-align:center;padding-left:15%;height: 100%;">
+                                <div style="width: 100%;height: 100%;display: table;text-align: center;">
+                                    <span   style="color: #fff;font-size: 1.4em;display: table-cell;vertical-align: middle;font-weight: bolder;">
+                                        个人中心
+                                    </span>
+                                </div>
+                            </li>
+
+                            <li style="width:10%;float:right;text-align:left;padding-left:3%"
                                 ng-click="go_to('tabs.dashboard_backup')">
-                                <i class="ion-ios-arrow-thin-left" style="color:white;font-size:2em"></i>
+                                <i class="ion-chevron-left" style="color:white;font-size:2em"></i>
                             </li>
 
                         </ul>
@@ -182,7 +186,7 @@
                     <ul>
                         <li style="width: 33.3333%;min-height:85px;display: inline-block;
                         text-align: center;background: #fff;"
-                            ng-click="go_to('advise_gift')">
+                            ng-click="toggleWxDialog()">
                             <div style="font-size: 2em;margin-top:14%;color:#85bb32">
                                 <img src="img/my_gift.png"/>
                             </div>
