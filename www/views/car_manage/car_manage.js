@@ -129,10 +129,6 @@ angular.module('starter')
                     })
                     if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
                     {
-                        $scope.relativeCars.map(function(car,i) {
-                            if(car.carId==$rootScope.carInfo.carId)
-                                car.checked=true;
-                        })
                     }
                 }else if(json.re==2)
                 {
@@ -163,6 +159,9 @@ angular.module('starter')
             $scope.fetchRelativeCars();
         }else{
            $scope.relativeCars=$rootScope.flags.carOrders.data.relativeCars;
+           $scope.relativeCars.map(function (car,i) {
+               car.checked=false;
+           })
         }
 
         $scope.Mutex=function(item,field,cluster) {
@@ -476,9 +475,24 @@ angular.module('starter')
 
         }
 
-        $scope.notFirstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd'};
-        $scope.firstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd','border-top':'0px'}
-
-
+        $scope.notFirstRowStyle={
+            height: '50px',position: 'relative',
+            'border-right': '1px solid rgba(88, 73, 58, 0.95)',
+            'border-left':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-top':'1px solid rgba(88, 73, 58, 0.95)'
+        };
+        $scope.firstRowStyle={
+            height: '50px',position: 'relative',
+            'border-right': '1px solid rgba(88, 73, 58, 0.95)',
+            'border-left':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-top':'0px'
+        };
+        $scope.lastRowStyle={
+            height: '50px',position: 'relative',
+            'border-right': '1px solid rgba(88, 73, 58, 0.95)',
+            'border-left':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-top':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-bottom':'1px solid rgba(88, 73, 58, 0.95)'
+        };
 
     })

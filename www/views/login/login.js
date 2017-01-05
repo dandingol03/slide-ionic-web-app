@@ -42,45 +42,67 @@ angular.module('starter')
         }, false)
 
 
+
+        /*** 授权模态框 ***/
+        $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
+            scope:  $scope,
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.grant_authority_modal = modal;
+        });
+
+        $scope.openGrantAuthorityModal= function(){
+            try{
+                $ionicBackdrop.retain();
+                $scope.grant_authority_modal.show();
+            }catch(e){
+                alert('error=\r\n'+ e.toString());
+            }
+        };
+
+        $scope.closeGrantAuthorityModal= function() {
+            $scope.grant_authority_modal.hide();
+        };
+        /*** 授权模态框 ***/
+
+
         $scope.getPreferences=function () {
 
             $cordovaPreferences.fetch('preferences')
                 .success(function (data) {
-                    alert('preferences='+data);
+                    console.log('preference=')
                     if(data!==undefined&&data!==null&&data!='')
                     {
-                        alert('pop dialog');
-                        /*** 授权模态框 ***/
-                        $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
-                            scope:  $scope,
-                            animation: 'animated '+'bounceInUp',
-                            hideDelay:920
-                        }).then(function(modal) {
-                            $scope.grant_authority_modal = modal;
-                            $ionicBackdrop.retain();
+                        var preferences=data;
+                        if(Object.prototype.toString.call(preferences)=='[object String]')
+                            preferences = JSON.parse(preferences);
+                        if(preferences.initial==false)
+                        {
+                        }else{
                             $scope.openGrantAuthorityModal();
-                        });
+                        }
 
-                        $scope.openGrantAuthorityModal= function(){
-                            try{
-                                $scope.grant_authority_modal.show();
-                            }catch(e){
-                                alert('error=\r\n'+ e.toString());
-                            }
-                        };
-
-                        $scope.closeGrantAuthorityModal= function() {
-                            $scope.grant_authority_modal.hide();
-                        };
-                        /*** 授权模态框 ***/
-
-                        $cordovaPreferences.store('cache', null)
+                        preferences.initial=false;
+                        $cordovaPreferences.store('preferences', preferences)
                             .success(function(value) {
                             })
                             .error(function(error) {
                                 alert("Error: " + error);
                             })
 
+                    }else{
+                        //TODO:初始化preferences
+                        var preferences={
+                            initial:true
+                        };
+                        $scope.openGrantAuthorityModal();
+                        $cordovaPreferences.store('cache', null)
+                            .success(function(value) {
+                            })
+                            .error(function(error) {
+                                alert("Error: " + error);
+                            })
                     }
                 })
                 .error(function (err) {

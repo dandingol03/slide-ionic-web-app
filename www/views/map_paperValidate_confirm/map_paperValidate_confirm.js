@@ -44,7 +44,7 @@ angular.module('starter')
 
         $scope.verifyServiceSegment=function (servicePerson) {
 
-            var estimateTime=$scope.maintain.estimateTime;
+            var estimateTime=$scope.carManage.estimateTime;
             var day=estimateTime.getDay();
             var hour=estimateTime.getHours();
             var serviceSegments=servicePerson.serviceSegments;
