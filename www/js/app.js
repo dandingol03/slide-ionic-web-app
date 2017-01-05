@@ -13,7 +13,8 @@ function isEmpty(value) {
 
 
 
-angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker','LocalStorageModule'])
+angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
+                            'LocalStorageModule','ionic-native-transitions','toaster'])
 
     .config(function(baiduMapApiProvider) {
         baiduMapApiProvider.version('2.0').accessKey('hxMVpPXqcpdNGMrLTGLxN3mBBKd6YiT6');
@@ -21,7 +22,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-                  $ionicPopup,Proxy,$http,$state) {
+                  $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions) {
 
 
 
@@ -444,7 +445,20 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
         }
         else if ($ionicHistory.backView()) {
-          $ionicHistory.goBack();
+            //遵从叶子结点的历史记录回退
+            var history=$ionicHistory.viewHistory();
+            switch(history.currentView.stateName)
+            {
+                case 'car_manage':
+                    $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
+                default:
+                    $ionicHistory.goBack();
+            }
         } else {
           $rootScope.backButtonPressedOnceToExit = true;
           $cordovaToast.showShortTop('已无法回退，请点击底部标签页进行切换');
@@ -477,12 +491,28 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       ionicDatePickerProvider.configDatePicker(datePickerObj);
     })
 
+    .config(function($ionicNativeTransitionsProvider){
+        $ionicNativeTransitionsProvider.setDefaultOptions({
+            duration: 200, // in milliseconds (ms), default 400,
+            slowdownfactor: 4, // overlap views (higher number is more) or no overlap (1), default 4
+            iosdelay: -1, // ms to wait for the iOS webview to update before animation kicks in, default -1
+            androiddelay: -1, // same as above but for Android, default -1
+            winphonedelay: -1, // same as above but for Windows Phone, default -1,
+            fixedPixelsTop: 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+            fixedPixelsBottom: 0, // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+            triggerTransitionEvent: '$ionicView.afterEnter', // internal ionic-native-transitions option
+            backInOppositeDirection: true // Takes over default back transition and state back transition to use the opposite direction transition to go back
+        });
+    })
+
     .config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
 
       // Ionic uses AngularUI Router which uses the concept of states
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
       // Each state's controller can be found in controllers.js
+
+        $ionicConfigProvider.views.transition('no');
 
 
       $ionicConfigProvider.platform.ios.tabs.style('standard');
@@ -550,6 +580,20 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               }
             }
           })
+
+          .state('tabs.ws_chat', {
+              url: '/ws_chat',
+              views: {
+                  'ws-chat-tab': {
+                      controller: 'wsChatController',
+                      templateUrl: 'views/ws_chat/ws_chat.html'
+                  }
+              }
+          })
+
+
+
+
 
           .state('login',{
               cache:false,
@@ -678,10 +722,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_manage',{
-            cache: false,
-            url:'/car_manage',
-            controller:'carManageController',
-            templateUrl:'views/car_manage/car_manage.html'
+              cache: false,
+              url:'/car_manage:params',
+              nativeTransitionsAndroid:{
+                  "type": "slide",
+                  "direction": "left"
+              },
+              controller:'carManageController',
+              templateUrl:'views/car_manage/car_manage.html'
           })
 
           .state('bindNewCar',{
@@ -1023,7 +1071,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/maintainHome/maintainHome.html'
           })
 
-
         // if none of the above states are matched, use this as the fallback
 
       $urlRouterProvider.otherwise('/login');
@@ -1167,7 +1214,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
 
           self.connect=function(cb){
-            self.ws = new window.WebSocket('ws://192.168.1.108:3010');
+            self.ws = new window.WebSocket('ws://139.129.96.231:3010');
             self.ws.onopen=self.onopen;
             self.ws.onmessage=self.onmessage;
           }
@@ -1185,6 +1232,19 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
           self.onmessage=function(event) {
             console.log('got message=\r\n' + event.data);
+          }
+          self.login=function (username,password,accessToken) {
+              var info= {
+                  action:'login',
+                  msgid: self.getMsgId(),
+                  timems:new Date(),
+                  token:accessToken,
+                  username:username,
+                  password:password
+              };
+              if(Object.prototype.toString.call(info)!='[object String')
+                  info=JSON.stringify(info);
+              self.ws.send(info);
           }
           self.send=function(msg) {
             var info=msg;

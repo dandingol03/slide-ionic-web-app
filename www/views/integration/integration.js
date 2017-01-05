@@ -75,13 +75,15 @@ angular.module('starter')
           }).then(function (res) {
               var json=res.data;
               if(json.re==1) {
-                json.data.map(function (pay) {
-                    if(pay.feeType!=3)
-                        $scope.pays[0].push(pay);
-                    else
-                        $scope.pays[1].push(pay);
-                })
-
+                  if(json.data!==undefined&&json.data!==null)
+                  {
+                      json.data.map(function (pay) {
+                          if(pay.feeType!=3)
+                              $scope.pays[0].push(pay);
+                          else
+                              $scope.pays[1].push(pay);
+                      })
+                  }
               }else{
                   $timeout(function () {
                       var myPopup = $ionicPopup.alert({

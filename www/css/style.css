@@ -1330,3 +1330,8 @@ li.light.activated{
 textarea.highLight{
   box-shadow:1px 1px 10px rgba(33, 177, 220, 0.3)
 }
+
+
+ion-content.h-300{
+  height: 300px;
+}

@@ -149,7 +149,21 @@ angular.module('starter')
                       text :$scope.wx.text
                   };
                   //TODO:Wechat share iamge
-
+                  ob={
+                      message: {
+                          title: "Hi, there",
+                          description: "This is description.",
+                          thumb: "www/img/logo.png",
+                          mediaTagName: "TEST-TAG-001",
+                          messageExt: "这是第三方带的测试字段",
+                          messageAction: "<action>dotalist</action>",
+                          media:{
+                              type:Wechat.Type.LINK,
+                              webpageUrl:$scope.wx.text
+                          }
+                      },
+                      scene: $scope.wx.type=='friend'?Wechat.Scene.SESSION:Wechat.Scene.TIMELINE   // share to Timeline
+                  }
 
                   Wechat.share(ob, function () {
                       alert('share success')

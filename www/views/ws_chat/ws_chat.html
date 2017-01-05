@@ -1,0 +1,37 @@
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view  hide-nav-bar="true">
+
+        <ion-content class="login_background">
+
+
+
+            <div class="list padding">
+
+                <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                     padding:10px;background-color:transparent;overflow:initial">
+                    <span style="display: inline-block;width: 25%;text-align: left">
+                        信息:
+                    </span>
+
+                    <span style="width: 55%;display: inline-block;text-align: left;">
+                        <input type="text" placeholder="请输入信息内容...."
+                               style="display: inline-block;width:100%;background-color:transparent"
+                               ng-value="ws.text"
+                               ng-model="ws.text"/>
+                    </span>
+
+                    <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
+                          ng-click="doSend()">
+                        <button class="button button-small button-assertive" style="padding:0px 10px;">
+                           发送
+                        </button>
+                    </span>
+                </div>
+
+
+            </div>
+
+
+        </ion-content>
+    </ion-view>
+</ion-nav-view>

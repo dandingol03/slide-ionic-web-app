@@ -5,8 +5,8 @@ angular.module('starter')
 
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
-        ,$cordovaDevice){
+        ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
+        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket){
 
 
         $scope.formUser = {};
@@ -22,6 +22,12 @@ angular.module('starter')
         if($rootScope.password!==undefined&&$rootScope.password!==null){
             $scope.user.password = $rootScope.password;
         }
+
+        $WebSocket.registeCallback(function(msg) {
+            console.log('//-----ws\r\n' + msg);
+        });
+
+        $WebSocket.connect();
 
 
 
@@ -175,8 +181,9 @@ angular.module('starter')
                     {
                         console.error(e.toString());
                     }
-
                 }
+
+
             })
         }
 
@@ -246,20 +253,11 @@ angular.module('starter')
 
 
 
-        $WebSocket.registeCallback(function(msg) {
-        console.log('//-----ws\r\n' + msg);
-      });
 
-      /**
-       * websocket测试
-       */
-      //$WebSocket.connect();
-
-
-      var options = {
-            date: new Date(),
-            mode: 'datetime',
-        };
+        var options = {
+                date: new Date(),
+                mode: 'datetime',
+            };
 
 //*******************测试百悟短信验证码*********************//
 
@@ -420,6 +418,11 @@ angular.module('starter')
                   $rootScope.access_token = access_token;
                   console.log('registrationId=\r\n' + $rootScope.registrationId);
 
+                  //TODO:send a login action with websocket
+                  $WebSocket.login($scope.user.username,$scope.user.password,access_token);
+
+
+
 
                   //获取个人信息
                   $http({
@@ -461,6 +464,7 @@ angular.module('starter')
                                   var json = res.data;
                                   if (json.re == 1 || json.result == 'ok') {
                                       $state.go('tabs.dashboard_backup');
+                                      $ionicHistory.clearHistory();
                                   }
                               }).catch(function (err) {
                                   var error = '';
@@ -471,6 +475,7 @@ angular.module('starter')
                               });
                           } else {
                               $state.go('tabs.dashboard_backup');
+                              $ionicViewSwitcher.nextDirection("forwoard")
                           }
                       }
                   })
@@ -516,17 +521,7 @@ angular.module('starter')
           })
       }
 
-      $scope.doSend=function(){
-        $WebSocket.send({
-          action:'msg',
-          msgid:$WebSocket.getMsgId(),
-          timems:new Date(),
-          msg:'first message',
-          to:{
-            groupid:'presale'
-          }
-        });
-      }
+
 
 
       //文件下载
@@ -707,6 +702,7 @@ angular.module('starter')
       }
 
 
+      /********** ws *************/
 
 
     });

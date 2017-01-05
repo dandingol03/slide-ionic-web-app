@@ -8,7 +8,8 @@
 
 <ion-tabs class="tabs-icon-top tabs-color-positive tabs-custom" >
 
-  <ion-tab title="主页" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble" ui-sref="tabs.dashboard_backup">
+  <ion-tab title="主页" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble"
+           ui-sref="tabs.dashboard_backup">
     <ion-nav-view name="dashboard-backup-tab"></ion-nav-view>
   </ion-tab>
 
@@ -20,8 +21,15 @@
     <ion-nav-view name="my-tab"></ion-nav-view>
   </ion-tab>
 
-  <ion-tab title="联系客服" icon-off="ion-social-whatsapp-outline" icon-on="ion-social-whatsapp" ui-sref="tabs.chatter">
-    <ion-nav-view name="chatter-tab"></ion-nav-view>
+
+
+
+  <ion-tab title="联系客服" icon-off="ion-social-whatsapp-outline" icon-on="ion-social-whatsapp" ui-sref="tabs.ws_chat">
+    <ion-nav-view name="ws-chat-tab"></ion-nav-view>
   </ion-tab>
+
+  <!--<ion-tab title="联系客服" icon-off="ion-social-whatsapp-outline" icon-on="ion-social-whatsapp" ui-sref="tabs.chatter">-->
+    <!--<ion-nav-view name="chatter-tab"></ion-nav-view>-->
+  <!--</ion-tab>-->
 </ion-tabs>
 

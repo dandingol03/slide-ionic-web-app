@@ -5,16 +5,31 @@ angular.module('starter')
     .controller('carManageController',function($scope,$state,$http,
                                                $rootScope,$cordovaFileTransfer,Proxy,
                                                $ionicModal,$ionicPopup,$ionicLoading,
-                                                $timeout){
+                                                $timeout,$ionicNativeTransitions,$ionicHistory,
+                                               $stateParams){
 
 
         $scope.go_back=function () {
-            window.history.back();
+
+            $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.go_to=function (url) {
             $state.go(url);
         }
+
+        if($stateParams.params!==undefined&&$stateParams.params!==null&&$stateParams.params!='')
+        {
+            var params=$stateParams.params;
+            if(Object.prototype.toString.call(params)=='[object String]')
+                params = JSON.parse(params);
+
+        }
+
 
         $scope.goDetail=function (car) {
             $state.go('car_info_detail',{carInfo:JSON.stringify(car)})
