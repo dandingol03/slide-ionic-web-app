@@ -7,7 +7,7 @@ angular.module('starter')
                                                    $cordovaCamera,$cordovaImagePicker,Proxy,
                                                    $ionicModal,ionicDatePicker,$ionicSlideBoxDelegate,
                                                    $timeout,$ionicPopup,$cordovaDatePicker,
-                                                    $stateParams){
+                                                    $stateParams,$ionicHistory,$ionicNativeTransitions){
 
         $scope.carInfo={};
 
@@ -131,8 +131,16 @@ angular.module('starter')
         }
 
 
-        $scope.go_back=function(){
-            window.history.back();
+        $scope.goBack=function(){
+            $ionicNativeTransitions.stateGo('car_manage', {params:JSON.stringify({previous:'update_car_info'})}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
+            $timeout(function () {
+
+            })
+            //$ionicHistory.clearHistory();
         };
 
 
@@ -494,12 +502,13 @@ angular.module('starter')
                                                                       $state.go('car_manage');
                                                                   })
                                                                   $timeout(function(){
-                                                                      if(popup.$$state==0){
+                                                                      //如果模态框未关闭
+                                                                      if(popup.$$state.status==0){
                                                                           popup.close();
                                                                           $rootScope.flags.carManage.onFresh=true;
                                                                           $state.go('car_manage');
                                                                       }
-                                                                  },300);
+                                                                  },3000);
 
                                                               }
 

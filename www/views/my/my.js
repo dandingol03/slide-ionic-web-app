@@ -4,7 +4,7 @@
 angular.module('starter')
   .controller('myController',function($scope,$state,$http,$rootScope,
                                 Proxy,$ionicSideMenuDelegate,$ionicHistory,
-                                      $cordovaPreferences){
+                                      $cordovaPreferences,$ionicModal){
 
     $scope.go_back=function(){
       window.history.back();
@@ -58,16 +58,11 @@ angular.module('starter')
         }
     }
 
+      $scope.infos=[];
 
-    $scope.gotoNotificationPanel=function () {
-        $state.go('notification');
-    }
+      $scope.userInfo=$rootScope.user.personInfo;
 
-    $scope.infos=[];
-
-    $scope.userInfo=$rootScope.userInfo;
-
-    //获取个人信息的抽屉面板
+      //获取个人信息的抽屉面板
 
       $http({
           method: "post",
@@ -80,15 +75,118 @@ angular.module('starter')
                   request:'getMyPageInfo'
               }
       }).then(function(res) {
-         var json=res.data;
-         if(json.re==1) {
-             var ob=json.data;
-             var infos=ob.infos;
-             $scope.score=ob.score;
-             if(Object.prototype.toString.call(infos)!='[object Array]')
-                 infos=JSON.parse(infos);
-             $scope.infos=infos;
-         }
+          var json=res.data;
+          if(json.re==1) {
+              var ob=json.data;
+              var infos=ob.infos;
+              $scope.score=ob.score;
+              if(Object.prototype.toString.call(infos)!='[object Array]')
+                  infos=JSON.parse(infos);
+              $scope.infos=infos;
+          }
       });
+
+
+
+      /*** 微信分享模态框 ***/
+      $ionicModal.fromTemplateUrl('views/modal/wx_share_modal.html',{
+          scope:  $scope,
+          animation: 'animated '+'bounceInUp',
+          hideDelay:920
+      }).then(function(modal) {
+          $scope.wx_share_modal = modal;
+      });
+
+      $scope.openWxShareModal= function(){
+          try{
+              $scope.wx_share_modal.show();
+          }catch(e){
+              alert('error=\r\n'+ e.toString());
+          }
+      };
+
+      $scope.closeWxShareModal= function() {
+          $scope.wx_share_modal.hide();
+          $scope.wxVisible=false;
+      };
+      /*** 微信分享模态框 ***/
+
+      $scope.wxVisible=false;
+
+      $scope.wx={
+          type:'friend'
+      }
+
+      $scope.typeChange=function () {
+          console.log('type=' + $scope.wx.type);
+      }
+
+      $scope.toggleWxDialog=function () {
+          if($scope.wxVisible==false)
+          {
+              $scope.openWxShareModal();
+              $scope.wxVisible=true;
+          }else{}
+      }
+
+
+      //分享至指定朋友
+      $scope.wxConfirm=function () {
+
+          var personInfo=null;
+          $scope.wx.text = 'http://139.129.96.231:3000/wx';
+          if($rootScope.user.personInfo!==undefined&&$rootScope.user.personInfo!==null)
+          {
+              personInfo=$rootScope.user.personInfo;
+              $scope.wx.text+='?personId='+personInfo.personId;
+          }
+
+          Wechat.isInstalled(function (installed) {
+              if(installed)
+              {
+                  var ob={
+                      scene: $scope.wx.type=='friend'?Wechat.Scene.SESSION:Wechat.Scene.TIMELINE,
+                      text :$scope.wx.text
+                  };
+                  //TODO:Wechat share iamge
+                  ob={
+                      message: {
+                          title: "Hi, there",
+                          description: "This is description.",
+                          thumb: "www/img/logo.png",
+                          mediaTagName: "TEST-TAG-001",
+                          messageExt: "这是第三方带的测试字段",
+                          messageAction: "<action>dotalist</action>",
+                          media:{
+                              type:Wechat.Type.LINK,
+                              webpageUrl:$scope.wx.text
+                          }
+                      },
+                      scene: $scope.wx.type=='friend'?Wechat.Scene.SESSION:Wechat.Scene.TIMELINE   // share to Timeline
+                  }
+
+                  Wechat.share(ob, function () {
+                      alert('share success')
+                  }, function (reason) {
+                      alert('share encounter failure');
+                  });
+              }else{
+                  $ionicPopup.alert({
+                      title: '信息',
+                      template: '您的手机上没有安装微信'
+                  });
+              }
+          });
+
+      }
+
+      $scope.wxCancel=function () {
+          $scope.closeWxShareModal();
+      }
+
+
+      $scope.gotoNotificationPanel=function () {
+          $state.go('notification');
+      }
 
   });

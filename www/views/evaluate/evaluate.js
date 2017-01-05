@@ -90,6 +90,21 @@ angular.module('starter')
                         }
                     }
                 }
+            }).then(function (res) {
+                var json=res.data;
+                if(json.re==1) {
+                    $rootScope.flags.serviceOrders.clear=true;
+                    $rootScope.flags.serviceOrders.onFresh=true;
+                    var myPopup = $ionicPopup.alert({
+                        template: '订单评价成功',
+                        title: '信息'
+                    });
+                }
+            }).catch(function (err) {
+                var str='';
+                for(var field in err)
+                    str+=err[field];
+                console.error('err=\r\n'+str);
             })
 
 

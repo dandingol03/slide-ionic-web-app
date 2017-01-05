@@ -115,7 +115,7 @@
 
     <div class="item" style="border: 0px;">
       <span>您已积累积分</span>
-      {{scoreTotal}}
+      {{scoreBalance}}
     </div>
 
 
@@ -135,20 +135,20 @@
       </div>
 
 
-      <div class="item" ng-repeat="feeAccount in feeAccounts[0]">
+      <div class="item" ng-repeat="pay in pays[0]">
         <div style="display: inline-block;width: 33%;text-align: center">
-          <span ng-if="feeAccount.feeType==1">
+          <span ng-if="pay.feeType==1">
             车险订单
           </span>
-          <span ng-if="feeAccount.feeType==2">
+          <span ng-if="pay.feeType==2">
             寿险订单
           </span>
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{feeAccount.feeTime|date:'yyyy-MM-dd HH:mm'}}
+          {{pay.feeTime|date:'yyyy-MM-dd HH:mm'}}
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{feeAccount.fee}}
+          {{pay.fee}}
         </div>
       </div>
 
@@ -169,20 +169,20 @@
       </div>
 
 
-      <div class="item" ng-repeat="feeAccount in feeAccounts[1]">
+      <div class="item" ng-repeat="pay in pays[1]">
         <div style="display: inline-block;width: 33%;text-align: center">
           服务订单
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          <span ng-if="feeAccount.feeTime!==undefined&&feeAccount.feeTime!==null">
-            {{feeAccount.feeTime|date:'yyyy-MM-dd HH:mm'}}
+          <span ng-if="pay.feeTime!==undefined&&pay.feeTime!==null">
+            {{pay.feeTime|date:'yyyy-MM-dd HH:mm'}}
           </span>
-          <span ng-if="feeAccount.feeTime==undefined||feeAccount.feeTime==null">
+          <span ng-if="pay.feeTime==undefined||pay.feeTime==null">
             ----
           </span>
         </div>
         <div style="display: inline-block;width: 33%;text-align: center">
-          {{feeAccount.fee}}
+          {{pay.fee}}
         </div>
       </div>
     </div>

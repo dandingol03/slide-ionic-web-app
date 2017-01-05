@@ -71,6 +71,8 @@ angular.module('starter')
                 display:'inline-block',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': '#11c1f3'
             };
 
+        $scope.textareaFocusClass='card';
+
 
 
 
@@ -247,10 +249,24 @@ angular.module('starter')
                 }
 
                 //updated by danding
-                $state.go('map_search',
-                    {ob:JSON.stringify({carInfo:$scope.carInfo,
-                        locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
+               // $state.go('map_search',
+                 //   {ob:JSON.stringify({locateType:locateType,locateIndex:index,maintain:$scope.maintain})});
 
+                var type=null;
+                switch(index)
+                {
+                    case 0:
+                        type='daily';
+                        break;
+                    case 1:
+                        type='breakdown';
+                        break;
+                    case 2:
+                        type='accident';
+                        break;
+                }
+                $state.go('maintainHome',
+                    {params:JSON.stringify({type:type,maintain:$scope.maintain})});
 
             }else{
                 $ionicPopup.alert({
@@ -358,7 +374,7 @@ angular.module('starter')
                             {
                                 src='danding.wav';
                             }else{
-                                src='/storage/emulated/0/danding.mp3';
+                                //src='/storage/emulated/0/danding.mp3';
                                 src='danding.wav';
                             }
                             var media = $cordovaMedia.newMedia(src);
@@ -402,6 +418,7 @@ angular.module('starter')
                         }else{
                             alert('stop record');
                             $scope.media.stopRecord();
+
                             $scope.media_record_finish=new Date();
                             $timeout(function () {
                                 var timeling=($scope.media_record_finish.getTime()-$scope.media_record_start)/1000;
@@ -422,6 +439,22 @@ angular.module('starter')
 
         }
 
+
+
+        $scope.audioPos=0;
+
+
+
+        $scope.getADLength=function () {
+            $scope.media.getDurationAudio().then(function (data) {
+                alert('len='+data);
+                $scope.audioLength=data;//ms单位
+            });
+        }
+
+
+
+
         $scope.play=function(){
             //$scope.mediaRec.play();
             try{
@@ -439,6 +472,14 @@ angular.module('starter')
                                 })
                             }else if(ionic.Platform.isAndroid()){
                                 $scope.media.play();
+                                if($scope.audioLength!==undefined&&$scope.audioLength!==null)
+                                {
+                                    $scope.audioPos=0;
+                                    $interval(function () {
+                                        $scope.audioPos++;
+                                    },$scope.audioLength/100,100);
+                                }
+
                             }
                         }
                     }

@@ -5,21 +5,101 @@ angular.module('starter')
 
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
-        ,$WebSocket,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal){
+        ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
+        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket){
 
-      $scope.formUser = {};
 
-      $scope.user={};
+        $scope.formUser = {};
 
-      $scope.users=[];
+        $scope.user={};
 
-      if($rootScope.username!==undefined&&$rootScope.username!==null){
-          $scope.user.username = $rootScope.username;
-      }
+        $scope.users=[];
 
-       if($rootScope.password!==undefined&&$rootScope.password!==null){
-           $scope.user.password = $rootScope.password;
-       }
+        if($rootScope.username!==undefined&&$rootScope.username!==null){
+            $scope.user.username = $rootScope.username;
+        }
+
+        if($rootScope.password!==undefined&&$rootScope.password!==null){
+            $scope.user.password = $rootScope.password;
+        }
+
+        $WebSocket.registeCallback(function(msg) {
+            console.log('//-----ws\r\n' + msg);
+        });
+
+        $WebSocket.connect();
+
+
+
+        document.addEventListener("jpush.receiveNotification", function (event) {
+            var alertContent=null;
+            if(device.platform == "Android") {
+                alertContent = event.alert
+            } else {
+                alertContent = event.aps.alert
+            }
+            alert("open Notificaiton:" + alertContent)
+        }, false)
+
+
+        $scope.getPreferences=function () {
+
+            $cordovaPreferences.fetch('preferences')
+                .success(function (data) {
+                    alert('preferences='+data);
+                    if(data!==undefined&&data!==null&&data!='')
+                    {
+                        alert('pop dialog');
+                        /*** 授权模态框 ***/
+                        $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
+                            scope:  $scope,
+                            animation: 'animated '+'bounceInUp',
+                            hideDelay:920
+                        }).then(function(modal) {
+                            $scope.grant_authority_modal = modal;
+                            $ionicBackdrop.retain();
+                            $scope.openGrantAuthorityModal();
+                        });
+
+                        $scope.openGrantAuthorityModal= function(){
+                            try{
+                                $scope.grant_authority_modal.show();
+                            }catch(e){
+                                alert('error=\r\n'+ e.toString());
+                            }
+                        };
+
+                        $scope.closeGrantAuthorityModal= function() {
+                            $scope.grant_authority_modal.hide();
+                        };
+                        /*** 授权模态框 ***/
+
+                        $cordovaPreferences.store('cache', null)
+                            .success(function(value) {
+                            })
+                            .error(function(error) {
+                                alert("Error: " + error);
+                            })
+
+                    }
+                })
+                .error(function (err) {
+                    var str='';
+                    for(var field in err)
+                        str+=err[field];
+                    console.error('err================\r\n'+str);
+                });
+        }
+
+
+        $scope.$on('modal.hidden', function() {
+            // Execute action
+            $ionicBackdrop.release();
+        });
+
+
+
+
 
       $scope.fetch = function() {
 
@@ -52,24 +132,59 @@ angular.module('starter')
         if(window.cordova)
         {
             $ionicPlatform.ready (function () {
+                if(ionic.Platform.isAndroid())
+                {
+                    //检查是否含有danding.wav文件
+                    $cordovaFile.checkFile(cordova.file.externalRootDirectory, "danding.wav")
+                        .then(function (success) {
+                            $cordovaFile.removeFile(cordova.file.externalRootDirectory, "danding.wav")
+                                .then(function (success) {
+                                    alert('success=' + success);
+                                }, function (error) {
+                                    // error
+                                    var str='';
+                                    for(var field in error)
+                                        str+=error[field];
+                                    alert('err===============\r\n' + str);
+                                });
+                        }, function (error) {
+                            console.log('err================================\r\n'+'danding.wav doesn\'t exists')
+                        });
+                }
+
+                $scope.getPreferences();
+
                 $scope.fetch();
+
+
+                var model = $cordovaDevice.getModel();
+                var version = $cordovaDevice.getVersion();
+                console.log('===============device info==============');
+                //this is the customize version name
+                console.log('model=\r\n' + model);
+                //this is the android sdk version
+                console.log('version=\r\n' + version);
+
             })
         }else{
             //浏览器环境
-            if(window.localStorage.user!==undefined&&window.localStorage.user!==null&&window.localStorage.user!='')
-            {
-                try{
-                    var user=JSON.parse(window.localStorage.user);
-                    if(user.username!==null&&user.username!==undefined)
-                        $scope.user.username=user.username;
-                    if(user.password!==null&&user.password!==undefined)
-                        $scope.user.password=user.password;
-                }catch(e)
+            $ionicPlatform.ready(function () {
+                if(window.localStorage.user!==undefined&&window.localStorage.user!==null&&window.localStorage.user!='')
                 {
-                    console.error(e.toString());
+                    try{
+                        var user=JSON.parse(window.localStorage.user);
+                        if(user.username!==null&&user.username!==undefined)
+                            $scope.user.username=user.username;
+                        if(user.password!==null&&user.password!==undefined)
+                            $scope.user.password=user.password;
+                    }catch(e)
+                    {
+                        console.error(e.toString());
+                    }
                 }
 
-            }
+
+            })
         }
 
         $scope.goto = function(){
@@ -138,20 +253,11 @@ angular.module('starter')
 
 
 
-        $WebSocket.registeCallback(function(msg) {
-        console.log('//-----ws\r\n' + msg);
-      });
 
-      /**
-       * websocket测试
-       */
-      //$WebSocket.connect();
-
-
-      var options = {
-            date: new Date(),
-            mode: 'datetime',
-        };
+        var options = {
+                date: new Date(),
+                mode: 'datetime',
+            };
 
 //*******************测试百悟短信验证码*********************//
 
@@ -309,9 +415,13 @@ angular.module('starter')
 
 
               if (access_token !== undefined && access_token !== null) {
-                  alert('access_token='+access_token);
                   $rootScope.access_token = access_token;
                   console.log('registrationId=\r\n' + $rootScope.registrationId);
+
+                  //TODO:send a login action with websocket
+                  $WebSocket.login($scope.user.username,$scope.user.password,access_token);
+
+
 
 
                   //获取个人信息
@@ -327,7 +437,15 @@ angular.module('starter')
                   }).then(function(res) {
                       var json=res.data;
                       if(json.re==1) {
-                          $rootScope.userInfo=json.data;
+
+                          if($rootScope.user!==undefined&&$rootScope.user!==null)
+                          {
+                              $rootScope.user.personInfo=json.data;
+                          }else{
+                              $rootScope.user={
+                                  personInfo:json.data
+                              };
+                          }
                           //手机环境
                           if (window.cordova !== undefined && window.cordova !== null) {
                               $http({
@@ -346,6 +464,7 @@ angular.module('starter')
                                   var json = res.data;
                                   if (json.re == 1 || json.result == 'ok') {
                                       $state.go('tabs.dashboard_backup');
+                                      $ionicHistory.clearHistory();
                                   }
                               }).catch(function (err) {
                                   var error = '';
@@ -356,6 +475,7 @@ angular.module('starter')
                               });
                           } else {
                               $state.go('tabs.dashboard_backup');
+                              $ionicViewSwitcher.nextDirection("forwoard")
                           }
                       }
                   })
@@ -401,17 +521,7 @@ angular.module('starter')
           })
       }
 
-      $scope.doSend=function(){
-        $WebSocket.send({
-          action:'msg',
-          msgid:$WebSocket.getMsgId(),
-          timems:new Date(),
-          msg:'first message',
-          to:{
-            groupid:'presale'
-          }
-        });
-      }
+
 
 
       //文件下载
@@ -452,96 +562,6 @@ angular.module('starter')
       }
 
 
-
-      $scope.test=function() {
-        $http.get("http://202.194.14.106:3000/insurance/get_lifeinsurance_list").
-        then(function(res) {
-          if(res.data!==undefined&&res.data!==null)
-          {
-            var life_insurances=res.data.life_insurances;
-            if(Object.prototype.toString.call(life_insurances)!='[object Array]')
-              life_insurances=JSON.parse(life_insurances);
-            life_insurances.map(function(insurance,i) {
-              alert(insurance);
-            });
-          }
-        }).catch(function(err) {
-          alert('err=' + err);
-        });
-
-      }
-
-      //拍照
-      $scope.addPicture = function(type) {
-
-        $ionicActionSheet.show({
-          buttons: [
-            { text: '拍照' },
-            { text: '从相册选择' }
-          ],
-          titleText: '选择照片',
-          cancelText: '取消',
-          cancel: function() {
-            return true;
-          },
-          buttonClicked: function(index) {
-            if(index == 0){
-
-              var options = {
-                destinationType: Camera.DestinationType.FILE_URI,
-                sourceType: 1,
-                saveToPhotoAlbum: true
-              };
-
-
-            }else if(index == 1){
-              var options = {
-                destinationType: Camera.DestinationType.FILE_URI,
-                sourceType: 0
-              };
-            }
-
-            $cordovaCamera.getPicture(options).then(function(imageURI) {
-              $scope.photo= imageURI;
-              alert('url of photo =\r\n' + imageURI);
-            }, function(err) {
-              // error
-              alert('errpr=' + err);
-            });
-            return true;
-          }
-        });
-      }
-
-      $scope.uploadPhoto=function(){
-
-        $cordovaFileTransfer.upload(server, $scope.photo,options)
-            .then(function(result) {
-              var response=result.response;
-              var json=eval('('+response+')');
-              if(json.type!==undefined&&json.type!==null)
-              {
-                $ionicLoading.show({
-                  template: json.content,
-                  duration: 2000
-                });
-                //TODO:将本用户更新照片的消息通过websocket发送给其他用户
-
-              }else{
-                $ionicLoading.show({
-                  template: "field type doesn't exist in response",
-                  duration: 2000
-                });
-              }
-
-            }, function(err) {
-              // Error
-              alert("err:"+err);
-            }, function (progress) {
-              // constant progress updates
-            });
-
-      }
 
       $scope.goMap=function () {
           $state.go('map_search');
@@ -682,6 +702,7 @@ angular.module('starter')
       }
 
 
+      /********** ws *************/
 
 
     });

@@ -66,10 +66,17 @@ angular.module('starter')
       //分享至指定朋友
       $scope.wxShareText=function () {
 
+        var personInfo=null;
         $scope.wx.text = 'http://139.129.96.231:3000/wx';
+          if($rootScope.user.personInfo!==undefined&&$rootScope.user.personInfo!==null)
+          {
+              personInfo=$rootScope.user.personInfo;
+              $scope.wx.text+='?personId='+personInfo.personId;
+          }
 
-        if($scope.wx.text!==undefined&&$scope.wx.text!==null&&$scope.wx.text!='')
-        {
+
+          if($scope.wx.text!==undefined&&$scope.wx.text!==null&&$scope.wx.text!='')
+          {
             Wechat.isInstalled(function (installed) {
                 if(installed)
                 {

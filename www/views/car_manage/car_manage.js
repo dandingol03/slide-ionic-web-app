@@ -4,16 +4,32 @@
 angular.module('starter')
     .controller('carManageController',function($scope,$state,$http,
                                                $rootScope,$cordovaFileTransfer,Proxy,
-                                               $ionicModal,$ionicPopup,$ionicLoading){
+                                               $ionicModal,$ionicPopup,$ionicLoading,
+                                                $timeout,$ionicNativeTransitions,$ionicHistory,
+                                               $stateParams){
 
 
         $scope.go_back=function () {
-            window.history.back();
+
+            $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.go_to=function (url) {
             $state.go(url);
         }
+
+        if($stateParams.params!==undefined&&$stateParams.params!==null&&$stateParams.params!='')
+        {
+            var params=$stateParams.params;
+            if(Object.prototype.toString.call(params)=='[object String]')
+                params = JSON.parse(params);
+
+        }
+
 
         $scope.goDetail=function (car) {
             $state.go('car_info_detail',{carInfo:JSON.stringify(car)})
@@ -396,20 +412,23 @@ angular.module('starter')
                         var result = json.re;
                         switch (result){
                             case -1:
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '绑定车辆',
-                                    template: '数据库中未保存此车,是否要创建新车'
-                                });
-                                confirmPopup.then(function(res) {
-                                    if(res) {
-                                        $scope.closeBindCarModal();
-                                        $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
-                                        $scope.flag=false;
-                                    } else {
-                                        $scope.closeBindCarModal();
-                                        $scope.flag=false;
-                                    }
-                                });
+                                $timeout(function () {
+                                    var confirmPopup = $ionicPopup.confirm({
+                                        title: '绑定车辆',
+                                        template: '数据库中未保存此车,是否要创建新车'
+                                    });
+                                    confirmPopup.then(function(res) {
+                                        if(res) {
+                                            $scope.closeBindCarModal();
+                                            $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
+                                            $scope.flag=false;
+                                        } else {
+                                            $scope.closeBindCarModal();
+                                            $scope.flag=false;
+                                        }
+                                    });
+                                }, 400);
+
                                 break;
                             case -2:
                                 var confirmPopup = $ionicPopup.confirm({

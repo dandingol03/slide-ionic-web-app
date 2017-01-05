@@ -1306,3 +1306,32 @@ ion-header-bar.dashboard-nav {
     background-color: rgba(255, 168, 204, 0.64);
   }
 }
+
+.modal-backdrop.active{
+  z-index:10;
+}
+
+li.dark.activated{
+  background: #eee !important;
+  border-radius:8px;
+}
+
+li.light.activated{
+  background: #eee !important;
+  border-radius:8px;
+}
+
+.item.shadow.activated{
+  background: #eee !important;
+  border-bottom: 0px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+textarea.highLight{
+  box-shadow:1px 1px 10px rgba(33, 177, 220, 0.3)
+}
+
+
+ion-content.h-300{
+  height: 300px;
+}

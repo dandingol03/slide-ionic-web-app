@@ -75,7 +75,7 @@ angular.module('starter')
 
     $scope.fetchRelativeInfo=function () {
         $ionicLoading.show({
-            template: '<p class="item-icon-left">生成车险订单...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            template: '<p class="item-icon-left">拉取订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
         });
         //服务人员
         if($scope.order.servicePersonId!==undefined&&$scope.order.servicePersonId!==null)
@@ -223,9 +223,10 @@ angular.module('starter')
                           data: {
                               request: 'sendCustomMessage',
                               info: {
-                                  order: $scope.order,
+                                  orderId: $scope.order.orderId,
                                   servicePersonId: candidate.servicePersonId,
-                                  type: 'to-servicePerson'
+                                  type: 'to-servicePerson',
+                                  subType:'agreeWithCandidate'
                               }
                           }
                       });
@@ -233,9 +234,15 @@ angular.module('starter')
               }).then(function (res) {
                   var json=res.data;
                   if(json.re==1) {
+                      $rootScope.flags.serviceOrders.clear=true;
+                      $rootScope.flags.serviceOrders.onFresh=true;
+                      $rootScope.flags.serviceOrders.tabIndex=1;
                       var myPopup = $ionicPopup.alert({
-                          template: '接单成功',
+                          template: '接单成功,已通知服务人员',
                           title: '<strong style="color:red">信息</strong>'
+                      });
+                      myPopup.then(function (res) {
+
                       });
                   }
               }).catch(function (err) {
@@ -244,6 +251,11 @@ angular.module('starter')
                       str+=err[field];
                   console.error('err=\r\n'+str);
               })
+          }else{
+              var myPopup = $ionicPopup.alert({
+                  template: '请勾选服务人员后再点击同意',
+                  title: '错误'
+              });
           }
       }
 
@@ -274,9 +286,16 @@ angular.module('starter')
                           }).then(function (res) {
                               var json=res.data;
                               if(json.re==1) {
-                                 alert('订单取消成功！');
+                                  var  cancelAlert= $ionicPopup.alert({
+                                      template: '订单取消成功',
+                                      title: '信息'
+                                  });
+                                  cancelAlert.then(function (res) {
+                                      $rootScope.flags.serviceOrders.clear=true;
+                                      $rootScope.flags.serviceOrders.onFresh=true;
+                                      $state.go('service_orders');
+                                  });
                               }
-    
                           }).catch(function(err) {
                               var str='';
                               for(var field in err)
@@ -348,7 +367,7 @@ angular.module('starter')
               if($scope.order.orderState==2){
     
                   var date = new Date();
-                  $scope.timeDifference = parseInt((new Date($scope.order.estimateTime-date)) /(1000*60*60));
+                  $scope.timeDifference = parseInt((new Date($scope.order.estimateTime)-date) /(1000*60*60));
                   if ($scope.timeDifference >= 2) {
                       $http({
                           method: "post",
@@ -366,7 +385,15 @@ angular.module('starter')
                       }).then(function (res) {
                           var json=res.data;
                           if(json.re==1) {
-                              alert('订单取消成功！');
+                              var  cancelAlert= $ionicPopup.alert({
+                                  template: '订单取消成功',
+                                  title: '信息'
+                              });
+                              cancelAlert.then(function (res) {
+                                  $rootScope.flags.serviceOrders.clear=true;
+                                  $rootScope.flags.serviceOrders.onFresh=true;
+                                  $state.go('service_orders');
+                              });
                           }
     
                       }).catch(function(err) {
@@ -420,6 +447,8 @@ angular.module('starter')
                   }).then(function(res) {
                       var json=res.data;
                       if(json.re==1) {
+                          $rootScope.flags.serviceOrders.clear=true;
+                          $rootScope.flags.serviceOrders.onFresh=true;
                           var confirmPopup = $ionicPopup.confirm({
                               title: '信息',
                               template: '订单已完成,是否现在进行评价'

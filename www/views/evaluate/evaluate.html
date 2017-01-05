@@ -40,12 +40,15 @@
                                     <span>预约时间：{{order.estimateTime|date:'yyyy-MM-dd HH:mm'}}</span>
                                 </div>
                                 <div>
+                                    <span>完成时间：{{order.orderFinishDate|date:'yyyy-MM-dd HH:mm'}}</span>
+                                </div>
+                                <div>
                                     <span>服务费：{{order.fee}}</span>
                                 </div>
                                 <div>
                                     <span>服务类型: {{order.serviceName}}</span>
                                 </div>
-                                <div>
+                                <div ng-if="order.serviceType!='21'&&order.serviceType!='22'">
                                     <span>服务内容：{{order.subServiceContent}}</span>
                                 </div>
                             </div>

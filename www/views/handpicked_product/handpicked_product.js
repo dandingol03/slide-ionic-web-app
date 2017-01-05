@@ -27,7 +27,7 @@ angular.module('starter')
                 display:'inline-block',width:'20%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(68, 78, 78)'
             };
 
-        $scope.srcArr=['/img/lifeBetter.jpg','/img/waterDrop.jpg'];
+        $scope.srcArr=['img/lifeBetter.jpg','img/waterDrop.jpg'];
 
 
         //拉取寿险产品

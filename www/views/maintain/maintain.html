@@ -370,10 +370,13 @@
                         </div>
                         <div style="width: 100%;display: table;height: 90px;">
                           <div style="display: table-cell;vertical-align: middle;padding-top: 10px;padding-left: 0px;padding-right: 10px;">
-                              <div style="width: 100%;height: 90px;position: relative;margin: 0;" class="card">
-                                  <textarea style="width:100%;height:90px;background-color: transparent;padding: 10px;"
+                              <div style="width: 100%;height: 90px;position: relative;margin: 0;padding: 0;" >
+                                  <textarea style="width:100%;height:90px;background-color: transparent;padding: 10px;margin:0;"
+                                            ng-class="textareaFocusClass"
                                             placeholder="请对故障进行文本描述..."
                                             ng-model="maintain.description.text"
+                                            ng-focus="textareaFocusClass='highLight'"
+                                            ng-blur="textareaFocusClass='card'"
                                   ></textarea>
 
                               </div>
@@ -419,8 +422,16 @@
                              background-color:transparent;width: 100%;height: 320px;">
 
                             <span class="input-label" style="display: inline-block;width: 35%;text-align: left;">
-                                   音频描述:
+                                   音频描述: &nbsp;&nbsp;&nbsp;
                             </span>
+                            <div class="item range range-positive" style="background: transparent;border: 0px;">
+                                <span style="padding:4px 10px;" ng-click="getADLength()"><i class="fa fa-hand-pointer-o"></i></span>
+                                <span style="padding: 4px 6px;font-size: 1.1em;color:#19d8cb"><i class="fa fa-play"></i></span>
+                                <input type="range" name="volume" ng-model="audioPos" ng-value="audioPos" disabled>
+                                <span ng-if="audioLength!==undefined&&audioLength!==null">
+                                    {{(audioLength/1000).toFixed(2)}}
+                                </span>
+                            </div>
 
                             <div ng-class="{true:'vibrate-pink',false:''}[isRecording]" style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 25%;margin-right: 17%;
                                 border-radius: 100%;border: 1px solid transparent;background-color:rgba(255, 168, 204, 0.64);position:absolute;top:80px;">
@@ -573,52 +584,51 @@
 
                 <div class="list padding">
 
-                    <div class="item item-divider" style="border: 0px;border-bottom:1px solid #C1C1C1">
-                        事故状况
-                    </div>
 
-                    <div class="item"
-                         style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #C1C1C1;
+                    <div class="item shadow"
+                         style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
                           padding:10px;background-color:transparent;overflow:initial"
                          ng-click="accidant_check('已报案')">
-                        <span class="input-label" style="display: inline-block;width:25%;text-align: center">
+                        <span class="input-label"
+                                      style="display: inline-block;width: 45%;text-align: center">
                             已报案:
                         </span>
-                        <span style="display:inline-block;width:70%;text-align: right;vertical-align: middle;
+                        <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
                               font-size: 2em;">
-                        <i ng-if="accident.type!='已报案'" class="ion-ios-checkmark-outline"></i>
-                        <i ng-if="accident.type=='已报案'" class="ion-ios-checkmark"></i>
+                            <i ng-if="accident.type!='已报案'" class="ion-ios-checkmark-outline"></i>
+                            <i ng-if="accident.type=='已报案'" class="ion-ios-checkmark"></i>
                         </span>
                     </div>
 
-                    <div class="item"
-                         style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #C1C1C1;
+                    <div class="item shadow "
+                         style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
                           padding:10px;background-color:transparent;overflow:initial"
                          ng-click="accidant_check('未报案')">
-                <span class="input-label"
-                      style="display: inline-block;width: 25%;text-align: center">
-                  未报案:
-                </span>
-                        <span style="display:inline-block;width: 70%;text-align: right;vertical-align: middle;
+                        <span class="input-label"
+                              style="display: inline-block;width: 45%;text-align: center">
+                          未报案:
+                        </span>
+                        <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
                               font-size: 2em;">
-                     <i ng-if="accident.type!='未报案'" class="ion-ios-checkmark-outline"></i>
-                    <i ng-if="accident.type=='未报案'" class="ion-ios-checkmark"></i>
-                </span>
+                             <i ng-if="accident.type!='未报案'" class="ion-ios-checkmark-outline"></i>
+                            <i ng-if="accident.type=='未报案'" class="ion-ios-checkmark"></i>
+                        </span>
                     </div>
 
-                    <div class="item"
-                         style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #C1C1C1;
+
+                    <div class="item shadow"
+                         style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
                           padding:10px;background-color:transparent;overflow:initial"
                          ng-click="accidant_check('代索赔')">
-                <span class="input-label"
-                      style="display: inline-block;width: 25%;text-align: center">
-                  代索赔:
-                </span>
-                        <span style="display:inline-block;width:70%;text-align: right;vertical-align: middle;
+                        <span class="input-label"
+                              style="display: inline-block;width: 45%;text-align: center">
+                          代索赔:
+                        </span>
+                        <span style="display:inline-block;width: 55%;text-align: center;vertical-align: middle;
                               font-size: 2em;">
-                     <i ng-if="accident.type!='代索赔'" class="ion-ios-checkmark-outline"></i>
-                    <i ng-if="accident.type=='代索赔'" class="ion-ios-checkmark"></i>
-                </span>
+                             <i ng-if="accident.type!='代索赔'" class="ion-ios-checkmark-outline"></i>
+                            <i ng-if="accident.type=='代索赔'" class="ion-ios-checkmark"></i>
+                        </span>
                     </div>
 
 
