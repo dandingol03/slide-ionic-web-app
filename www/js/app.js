@@ -41,14 +41,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           StatusBar.styleDefault();
         }
 
-          // //init bmap api
-          // BMapService.getBMap().then(function(BMap) {
-          //     console.log('BMap has loaded into window Object');
-          // })
-          //
-
-
-
         $rootScope.car_orders=[
           [
             {feeDate:"2016-02-01",carNum:"鲁A00003",insuranceFeeTotal:2000},
@@ -428,8 +420,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
       //双击退出
       $ionicPlatform.registerBackButtonAction(function (e) {
+          var history=$ionicHistory.viewHistory();
         //判断处于哪个页面时双击退出
-        if ($location.path() == '/login') {
+        if ($location.path() == '/login'||history.currentView.stateName=='tabs.dashboard_backup') {
           if ($rootScope.backButtonPressedOnceToExit) {
             ionic.Platform.exitApp();
           } else {
@@ -446,7 +439,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
         else if ($ionicHistory.backView()) {
             //遵从叶子结点的历史记录回退
-            var history=$ionicHistory.viewHistory();
             switch(history.currentView.stateName)
             {
                 case 'car_manage':
@@ -1116,7 +1108,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://139.129.96.231:3000';
+            return 'http://192.168.1.121:3000';
           else
             return "/proxy/node_server";
 

@@ -73,7 +73,7 @@ angular.module('starter')
                 $scope.reRender();
             }else{
                 var ele=angular.element(document.querySelector('#angular_baidu_map'));
-                ele.css('height',(screen.height-335)+'px' );
+                ele.css('height','300px' );
                 //TODO:re-render map
                 $scope.reRender();
             }
@@ -114,7 +114,7 @@ angular.module('starter')
         $scope.mapStyle = {width: '100%', height: (screen.height*3)/5+'px', display: 'block'};
 
 
-        $scope.resultPanelStyle={border:'0px',padding: '0px',width:'100%',height:(screen.height-425)+'px'};
+        $scope.resultPanelStyle={border:'0px',padding: '0px',width:'100%',height:(screen.height-335)+'px'};
 
         $scope.root={
         };
@@ -554,7 +554,7 @@ angular.module('starter')
             $scope.maintain.center = map.getCenter();
 
         }
-        
+
         $scope.tabReDefine=function () {
             var tagIndex=$scope.tag-'A';
             tagIndex++;
@@ -577,7 +577,7 @@ angular.module('starter')
                 $scope.pageNextTip=true;
             }else{}
         }
-        
+
         //更改为群体定位
         $scope.mapPanTo=function () {
             var map=$scope.map;
@@ -647,7 +647,7 @@ angular.module('starter')
                     $scope.fetchDistrict();
                 }
             });
-            
+
         });
 
         $scope.selectAll=function () {

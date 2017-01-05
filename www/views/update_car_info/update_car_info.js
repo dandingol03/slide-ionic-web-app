@@ -360,13 +360,13 @@ angular.module('starter')
             $timeout(function(){
                 $scope.firstTabHint='hidden list';
                 $scope.firstTabStyle={display:'none'};
-            },2000);
+            },4000);
         }
 
         $scope.secondTabHint='list';
         $timeout(function(){
             $scope.secondTabHint='hidden list';
-        },3000);
+        },4000);
 
         $scope.focusInSecondTab=function(){
             $scope.secondTabHint='hidden list';

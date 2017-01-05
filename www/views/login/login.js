@@ -54,7 +54,7 @@ angular.module('starter')
 
         $scope.openGrantAuthorityModal= function(){
             try{
-                $ionicBackdrop.retain();
+
                 $scope.grant_authority_modal.show();
             }catch(e){
                 alert('error=\r\n'+ e.toString());
@@ -71,7 +71,7 @@ angular.module('starter')
 
             $cordovaPreferences.fetch('preferences')
                 .success(function (data) {
-                    console.log('preference=')
+                    console.log('preference='+data);
                     if(data!==undefined&&data!==null&&data!='')
                     {
                         var preferences=data;
@@ -80,7 +80,9 @@ angular.module('starter')
                         if(preferences.initial==false)
                         {
                         }else{
-                            $scope.openGrantAuthorityModal();
+                            $timeout(function () {
+                                $scope.openGrantAuthorityModal();
+                            }, 300);
                         }
 
                         preferences.initial=false;
@@ -94,10 +96,10 @@ angular.module('starter')
                     }else{
                         //TODO:初始化preferences
                         var preferences={
-                            initial:true
+                            initial:false
                         };
                         $scope.openGrantAuthorityModal();
-                        $cordovaPreferences.store('cache', null)
+                        $cordovaPreferences.store('preferences', preferences)
                             .success(function(value) {
                             })
                             .error(function(error) {

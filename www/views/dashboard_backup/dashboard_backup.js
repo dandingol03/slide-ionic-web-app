@@ -12,11 +12,14 @@ angular.module('starter')
 
         $ionicHistory.clearHistory();
 
-        // $timeout(function () {
-        //     toaster.pop('info', "title", "text1");
-        //     toaster.pop('info', "title", "text2");
-        //     toaster.pop('info', "title", "text3");
-        // }, 1000);
+        $timeout(function () {
+            toaster.pop({
+                type:'black',
+                title:"title",
+                body:"text1",
+                timeout:0
+            });
+        }, 300);
 
 
 

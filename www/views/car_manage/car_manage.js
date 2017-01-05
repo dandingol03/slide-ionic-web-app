@@ -117,7 +117,8 @@ angular.module('starter')
                     {
                         request:'fetchInsuranceCarInfoByCustomerId',
                         info:{carNum:$scope.car.carNum}
-                    }
+                    },
+                timeout:9000
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
@@ -147,10 +148,18 @@ angular.module('starter')
                 }else{}
                 $ionicLoading.hide();
             }).catch(function(err) {
-                var str='';
-                for(var field in err)
-                    str+=err[field];
-                console.error('error=\r\n' + str);
+                if(err.status==-1)
+                {
+                    var alertPopup = $ionicPopup.alert({
+                        title: '错误',
+                        template: '请求超时，请点击右上方的刷新按钮刷新数据'
+                    });
+                }else{
+                    var str='';
+                    for(var field in err)
+                        str+=err[field];
+                    console.error('error=\r\n' + str);
+                }
                 $ionicLoading.hide();
             });
         }

@@ -151,8 +151,8 @@ angular.module('starter')
                   //TODO:Wechat share iamge
                   ob={
                       message: {
-                          title: "Hi, there",
-                          description: "This is description.",
+                          title: '下载链接',
+                          description: "我正在使用捷慧宝App,想与您一起分享",
                           thumb: "www/img/logo.png",
                           mediaTagName: "TEST-TAG-001",
                           messageExt: "这是第三方带的测试字段",

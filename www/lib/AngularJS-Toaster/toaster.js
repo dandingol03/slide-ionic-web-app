@@ -28,7 +28,9 @@
                 info: 'toast-info',
                 wait: 'toast-wait',
                 success: 'toast-success',
-                warning: 'toast-warning'
+                warning: 'toast-warning',
+                plain:'toast-plain',
+                black:'toast-black'
             },
             'body-output-type': '', // Options: '', 'trustedHtml', 'template', 'templateWithData', 'directive'
             'body-template': 'toasterBodyTmpl.html',
@@ -111,7 +113,7 @@
                     }
 
                     $rootScope.$emit('toaster-newToast', toasterId, this.toast.toastId);
-                    
+
                     return {
                         toasterId: toasterId,
                         toastId: this.toast.toastId
@@ -329,7 +331,7 @@
                                             break;
                                         }
                                     }
-                                    
+
                                     if (dupFound) return;
                                 }
                             }
@@ -489,8 +491,8 @@
                             $scope.click = function(event, toast, isCloseButton) {
                                 event.stopPropagation();
 
-                                var tapToDismiss = typeof toast.tapToDismiss === "boolean" 
-                                                        ? toast.tapToDismiss 
+                                var tapToDismiss = typeof toast.tapToDismiss === "boolean"
+                                                        ? toast.tapToDismiss
                                                         : $scope.config.tap;
                                 if (tapToDismiss === true || (toast.showCloseButton === true && isCloseButton === true)) {
                                     var removeToast = true;
