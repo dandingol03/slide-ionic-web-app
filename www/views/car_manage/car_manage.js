@@ -291,6 +291,8 @@ angular.module('starter')
             $scope.carInfo.carNum=$scope.carInfo.carNum.toString().toUpperCase();
         }
 
+
+        $scope.flag=false;
         $scope.verifyCarNum=function () {
             var carNum=$scope.carInfo.carNum;
 
@@ -304,7 +306,7 @@ angular.module('starter')
                     });
                 }else{
                     //TODO:give a tip
-                    var flag=false;
+
                     if(carNum.toString().length==8)
                     {
                         var confirm=$ionicPopup.confirm({
@@ -313,7 +315,9 @@ angular.module('starter')
                         });
                         confirm.then(function (res) {
                             if(res) {
-                                $scope.bindNewCar();
+                                if($scope.flag==false){
+                                    $scope.bindNewCar();
+                                }
                             }else{
                                 $ionicPopup.alert({
                                     title: '错误',
@@ -322,7 +326,9 @@ angular.module('starter')
                             }
                         });
                     }else{
-                        $scope.bindNewCar();
+                        if($scope.flag==false){
+                            $scope.bindNewCar();
+                        }
                     }
                 }
             }else{
@@ -336,6 +342,7 @@ angular.module('starter')
 
         $scope.bindNewCar = function(){
 
+            $scope.flag=true;
             var carNum=$scope.carInfo.carNum;
 
             var carNumPrefix=carNum.substring(0,2);
@@ -397,8 +404,10 @@ angular.module('starter')
                                     if(res) {
                                         $scope.closeBindCarModal();
                                         $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
+                                        $scope.flag=false;
                                     } else {
                                         $scope.closeBindCarModal();
+                                        $scope.flag=false;
                                     }
                                 });
                                 break;
@@ -411,8 +420,10 @@ angular.module('starter')
                                     if(res) {
                                         $scope.closeBindCarModal();
                                         $state.go('update_car_info');
+                                        $scope.flag=false;
                                     } else {
                                         $scope.closeBindCarModal();
+                                        $scope.flag=false;
                                     }
                                 });
                                 break;
@@ -425,8 +436,10 @@ angular.module('starter')
                                     if(res) {
                                         $scope.closeBindCarModal();
                                         $state.go('update_car_info',{carNumInfo:JSON.stringify({city:$scope.city_confirmed,carNum:$scope.carInfo.carNum})});
+                                        $scope.flag=false;
                                     } else {
                                         $scope.closeBindCarModal();
+                                        $scope.flag=false;
                                     }
                                 });
                                 break;
@@ -438,6 +451,7 @@ angular.module('starter')
                                     template: '绑定成功!'
                                 });
                                 confirmPopup.then(function(res) {
+                                    $scope.flag=false;
                                     $scope.closeBindCarModal();
                                     $scope.fetchRelativeCars();
                                     $state.go('car_manage');
