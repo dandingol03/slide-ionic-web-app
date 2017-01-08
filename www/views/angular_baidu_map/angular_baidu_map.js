@@ -11,10 +11,15 @@ angular.module('starter')
     .controller('abmController',function($scope,$state,$http,$rootScope,
                                          $cordovaGeolocation,$ionicPopup,
                                          Proxy,$stateParams, $q,$ionicLoading,
-                                         BaiduMapService,$cordovaToast,$ionicScrollDelegate) {
+                                         BaiduMapService,$cordovaToast,$ionicScrollDelegate,
+                                         $ionicNativeTransitions) {
 
         $scope.goBack=function () {
-            window.history.back();
+            $ionicNativeTransitions.stateGo('map_district_result', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.reRender=function () {
@@ -650,9 +655,6 @@ angular.module('starter')
 
         });
 
-        $scope.selectAll=function () {
-            console.log('select all......');
-        }
 
         $scope.selectedTagStyle={
             width: '30px',height: '30px',background: '#328bff',float: 'left',

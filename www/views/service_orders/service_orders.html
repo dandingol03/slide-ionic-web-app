@@ -147,7 +147,7 @@
 
                   <ion-scroll>
                     <div class="item" ng-repeat="order in orders1 | orderBy:'-estimateTime'"
-                         ng-style="$index==0?firstRowStyle:notFirstRowStyle"
+                         ng-style="$index==(orders1.length-1)?lastRowStyle:($index==0?firstRowStyle:notFirstRowStyle)"
                          ng-click="showOrderDetail(order)">
 
                       <div style="position: absolute;width: 30%;height: 100%;left:0;top:0;">

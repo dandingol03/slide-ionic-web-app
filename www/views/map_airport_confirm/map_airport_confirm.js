@@ -427,10 +427,12 @@ angular.module('starter')
                                 request: 'sendCustomMessage',
                                 info: {
                                     order: order,
-                                    servicePersonIds: servicePersonIds,
+                                    orderId:order.orderId,
+                                    servicePersonId: order.servicePersonId,
                                     serviceName: serviceName,
                                     category:'carManage',
-                                    type: 'to-servicePerson'
+                                    type: 'to-servicePerson',
+                                    subType:'customer_appoint'
                                 }
                             }
                         });

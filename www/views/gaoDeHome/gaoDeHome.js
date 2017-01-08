@@ -8,7 +8,7 @@ angular.module('starter')
     .controller('gaoDeHomeController',function($scope,$state,$http,$rootScope,
                                                BaiduMapService,$cordovaGeolocation,$ionicModal,
                                                Proxy,$stateParams, $q,$ionicLoading,$ionicPopup,
-                                                $timeout) {
+                                                $timeout,$ionicNativeTransitions) {
 
 
 
@@ -44,7 +44,11 @@ angular.module('starter')
         $scope.go_back = function () {
             $rootScope.dashboard.tabIndex=3;
             $rootScope.dashboard.subTabIndex=0;
-            window.history.back();
+            $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.selectTime=true;
@@ -423,7 +427,7 @@ angular.module('starter')
                                 convertor.translate(pointArr, 1, 5, translateCallback)
                             }, function (err) {
                                 $ionicLoading.hide();
-                                console.error('error=\r\n' + err.toString());
+                                alert('error=\r\n' + err.toString());
                             });
 
                     }else{

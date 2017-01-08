@@ -8,20 +8,9 @@ angular.module('starter')
                                                Proxy,$stateParams,$anchorScroll,
                                                $cordovaFileTransfer,$ionicPopup,$ionicSlideBoxDelegate,
                                                $cordovaImagePicker,$cordovaDatePicker,$cordovaToast,
-                                                     $ionicHistory,toaster){
+                                                     $ionicHistory,$ionicNativeTransitions){
 
         $ionicHistory.clearHistory();
-
-        $timeout(function () {
-            toaster.pop({
-                type:'black',
-                title:"title",
-                body:"text1",
-                timeout:0
-            });
-        }, 300);
-
-
 
         $scope.serviceTypeMap={
             11:'维修-日常保养',
@@ -50,6 +39,11 @@ angular.module('starter')
             $scope.tabIndex=$rootScope.dashboard.tabIndex;
         else
             $scope.tabIndex=0;
+
+
+
+        $rootScope.$emit('MAKE_NOTY', '订单号为的用户取消服务,是否现在立即刷新界面');
+
 
         $scope.goIntoCarInsurance=function () {
 
@@ -107,7 +101,12 @@ angular.module('starter')
 
         //车驾管选择种类
         $scope.carDrivingManageSelect=function() {
-            $state.go('gaoDeHome');
+            //$state.go('gaoDeHome');
+            $ionicNativeTransitions.stateGo('gaoDeHome', {}, {}, {
+                "type": "slide",
+                "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration":400, // in milliseconds (ms), default 400
+            });
         }
 
 

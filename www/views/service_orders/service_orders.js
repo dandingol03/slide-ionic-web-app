@@ -5,11 +5,11 @@ angular.module('starter')
 
   .controller('serviceOrdersController',function($scope,$state,$http, $location,
                                                  $rootScope,Proxy,$ionicLoading,
-                                                 $ionicHistory,$ionicPopup){
+                                                 $ionicHistory,$ionicPopup,$ionicNativeTransitions){
+
 
       if($rootScope.flags.serviceOrders.clear==true){
           $ionicHistory.clearHistory();
-          $ionicHistory.clearCache();
           $rootScope.flags.serviceOrders.clear=false;
       }
 
@@ -31,12 +31,11 @@ angular.module('starter')
 
 
       $scope.goBack=function(){
-          if($ionicHistory.backView())
-          {
-              window.history.back();
-          }else{
-              $state.go('tabs.my');
-          }
+          $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+              "type": "slide",
+              "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+              "duration": 240, // in milliseconds (ms), default 400
+          });
       }
 
     $scope.tab_change=function(i)
@@ -193,7 +192,30 @@ angular.module('starter')
       $state.go('service_order_detail',{order:JSON.stringify(order)});
     }
 
-    $scope.notFirstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd'};
-    $scope.firstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd','border-top':'0px'};
+    $scope.notFirstRowStyle={
+        height: '50px',
+        position: 'relative',
+        'border-right': '1px solid #ddd',
+        'border-left':'1px solid #ddd'
+    };
+    $scope.firstRowStyle={
+        height: '50px',
+        position: 'relative',
+        'border-right': '1px solid #ddd',
+        'border-left':'1px solid #ddd',
+        'border-top':'0px'
+    };
+    $scope.lastRowStyle={
+        height: '50px',
+        position: 'relative',
+        'border-right': '1px solid #ddd',
+        'border-left':'1px solid #ddd',
+        'border-top':'0px',
+        'border-bottom':'1px solid #ddd',
+        'margin-bottom':'1px',
+        'margin-top':'1px'
+    }
+
+
 
   });

@@ -458,7 +458,6 @@ angular.module('starter')
 
                         var serviceName = '车驾管-审车';
                         var order=json.data;
-                        var servicePersonIds = [order.servicePersonId];
                         return $http({
                             method: "POST",
                             url: Proxy.local() + "/svr/request",
@@ -469,10 +468,12 @@ angular.module('starter')
                                 request: 'sendCustomMessage',
                                 info: {
                                     order: order,
-                                    servicePersonIds: servicePersonIds,
+                                    orderId:order.orderId,
+                                    servicePersonId: order.servicePersonId,
                                     serviceName: serviceName,
                                     category:'carManage',
-                                    type: 'to-servicePerson'
+                                    type: 'to-servicePerson',
+                                    subType:'customer_appoint'
                                 }
                             }
                         });
@@ -484,7 +485,14 @@ angular.module('starter')
                     if(json.re==1) {
                         $rootScope.flags.serviceOrders.onFresh=true;
                         $rootScope.flags.serviceOrders.tabIndex=1;
-                        $state.go('service_orders');
+                        $rootScope.flags.serviceOrders.clear=true;
+                        var myAlert=$ionicPopup.alert({
+                            title: '信息',
+                            template: '服务订单生成成功'
+                        });
+                        myAlert.then(function(res) {
+                            $state.go('service_orders');
+                        });
                     }
                     $scope.doingBusiness=false;
                 }).catch(function (err) {

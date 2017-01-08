@@ -1,67 +1,106 @@
-<ion-modal-view  class="detail_modal animated slideInDown>" style="background: transparent">
+<ion-modal-view  class="carInfo_modal animated slideInDown>" style="background: transparent">
 
-    <ion-content
-            style="padding:14px;margin: 0 auto;top: 0%;background: #fff;border: 1px solid #eee;">
+    <ion-content style="margin: 0 auto;top: 0%;background: #fff;border: 1px solid #eee;">
 
-
-        <div class="scroll" style="overflow: scroll">
-
-
-            <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
-                <span class="input-label" style="display: inline-block;">
-                    姓名:
+        <div style="width: 100%;height: 40px;background: #f8f8f8;border-bottom:1px solid #bbb;">
+            <span style="display: inline-block;width: 10%;" ng-click="closeMailAddressModal()">
+                <span style="color:#bf530c;font-size: 3em;vertical-align: middle;padding-left:10px;">
+                    <i class="fa fa-angle-left"></i>
                 </span>
-                <input type="text" placeholder="输入收件人的姓名"
-                       style="display: inline-block"  ng-value="mail.perName"
-                       ng-model="mail.perName"/>
+            </span>
+            <span style="display: inline-block;width: 80%;text-align: center;">
+                <span style="color:#bf530c;font-size: 1.3em;vertical-align: middle;font-weight: bolder;">
+                    创建邮箱地址
+                </span>
+            </span>
+            <span style="display: inline-block;width: 10%;"></span>
+        </div>
+
+
+        <div class="list padding" style="margin-top:20px;">
+            <!-- 姓名 -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="fa fa-user-o"></i>
+                </span>
+                <input type="text" placeholder="请输入收件人的姓名"
+                       style="display: inline-block;width:80%;vertical-align: super;padding-left:10px;padding-right:10px;"
+                       ng-model="mail.perName"
+                       ng-value="mail.perName"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
             </div>
 
-            <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
-                <span class="input-label" style="display: inline-block;">
-                    电话:
+            <!-- 电话 -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="fa fa-mobile-phone"></i>
                 </span>
                 <input type="text" placeholder="请输入收件人的电话"
-                       style="display: inline-block"  ng-value="mail.phone"
-                       ng-model="mail.phone"/>
-            </div>
-
-
-            <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
-                <span class="input-label" style="display: inline-block;">
-                    地址:
+                       style="display: inline-block;width:80%;vertical-align: super;padding-left:10px;padding-right:10px;"
+                       ng-model="mail.phone"
+                       ng-value="mail.phone"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
                 </span>
-                <input type="text" placeholder="输入收件地址"
-                       style="display: inline-block"  ng-value="mail.address"
-                       ng-model="mail.address"/>
             </div>
 
+            <!-- 收件地址 -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="ion-home"></i>
+                </span>
+                <input type="text" placeholder="请输入收件地址"
+                       style="display: inline-block;width:80%;vertical-align: super;padding-left:10px;padding-right:10px;"
+                       ng-model="mail.address"
+                       ng-value="mail.address"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
 
-            <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;padding:10px;">
-                <span class="input-label" style="display: inline-block;">
-                    邮编:
+            <!-- 邮编 -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="ion-email"></i>
                 </span>
                 <input type="text" placeholder="请输入邮编"
-                       style="display: inline-block"  ng-value="mail.postcode"
-                       ng-model="mail.postcode"/>
+                       style="display: inline-block;width:80%;vertical-align: super;padding-left:10px;padding-right:10px;"
+                       ng-model="mail.postcode"
+                       ng-value="mail.postcode"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
             </div>
 
-            <div style="width: 45%;display: inline-block;text-align: center">
-                <button class="button button-block button-calm"
-                        ng-click="createMailAddress()"
-                        style="width: 80%;margin-left:10%;">
-                    创建
-                </button>
-            </div>
-            <span style="display: inline-block;width: 5%;"></span>
-            <div style="width: 45%;display: inline-block;text-align: center">
-                <button class="button button-block button-calm"
-                        ng-click="closeMailAddressModal()"
-                        style="width: 80%;margin-left:10%;">
-                    返回
-                </button>
-            </div>
+        </div>
 
 
+
+        <div style="width: 45%;display: inline-block;text-align: center">
+            <button class="button button-block button-calm"
+                    ng-click="closeMailAddressModal()"
+                    style="width: 80%;margin-left:10%;">
+                返回
+            </button>
+        </div>
+        <span style="display: inline-block;width: 5%;"></span>
+
+        <div style="width: 45%;display: inline-block;text-align: center">
+            <button class="button button-block button-calm"
+                    ng-click="createMailAddress()"
+                    style="width: 80%;margin-left:10%;">
+                创建
+            </button>
         </div>
 
     </ion-content>

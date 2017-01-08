@@ -22,7 +22,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-                  $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions) {
+                  $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions,
+                  $timeout,toaster,$cordovaFileTransfer,$cordovaMedia) {
 
 
 
@@ -41,7 +42,29 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           StatusBar.styleDefault();
         }
 
-        $rootScope.car_orders=[
+          // $timeout(function () {
+          //     toaster.pop({
+          //         type:'black',
+          //         title:"info",
+          //         body:"customer1,some one has send takeOrder request",
+          //         timeout:0,
+          //         showCloseButton: true,
+          //         onHideCallback: function () {
+          //             alert('toaster is closed');
+          //         }
+          //     });
+          //     toaster.warning({
+          //         type:'black',
+          //         title:"title",
+          //         body:"text1",
+          //         timeout:0,
+          //         showCloseButton: true
+          //     });
+          //
+          //
+          // }, 300);
+
+          $rootScope.car_orders=[
           [
             {feeDate:"2016-02-01",carNum:"鲁A00003",insuranceFeeTotal:2000},
             {feeDate:"2016-03-17",carNum:"鲁A00003",insuranceFeeTotal:2000},
@@ -127,6 +150,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
         }
 
+
+
         var onTagsWithAlias = function(event) {
           try {
             console.log("onTagsWithAlias");
@@ -199,70 +224,98 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 alert('type='+message.type);
               switch(message.type){
 
-                case 'from-service':
-                    var order=message.order;
-                    var servicePersonId=message.servicePersonId;
-                    var date=message.date;
-                    var content='工号为'+servicePersonId+'的服务人员发出接单请求';
-                    $http({
-                        method: "POST",
-                        url: Proxy.local() + "/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data: {
-                            request: 'createNotification',
-                            info: {
-                                type: 'service',
-                                ownerId: order.orderId,
-                                content: content,
-                                notyTime:new Date(),
-                                side:'customer'
-                            }
-                        }
-                    }).then(function (res) {
-                        var json = res.data;
-                        if (json.re == 1) {
-                            var confirmPopup = $ionicPopup.confirm({
-                                title:'信息',
-                                template:  '订单号为'+order.orderNum+'的订单有新的服务人员愿意接单,是否进入通知页面进行查看'
-                            });
+                  case 'from-service':
+                    //TODO:加入语音提醒
+                    try{
+                        var order=message.order;
+                        var servicePersonId=message.servicePersonId;
+                        var content='工号为'+servicePersonId+'的服务人员发出接单请求';
 
-                            confirmPopup.then(function(res) {
-                                var ob=null;
-                                if(res) {
-                                    ob={
-                                        type:'service',
-                                        order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
-                                        msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
-                                        servicePersonId:servicePersonId,
-                                        visited:true,
-                                        date:date
-                                    }
-                                    //$rootScope.notifications代表新消息
-                                    $rootScope.notifications[2].push(ob);
-                                    $state.go('notification');
-                                } else {
-                                    ob={
-                                        type:'service',
-                                        order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
-                                        msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
-                                        servicePersonId:servicePersonId,
-                                        visited:false,
-                                        date:date
-                                    }
-                                    $rootScope.notifications[2].push(ob);
-                                    console.log('didn\'t give a shit about this notification');
+                        alert('make notification');
+                        alert('orderId='+order.orderId);
+                        alert('content=' + content);
+
+
+                        $http({
+                            method: "post",
+                            url: Proxy.local() + "/svr/request",
+                            headers: {
+                                'Authorization': "Bearer " + $rootScope.access_token,
+                            },
+                            data: {
+                                request: 'createNotification',
+                                info:{
+                                    ownerId:order.orderId,
+                                    content:content,
+                                    notyTime:new Date(),
+                                    side:'customer',
+                                    subType:null,
+                                    type:'service'
                                 }
-                            });
-                        }
-                    }).catch(function (err) {
-                        var str='';
-                        for(var field in err)
-                            str+=err[field];
-                        console.error('err=\r\n'+str);
-                    });
+                            }
+                        }).then(function (res) {
+                            var json = res.data;
+                            if (json.re == 1) {
+                                alert('json re==1');
+                                var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
+                                    content+'&ttsToken='+$rootScope.ttsToken;
+                                 var fileSystem=cordova.file.externalApplicationStorageDirectory;
+                                 var target=fileSystem+'temp.mp3';
+                                 var trustHosts = true;
+                                 var options = {
+                                     fileKey: 'file',
+                                     headers: {
+                                         'Authorization': "Bearer " + $rootScope.access_token
+                                     }
+                                 };
+                                alert('begin download audio');
+                                $cordovaFileTransfer.download(url, target, options, trustHosts)
+                                     .then(function (res) {
 
+                                         alert('popup a toaster');
+                                        toaster.pop({
+                                            type:'black',
+                                            title:"信息",
+                                            body:content,
+                                            timeout:0,
+                                            showCloseButton: true,
+                                            onHideCallback: function () {
+                                                $state.go('notification');
+                                            }
+                                        });
+
+                                         //TODO:播放录音
+                                        var filepath=fileSystem+'temp.mp3';
+                                        filepath = filepath.replace('file://','');
+                                        var media = $cordovaMedia.newMedia(filepath);
+
+                                        if(ionic.Platform.isIOS()) {
+                                        }else if(ionic.Platform.isAndroid()) {
+                                            media.play();
+                                        }else{}
+                                        console.log('tts speach generate success');
+                                    }, function (err) {
+                                        console.log('err=========================');
+                                        var str='';
+                                        for(var field in err)
+                                            str+=field+':'+'\r\n'+err[field];
+                                        console.log('error=' + str);
+                                    }, function (progress) {
+
+                                    });
+
+                            }
+                        }).catch(function (err) {
+                            var str='';
+                            for(var field in err)
+                                str+=err[field];
+                            alert('err=\r\n'+str);
+                        });
+
+                    }catch(e)
+                    {
+                        alert('err=' + e.toString());
+                    }
                   break;
 
                   case 'from-background':
@@ -277,49 +330,59 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                               var date=message.date;
                               var msg=null;
                               if(orderType==1)
+                              {
                                   msg='订单号为'+orderNum+'的车险订单已报价完成\r\n'+'是否现在进入车险订单页面查看';
+                                  $rootScope.flags.carOrders.onFresh=true;
+                              }
                               else if(orderType==2)
-                                  msg='订单号为'+orderNum+'的寿险订单已抱价完成\r\n'+'是否现在进入寿险订单页面查看';
-                              var confirmPopup = $ionicPopup.confirm({
-                                  title: '信息',
-                                  template:msg
-                              });
-
-                              confirmPopup.then(function(res) {
-                                //TODO:inject message to notification queue
-                                var ob=null;
+                              {
+                                  msg='订单号为'+orderNum+'的寿险订单已报价完成\r\n'+'是否现在进入寿险订单页面查看';
+                                  $rootScope.flags.lifeOrders.onFresh=true;
+                              }
 
 
-                                  if(res) {
-                                      ob={
-                                          type:orderType==1?'car':'life',
-                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState},
-                                          msg:'订单报价完成',
-                                          servicePersonId:null,
-                                          visited:true,
-                                          date:date
-                                      };
-                                      if(orderType==1)
-                                        $rootScope.notifications[0].push(ob);
-                                      else
-                                          $rootScope.notifications[1].push(ob);
-                                      $rootScope.car_orders_tabIndex=1;
-                                      $state.go('car_orders');
-                                  } else {
-                                      ob={
-                                          type:orderType==1?'car':'life',
-                                          order:{orderId:orderId,orderNum:orderNum,orderState:orderState},
-                                          msg:'订单报价完成',
-                                          servicePersonId:null,
-                                          visited:false,
-                                          date:date
-                                      };
-                                      if(orderType==1)
-                                          $rootScope.notifications[0].push(ob);
-                                      else
-                                          $rootScope.notifications[1].push(ob);
+                              $http({
+                                  method: "POST",
+                                  url: Proxy.local() + "/svr/request",
+                                  headers: {
+                                      'Authorization': "Bearer " + $rootScope.access_token
+                                  },
+                                  data: {
+                                      request: 'createNotification',
+                                      info: {
+                                          type: orderType==1?'car':'life',
+                                          ownerId: orderId,
+                                          content: content,
+                                          notyTime: new Date(),
+                                          side: 'customer',
+                                          subType:orderType
+                                      }
                                   }
-                              });
+                              }).then(function (res) {
+                                  var json = res.data;
+                                  if (json.re == 1) {
+
+                                      //TODO:popup a custom message
+                                      toaster.pop({
+                                          type:'black',
+                                          title:"信息",
+                                          body:msg,
+                                          timeout:0,
+                                          showCloseButton: true,
+                                          onHideCallback: function () {
+                                              $state.go('notification');
+                                          }
+                                      });
+
+                                  }
+                              }).catch(function (err) {
+                                  var str='';
+                                  for(var field in err)
+                                      str+=err[field];
+                                  console.error('err=\r\n'+str);
+                              })
+
+
                               break;
                           default:
 
@@ -448,15 +511,34 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                         "duration": 240, // in milliseconds (ms), default 400
                     });
                     break;
+                case 'service_orders':
+                    $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
                 default:
                     $ionicHistory.goBack();
             }
         } else {
-          $rootScope.backButtonPressedOnceToExit = true;
-          $cordovaToast.showShortTop('已无法回退，请点击底部标签页进行切换');
-          setTimeout(function () {
-            $rootScope.backButtonPressedOnceToExit = false;
-          }, 2000);
+            switch(history.currentView.stateName)
+            {
+                case 'service_orders':
+                    $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
+                default:
+                    $rootScope.backButtonPressedOnceToExit = true;
+                    $cordovaToast.showShortTop('已无法回退，请点击底部标签页进行切换');
+                    setTimeout(function () {
+                        $rootScope.backButtonPressedOnceToExit = false;
+                    }, 2000);
+                    break;
+            }
         }
         e.preventDefault();
         return false;
@@ -584,8 +666,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
 
-
-
+          .state('chatter',{
+              url:'/chatter',
+              controller: 'chatterController',
+              templateUrl:'views/chatter/chatter.html'
+          })
 
           .state('login',{
               cache:false,
@@ -932,6 +1017,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('map_administrate_confirm',{
+              cache:false,
               url:'/map_administrate_confirm/:contentInfo',
               controller:'mapAdministrateConfirmController',
               templateUrl:'views/map_administrate_confirm/map_administrate_confirm.html'
@@ -944,6 +1030,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('map_paperValidate_confirm',{
+              cache:false,
               url:'/map_paperValidate_confirm/:contentInfo',
               controller:'mapPaperValidateConfirmController',
               templateUrl:'views/map_paperValidate_confirm/map_paperValidate_confirm.html'
@@ -956,6 +1043,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('map_airport_confirm',{
+              cache:false,
               url:'/map_airport_confirm/:contentInfo',
               controller:'mapAirportConfirmController',
               templateUrl:'views/map_airport_confirm/map_airport_confirm.html'
@@ -968,6 +1056,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('map_parkCar_confirm',{
+              cache:false,
               url:'/map_parkCar_confirm/:contentInfo',
               controller:'mapParkCarConfirmController',
               templateUrl:'views/map_parkCar_confirm/map_parkCar_confirm.html'
@@ -1108,7 +1197,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.121:3000';
+            return 'http://192.168.0.199:3000';
           else
             return "/proxy/node_server";
 
@@ -1223,7 +1312,20 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             console.log('websocket shutdown from server' + event.code);
           }
           self.onmessage=function(event) {
-            console.log('got message=\r\n' + event.data);
+              var json=event.data;
+              if(Object.prototype.toString.call(json)=='[object String]')
+                  json=JSON.parse(json);
+              switch (json.type) {
+                  case 'ack':
+                      console.log(json.msg);
+                      break;
+                  case 'noty':
+                      console.log('msg come from '+json.from);
+                      console.log('msg ='+json.msg);
+                      break;
+                  default:
+                      break;
+              }
           }
           self.login=function (username,password,accessToken) {
               var info= {
@@ -1266,3 +1368,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
     )
+
+
+
+

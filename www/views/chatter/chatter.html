@@ -1,10 +1,5 @@
-<ion-view view-title="chatting....">
+<ion-view view-title="客服咨询">
   <ion-nav-bar class="bar-stable" align-title="center" >
-  <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear" ng-click="goto('/#/tabs/dashboard')">
-      <i class="ion-ios-search-strong"></i>
-    </button>
-  </ion-nav-buttons>
 
 </ion-nav-bar>
 
@@ -13,81 +8,56 @@
 
     <div class="list padding">
 
-      <div
-        ng-repeat="msg in messages"
-        style="position: relative;margin-bottom: 20px;"
-        >
-        <div style="display: inline-block;width: 10%;position: absolute;bottom:4%;left:4%;">
-             <span>user:</span>
-        </div>
-        <div
-          class="item item-text-wrap chat-bubble chat-bubble-left"
-          style="border: 0px;display: inline-block;width: 80%;margin-left:20%;background-color: #9F91E6"
-          >
-          <div ng-bind-html="msg.text"></div>
-        </div>
+
+      <div class="item" style="border:0px;padding:10px;">
+         <span style="width: 100%;">
+           <span style="display: inline-block;width: 23%;padding:4px;">
+              <span class="username" style="width: 100%;font-weight: bolder;">danding</span>
+           </span>
+           <span style="display: inline-block;width: 77%;">
+             <div class="from-them">
+               <p style="color:#fff;" ng-bind="message"></p>
+             </div>
+             <div class="clear"></div>
+           </span>
+        </span>
       </div>
 
-      <div class="item item-divider">
-        audio
+
+      <div class="item" style="border:0px;padding:10px;">
+         <span style="width: 100%;">
+            <span style="display: inline-block;width: 77%;">
+             <div class="from-me">
+               <p style="color:#fff;" ng-bind="message1"></p>
+             </div>
+             <div class="clear"></div>
+           </span>
+           <span style="display: inline-block;width: 21%;padding:4px;text-align: right;">
+              <span class="username" style="width: 100%;font-weight: bolder;">vergile</span>
+           </span>
+        </span>
       </div>
-
-      <div class="item">
-        <button class="button "
-                ng-click="startRecord()">
-          <span>
-            <i class="ion-mic-a"></i>
-          </span>
-          <span>record.....</span>
-        </button>
-        <button class="button" ng-click="stopRecord()">
-           <span>
-            <i class="ion-pause"></i>
-          </span>
-          <span>stop record</span>
-        </button>
-        <button class="button" ng-click="play()">
-           <span>
-            <i class="ion-pause"></i>
-          </span>
-          <span>play record</span>
-        </button>
-      </div>
-
-      <div class="item item-divider">
-        video
-      </div>
-
-      <div class="item">
-        <button class="button "
-                ng-click="startCapture()">
-          <span>
-            <i class="ion-mic-a"></i>
-          </span>
-          <span>capture video....</span>
-        </button>
-
-      </div>
-
 
     </div>
 
-      <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
-        <label class="item-input-wrapper">
-          <span class="input-label">to danding:</span>
-          <input type="text"
-                 placeholder="echoing......"
-                  ng-model="input.message"
-            >
-        </label>
-        <div class="footer-btn-wrap">
-          <button class="button button-icon icon ion-android-send footer-btn"
-                  ng-disabled="!input.message || input.message === ''"
-                  ng-click="sendMsg()">
-          </button>
-        </div>
 
-      </ion-footer-bar>
+
+
+
+      <div class="item" style="position: absolute;bottom: 2px;padding:4px 10px;width: 100%;background: #eee;" keyboard-attach>
+
+        <span style="display: inline-block;width: 85%;vertical-align: middle;">
+            <div contenteditable="true" style="width: 100%;overflow-x:hidden; overflow-y:scroll;white-space: normal;
+                 padding: 4px 10px;border: 1px solid #aaa;border-radius: 10px;background:#fff;" ng-model="input.message">
+            </div>
+                <!--<textarea class="msd-elastic" style="min-height: 36px;" data-ng-model="input.message" id="message"></textarea>-->
+        </span>
+
+        <span style="display: inline-block;width: 15%;vertical-align: middle;text-align:right;font-size: 2em;" ng-click="sendMsg()">
+            <i class="ion-android-send"></i>
+        </span>
+
+      </div>
 
 
   </ion-content>
