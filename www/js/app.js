@@ -22,13 +22,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-<<<<<<< HEAD
-                  $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions,toaster) {
-=======
                   $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions,
                   $timeout,toaster,$cordovaFileTransfer,$cordovaMedia) {
->>>>>>> 6fc58034e8a4f72318d84f304f8ac3d0589113f8
-
 
 
 
@@ -67,6 +62,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           //
           //
           // }, 300);
+
 
           $rootScope.car_orders=[
           [
@@ -228,65 +224,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 alert('type='+message.type);
               switch(message.type){
 
-<<<<<<< HEAD
-                case 'from-service':
-                    var order=message.order;
-                    var servicePersonId=message.servicePersonId;
-                    var date=message.date;
-                    var content='工号为'+servicePersonId+'的服务人员发出接单请求';
-
-                    toaster.pop('info', "title", "text1");
-
-                    $http({
-                        method: "POST",
-                        url: Proxy.local() + "/svr/request",
-                        headers: {
-                            'Authorization': "Bearer " + $rootScope.access_token
-                        },
-                        data: {
-                            request: 'createNotification',
-                            info: {
-                                type: 'service',
-                                ownerId: order.orderId,
-                                content: content,
-                                notyTime:new Date(),
-                                side:'customer'
-                            }
-                        }
-                    }).then(function (res) {
-                        var json = res.data;
-                        if (json.re == 1) {
-                            var confirmPopup = $ionicPopup.confirm({
-                                title:'信息',
-                                template:  '订单号为'+order.orderNum+'的订单有新的服务人员愿意接单,是否进入通知页面进行查看'
-                            });
-
-                            confirmPopup.then(function(res) {
-                                var ob=null;
-                                if(res) {
-                                    ob={
-                                        type:'service',
-                                        order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
-                                        msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
-                                        servicePersonId:servicePersonId,
-                                        visited:true,
-                                        date:date
-                                    }
-                                    //$rootScope.notifications代表新消息
-                                    $rootScope.notifications[2].push(ob);
-                                    $state.go('notification');
-                                } else {
-                                    ob={
-                                        type:'service',
-                                        order:{orderId:order.orderId,orderNum:order.orderNum,orderState:order.orderState},
-                                        msg:'工号为'+servicePersonId+'的服务人员发出接单请求',
-                                        servicePersonId:servicePersonId,
-                                        visited:false,
-                                        date:date
-                                    }
-                                    $rootScope.notifications[2].push(ob);
-                                    console.log('didn\'t give a shit about this notification');
-=======
                   case 'from-service':
                     //TODO:加入语音提醒
                     try{
@@ -314,7 +251,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                     side:'customer',
                                     subType:null,
                                     type:'service'
->>>>>>> 6fc58034e8a4f72318d84f304f8ac3d0589113f8
+
                                 }
                             }
                         }).then(function (res) {
