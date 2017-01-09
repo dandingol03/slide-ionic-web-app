@@ -49,7 +49,7 @@ angular.module('starter')
 
         $scope.verifyServiceSegment=function (servicePerson) {
 
-            var estimateTime=$scope.maintain.estimateTime;
+            var estimateTime=$scope.carManage.estimateTime;
             var day=estimateTime.getDay();
             var hour=estimateTime.getHours();
             var serviceSegments=servicePerson.serviceSegments;
@@ -141,7 +141,7 @@ angular.module('starter')
             $scope.customerPlace_modal.hide();
         };
         /*** 选择目的地模态框 ***/
-        
+
         //选择目的地的回调函数
         $scope.Select=function (item) {
             if(item!==undefined&&item!==null)
@@ -236,7 +236,7 @@ angular.module('starter')
             var BMap = res;
             $scope.BMap=BMap;
         });
-        
+
 
         $scope.servicePlace=null;
 
@@ -427,10 +427,12 @@ angular.module('starter')
                                 request: 'sendCustomMessage',
                                 info: {
                                     order: order,
-                                    servicePersonIds: servicePersonIds,
+                                    orderId:order.orderId,
+                                    servicePersonId: order.servicePersonId,
                                     serviceName: serviceName,
                                     category:'carManage',
-                                    type: 'to-servicePerson'
+                                    type: 'to-servicePerson',
+                                    subType:'customer_appoint'
                                 }
                             }
                         });
@@ -540,7 +542,7 @@ angular.module('starter')
                 });
 
             }
-            
+
         }
 
 

@@ -10,7 +10,7 @@ angular.module('starter')
                                                     $location,$rootScope,$stateParams,
                                                     Proxy,$ionicModal,$ionicPopup,
                                                 $q,$ionicActionSheet,$cordovaImagePicker,$cordovaCamera,
-                                                 $cordovaFileTransfer){
+                                                 $cordovaFileTransfer,$ionicNativeTransitions){
 
         $scope.carInfo={};
 
@@ -146,7 +146,8 @@ angular.module('starter')
         /*** show create_new_mailAddress modal ***/
         $ionicModal.fromTemplateUrl('views/modal/create_new_mailAddress.html',{
             scope:  $scope,
-            animation: 'slide-in-bottom'
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
         }).then(function(modal) {
             $scope.new_mailAddress_modal = modal;
         });
@@ -213,6 +214,13 @@ angular.module('starter')
             }).then(function (res) {
                 var json=res.data;
                 if(json.re==1) {
+                    var myPopup = $ionicPopup.alert({
+                        template: '创建成功',
+                        title: '<strong style="color:red">信息</strong>'
+                    });
+                    myPopup.then(function (res) {
+                        $scope.closeMailAddressModal();
+                    })
                 }
             }).catch(function (err) {
                 console.error('error=\r\n' + err.toString());

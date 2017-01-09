@@ -8,7 +8,7 @@ angular.module('starter')
     .controller('gaoDeHomeController',function($scope,$state,$http,$rootScope,
                                                BaiduMapService,$cordovaGeolocation,$ionicModal,
                                                Proxy,$stateParams, $q,$ionicLoading,$ionicPopup,
-                                                $timeout) {
+                                                $timeout,$ionicNativeTransitions) {
 
 
 
@@ -44,7 +44,11 @@ angular.module('starter')
         $scope.go_back = function () {
             $rootScope.dashboard.tabIndex=3;
             $rootScope.dashboard.subTabIndex=0;
-            window.history.back();
+            $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.selectTime=true;
@@ -393,6 +397,7 @@ angular.module('starter')
                                 var lat = position.coords.latitude;
                                 var lng = position.coords.longitude;
                                 console.log(lng + ',' + lat);
+                                alert('lng=' + lng + '\r\n' + 'lat=' + lat);
                                 var ggPoint = new BMap.Point(lng, lat);
                                 var convertor = new BMap.Convertor();
                                 var pointArr = [];
@@ -400,6 +405,7 @@ angular.module('starter')
 
                                 var translateCallback = function (data) {
                                     if (data.status === 0) {
+                                        alert('data callback');
                                         var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
                                         var marker = new BMap.Marker(data.points[0],{icon:bIcon});
                                         map.addOverlay(marker);
@@ -421,7 +427,7 @@ angular.module('starter')
                                 convertor.translate(pointArr, 1, 5, translateCallback)
                             }, function (err) {
                                 $ionicLoading.hide();
-                                console.error('error=\r\n' + err.toString());
+                                alert('error=\r\n' + err.toString());
                             });
 
                     }else{

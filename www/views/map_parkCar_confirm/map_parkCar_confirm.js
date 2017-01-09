@@ -46,7 +46,7 @@ angular.module('starter')
 
         $scope.verifyServiceSegment=function (servicePerson) {
 
-            var estimateTime=$scope.maintain.estimateTime;
+            var estimateTime=$scope.carManage.estimateTime;
             var day=estimateTime.getDay();
             var hour=estimateTime.getHours();
             var serviceSegments=servicePerson.serviceSegments;
@@ -479,10 +479,12 @@ angular.module('starter')
                                 request: 'sendCustomMessage',
                                 info: {
                                     order: order,
-                                    servicePersonIds: servicePersonIds,
+                                    orderId:order.orderId,
+                                    servicePersonId: order.servicePersonId,
                                     serviceName: serviceName,
                                     category:'carManage',
-                                    type: 'to-servicePerson'
+                                    type: 'to-servicePerson',
+                                    subType:'customer_appoint'
                                 }
                             }
                         });
@@ -493,9 +495,16 @@ angular.module('starter')
                     var json=res.data;
                     if(json.re==1) {
 
-                        $ionicHistory.clearHistory();
-                        $ionicHistory.clearCache();
-                        $state.go('service_orders');
+                        $rootScope.flags.serviceOrders.onFresh=true;
+                        $rootScope.flags.serviceOrders.tabIndex=1;
+                        $rootScope.flags.serviceOrders.clear=true;
+                        var myAlert=$ionicPopup.alert({
+                            title: '信息',
+                            template: '服务订单生成成功'
+                        });
+                        myAlert.then(function(res) {
+                            $state.go('service_orders');
+                        });
                     }
                     $scope.doingBusiness=false;
                 }).catch(function (err) {

@@ -67,7 +67,10 @@ angular.module('starter')
               price.insuranceFeeTotal=fee;
           });
           if($scope.order.prices.length==1)
+          {
               $scope.priceIndex=0;
+              $scope.order.prices[0].checked=true;
+          }
       }
 
 

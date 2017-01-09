@@ -6,6 +6,16 @@ angular.module('starter')
   .controller('chatterController',function($scope,$http,$rootScope,$cordovaMedia,$ionicLoading,$cordovaCapture){
 
 
+
+      $scope.message='there is not so much pain';
+
+      $scope.message1 = 'yeah,maybe u should look at it ';
+
+      $scope.report = {
+          id: 1,
+          type: 'daily'
+      };
+
     //搜索可用聊天客服
     $http({
       method: "post",

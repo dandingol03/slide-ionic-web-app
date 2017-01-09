@@ -646,10 +646,12 @@ angular.module('starter')
                                     request: 'sendCustomMessage',
                                     info: {
                                         order: order,
+                                        orderId:order.orderId,
                                         serviceItems: $scope.maintain.subServiceTypes,
-                                        servicePersonIds: servicePersonId,
+                                        servicePersonId: order.servicePersonId,
                                         serviceName: serviceName,
-                                        type: 'to-servicePerson'
+                                        type: 'to-servicePerson',
+                                        subType:'customer_appoint'
                                     }
                                 }
                             });

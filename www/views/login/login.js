@@ -6,7 +6,7 @@ angular.module('starter')
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
         ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
-        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket){
+        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion,$cordovaFileOpener2){
 
         $scope.formUser = {};
 
@@ -41,45 +41,70 @@ angular.module('starter')
         }, false)
 
 
+
+        /*** 授权模态框 ***/
+        $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
+            scope:  $scope,
+            animation: 'animated '+'bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.grant_authority_modal = modal;
+            //$scope.openGrantAuthorityModal();
+        });
+
+        $scope.openGrantAuthorityModal= function(){
+            try{
+
+                $scope.grant_authority_modal.show();
+            }catch(e){
+                alert('error=\r\n'+ e.toString());
+            }
+        };
+
+        $scope.closeGrantAuthorityModal= function() {
+            $scope.grant_authority_modal.hide();
+        };
+        /*** 授权模态框 ***/
+
+
         $scope.getPreferences=function () {
 
             $cordovaPreferences.fetch('preferences')
                 .success(function (data) {
-                    alert('preferences='+data);
+                    console.log('preference='+data);
                     if(data!==undefined&&data!==null&&data!='')
                     {
-                        alert('pop dialog');
-                        /*** 授权模态框 ***/
-                        $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
-                            scope:  $scope,
-                            animation: 'animated '+'bounceInUp',
-                            hideDelay:920
-                        }).then(function(modal) {
-                            $scope.grant_authority_modal = modal;
-                            $ionicBackdrop.retain();
-                            $scope.openGrantAuthorityModal();
-                        });
+                        var preferences=data;
+                        if(Object.prototype.toString.call(preferences)=='[object String]')
+                            preferences = JSON.parse(preferences);
+                        if(preferences.initial==false)
+                        {
+                        }else{
+                            $timeout(function () {
+                                $scope.openGrantAuthorityModal();
+                            }, 300);
+                        }
 
-                        $scope.openGrantAuthorityModal= function(){
-                            try{
-                                $scope.grant_authority_modal.show();
-                            }catch(e){
-                                alert('error=\r\n'+ e.toString());
-                            }
-                        };
-
-                        $scope.closeGrantAuthorityModal= function() {
-                            $scope.grant_authority_modal.hide();
-                        };
-                        /*** 授权模态框 ***/
-
-                        $cordovaPreferences.store('cache', null)
+                        preferences.initial=false;
+                        $cordovaPreferences.store('preferences', preferences)
                             .success(function(value) {
                             })
                             .error(function(error) {
                                 alert("Error: " + error);
                             })
 
+                    }else{
+                        //TODO:初始化preferences
+                        var preferences={
+                            initial:false
+                        };
+                        $scope.openGrantAuthorityModal();
+                        $cordovaPreferences.store('preferences', preferences)
+                            .success(function(value) {
+                            })
+                            .error(function(error) {
+                                alert("Error: " + error);
+                            })
                     }
                 })
                 .error(function (err) {
@@ -149,6 +174,73 @@ angular.module('starter')
                         }, function (error) {
                             console.log('err================================\r\n'+'danding.wav doesn\'t exists')
                         });
+
+
+                    //获取手机版本号
+                    $cordovaAppVersion.getVersionNumber().then(function (version) {
+                        var appVersion = version;
+                        alert('app version=' + appVersion);
+
+                        $http({
+                            method:"GET",
+                            url:Proxy.local()+'/getLastAppVersion',
+                            headers: {
+                                'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        }).then(function (res) {
+                            var json=res.data;
+
+                            if(json.data>appVersion)
+                            {
+                                var confirmPopup = $ionicPopup.confirm({
+                                    title: '您的app版本过旧，需要更新',
+                                    template:'是否现在立即更新'
+                                });
+                                confirmPopup.then(function (res) {
+                                    if(res)
+                                    {
+
+                                        var url = Proxy.local() + '/downloadAndroidApk';
+                                        var fileSystem=cordova.file.externalApplicationStorageDirectory;
+                                        var target=fileSystem+'/Download/android-release.apk';
+                                        var trustHosts = true;
+                                        var options = {
+                                            fileKey: 'file',
+                                            headers: {
+                                                'Authorization':"Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW"
+                                            }
+                                        };
+
+                                        //下载apk
+                                        $cordovaFileTransfer.download(url, target, options, trustHosts).then(function (result) {
+                                            $cordovaFileOpener2.open(target, 'application/vnd.android.package-archive'
+                                            ).then(function () {
+                                            }, function (err) {
+                                            });
+                                            $ionicLoading.hide();
+                                        },function (err) {
+                                            alert('下载失败');
+                                        },function (progress) {
+
+                                            $timeout(function () {
+                                                var downloadProgress = (progress.loaded / progress.total) * 100;
+                                                $ionicLoading.show({
+                                                    template: "已经下载：" + Math.floor(downloadProgress) + "%"
+                                                });
+                                                if (downloadProgress > 99) {
+                                                    $ionicLoading.hide();
+                                                }
+                                            })
+                                        });
+
+                                    }else{}
+                                })
+                            }else{}
+                        })
+
+                    });
+
                 }
 
                 $scope.getPreferences();
@@ -462,8 +554,33 @@ angular.module('starter')
                               }).then(function (res) {
                                   var json = res.data;
                                   if (json.re == 1 || json.result == 'ok') {
-                                      $state.go('tabs.dashboard_backup');
-                                      $ionicHistory.clearHistory();
+
+                                      $http({
+                                          method: "post",
+                                          url: Proxy.local() + "/svr/request",
+                                          headers: {
+                                              'Authorization': "Bearer " + $rootScope.access_token,
+                                          },
+                                          data: {
+                                              request: 'getTTSToken'
+                                          }
+                                      }).then(function (res) {
+                                          var json=res.data;
+                                          if(json.re==1) {
+                                              var ttsToken=json.data;
+                                              if(ttsToken!==null&&ttsToken!==undefined)
+                                              {
+                                                  $rootScope.ttsToken=ttsToken;
+                                                  $state.go('tabs.dashboard_backup');
+                                                  $ionicHistory.clearHistory();
+                                              }else{
+                                                  $ionicPopup.alert({
+                                                      title: '错误',
+                                                      template: '百度语音无法识别'
+                                                  });
+                                              }
+                                          }
+                                      })
                                   }
                               }).catch(function (err) {
                                   var error = '';
@@ -520,27 +637,6 @@ angular.module('starter')
           })
       }
 
-
-
-
-      //文件下载
-      $scope.download=function(){
-        var url='http://192.168.0.199:9030/get/photo/home.jpg';
-        var targetPath=cordova.file.documentsDirectory + "home.jpg";
-        var trustHosts = true;
-        var options = {};
-        $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
-            .then(function(result) {
-              alert('success');
-            }, function(err) {
-              // Error
-              alert('error');
-            }, function (progress) {
-              $timeout(function () {
-                $scope.downloadProgress = (progress.loaded / progress.total) * 100;
-              });
-            });
-      }
 
 
       //文件上传

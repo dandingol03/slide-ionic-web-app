@@ -1,189 +1,180 @@
-<ion-nav-view class="slide-left-right" hide-nav-bar="true">
-    <ion-view view-title="车辆管理" hide-nav-bar="true">
+<ion-view class="passwordForget-view" view-title="车辆管理" >
 
-
-        <ion-content scroll="false" >
-
-            <div style="height:18%;width:100%;background-color:rgba(88, 73, 58, 0.95);position: relative">
-
-
-                <div style="position: absolute;left:5%;top:20%;"
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2.4em;color:#bf530c"
                     ng-click="go_back()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
 
-                    <span style="font-size: 2.4em;color:#fff;">
-                        <i class="ion-chevron-left"></i>
+        <ion-nav-buttons side="right">
+            <button class="button button-icon button-clear bar_arr"
+                    ng-click="fetchRelativeCars()">
+                <div style="color:#bf530c">
+                    <span  style="font-size: 1.8em;display: inline-block"> <i class="ion-refresh"></i></span>
+                </div>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+
+
+    <ion-content scroll="false" >
+
+
+
+        <div style="height: 95%;">
+
+            <div style="height: 85%;width:90%;margin-left:5%;">
+
+                <div class="item" style="height:40px;padding:0;border-radius:6px;margin-top: 10px;">
+                    <div style="width:100%;height: 100%;position: relative;">
+                    <span style="width: 82%;display: inline-block;position: absolute;left:0%;top:0px;
+                         height: 100%;text-align: center">
+                        <input type="text" placeholder="请输入车牌号作为搜索条件"
+                               style="display:inline-block;background-color: transparent;width: 80%;margin-left:10%;"
+                               ng-value="car.carNum"
+                               ng-model="car.carNum"
+                               text-transform="uppercase"
+                        />
                     </span>
+
+                    <span style="width: 18%;height: 100%;display: inline-block;position: absolute;left:82%;top:0px;">
+                        <div style="width: 100%;height: 100%;display: table;text-align: center;background: #00c9ff"
+                             ng-click="fetchRelativeCars()">
+                            <span style="display: table-cell;vertical-align: middle;font-size: 1.5em;color:#fff;">
+                                <i class="ion-search"></i>
+                            </span>
+                        </div>
+                    </span>
+                    </div>
                 </div>
 
 
-                <div style="position: absolute;left:20%;width: 60%;text-align: center;height: 100%;padding-top: 18%;display: table">
-                    <span style="color:#fff;font-size: 1.6em;display: table-cell">
-                        车辆管理
-                    </span>
-                </div>
-
-                <!--<div style="display: inline-block;position: absolute;text-align: center;right: 0%;top:20%;width: 20%;"-->
-                    <!--ng-click="confirmCarInfo()">-->
-                    <!--<button class="button button-small button-calm" style="border-radius: 6px;padding-left:10%;padding-right: 10%;">-->
-                        <!--确定选择-->
-                    <!--</button>-->
-                <!--</div>-->
 
 
-            </div>
 
-            <div style="height: 80%;">
+                <div class="list list-inset"
+                     style="margin-bottom: 10%;margin-left: 0;margin-right: 0;">
 
-                <div style="height: 85%;width:90%;margin-left:5%;">
+                    <!-- 新界面 -->
 
-                    <div class="item" style="height:40px;padding:0;border-radius:6px;margin-top: 10px;">
-                        <div style="width:100%;height: 100%;position: relative;">
-                        <span style="width: 82%;display: inline-block;position: absolute;left:0%;top:0px;
-                             height: 100%;text-align: center">
-                            <input type="text" placeholder="请输入车牌号作为搜索条件"
-                                   style="display:inline-block;background-color: transparent;width: 80%;margin-left:10%;"
-                                   ng-value="car.carNum"
-                                   ng-model="car.carNum"
-                                   text-transform="uppercase"
-                            />
+                    <div class="item"
+                         style="height: 40px;position: relative;margin-top:1px;margin-bottom: 1px;
+                                border:1px solid rgba(88, 73, 58, 0.95);border-top-left-radius: 8px;border-top-right-radius: 8px;">
+
+                        <div style="position: absolute;width: 18.2%;height: 100%;left:0;top:0;border-right:1px solid rgba(88, 73, 58, 0.95);">
+                            <div style="width:100%;height: 100%;display: table;">
+                                <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;
+                                      text-align: center;color:rgba(88, 73, 58, 0.95)">
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <span style="position: absolute;left:18%;width: 59%;height: 100%;top:0;border-right: 1px solid rgba(88, 73, 58, 0.95)">
+
+                            <div style="width: 100%;height: 100%;display: table;">
+                              <div style="display: table-cell;vertical-align: middle;text-align: center;">
+                                <div style="font-size: 1em;color:rgba(88, 73, 58, 0.95);">
+                                  车辆摘要
+                                </div>
+                              </div>
+                            </div>
                         </span>
 
-                        <span style="width: 18%;height: 100%;display: inline-block;position: absolute;left:82%;top:0px;">
-                            <div style="width: 100%;height: 100%;display: table;text-align: center;background: #00c9ff"
-                                 ng-click="fetchRelativeCars()">
-                                <span style="display: table-cell;vertical-align: middle;font-size: 1.5em;color:#fff;">
-                                    <i class="ion-search"></i>
+                        <span style="width:21%;height:100%;position: absolute;left:77%;top:0;text-align: center;">
+                            <div style="width: 100%;height: 100%;display: table;">
+                                <span style="display:table-cell;vertical-align: middle;color:rgba(88, 73, 58, 0.95)">
+                                    详细
                                 </span>
                             </div>
                         </span>
-                        </div>
                     </div>
-
-
-
 
                     <ion-scroll style="height: 90%;">
-                        <div class="list list-inset"
-                             style="margin-bottom: 10%;margin-left: 0;margin-right: 0;">
+                        <div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"
+                             ng-style="$index==0?firstRowStyle:$index==(relativeCars.length-1)?lastRowStyle:notFirstRowStyle">
 
-                            <!-- 新界面 -->
-
-                            <div class="item"
-                                 style="height: 40px;position: relative;margin-top:1px;margin-bottom: 1px;
-                                        border:1px solid rgba(88, 73, 58, 0.95);border-top-left-radius: 8px;border-top-right-radius: 8px;">
-
-                                <div style="position: absolute;width: 18.2%;height: 100%;left:0;top:0;border-right:1px solid rgba(88, 73, 58, 0.95);">
-                                    <div style="width:100%;height: 100%;display: table;">
-                                        <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;
-                                              text-align: center;color:rgba(88, 73, 58, 0.95)">
-                                        </span>
+                            <div style="position: absolute;width: 18%;height: 100%;left:0;top:0;">
+                                <div style="width:100%;height: 100%;display: table;">
+                                <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;padding-left: 10px;">
+                                    <div style="display:inline-block;width:100%;text-align: center" ng-if="car.idle==true" ng-click="Mutex(car,'checked',relativeCars)">
+                                        <i ng-if="car.checked!=true" class="fa fa-square-o" style="font-size:200%"></i>
+                                        <i ng-if="car.checked==true" class="fa fa-check-square-o" style="font-size:200%"></i>
                                     </div>
+
+                                    <div style="display: inline-block;width: 20%;" ng-if="car.idle!=true">
+
+                                        <span style="color:#ff5c3c">已申请</span>
+                                    </div>
+                                </span>
                                 </div>
-
-
-                                <span style="position: absolute;left:18%;width: 59%;height: 100%;top:0;border-right: 1px solid rgba(88, 73, 58, 0.95)">
-
-                                    <div style="width: 100%;height: 100%;display: table;">
-                                      <div style="display: table-cell;vertical-align: middle;text-align: center;">
-                                        <div style="font-size: 1em;color:rgba(88, 73, 58, 0.95);">
-                                          车辆摘要
-                                        </div>
-                                      </div>
-                                    </div>
-                                </span>
-
-                                <span style="width:21%;height:100%;position: absolute;left:77%;top:0;text-align: center;">
-                                    <div style="width: 100%;height: 100%;display: table;">
-                                        <span style="display:table-cell;vertical-align: middle;color:rgba(88, 73, 58, 0.95)">
-                                            详细
-                                        </span>
-                                    </div>
-                                </span>
                             </div>
 
 
-                            <div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"
-                                 ng-style="$index==0?firstRowStyle:notFirstRowStyle">
+                            <div style="position: absolute;width: 1px;height: 100%;left:18%;top:0;background: #aaa;">
 
-                                <div style="position: absolute;width: 18%;height: 100%;left:0;top:0;">
-                                    <div style="width:100%;height: 100%;display: table;">
-                                        <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;padding-left: 10px;">
-                                            <div style="display:inline-block;width:100%;text-align: center" ng-if="car.idle==true" ng-click="Mutex(car,'checked',relativeCars)">
-                                                <i ng-if="car.checked!=true" class="fa fa-square-o" style="font-size:200%"></i>
-                                                <i ng-if="car.checked==true" class="fa fa-check-square-o" style="font-size:200%"></i>
-                                            </div>
-
-                                            <div style="display: inline-block;width: 20%;" ng-if="car.idle!=true">
-
-                                                <span style="color:#ff5c3c">已申请</span>
-                                            </div>
-                                        </span>
+                                <div style="width: 100%;height: 100%;position: relative;">
+                                    <div style=" position: absolute;top: 40%;margin-left: -6px;z-index: 9999;background: #fff;">
+                                        <span style="font-size:0.8em;"><i class="fa fa-circle-o"></i></span>
                                     </div>
                                 </div>
+                            </div>
 
 
-                                <div style="position: absolute;width: 1px;height: 100%;left:18%;top:0;background: #aaa;">
-
-                                    <div style="width: 100%;height: 100%;position: relative;">
-                                        <div style=" position: absolute;top: 40%;margin-left: -6px;z-index: 9999;background: #fff;">
-                                            <span style="font-size:0.8em;"><i class="fa fa-circle-o"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
-                                <span style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
-                                    <div style="width: 100%;height: 100%;display: table;">
-                                      <div style="display: table-cell;vertical-align: middle;">
-                                          <div style="font-size: 1em;color:#222;">
-                                              车牌号:{{car.carNum}}
-                                          </div>
-
-                                              <div style="font-size: 0.8em;color:#222;"
-                                                   ng-if="car.ownerName!==undefined&&car.ownerName!==null">
-                                                  车主姓名:{{car.ownerName}}
-                                              </div>
-
-                                          </div>
-                                        </div>
-                                    </span>
-
-
-
-                                <span style="width:20%;height:100%;position: absolute;left:80%;top:0;text-align: center;">
-                                  <div style="width: 100%;height: 100%;display: table;" ng-click="goDetail(car)">
-                                    <span style="display:table-cell;vertical-align: middle;">
-                                      <span style="font-size: 0.8em;display: inline-block;vertical-align: baseline;">&nbsp;</span>
-                                      <span style="font-size: 3em;display: inline-block;vertical-align: middle;color: #11c1f3;">
-                                        <i class="ion-ios-arrow-forward"></i>
-                                      </span>
-                                    </span>
+                            <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
+                            <span style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
+                            <div style="width: 100%;height: 100%;display: table;">
+                              <div style="display: table-cell;vertical-align: middle;">
+                                  <div style="font-size: 1em;color:#222;">
+                                      车牌号:{{car.carNum}}
                                   </div>
+
+                                      <div style="font-size: 0.8em;color:#222;"
+                                           ng-if="car.ownerName!==undefined&&car.ownerName!==null">
+                                          车主姓名:{{car.ownerName}}
+                                      </div>
+
+                                  </div>
+                                </div>
+                            </span>
+
+
+
+                            <span style="width:20%;height:100%;position: absolute;left:80%;top:0;text-align: center;">
+                              <div style="width: 100%;height: 100%;display: table;" ng-click="goDetail(car)">
+                                <span style="display:table-cell;vertical-align: middle;">
+                                  <span style="font-size: 0.8em;display: inline-block;vertical-align: baseline;">&nbsp;</span>
+                                  <span style="font-size: 3em;display: inline-block;vertical-align: middle;color: #11c1f3;">
+                                    <i class="ion-ios-arrow-forward"></i>
+                                  </span>
                                 </span>
-                            </div>
-
-
-
+                              </div>
+                            </span>
                         </div>
+
+                        <div style="width: 100%;height: 20px;"></div>
                     </ion-scroll>
-                </div>
-
-                <div style="height: 15%;width: 100%;">
-                    <div style="width: 100%;height: 100%;display:table;">
-                        <div style="display: table-cell;vertical-align: middle;text-align: center">
-                            <button class="button button-dark" ng-click="openBindCarModal()"
-                                    style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;width: 60%;">
-                                创建新车
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
+            <div style="height: 15%;width: 100%;">
+                <div style="width: 100%;height: 100%;display:table;">
+                    <div style="display: table-cell;vertical-align: middle;text-align: center">
+                        <button class="button button-dark" ng-click="openBindCarModal()"
+                                style="background-color:rgba(66, 56, 45, 0.9529);border-radius:6px;width: 60%;">
+                            创建新车
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        </ion-content>
 
-    </ion-view>
+    </ion-content>
 
-</ion-nav-view>
+</ion-view>
+

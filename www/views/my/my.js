@@ -18,6 +18,9 @@ angular.module('starter')
       $state.go(state);
     };
 
+    //每次进入我的界面都会清除,请通过底部tab页进行切换
+    $ionicHistory.clearHistory();
+
     $scope.quit=function () {
         localStorage.pwdPersisted='false';
         $ionicHistory.clearHistory();
@@ -151,8 +154,8 @@ angular.module('starter')
                   //TODO:Wechat share iamge
                   ob={
                       message: {
-                          title: "Hi, there",
-                          description: "This is description.",
+                          title: '下载链接',
+                          description: "我正在使用捷慧宝App,想与您一起分享",
                           thumb: "www/img/logo.png",
                           mediaTagName: "TEST-TAG-001",
                           messageExt: "这是第三方带的测试字段",

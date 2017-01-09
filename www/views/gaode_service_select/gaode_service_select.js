@@ -5,11 +5,15 @@ angular.module('starter')
     .controller('gaodeServiceSelectController',function($scope,$state,$http,
                                                $rootScope,$cordovaFileTransfer,Proxy,
                                                $ionicModal,$ionicPopup,$ionicLoading,
-                                                        $cordovaToast){
+                                                        $cordovaToast,$ionicNativeTransitions){
 
 
         $scope.goBack=function () {
-            window.history.back();
+            $ionicNativeTransitions.stateGo('gaoDeHome', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.navigate=function (service) {

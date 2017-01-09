@@ -5,11 +5,15 @@ angular.module('starter')
     .controller('maintainController',function($scope,$state,$stateParams,
                                               $ionicModal,$ionicPopup,$rootScope,
                                               $cordovaCapture,$cordovaMedia,$ionicScrollDelegate,
-                                                $http, Proxy,$timeout,$interval,$ionicPlatform,$cordovaImagePicker){
+                                                $http, Proxy,$timeout,$interval,$ionicNativeTransitions){
 
 
         $scope.goBack=function () {
-            window.history.back();
+            $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.tabIndex=0;

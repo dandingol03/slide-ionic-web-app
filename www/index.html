@@ -42,6 +42,8 @@
     <script src="lib/ionic-native-transitions/dist/ionic-native-transitions.min.js"></script>
     <script src="lib/AngularJS-Toaster/toaster.js"></script>
 
+
+
     <!--<script src="lib/angular-baidu-map/angular-baidu-map.js"></script>-->
     <script>
       var ngBaiduMap = window.ngBaiduMap;
@@ -130,6 +132,10 @@
     <script src="views/ws_chat/ws_chat.js"></script>
 
 
+
+
+
+
   </head>
   <body ng-app="starter">
     <!--
@@ -145,7 +151,7 @@
       have templates inline in this html file if you'd like).
     -->
     <ion-nav-view>
-      <toaster-container toaster-options="{'position-class': 'toast-top-right','close-button': true}"></toaster-container>
+      <toaster-container toaster-options="{'position-class': 'toast-top-right','time-out': 0}"></toaster-container>
     </ion-nav-view>
   </body>
 </html>

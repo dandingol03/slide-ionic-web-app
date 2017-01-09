@@ -8,7 +8,7 @@ angular.module('starter')
                                                Proxy,$stateParams,$anchorScroll,
                                                $cordovaFileTransfer,$ionicPopup,$ionicSlideBoxDelegate,
                                                $cordovaImagePicker,$cordovaDatePicker,$cordovaToast,
-                                                     $ionicHistory,toaster){
+                                                     $ionicHistory,$ionicNativeTransitions){
 
         $ionicHistory.clearHistory();
 
@@ -40,52 +40,59 @@ angular.module('starter')
         else
             $scope.tabIndex=0;
 
+
+
+        $rootScope.$emit('MAKE_NOTY', '订单号为的用户取消服务,是否现在立即刷新界面');
+
+
         $scope.goIntoCarInsurance=function () {
 
             if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
             {
                 //TODO:validate bind car
-                var carInfo=$rootScope.carInfo;
-                $http({
-                    method: "POST",
-                    url: Proxy.local()+"/svr/request",
-                    headers: {
-                        'Authorization': "Bearer " + $rootScope.access_token,
-                    },
-                    data:
-                    {
-                        request:'validateCarFree',
-                        info:{
-                            carId:carInfo.carId
-                        }
-                    }
-                }).then(function(res) {
-                    var json=res.data;
-                    if(json.data==true)
-                    {
-                        $state.go('car_insurance',{carInfo:JSON.stringify($rootScope.carInfo)});
-                    }else{
-                        //TODO:inject toast message
-                        if(window.cordova)
-                        {
-                            $cordovaToast
-                                .show('您绑定的车辆已处于订单状态,请重新进入车辆管理界面选择车辆', 'long', 'center')
-                                .then(function(success) {
-                                    $state.go('car_manage');
-                                }, function (error) {
-                                    // error
-                                });
-                        }else{
-                            var popup=$ionicPopup.alert({
-                                title: '信息',
-                                template: '您绑绑定的车辆已处于订单状态，请进入车辆管理界面选择车辆'
-                            });
-                            popup.then(function(res) {
-                                $state.go('car_manage');
-                            })
-                        }
-                    }
-                })
+                // var carInfo=$rootScope.carInfo;
+                // $http({
+                //     method: "POST",
+                //     url: Proxy.local()+"/svr/request",
+                //     headers: {
+                //         'Authorization': "Bearer " + $rootScope.access_token,
+                //     },
+                //     data:
+                //     {
+                //         request:'validateCarFree',
+                //         info:{
+                //             carId:carInfo.carId
+                //         }
+                //     }
+                // }).then(function(res) {
+                //     var json=res.data;
+                //     if(json.data==true)
+                //     {
+                //         $state.go('car_insurance',{carInfo:JSON.stringify($rootScope.carInfo)});
+                //     }else{
+                //         //TODO:inject toast message
+                //         if(window.cordova)
+                //         {
+                //             $cordovaToast
+                //                 .show('您绑定的车辆已处于订单状态,请重新进入车辆管理界面选择车辆', 'long', 'center')
+                //                 .then(function(success) {
+                //                     $state.go('car_manage');
+                //                 }, function (error) {
+                //                     // error
+                //                 });
+                //         }else{
+                //             var popup=$ionicPopup.alert({
+                //                 title: '信息',
+                //                 template: '您绑绑定的车辆已处于订单状态，请进入车辆管理界面选择车辆'
+                //             });
+                //             popup.then(function(res) {
+                //                 $state.go('car_manage');
+                //             })
+                //         }
+                //     }
+                // })
+
+                $state.go('car_manage');
             }else{
                 $state.go('car_manage');
             }
@@ -94,7 +101,12 @@ angular.module('starter')
 
         //车驾管选择种类
         $scope.carDrivingManageSelect=function() {
-            $state.go('gaoDeHome');
+            //$state.go('gaoDeHome');
+            $ionicNativeTransitions.stateGo('gaoDeHome', {}, {}, {
+                "type": "slide",
+                "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration":400, // in milliseconds (ms), default 400
+            });
         }
 
 

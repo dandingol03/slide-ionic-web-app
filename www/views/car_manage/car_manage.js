@@ -117,7 +117,8 @@ angular.module('starter')
                     {
                         request:'fetchInsuranceCarInfoByCustomerId',
                         info:{carNum:$scope.car.carNum}
-                    }
+                    },
+                timeout:9000
             }).then(function(res) {
                 var json=res.data;
                 if(json.re==1) {
@@ -129,10 +130,6 @@ angular.module('starter')
                     })
                     if($rootScope.carInfo!==undefined&&$rootScope.carInfo!==null)
                     {
-                        $scope.relativeCars.map(function(car,i) {
-                            if(car.carId==$rootScope.carInfo.carId)
-                                car.checked=true;
-                        })
                     }
                 }else if(json.re==2)
                 {
@@ -151,10 +148,18 @@ angular.module('starter')
                 }else{}
                 $ionicLoading.hide();
             }).catch(function(err) {
-                var str='';
-                for(var field in err)
-                    str+=err[field];
-                console.error('error=\r\n' + str);
+                if(err.status==-1)
+                {
+                    var alertPopup = $ionicPopup.alert({
+                        title: '错误',
+                        template: '请求超时，请点击右上方的刷新按钮刷新数据'
+                    });
+                }else{
+                    var str='';
+                    for(var field in err)
+                        str+=err[field];
+                    console.error('error=\r\n' + str);
+                }
                 $ionicLoading.hide();
             });
         }
@@ -163,6 +168,9 @@ angular.module('starter')
             $scope.fetchRelativeCars();
         }else{
            $scope.relativeCars=$rootScope.flags.carOrders.data.relativeCars;
+           $scope.relativeCars.map(function (car,i) {
+               car.checked=false;
+           })
         }
 
         $scope.Mutex=function(item,field,cluster) {
@@ -491,9 +499,24 @@ angular.module('starter')
 
         }
 
-        $scope.notFirstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd'};
-        $scope.firstRowStyle={height: '50px',position: 'relative','border-right': '1px solid #ddd','border-left':'1px solid #ddd','border-top':'0px'}
-
-
+        $scope.notFirstRowStyle={
+            height: '50px',position: 'relative',
+            'border-right': '1px solid rgba(88, 73, 58, 0.95)',
+            'border-left':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-top':'1px solid rgba(88, 73, 58, 0.95)'
+        };
+        $scope.firstRowStyle={
+            height: '50px',position: 'relative',
+            'border-right': '1px solid rgba(88, 73, 58, 0.95)',
+            'border-left':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-top':'0px'
+        };
+        $scope.lastRowStyle={
+            height: '50px',position: 'relative',
+            'border-right': '1px solid rgba(88, 73, 58, 0.95)',
+            'border-left':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-top':'1px solid rgba(88, 73, 58, 0.95)',
+            'border-bottom':'1px solid rgba(88, 73, 58, 0.95)'
+        };
 
     })

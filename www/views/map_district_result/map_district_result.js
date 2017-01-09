@@ -5,10 +5,14 @@
 angular.module('starter')
     .controller('mapDistrictResultController',function($scope,$state,$ionicActionSheet,
                                                        $rootScope,$ionicPopup,$http, Proxy,
-                                                       $stateParams,$ionicLoading){
+                                                       $stateParams,$ionicLoading,$ionicNativeTransitions){
 
         $scope.go_back=function(){
-            window.history.back();
+            $ionicNativeTransitions.stateGo('gaode_service_select', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.title='审车';
