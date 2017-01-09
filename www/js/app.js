@@ -150,6 +150,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
         }
 
+          $rootScope.msg={
+              fromeMe:[],
+              fromThem:[]
+          };
+
 
 
         var onTagsWithAlias = function(event) {
@@ -656,22 +661,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
           })
 
-          .state('tabs.ws_chat', {
-              url: '/ws_chat',
-              views: {
-                  'ws-chat-tab': {
-                      controller: 'wsChatController',
-                      templateUrl: 'views/ws_chat/ws_chat.html'
-                  }
-              }
-          })
 
-
-          .state('chatter',{
-              url:'/chatter',
-              controller: 'chatterController',
-              templateUrl:'views/chatter/chatter.html'
-          })
 
           .state('login',{
               cache:false,
@@ -1283,10 +1273,43 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }};
     })
 
-    .factory('$WebSocket',function(){
+    .directive('contenteditable', function() {//自定义ngModel的属性可以用在div等其他元素中
+        return {
+            restrict: 'A', // 作为属性使用
+            require: '?ngModel', // 此指令所代替的函数
+            link: function(scope, element, attrs, ngModel) {
+                if (!ngModel) {
+                    return;
+                } // do nothing if no ng-model
+                // Specify how UI should be updated
+                ngModel.$render = function() {
+                    element.html(ngModel.$viewValue || '');
+                };
+                // Listen for change events to enable binding
+                element.on('blur keyup change', function() {
+                    scope.$apply(readViewText);
+                });
+                // No need to initialize, AngularJS will initialize the text based on ng-model attribute
+                // Write data to the model
+                function readViewText() {
+                    var html = element.html();
+                    // When we clear the content editable the browser leaves a <br> behind
+                    // If strip-br attribute is provided then we strip this out
+                    if (attrs.stripBr && html === '<br>') {
+                        html = '';
+                    }
+                    ngModel.$setViewValue(html);
+                }
+            }
+        };
+    })
+
+    .factory('$WebSocket',function($rootScope){
           var self=this;
 
           self.cbs=[];
+
+          self.tmpMsg=null;
 
           self.msgId=1;
 
@@ -1319,10 +1342,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               switch (json.type) {
                   case 'ack':
                       console.log(json.msg);
+                      if(json.result=='ok')
+                      {
+                          $rootScope.msg.fromeMe.push(self.tmpMsg);
+                      }
                       break;
-                  case 'noty':
+                  case 'notify':
                       console.log('msg come from '+json.from);
                       console.log('msg ='+json.msg);
+                      $rootScope.msg.fromThem.push(json.msg.msg);
                       break;
                   default:
                       break;
@@ -1332,7 +1360,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               var info= {
                   action:'login',
                   msgid: self.getMsgId(),
-                  timems:new Date(),
+                  timems:new Date().getTime(),
                   token:accessToken,
                   username:username,
                   password:password
@@ -1343,6 +1371,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
           self.send=function(msg) {
             var info=msg;
+            self.tmpMsg=msg;
             if(Object.prototype.toString.call(info)!='[object String')
               info=JSON.stringify(info);
             self.ws.send(info);
@@ -1362,13 +1391,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 self.cbs.slice(i, 1);
             })
           };
-
           return self;
-
-        }
-
-
-    )
+        })
 
 
 

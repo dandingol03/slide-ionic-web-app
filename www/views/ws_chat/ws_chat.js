@@ -14,8 +14,6 @@ angular.module('starter')
         $scope.ws={
         };
 
-
-
         $scope.doSend=function(){
             $WebSocket.send({
                 action:'msg',
