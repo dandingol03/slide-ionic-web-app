@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
-                  $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions) {
+                  $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions,toaster) {
 
 
 
@@ -47,6 +47,21 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           // })
           //
 
+          toaster.pop('info', "title", "text1");
+          toaster.pop({
+              type: 'info',
+              body: 'bind-unsafe-html',
+              onShowCallback: function () {
+                  toaster.pop({
+                      title: 'A toast',
+                      body: 'invoked as an onShow callback'
+                  });
+              },
+              bodyOutputType: 'directive',
+              title: 'Title text',
+
+              showCloseButton: true
+          });
 
 
         $rootScope.car_orders=[
@@ -212,6 +227,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     var servicePersonId=message.servicePersonId;
                     var date=message.date;
                     var content='工号为'+servicePersonId+'的服务人员发出接单请求';
+
+                    toaster.pop('info', "title", "text1");
+
                     $http({
                         method: "POST",
                         url: Proxy.local() + "/svr/request",
