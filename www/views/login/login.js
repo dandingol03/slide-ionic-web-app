@@ -177,6 +177,8 @@ angular.module('starter')
                         });
 
 
+
+
                     //获取手机版本号
                     $cordovaAppVersion.getVersionNumber().then(function (version) {
                         var appVersion = version;
@@ -203,7 +205,7 @@ angular.module('starter')
                                     {
 
                                         var url = Proxy.local() + '/downloadAndroidApk';
-                                        var fileSystem=cordova.file.externalApplicationStorageDirectory;
+                                        var fileSystem=cordova.file.externalRootDirectory;
                                         var target=fileSystem+'/Download/android-release.apk';
                                         var trustHosts = true;
                                         var options = {
@@ -217,7 +219,9 @@ angular.module('starter')
                                         $cordovaFileTransfer.download(url, target, options, trustHosts).then(function (result) {
                                             $cordovaFileOpener2.open(target, 'application/vnd.android.package-archive'
                                             ).then(function () {
+                                                ionic.Platform.exitApp();
                                             }, function (err) {
+                                                alert('err=' + err.toString());
                                             });
                                             $ionicLoading.hide();
                                         },function (err) {

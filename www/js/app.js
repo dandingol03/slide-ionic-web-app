@@ -150,10 +150,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
         }
 
-          $rootScope.msg={
-              fromeMe:[],
-              fromThem:[]
-          };
+          $rootScope.msg=[];
 
 
 
@@ -1187,7 +1184,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.0.199:3000';
+            return 'http://139.129.96.231:3000';
           else
             return "/proxy/node_server";
 
@@ -1303,7 +1300,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         };
     })
 
-    .factory('$WebSocket',function($rootScope){
+    .factory('$WebSocket',function($rootScope,$ionicPopup){
           var self=this;
 
           self.cbs=[];
@@ -1343,13 +1340,27 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                       console.log(json.msg);
                       if(json.result=='ok')
                       {
-                          $rootScope.msg.fromeMe.push(self.tmpMsg);
-                      }
+                          if(self.tmpMsg!==undefined&&self.tmpMsg!==null)
+                          {
+                              $rootScope.msg.push(Object.assign({type:'fromMe'},self.tmpMsg));
+                              $rootScope.$emit('MSG_NEW');
+                          }
+                      }else if(json.result=='error')
+                      {
+                          if(json.reason=='no waiter online')
+                          {
+                              var myPopup = $ionicPopup.alert({
+                                  template: '现在没有可进行咨询的工作人员',
+                                  title: '错误'
+                              });
+                          }
+                      }else{}
                       break;
                   case 'notify':
                       console.log('msg come from '+json.from);
                       console.log('msg ='+json.msg);
-                      $rootScope.msg.fromThem.push(json.msg.msg);
+                      $rootScope.msg.push(Object.assign({type:'fromThem'},json.msg));
+                      $rootScope.$emit('MSG_NEW');
                       break;
                   default:
                       break;

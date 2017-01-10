@@ -129,14 +129,12 @@ angular.module('starter')
                     if($scope.car_insurance.relativePersons==null||$scope.car_insurance.relativePersons==undefined
                         ||$scope.car_insurance.relativePersons.length==0){
 
-
                         $timeout(function () {
                             var myPopup = $ionicPopup.alert({
                                 template: '没有已绑定的被保险人，请新建被保险人！',
                                 title: '<strong style="color:red">信息</strong>'
                             });
                         },400);
-
                     }
 
                 }).catch(function (err) {
