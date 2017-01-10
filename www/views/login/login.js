@@ -8,7 +8,6 @@ angular.module('starter')
         ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
         ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion,$cordovaFileOpener2){
 
-
         $scope.formUser = {};
 
         $scope.user={};

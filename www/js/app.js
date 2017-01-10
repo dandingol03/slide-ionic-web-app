@@ -27,7 +27,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
 
-
       $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -63,6 +62,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           //
           //
           // }, 300);
+
 
           $rootScope.car_orders=[
           [
@@ -253,6 +253,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                     side:'customer',
                                     subType:null,
                                     type:'service'
+
                                 }
                             }
                         }).then(function (res) {
