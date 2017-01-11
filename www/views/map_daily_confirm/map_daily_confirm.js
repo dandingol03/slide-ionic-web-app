@@ -451,8 +451,7 @@ angular.module('starter')
         //音频检查
         $scope.audioCheck = function (orderId) {
             var deferred = $q.defer();
-            alert('audiochecking.....');
-            alert('resourceulr=' + $scope.maintain.description.audio);
+
             if($scope.maintain.description.audio!=null&&$scope.maintain.description.audio!=undefined)
             {
                 var server=Proxy.local()+'/svr/request?' +
