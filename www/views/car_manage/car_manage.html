@@ -103,7 +103,7 @@
                                 <div style="width:100%;height: 100%;display: table;">
                                 <span style="display: table-cell;vertical-align: middle;font-size:0.8em;padding-left:10px;text-align: left;">
                                     <div style="display:inline-block;width:100%;text-align: center" ng-if="car.idle==true" ng-click="Mutex(car,'checked',relativeCars)">
-                                        <i ng-if="car.checked!=true" class="fa fa-square-o" style="font-size:200%"></i>
+                                        <i ng-if="car.checked!=true" class="fa fa-square-o" style="font-size:200%;color: #646464;"></i>
                                         <i ng-if="car.checked==true" class="fa fa-check-square-o" style="font-size:200%"></i>
                                     </div>
 
@@ -130,11 +130,11 @@
                             <span style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
                             <div style="width: 100%;height: 100%;display: table;">
                               <div style="display: table-cell;vertical-align: middle;">
-                                  <div style="font-size: 1em;color:#222;">
+                                  <div style="font-size: 1em;color:#323232;">
                                       车牌号:{{car.carNum}}
                                   </div>
 
-                                      <div style="font-size: 0.8em;color:#222;"
+                                      <div style="font-size: 0.8em;color:#323232;"
                                            ng-if="car.ownerName!==undefined&&car.ownerName!==null">
                                           车主姓名:{{car.ownerName}}
                                       </div>

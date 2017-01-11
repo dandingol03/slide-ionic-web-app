@@ -927,7 +927,7 @@ table.table1{
   height: 100%;
   width: 100%;
   background:transparent;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #646464;
 }
 
 .ul-tabs.dark-theme li .cell{
@@ -942,12 +942,12 @@ table.table1{
 }
 
 .ul-tabs.finance-theme li .cell.selected{
-  border-top:1px solid #222;
-  border-left:1px solid #222;
-  border-right: 1px solid #222;
+  border-top:1px solid #646464;
+  border-left:1px solid #646464;
+  border-right: 1px solid #646464;
   border-bottom:transparent;
   background: #fff;
-  color:#222;
+  color:#646464;
 }
 
 
@@ -962,9 +962,9 @@ table.table1{
 }
 
 .ul-tabs.transparent li .cell.selected{
-  border-top:1px solid #222;
-  border-left:1px solid #222;
-  border-right: 1px solid #222;
+  border-top:1px solid #646464;
+  border-left:1px solid #646464;
+  border-right: 1px solid #646464;
   border-bottom:transparent;
   background: transparent;
   color:#444444;

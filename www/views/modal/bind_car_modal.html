@@ -28,14 +28,14 @@
 
             <!-- 用车城市 -->
             <div class="item"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;padding:10px;background-color:transparent;">
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;padding:10px;background-color:transparent;">
                 <span style="display: inline-block;width: 5%;text-align: center">
                     <i class="fa fa-map-marker"></i>
                 </span>
-                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;">
+                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;color:#323232">
                     用车城市:
                 </span>
-                <span style="width: 50%;display: inline-block;text-align: left;">
+                <span style="width: 50%;display: inline-block;text-align: left;color:#323232">
                     {{city_confirmed!==undefined&&city_confirmed!==null?city_confirmed:''}}
                 </span>
                 <span style="width: 20%;display: inline-block;text-align: center;font-size: 1.4em;"
@@ -45,18 +45,18 @@
             </div>
 
 
-            <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+            <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;
              padding:10px;background-color:transparent;overflow:initial">
                 <span style="display: inline-block;width: 5%;text-align: center">
                     <i class="fa fa-drivers-license-o"></i>
                 </span>
-                <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
+                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;color:#323232">
                   车牌:
                 </span>
 
                 <span style="width: 50%;display: inline-block;text-align: left;">
                   <input type="text"
-                         style="display:inline-block;background-color: transparent;"
+                         style="display:inline-block;background-color: transparent;color:#323232"
                          ng-model="carInfo.carNum"
                          ng-value="carInfo.carNum "
                          text-transform="uppercase"
