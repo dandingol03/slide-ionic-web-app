@@ -284,8 +284,37 @@ angular.module('starter')
 
             if (ionic.Platform.isIOS()) {
                 var options = { limit: 3, duration: 15 };
+
+                //开始录制计时
+                $scope.videoSecond=0;
+                $scope.videoMinute=0;
+                $scope.videoTimer=$interval(function () {
+                    $scope.videoSecond++;
+                    if($scope.videoSecond<10)
+                        $scope.videoSecondStr='0'+$scope.videoSecond;
+                    else
+                        $scope.videoSecondStr=''+$scope.videoSecond;
+                    if($scope.videoSecond==60)
+                    {
+                        $scope.videoMinute++;
+                        if($scope.videoMinute<10)
+                            $scope.videoMinuteStr='0'+$scope.videoMinute;
+                        else
+                            $scope.videoMinuteStr=''+$scope.videoMinute;
+                    }
+                },1000);
+
                 $cordovaCapture.captureVideo(options).then(function(videoData) {
                     // Success! Video data is here
+
+                    //停止录制计时
+                    if($scope.videoTimer!==undefined&&$scope.videoTimer!==null)
+                    {
+                        $interval.cancel($scope.videoTimer);
+                        $scope.videoTimer=null;
+                    }
+                    $scope.videoSecond=0;
+                    $scope.videoMinute=0;
 
                     $scope.maintain.description.video=videoData[0].fullPath;
                     alert('whole path=' + $scope.maintain.description.video);
@@ -307,6 +336,18 @@ angular.module('starter')
                 var options = { limit: 1, duration: 30 };
                 $cordovaCapture.captureVideo(options).then(function(videoData) {
                     // Success! Video data is here
+
+                    // for(var field in videoData[0])
+                    // {
+                    //     alert('videoData[0]');
+                    //
+                    //     alert(field);
+                    // }
+
+                    // videoData[0].getFormatData(function (data) {
+                    //     alert('MediaFileData.duration'+data.duration);
+                    // });
+
 
                     $scope.maintain.description.video=videoData[0].fullPath;
                     alert('whole path=' + $scope.maintain.description.video);
