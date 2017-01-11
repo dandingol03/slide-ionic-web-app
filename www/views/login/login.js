@@ -6,7 +6,7 @@ angular.module('starter')
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
         ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
-        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion,$cordovaFileOpener2){
+        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion,$cordovaFileOpener2,$cordovaInAppBrowser){
 
         $scope.formUser = {};
 
@@ -178,11 +178,14 @@ angular.module('starter')
 
 
 
+
+
                     //获取手机版本号
                     $cordovaAppVersion.getVersionNumber().then(function (version) {
                         var appVersion = version;
                         alert('app version=' + appVersion);
 
+                        alert('server address=' + Proxy.local());
                         $http({
                             method:"GET",
                             url:Proxy.local()+'/getLastAppVersion',
@@ -192,7 +195,7 @@ angular.module('starter')
                             }
                         }).then(function (res) {
                             var json=res.data;
-
+                            alert('version in server='+json.data);
                             if(json.data>appVersion)
                             {
                                 var confirmPopup = $ionicPopup.confirm({
@@ -203,40 +206,62 @@ angular.module('starter')
                                     if(res)
                                     {
 
-                                        var url = Proxy.local() + '/downloadAndroidApk';
-                                        var fileSystem=cordova.file.externalRootDirectory;
-                                        var target=fileSystem+'/Download/android-release.apk';
-                                        var trustHosts = true;
-                                        var options = {
-                                            fileKey: 'file',
-                                            headers: {
-                                                'Authorization':"Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW"
-                                            }
-                                        };
 
-                                        //下载apk
-                                        $cordovaFileTransfer.download(url, target, options, trustHosts).then(function (result) {
-                                            $cordovaFileOpener2.open(target, 'application/vnd.android.package-archive'
-                                            ).then(function () {
-                                                ionic.Platform.exitApp();
-                                            }, function (err) {
-                                                alert('err=' + err.toString());
-                                            });
-                                            $ionicLoading.hide();
-                                        },function (err) {
-                                            alert('下载失败');
-                                        },function (progress) {
 
-                                            $timeout(function () {
-                                                var downloadProgress = (progress.loaded / progress.total) * 100;
-                                                $ionicLoading.show({
-                                                    template: "已经下载：" + Math.floor(downloadProgress) + "%"
-                                                });
-                                                if (downloadProgress > 99) {
-                                                    $ionicLoading.hide();
+                                        //打开浏览器下载apk
+                                        $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
+                                            .then(function(event) {
+                                                for(var field in event)
+                                                {
+                                                    alert(field + '\r\n' + event[field]);
                                                 }
                                             })
+                                            .catch(function(event) {
+                                                // error
+                                            });
+                                        $cordovaInAppBrowser.close();
+
+                                        $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+                                            console.log('load stop...');
                                         });
+
+
+                                        // var url = Proxy.local() + '/downloadAndroidApk';
+                                        // var fileSystem=cordova.file.externalRootDirectory;
+                                        // var target=fileSystem+'/Download/android-release.apk';
+                                        // var trustHosts = true;
+                                        // var options = {
+                                        //     fileKey: 'file',
+                                        //     headers: {
+                                        //         'Authorization':"Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW"
+                                        //     }
+                                        // };
+
+                                        //下载apk
+                                        // $cordovaFileTransfer.download(url, target, options, trustHosts).then(function (result) {
+                                        //     $cordovaFileOpener2.open(target, 'application/vnd.android.package-archive'
+                                        //     ).then(function () {
+                                        //         ionic.Platform.exitApp();
+                                        //     }, function (err) {
+                                        //         alert('err=' + err.toString());
+                                        //     });
+                                        //     $ionicLoading.hide();
+                                        // },function (err) {
+                                        //     alert('下载失败');
+                                        // },function (progress) {
+                                        //
+                                        //     $timeout(function () {
+                                        //         console.log('download=======' + progress.loaded);
+                                        //         var downloadProgress = (progress.loaded / progress.total) * 100;
+                                        //
+                                        //         $ionicLoading.show({
+                                        //             template:'<p class="item-icon-left">'+'下载'+ Math.floor(downloadProgress) + '%....'+'<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                                        //         });
+                                        //         if (downloadProgress > 99) {
+                                        //             $ionicLoading.hide();
+                                        //         }
+                                        //     })
+                                        // });
 
                                     }else{}
                                 })
