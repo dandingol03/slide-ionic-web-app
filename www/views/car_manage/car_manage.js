@@ -212,9 +212,9 @@ angular.module('starter')
         /*** bind append_carNumPrefix_modal***/
 
         $scope.plainStyle={width: '30%',display: 'inline-block',
-            'text-align': 'center',background: '#fff',padding: '10px','border-radius': '5px'};
+            'text-align': 'center',background: '#ffffff',padding: '10px','border-radius': '5px'};
         $scope.selectedStyle={width: '30%',display: 'inline-block',color:'#fff',
-            'text-align': 'center',background: 'rgba(0, 235, 255, 0.74)',padding: '10px','border-radius': '5px','font-size':'1.2em','font-weight':'bolder'};
+            'text-align': 'center',background: '#30cecf',padding: '10px','border-radius': '5px','font-size':'1.2em','font-weight':'bolder'};
 
         $ionicModal.fromTemplateUrl('views/modal/append_carNumPrefix_modal.html',{
             scope:  $scope,
@@ -503,20 +503,23 @@ angular.module('starter')
             height: '50px',position: 'relative',
             'border-right': '1px solid rgba(88, 73, 58, 0.95)',
             'border-left':'1px solid rgba(88, 73, 58, 0.95)',
-            'border-top':'1px solid rgba(88, 73, 58, 0.95)'
+            'border-top':'1px solid rgba(88, 73, 58, 0.95)',
+            'background':'transparent'
         };
         $scope.firstRowStyle={
             height: '50px',position: 'relative',
             'border-right': '1px solid rgba(88, 73, 58, 0.95)',
             'border-left':'1px solid rgba(88, 73, 58, 0.95)',
-            'border-top':'0px'
+            'border-top':'0px',
+            'background':'transparent'
         };
         $scope.lastRowStyle={
             height: '50px',position: 'relative',
             'border-right': '1px solid rgba(88, 73, 58, 0.95)',
             'border-left':'1px solid rgba(88, 73, 58, 0.95)',
             'border-top':'1px solid rgba(88, 73, 58, 0.95)',
-            'border-bottom':'1px solid rgba(88, 73, 58, 0.95)'
+            'border-bottom':'1px solid rgba(88, 73, 58, 0.95)',
+            'background':'transparent'
         };
 
     })

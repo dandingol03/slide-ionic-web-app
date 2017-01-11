@@ -246,78 +246,20 @@
             style="background-color: transparent;"
             delegate-handle="carInfo-slide">
             <ion-slide style="overflow: initial;margin-bottom: 40px;">
+                <div class="item"
+                     style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:0;
+                   padding:10px;position: relative;background-color:transparent;margin-top: 5%;">
 
-              <div class="item"
-                   style="margin:1px;border:0px;
-               padding:10px;background-color:transparent;overflow: initial"
-                >
-              </div>
-
-              <div class="item"
-                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-               padding:10px;background-color:transparent;overflow: initial">
-
-                  <span  style="display: inline-block;width: 25%;text-align: left">
-                      厂牌型号:
+                  <span
+                          style="width: 60%;margin-left:20%;display: inline-block;text-align: left"
+                          ng-click="open_licenseInfoModal()"
+                  >
+                     <button class="button button-calm" style="width: 100%;">
+                       填写行驶证信息
+                     </button>
                   </span>
 
-                  <span style="width: 60%;display: inline-block;text-align: left;">
-                      <input type="text" placeholder="输入厂牌型号"
-                             style="display:inline-block;background-color: transparent;" ng-value="carInfo.factoryNum"
-                             ng-model="carInfo.factoryNum"
-                             ng-focus="focusInFactoryNum()"
-                             ng-blur="blurFactoryNum()"
-                        />
-                  </span>
-
-
-
-              </div>
-
-              <div class="item"
-                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-               padding:10px;background-color:transparent;overflow: initial">
-
-                  <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
-                      发动机号:
-                  </span>
-                  <span style="width: 30%;display: inline-block;text-align: left;">
-                      <input type="text" placeholder="输入发动机号"
-                             style="display:inline-block;background-color: transparent;"
-                             ng-value="carInfo.engineNum"
-                             ng-model="carInfo.engineNum"
-                             ng-change="validate(carInfo,'engineNum','/^\\d{6}/')"
-                        />
-                  </span>
-                  <div style="width: 100%;text-align: center;font-size: 0.7em;color:#ff3b30"
-                        ng-if="carInfo['engineNum_error']==true">
-                      请至少输入6位的发动机号
-                  </div>
-
-
-              </div>
-
-              <div class="item"
-                   style="border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-               padding:10px;background-color:transparent;overflow: initial;">
-
-                  <span class="input-label" style="display: inline-block;width: 25%;text-align: left">
-                      车架号:
-                  </span>
-                  <span style="width: 60%;display: inline-block;text-align: left;">
-                      <input type="text" placeholder="设置车架号"
-                             style="display:inline-block;background-color: transparent;"
-                             ng-value="carInfo.frameNum"
-                             ng-model="carInfo.frameNum"
-                             ng-change="validate(carInfo,'frameNum','/^\\w{17}$/')"
-                        />
-                  </span>
-                  <div style="width: 100%;text-align: center;font-size: 0.8em;color:#ff3b30"
-                    ng-if="carInfo['frameNum_error']==true">
-                      请输入17位车架号
-                  </div>
-
-              </div>
+                </div>
 
             </ion-slide>
 
