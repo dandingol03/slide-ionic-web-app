@@ -15,7 +15,10 @@ angular.module('starter')
       $scope.sendStyle = {color: '#222'};
       $scope.unSendStyle = {color: '#888'};
 
-      $scope.user=  $rootScope.user.personInfo;
+      if($rootScope.user!==undefined&&$rootScope.user!==null)
+          $scope.user=  $rootScope.user.personInfo;
+      else
+          $scope.user=null;
 
       $scope.doSend=function(){
 
