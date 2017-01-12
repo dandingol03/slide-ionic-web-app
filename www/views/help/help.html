@@ -1,78 +1,77 @@
-<ion-nav-view   class="slide-left-right" hide-nav-bar="true">
-    <ion-view hide-nav-bar="true">
-        <ion-content   lazy-scroll style="position: relative">
 
-            <div class="list list-inset"
-                 style="margin-bottom: 10%;margin-left: 0;margin-right: 0;background:transparent;">
+<ion-view class="passwordForget-view" view-title="帮助" >
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2.4em;color:#bf530c"
+                    ng-click="go_back()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
 
-                <ion-scroll style="height: 70%;">
-                    <div class="item"
-                         style="height:50px;position:relative;
-                             margin: 1px;
-                             border-top: 0px;
-                             border-left: 0px;
-                             border-right: 0px;
-                             border-bottom: 1px solid #646464;
-                             padding: 10px;
-                             background-color: transparent;
-                             overflow: initial;">
+        <ion-nav-buttons side="right">
+            <button class="button button-icon button-clear bar_arr">
+                <div style="color:#bf530c">
+                    <span  style="font-size: 1.8em;display: inline-block"> <i class="ion-refresh"></i></span>
+                </div>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
 
-                        <div style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
-                            <span>如何设置推送的权限管理</span>
-                        </div>
-
-                        <span style="width:20%;height:100%;position: absolute;left:80%;top:0;text-align: center;">
-                              <div style="width: 100%;height: 100%;display: table;" ng-click="goDetail(car)">
-                                <span style="display:table-cell;vertical-align: middle;">
-                                  <span style="font-size: 0.8em;display: inline-block;vertical-align: baseline;">&nbsp;</span>
-                                  <span style="font-size: 3em;display: inline-block;vertical-align: middle;color: #11c1f3;">
-                                    <i class="ion-ios-arrow-forward"></i>
-                                  </span>
-                                </span>
-                              </div>
-                            </span>
-                    </div>
+    <ion-content   lazy-scroll style="position: relative">
 
 
+        <div class="item-divider" style="margin-left:5%;font-size:larger">
+                <span>
+                    APP权限设置指导
+                </span>
+        </div>
 
-                    <div class="item"
-                         style="height:50px;position:relative;
-                             margin: 1px;
-                             border-top: 0px;
-                             border-left: 0px;
-                             border-right: 0px;
-                             border-bottom: 1px solid #646464;
-                             padding: 10px;
-                             background-color: transparent;
-                             overflow: initial;">
+        <div class="list padding">
 
-                        <div style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
-                            <span>如何使应用程序在内存保持存活</span>
-                        </div>
+            <div class="item shadow"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial"
+                 ng-click="openHelpModal()">
+                <span class="input-label"
+                      style="display: inline-block;width: 80%;text-align: left;margin-left: 5%;">
+                    如何设置权限管理:
+                </span>
+                <span style="display:inline-block;width: 20%;text-align: right;vertical-align: middle;
+                              font-size: 2em;">
+                    <i class="ion-ios-arrow-forward"></i>
+                </span>
+            </div>
 
-                        <span style="width:20%;height:100%;position: absolute;left:80%;top:0;text-align: center;">
-                              <div style="width: 100%;height: 100%;display: table;" ng-click="goDetail(car)">
-                                <span style="display:table-cell;vertical-align: middle;">
-                                  <span style="font-size: 0.8em;display: inline-block;vertical-align: baseline;">&nbsp;</span>
-                                  <span style="font-size: 3em;display: inline-block;vertical-align: middle;color: #11c1f3;">
-                                    <i class="ion-ios-arrow-forward"></i>
-                                  </span>
-                                </span>
-                              </div>
-                            </span>
-                    </div>
-
-
-                    <div style="width: 100%;height: 20px;"></div>
-                </ion-scroll>
+            <div class="item shadow"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial">
+                <span class="input-label"
+                      style="display: inline-block;width: 80%;text-align: left;margin-left: 5%;">
+                    如何设置内存白名单:
+                </span>
+                <span style="display:inline-block;width: 20%;text-align: right;vertical-align: middle;
+                              font-size: 2em;">
+                    <i class="ion-ios-arrow-forward"></i>
+                </span>
             </div>
 
 
+            <div class="item shadow"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
+                          padding:10px;background-color:transparent;overflow:initial">
+                <span class="input-label"
+                      style="display: inline-block;width: 80%;text-align: left;margin-left: 5%;">
+                    如何设置权限管理:
+                </span>
+                <span style="display:inline-block;width: 20%;text-align: right;vertical-align: middle;
+                              font-size: 2em;">
+                    <i class="ion-ios-arrow-forward"></i>
+                </span>
+            </div>
 
 
+        </div>
+    </ion-content>
 
-        </ion-content>
-
-    </ion-view>
-
-</ion-nav-view>
+</ion-view>

@@ -135,7 +135,7 @@
           <!-- 身份证正面  新的界面 -->
           <div class="item"
                style="margin:1px;border:0px;padding:16px;position: relative;padding-left: 30px;padding-right: 30px;background:transparent;">
-            <div style="width: 100%;height:130px;border:1px solid #aaa;display: table;text-align: center;border-radius: 10px;">
+            <div style="width: 100%;height:130px;border: 0px;display: table;text-align: center;border-radius: 10px;">
               <div style="display: table-cell;vertical-align: middle;text-align: center;">
 
                 <div style="width: 80%;height: 100px;margin-left: 10%;position: relative;margin-top:5%">
@@ -194,8 +194,9 @@
 
                 </div>
 
-                <div style="margin-top:20px;">
-                  <span style="color:#33c6cd;font-weight: bolder;">上传身份证正面</span>
+                <div style="margin-top:20px;position: absolute;top: 40%;left: 30%;z-index: 9999;"
+                     ng-if="insurer.perIdCard1_img==undefined||insurer.perIdCard1_img==null">
+                  <span style="color:#323232;font-weight: bolder;font-size:large">上传身份证正面</span>
                 </div>
               </div>
 
@@ -205,7 +206,7 @@
           <!-- 身份证反面  新的界面 -->
           <div class="item"
                style="margin:1px;border:0px;padding:16px;position: relative;padding-left: 30px;padding-right: 30px;background:transparent;">
-            <div style="width: 100%;height:130px;border:1px solid #aaa;display: table;text-align: center;border-radius: 10px;">
+            <div style="width: 100%;height:130px;border:0px;display: table;text-align: center;border-radius: 10px;">
               <div style="display: table-cell;vertical-align: middle;text-align: center;">
 
                 <div style="width: 80%;height: 100px;margin-left: 10%;position: relative;margin-top:5%">
@@ -261,8 +262,9 @@
 
                 </div>
 
-                <div style="margin-top:20px;">
-                  <span style="color:#33c6cd;font-weight: bolder;">上传身份证反面</span>
+                <div style="margin-top:20px;position: absolute;top: 40%;left: 30%;z-index: 9999;"
+                     ng-if="insurer.perIdCard1_img==undefined||insurer.perIdCard1_img==null">
+                  <span style="color:#323232;font-weight: bolder;font-size:large">上传身份证反面</span>
                 </div>
               </div>
 
