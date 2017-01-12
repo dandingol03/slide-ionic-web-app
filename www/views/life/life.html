@@ -1,16 +1,19 @@
-
-<ion-view view-title='填写寿险意向' >
-
-    <ion-nav-bar class="bar-calm" align-title="center" >
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear bar_arr" style="font-size: 2.4em;"
-                    ng-click="go_back()">
-                <i class="ion-chevron-left"></i>
-            </button>
-        </ion-nav-buttons>
-    </ion-nav-bar>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view view-title="填写寿险意向" hide-nav-bar="true">
 
     <ion-content scroll="false" style="background:url('img/flow_and_moutain.png')no-repeat;background-size:100% 100%;" >
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+            <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:4%">
+                <span style="display: inline-block;width:20%;text-align:left;font-size: 1.6em;"  ng-click="go_back()">
+                    <i class="ion-chevron-left"></i>
+                </span>
+                <span style="display: inline-block;width: 80%;text-align: center;padding-right: 20%;">
+                    填写寿险意向
+                </span>
+            </h1>
+        </div>
 
         <!-- 寿险 -->
         <div scroll="true" style="background-color:rgba(255,255,255,0);margin-top:15%;">
@@ -174,4 +177,5 @@
 
 
     </ion-content>
-</ion-view>
+  </ion-view>
+</ion-nav-view>

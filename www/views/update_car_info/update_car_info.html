@@ -1,28 +1,30 @@
-<ion-view view-title="创建车辆">
-  <ion-nav-bar class="bar-stable" align-title="center" >
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr"
-              ng-click="goBack()"
-              style="font-size:1.8em;">
-        <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
 
-      <ion-nav-buttons side="right">
-          <button class="button button-assertive"
-                  ng-click="postCarInfo()">
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view view-title="创建车辆" hide-nav-bar="true">
+    <ion-content style="padding:0px; background:url('img/flow_and_moutain.png')no-repeat;background-size:100% 100%;">
+
+      <!-- header bar -->
+      <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+          <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:4%">
+              <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="goBack()">
+                  <i class="ion-chevron-left"></i>
+              </span>
+              <span style="display: inline-block;width: 55%;text-align: center;padding-left:18%">
+                  创建车辆
+              </span>
+              <button class="button button-assertive" style="vertical-align: middle;"
+                      ng-click="postCarInfo()">
               <span style="display: inline-block;">
                   <i class="fa fa-hand-pointer-o"></i>
               </span>
-              <span style="font-size: 0.9em;display: inline-block;">保存车辆信息</span>
-          </button>
-      </ion-nav-buttons>
+                  <span style="font-size: 0.9em;display: inline-block;">保存车辆信息</span>
+              </button>
+              <span style="display: inline-block;width: 5%;">
+              </span>
+          </h1>
+      </div>
 
-  </ion-nav-bar>
-
-  <ion-content style="padding:0px; background:url('img/flow_and_moutain.png')no-repeat;background-size:100% 100%;">
     <!-- 车险 -->
-
     <div style="height: 100%;">
         <div class="list list-inset"
              style="margin-bottom:40px;background-color: transparent;margin-left:0px;margin-right:0px;">
@@ -292,3 +294,4 @@
   </ion-content>
 
 </ion-view>
+</ion-nav-view>
