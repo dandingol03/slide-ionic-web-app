@@ -1134,6 +1134,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/life_order_pay/life_order_pay.html'
           })
 
+          .state('help',{
+              url:'/help',
+              controller:'helpController',
+              templateUrl:'views/help/help.html'
+          })
+
           .state('maintainHome',{
               url:'/maintainHome:params',
               controller:'maintainHomeController',
