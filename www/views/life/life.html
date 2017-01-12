@@ -36,7 +36,7 @@
                     </span>
 
                     <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;" ng-click="goFetchLifeInsurer(life_insurance.order)">
-                      <button class="button button-small button-assertive" style="padding:0px 10px;">
+                      <button class="button button-small button-assertive" style="padding:0px 10px;background-color: rgba(17, 17, 17, 0.6);">
                          选择
                       </button>
                     </span>
@@ -60,7 +60,7 @@
 
                     <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;"
                           ng-click="goFetchLifeInsuranceder(life_insurance.order)">
-                       <button class="button button-small button-assertive" style="padding:0px 10px;" >
+                       <button class="button button-small button-assertive" style="padding:0px 10px;background-color: rgba(17, 17, 17, 0.6);" >
                             选择
                        </button>
                     </span>
@@ -88,7 +88,7 @@
                        法定
                     </span>
                     <span style="display:inline-block;width: 20%;text-align: center;vertical-align: middle;" ng-click="goFetchLifeBenefiter(life_insurance.order)">
-                       <button class="button button-small button-assertive" style="padding:0px 10px;">
+                       <button class="button button-small button-assertive" style="padding:0px 10px;background-color: rgba(17, 17, 17, 0.6);">
                            选择
                        </button>
                     </span>
@@ -168,9 +168,17 @@
                            ng-model="life_insurance.order.planInsuranceFee"/>
                 </div>
 
-                <div class="bar bar-footer  bar-assertive" style="position: static" ng-click="saveLifeInsuranceIntend()">
-                    <h1 class="title">提交寿险意向</h1>
+                <div style="height: 15%;width: 100%;">
+                    <div style="width: 100%;height: 100%;display:table;">
+                        <div style="display: table-cell;vertical-align: middle;text-align: center">
+                            <button class="card" ng-click="saveLifeInsuranceIntend()"
+                                    style="background-color:rgba(250, 250, 250, 0.46);border-radius:6px;width: 60%;font-size:large;color:#323232;">
+                                提交寿险意向
+                            </button>
+                        </div>
+                    </div>
                 </div>
+
 
             </div>
         </div>
