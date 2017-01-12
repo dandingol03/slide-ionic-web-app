@@ -7,10 +7,10 @@
             </button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content delegate-handle="maintain" >
+    <ion-content delegate-handle="maintain" style="padding:0;margin:0;">
 
 
-        <div style="margin:5%;margin-left:7%;margin-right:3%;width:90%;height: 40px;padding: 0;">
+        <div style="margin-top:10px;margin-bottom:10px;margin-left:7%;margin-right:3%;width:90%;height: 40px;padding: 0;">
 
             <div style="width: 2%;display: inline-block;height: 100%"></div>
 
@@ -327,255 +327,131 @@
 
 
 
+            <!-- 文本、音频、视频 -->
 
             <div class="list list-inset padding"
                  style="margin-bottom:40px;padding:3px 3px 3px 0px;background-color: transparent;overflow: initial;margin-top:0px;
                         width: 100%;margin-left:0px;"
                  ng-if="tabIndex==1">
 
+                <!-- 文本 -->
+                <div class="item" style="padding-top:4px;margin:0;border: 0;padding-bottom: 4px;">
 
-                <!-- 1 -->
-                <div class="item" style="height: 130px;width:100%;position: relative;border:0px;margin-top:20px;">
+                    <div style="width: 100%;height: 40px;text-align: left;padding:10px;border:1px solid #ddd;border-bottom:0px;">
+                        <span style="color:#666;font-size: 1.2em;">文本描述</span>
+                    </div>
 
-                    <div style="position: absolute;width: 4%;height: 100%;left:0;top:0;">
-                        <div style="width:100%;height: 100%;display: table;">
-                            <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;padding-left: 10px;">
-                                <div style="display: inline-block;width: 20%;" >
-                                </div>
+                    <div style="width: 100%;border: 1px solid #ddd;">
+                        <textarea style="width:100%;height:120px;background-color: transparent;padding: 10px;margin:0;overflow:hidden; resize:none;"
+                                  placeholder="请对故障进行文本描述......"
+                                  ng-model="maintain.description.text"
+                                  ng-change="descriptionTextChange()"
+                                  cols="40"
+                                  rows="7"
+                        ></textarea>
+                        <span style="display: inline-block;height: 40px;width: 100%;text-align: right;padding:10px 10px;">
+                            <span ng-if="maintain.description.text!==undefined&&maintain.description.text!==null">
+                                 {{ maintain.description.text.toString().length}}/300
                             </span>
-                        </div>
+                            <span ng-if="maintain.description.text==undefined||maintain.description.text==null">0/300</span>
+
+                        </span>
                     </div>
-
-
-                    <div style="position: absolute;width: 2px;height: 100%;left:4%;top:0;background: #aaa;">
-
-                        <div style="width: 100%;height: 100%;position: relative;">
-                            <div style=" position: absolute;top: 35%;left:-16px;z-index: 9999;
-                                    width: 32px;height: 32px;padding: 1px;border-radius: 32px;border:1px solid #222;background: #fff;">
-                                <div style="width: 28px;height: 28px;border-radius: 28px;background: #404141;display: table;">
-                                    <div style="display: table-cell;vertical-align: middle;text-align: center;">
-                                        <span style="color:#fff;">1</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
-
-                    <div style="position: absolute;left:10%;width: 80%;height: 100%;top:0;">
-                        <div style="width: 100%;">
-                            <span style="color:#222;">文本描述:</span>
-                        </div>
-                        <div style="width: 100%;display: table;height: 90px;">
-                          <div style="display: table-cell;vertical-align: middle;padding-top: 10px;padding-left: 0px;padding-right: 10px;">
-                              <div style="width: 100%;height: 90px;position: relative;margin: 0;padding: 0;" >
-                                  <textarea style="width:100%;height:90px;background-color: transparent;padding: 10px;margin:0;"
-                                            ng-class="textareaFocusClass"
-                                            placeholder="请对故障进行文本描述..."
-                                            ng-model="maintain.description.text"
-                                            ng-focus="textareaFocusClass='highLight'"
-                                            ng-blur="textareaFocusClass='card'"
-                                  ></textarea>
-
-                              </div>
-                          </div>
-                        </div>
-                    </div>
-
                 </div>
 
-                <!-- 2 -->
-                <div class="item" style="height: 370px;width:100%;position: relative;border:0px;">
 
-                    <div style="position: absolute;width: 4%;height: 100%;left:0;top:0;">
-                        <div style="width:100%;height: 100%;display: table;">
-                            <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;padding-left: 10px;">
-                                <div style="display: inline-block;width: 20%;" >
-                                </div>
-                            </span>
-                        </div>
-                    </div>
+                <div class="item" style="border:0;margin:0;padding:6px 10px;width: 100%;">
 
+                    <!-- 音频 -->
+                    <div style="width: 52%;display: inline-block;height: 100%;margin-right: 1%;margin-left:1%;">
+                        <span style="width: 100%;display: inline-block;margin-left:2.5%;margin-right: 2.5%;">
+                            <div style="width: 100%;background:#f96666;height: 120px;border-radius: 8px; ">
+                                <span style="width: 65%;display: inline-block;height: 100%;float:left;">
+                                    <div style="width: 100%;height: 100%;position: relative;">
+                                         <div style="width: 100%;bottom: 10px;position: absolute;left:10px;">
+                                             <span style="width: 12%;" ng-repeat="amplitude in amplitudeWaves track by $index">
+                                                 <img ng-src="{{amplitudeImgMap[amplitude].src}}" style="max-width: 100%;">
+                                             </span>
+                                             <div style="width: 100%;height: 30px;text-align: center;">
+                                                 <span style="color:#fff;">{{audioMinuteStr}}:{{audioSecondStr}}</span>
+                                             </div>
+                                         </div>
 
-                    <div style="position: absolute;width: 2px;height: 100%;left:4%;top:0;background: #aaa;">
-
-                        <div style="width: 100%;height: 100%;position: relative;">
-                            <div style=" position: absolute;top: 10%;left:-16px;z-index: 9999;
-                                    width: 32px;height: 32px;padding: 1px;border-radius: 32px;border:1px solid #222;background: #fff;">
-                                <div style="width: 28px;height: 28px;border-radius: 28px;background: #404141;display: table;">
-                                    <div style="display: table-cell;vertical-align: middle;text-align: center;">
-                                        <span style="color:#fff;">2</span>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
 
-                    <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
-
-                    <div style="position: absolute;left:8%;width: 85%;top:50px;">
-                        <div class="item"
-                             style="margin:1px;border:0px;padding:10px;position: relative;
-                             background-color:transparent;width: 100%;height: 320px;">
-
-                            <span class="input-label" style="display: inline-block;width: 35%;text-align: left;">
-                                   音频描述: &nbsp;&nbsp;&nbsp;
-                            </span>
-                            <div class="item range range-positive" style="background: transparent;border: 0px;">
-                                <span style="padding:4px 10px;" ng-click="getADLength()"><i class="fa fa-hand-pointer-o"></i></span>
-                                <span style="padding: 4px 6px;font-size: 1.1em;color:#19d8cb"><i class="fa fa-play"></i></span>
-                                <input type="range" name="volume" ng-model="audioPos" ng-value="audioPos" disabled>
-                                <span ng-if="audioLength!==undefined&&audioLength!==null">
-                                    {{(audioLength/1000).toFixed(2)}}
+                                </span>
+                                <span style="width: 35%;display: inline-block;height: 100%">
+                                    <div style="width: 100%;height: 100%;display: table;text-align: center;">
+                                        <span style="vertical-align: middle;display: table-cell;">
+                                          <img src="img/maike-@2x.png" alt="" style="max-width:100%;" ng-click="mutexRecord()">
+                                        </span>
+                                    </div>
                                 </span>
                             </div>
 
-                            <div ng-class="{true:'vibrate-pink',false:''}[isRecording]" style="height: 150px;width: 150px;text-align: center;padding: 15px;margin-left: 25%;margin-right: 17%;
-                                border-radius: 100%;border: 1px solid transparent;background-color:rgba(255, 168, 204, 0.64);position:absolute;top:80px;">
-                                <div ng-class="{true:'vibrate-red',false:''}[isRecording]" style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;padding:8px;border: 1px solid transparent;border-radius: 100%;background-color:rgba(255, 116, 116, 0.64);">
-                                    <div style="height: 100%;width: 100%;margin-left: 0;margin-right: 0;border: 1px solid white;border-radius: 100%;background-color:white"
-                                         ng-click="startRecord()">
-                                        <div style="margin-top: 15%;font-size: 4em;">
-                                            <i style="color: #a2a2a2;" class="ion-mic-a"></i>
+                            <div style="width: 100%;text-align: center;margin-top:10px;">
+                                <span style="font-size: 1.1em;font-weight: bolder;">音频描述</span>
+                            </div>
+                        </span>
+                    </div>
+
+
+                    <!-- 视频 -->
+                    <div style="width: 44%;display: inline-block;height: 100%;margin-left:1%;margin-right: 1%;">
+
+                        <div style="width: 100%;height: 120px;position: relative;background-color:#444;border-radius: 8px;">
+                            <!-- 视频thumbnail -->
+                            <img ng-if="videoThumbnail!==undefined&&videoThumbnail!==null"
+                                 ng-src="{{videoThumbnail}}" style="width: 100%;max-height: 120px;">
+
+
+                            <div ng-if="maintain.description.video!==undefined&&maintain.description.video!==null">
+                                <!-- 播放按钮 -->
+                                <div style="position: absolute;top:40%;width: 37px;height: 37px;
+                                 left:40%;background:rgba(34, 34, 34, 0.28);;border-radius: 37px;border:1px solid #eee;"
+                                     ng-click="moviePlay()">
+                                    <div style="width: 100%;height: 100%;display: table;">
+                                        <div style="display: table-cell;vertical-align: middle;text-align: center">
+                                            <span style="font-size: 1.8em;margin-left:4px;color:#fff;">
+                                                <i class="fa fa-play"></i>
+                                            </span>
                                         </div>
                                     </div>
-
                                 </div>
+
+                                <!-- 录制按钮 -->
+                                <div style="position: absolute;top:2%;width: 25px;height: 20px;
+                                    right:10px;background:#fff;" class="card"
+                                     ng-click="startCapture()">
+                                    <div style="width: 100%;height: 100%;display: table;text-align: center;">
+                                        <span style="font-size: 1em;color:#666;display: table-cell;vertical-align: middle;"><i class="ion-videocamera"></i></span>
+                                    </div>
+                                </div>
+
+
+
                             </div>
 
-                            <div style="margin-top: 2px;background-color:rgba(255, 116, 116, 0.41);
-                                        position:absolute;top:260px;width:93%;height:15%;padding: 4%;padding-top:5px;">
-
-                                <div style="display:inline-block;width:33%;text-align: center;"
-                                     ng-click="startRecord()">
-                                    <div style="height: 40px;width: 40px;border-radius: 30px;border: 1px solid white;
-                                            margin-left:30%;padding-top: 5%;padding-left: 2%;">
-                                        <span style="font-size: 2em;">
-                                            <i class="ion-mic-a" style="color:white"></i>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div style="display:inline-block;width:32%;text-align: center;"
-                                     ng-click="stopRecord()">
-                                    <div style="height: 40px;width: 40px;border-radius: 30px;border: 1px solid white;
-                                            margin-left: 30%;padding-top: 5%;padding-left:%;">
-                                        <span style="font-size: 2em;">
-                                            <i class="ion-pause" style="color:white"></i>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div style="display:inline-block;width:32%;text-align: center;"
-                                     ng-click="play()">
-                                    <div style="width: 40px;height: 40px;border-radius: 30px;border: 1px solid #fff;
-                                            margin-left:30%;padding-top: 5%;padding-left:3%;">
-                                        <span style="font-size: 2em">
-                                            <i class="ion-play" style="color:white"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3 -->
-                <div class="item" style="height: 400px;width:100%;position: relative;border:0px;">
-
-                    <div style="position: absolute;width: 4%;height: 100%;left:0;top:0;">
-                        <div style="width:100%;height: 100%;display: table;">
-                            <span style="display: table-cell;vertical-align: middle;font-size: 0.8em;padding-left: 10px;">
-                                <div style="display: inline-block;width: 20%;" >
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-
-
-                    <div style="position: absolute;width: 2px;height: 100%;left:4%;top:0;background: #aaa;">
-
-                        <div style="width: 100%;height: 100%;position: relative;">
-                            <div style=" position: absolute;top: 10%;left:-16px;z-index: 9999;
-                                    width: 32px;height: 32px;padding: 1px;border-radius: 32px;border:1px solid #222;background: #fff;">
-                                <div style="width: 28px;height: 28px;border-radius: 28px;background: #404141;display: table;">
-                                    <div style="display: table-cell;vertical-align: middle;text-align: center;">
-                                        <span style="color:#fff;">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
-
-                    <div style="position: absolute;left:10%;width: 82%;top:50px;">
-                        <div class="item"
-                             style="margin-top:6px;margin-bottom: 2px;border:0px;padding:10px;padding-left: 11px;padding-top:12px;position: relative;
-                             background-color:transparent;width: 100%;">
-                            <span>视频描述:</span>
-                        </div>
-
-                        <!-- 视频预览 -->
-                        <div class="item"
-                             style="margin-bottom: 1px;border:0px;padding: 0;position: relative;
-                             background-color:#aaaaaa;width: 100%;height: 240px;">
-
-                            <img ng-if="videoThumbnail!==undefined&&videoThumbnail!==null"
-                                 ng-src="{{videoThumbnail}}" style="width: 100%;max-height: 240px;">
-
-
-                            <div style="position: absolute;top:40%;width: 50px;height: 50px;
-                                    left:45%;background: rgba(34, 34, 34, 0.28);;border-radius: 50px;border:1px solid #eee;"
-                                 ng-if="maintain.description.video!==undefined&&maintain.description.video!==null"
-                                 ng-click="moviePlay()">
-                                <div style="width: 100%;height: 100%;display: table;">
-                                    <div style="display: table-cell;vertical-align: middle;text-align: center">
-                                        <span style="font-size: 2em;margin-left:4px;color:#fff;">
-                                            <i class="fa fa-play"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="position: absolute;top:35%;width: 50px;height: 50px;
-                                        left:40%;"
+                            <!-- 录制按钮 -->
+                            <div style="position: absolute;top:25%;width: 35px;height: 35px;
+                                    left:40%;background:#fff;border-radius: 20px;" class="card"
                                  ng-if="maintain.description.video==undefined||maintain.description.video==null||maintain.description.video==''"
                                  ng-click="startCapture()">
-                                <span style="font-size: 7em;color:#fff;"><i class="ion-videocamera"></i></span>
+                                <div style="width: 100%;height: 100%;display: table;text-align: center;">
+                                    <span style="font-size: 1.4em;color:#666;display: table-cell;vertical-align: middle;"><i class="ion-videocamera"></i></span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="item"
-                             style="border:0px;padding:10px;position: relative;
-                             ;width: 100%;">
-                            <button class="button button-block button-calm" style="width: 40%;margin-left:30%;line-height: 32px;margin-bottom: 0;min-height: 0px;"
-                                    ng-click="startCapture()">
-                                <span ng-if=" maintain.description.video!==undefined&& maintain.description.video!==null">
-                                    重新录制视频
-                                </span>
-                                <span ng-if="maintain.description.video==undefined||maintain.description.video==null||
-                                                maintain.description.video==''">
-                                    录制视频
-                                </span>
-                            </button>
+                        <div style="width: 100%;text-align: center;margin-top:10px;">
+                            <span style="font-size: 1.1em;font-weight: bolder;">视频描述</span>
                         </div>
 
-
-                        <div class="item"
-                             style="border:0px;padding:10px;position: relative;
-                             ;width: 100%;">
-                            <span style="color:#fff;">{{videoMinuteStr}}:{{videoSecondStr}}</span>
-                        </div>
 
                     </div>
 
                 </div>
-
 
 
 

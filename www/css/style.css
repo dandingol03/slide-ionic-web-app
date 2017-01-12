@@ -1420,3 +1420,9 @@ ion-content.h-300{
   max-width: 255px;
   font-weight: bold;
 }
+
+.chat-tool.activated
+{
+  background: rgba(162, 162, 162, 0.13);
+
+}

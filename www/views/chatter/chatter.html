@@ -42,6 +42,21 @@
                                      {{msg.msg.audioLength}}s&nbsp;&nbsp;&nbsp;<span><i class="ion-volume-high"></i></span>
                                  </span>
 
+                                 <span style="color:#fff;" ng-if="msg.msg.type=='video'" ng-click="moviePlay(msg.msg.path)">
+                                     <img ng-src="{{msg.msg.thumb}}" alt="" style="max-width: 100%;">
+                                 </span>
+
+
+                                 <!-- 视频播放按钮 -->
+                                 <span style="position: absolute;top:40%;left:30%;width: 35px;height: 35px;border-radius: 35px;border:1px solid #ddd;"
+                                       ng-click="moviePlay(msg.msg.path)" ng-if="msg.msg.type=='video'">
+                                     <span style="width: 100%;height: 100%;display: table;text-align: center;">
+                                         <span style="font-size: 1.8em;display: table-cell;vertical-align: middle;">
+                                              <i class="fa fa-play"></i>
+                                         </span>
+                                     </span>
+                                 </span>
+
                              </div>
                              <div class="clear"></div>
                            </span>
@@ -89,16 +104,38 @@
 
               <div contenteditable="true" style="width: 100%;overflow-x:hidden; overflow-y:scroll;white-space: normal;
                 padding: 4px 10px;border: 1px solid #aaa;border-radius: 10px;background:#fff;" ng-if="mode=='plain'"
-                   ng-model="ws.text" ng-value="ws.text">
+                   ng-model="ws.text" ng-value="ws.text" ng-change="textChange()">
               </div>
               <!--<textarea class="msd-elastic" style="min-height: 36px;" data-ng-model="input.message" id="message"></textarea>-->
           </span>
 
           <span style="display: inline-block;width: 10%;vertical-align: middle;text-align:center;font-size: 2em;">
-              <span ng-style="ws.text!==undefined&&ws.text!==null&&ws.text!=''?sendStyle:unSendStyle" ng-click="doSend()">
+              <span ng-if="ws.text!==undefined&&ws.text!==null&&ws.text!=''"
+                    ng-style="ws.text!==undefined&&ws.text!==null&&ws.text!=''?sendStyle:unSendStyle" ng-click="doSend()">
                   <i class="ion-android-send"></i>
               </span>
+              <span ng-if="ws.text==null||ws.text==undefined||ws.text==''" ng-click="showTools()">
+                  <i class="ion-ios-plus-outline"></i>
+              </span>
           </span>
+
+          <!-- tools -->
+          <div style="width: 100%;margin-top:15px;margin-bottom:5px;background: #f8f8f8;padding: 10px;border-radius: 4px;"
+               ng-if="toolsShowFlag">
+
+              <!-- 小视频 -->
+              <div style="width: 60px;text-align: center;border-radius: 8px;padding: 5px 6px" class="chat-tool" ng-click="captureVideo()">
+                  <div  style=";width: 35px;height: 35px;margin-left:8px;border:1px solid #888;border-radius: 8px;">
+                      <div style="width: 100%;height: 100%;display: table;text-align: center;">
+                            <span style="font-size: 1.8em;vertical-align: middle;display: table-cell;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                      </div>
+                  </div>
+                  <span style="font-size: 1em;">小视频</span>
+              </div>
+
+          </div>
 
       </div>
 

@@ -102,6 +102,14 @@ angular.module('starter')
         }
 
 
+        //文本框字数监听
+        $scope.descriptionTextChange=function () {
+            var text=$scope.maintain.description.text;
+            if(text.toString().length>=300)
+                $scope.maintain.description.text = $scope.maintain.description.text.toString().substring(0, 300);
+        };
+
+
         $scope.grid_check=function (index) {
             if($scope.dailys[index].checked!=true)
                 $scope.dailys[index].checked=true;
@@ -213,6 +221,8 @@ angular.module('starter')
                     return;
                 }
             }
+
+
 
 
 
@@ -398,6 +408,28 @@ angular.module('starter')
 
         $scope.isRecording=false;
 
+
+        //音幅数组,数组长度7,划分标准为0~0.09=>1,0.1~0.19=>2
+        $scope.amplitudeWaves=[1,1,1,1,1,1,10];
+
+
+        $scope.amplitudeImgMap={
+            1:{src:'img/1.png'},
+            2:{src:'img/2.png'},
+            3:{src:'img/3.png'},
+            4:{src:'img/4.png'},
+            5:{src:'img/5.png'},
+            6:{src:'img/6.png'},
+            7:{src:'img/7.png'},
+            8:{src:'img/8.png'},
+            9:{src:'img/9.png'},
+            10:{src:'img/10.png'}
+        };
+
+
+        $scope.audioMinuteStr='00';
+        $scope.audioSecondStr='00';
+
         $scope.startRecord=function(){
             try{
 
@@ -424,6 +456,47 @@ angular.module('starter')
                             }
                             var media = $cordovaMedia.newMedia(src);
                             media.startRecord();
+
+                            //开始计秒的时长
+                            if($scope.recordTimer!==undefined&&$scope.recordTimer!==null)
+                            {
+                                $interval.cancel($scope.recordTimer);
+                                $scope.recordTimer=null;
+                            }
+                            $scope.audioSecond=0;
+                            $scope.audioMinute=0;
+                            $scope.audioMinuteStr='00';
+                            $scope.audioSecondStr='00';
+                            $scope.recordTimer=$interval(function () {
+                                $scope.audioSecond++;
+                                if($scope.audioSecond<10)
+                                    $scope.audioSecondStr='0'+$scope.audioSecond;
+                                else
+                                    $scope.audioSecondStr=''+$scope.audioSecond;
+                                if($scope.audioSecond==60)
+                                {
+                                    $scope.audioMinute++;
+                                    if($scope.audioMinute<10)
+                                        $scope.audioMinuteStr='0'+$scope.audioMinute;
+                                    else
+                                        $scope.audioMinuteStr=''+$scope.audioMinute;
+                                }
+                            },1000);
+
+
+                            if($scope.amplitudeTimer!==undefined&&$scope.amplitudeTimer!==null)
+                            {
+                                $interval.cancel($scope.amplitudeTimer);
+                                $scope.amplitudeTimer=null;
+                            }
+                           $scope.amplitudeTimer= $interval(function () {
+                               media.getCurrentAmplitudeAudio().then(function (amplitude) {
+                                   var amplitudeVal=(parseInt(amplitude*10)%10)+1;
+                                   $scope.amplitudeWaves.splice(0,1);
+                                   $scope.amplitudeWaves.push(amplitudeVal);
+                                   console.log('=====================amplitude  ' + amplitudeVal);
+                               });
+                            },100);
                             $scope.media_record_start=new Date();
                             $scope.media=media;
                             $scope.isRecording=true;
@@ -464,10 +537,23 @@ angular.module('starter')
                             alert('stop record');
                             $scope.media.stopRecord();
 
+                            if($scope.recordTimer!==undefined&&$scope.recordTimer!==null)
+                            {
+                                $interval.cancel($scope.recordTimer);
+                                $scope.recordTimer=null;
+                            }
+                            $scope.audioSecond=0;
+                            $scope.audioMinute=0;
+
+                            if($scope.amplitudeTimer!==undefined&&$scope.amplitudeTimer!==null)
+                            {
+                                $interval.cancel($scope.amplitudeTimer);
+                                $scope.amplitudeTimer=null;
+                            }
                             $scope.media_record_finish=new Date();
                             $timeout(function () {
-                                var timeling=($scope.media_record_finish.getTime()-$scope.media_record_start)/1000;
-                                alert('time length=' + timeling);
+                                var timeline=($scope.media_record_finish.getTime()-$scope.media_record_start)/1000;
+                                alert('time length=' + timeline);
                             });
                             $scope.maintain.description.audio=cordova.file.externalRootDirectory+'danding.wav';
                             $scope.isRecording=false;
@@ -484,6 +570,18 @@ angular.module('starter')
 
         }
 
+
+        $scope.isRecordingFlag=false;
+        $scope.mutexRecord=function () {
+            if($scope.isRecordingFlag==false)
+            {
+                $scope.isRecordingFlag=true;
+                $scope.startRecord();
+            }else{
+                $scope.isRecordingFlag=false;
+                $scope.stopRecord();
+            }
+        }
 
 
         $scope.audioPos=0;
