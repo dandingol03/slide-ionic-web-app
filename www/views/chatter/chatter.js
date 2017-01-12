@@ -5,9 +5,11 @@ angular.module('starter')
 
   .controller('chatterController',function($scope,$http,$rootScope,$ionicLoading,
                                             $WebSocket,$cordovaMedia,$cordovaFileTransfer,
-                                            Proxy,$cordovaFile,$q){
+                                            Proxy,$cordovaFile,$cordovaCapture,$q,
+                                           $ionicPopup){
 
       $scope.ws={
+          videos:[]
       };
 
       $scope.sendStyle = {color: '#222'};
@@ -70,9 +72,30 @@ angular.module('starter')
               };
               $WebSocket.send(msg);
           }
-
-
       }
+
+      $scope.doSendVideo=function (attachId,path,thumb) {
+
+          var msg={
+              action:'msg',
+              msgid:$WebSocket.getMsgId(),
+              timems:new Date().getTime(),
+              msg:{
+                  type:'video',
+                  content:attachId,
+                  path: path,
+                  thumb:thumb
+              },
+              to:{
+                  userid: 14,
+                  groupid:'presale'
+              }
+          };
+          $WebSocket.send(msg);
+          $ionicLoading.hide();
+          $scope.toolsShowFlag=false;
+      }
+
 
       //TODO:manage the message from back-end and customer
 
@@ -266,6 +289,160 @@ angular.module('starter')
           }else{
               $scope.stopRecord();
           }
+      }
+
+
+      $scope.toolsShowFlag=false;
+      $scope.showTools=function () {
+          if($scope.toolsShowFlag!=true)
+              $scope.toolsShowFlag=true;
+          else
+              $scope.toolsShowFlag=false;
+      }
+
+      $scope.textChange=function () {
+          if($scope.ws.text!==undefined&&$scope.ws.text!==null&&$scope.ws.text!='')
+              $scope.toolsShowFlag=false;
+      }
+
+
+
+      //上传视频文件
+      $scope.uploadVideoChat=function (path) {
+
+
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">发送视频消息...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+
+          var server=Proxy.local()+'/svr/request?' +
+              'request=uploadVideoChat';
+          var options = {
+              fileKey:'file',
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              }
+          };
+
+          $cordovaFileTransfer.upload(server, path, options).then(function(res) {
+              var json=res.response;
+              if(Object.prototype.toString.call(json)=='[object String]')
+                  json=JSON.parse(json);
+              var attachId=json.data;
+              if(json.re==1) {
+                  $scope.createThumbnail(path).then(function (json) {
+                      if(json.re==1) {
+                          $scope.doSendVideo(parseInt(attachId),path,json.data);
+                      }else{
+                          $scope.toolsShowFlag=false;
+                          var alertPopup = $ionicPopup.alert({
+                              title: '错误',
+                              template: '生成视频缩略图错误'
+                          });
+                      }
+                  })
+              }
+              else{
+                  $ionicLoading.hide();
+                  $scope.toolsShowFlag=false;
+                  var alertPopup = $ionicPopup.alert({
+                      title: '错误',
+                      template: '视频消息发送失败'
+                  });
+              }
+          });
+      }
+
+
+
+      //生成视频thumb
+      $scope.createThumbnail=function (path) {
+
+          var deferred=$q.defer();
+
+          function success(result) {
+              // result is the path to the jpeg image on the device
+              $scope.$apply();
+              console.log('video thumbnail='+result);
+              deferred.resolve({re: 1, data: result});
+          }
+
+          function  error(err) {
+              console.log('create thumbnail encounter error=\r\n'+err);
+              deferred.resolve({re: -1, data: null});
+          }
+
+          //TODO:generate a snapshot
+          VideoEditor.createThumbnail(
+              success, // success cb
+              error, // error cb
+              {
+                  fileUri:path, // the path to the video on the device
+                  outputFileName: 'thumbnail', // the file name for the JPEG image
+                  width: 100, // optional, width of the thumbnail
+                  height: 150, // optional, height of the thumbnail
+                  quality: 40 // optional, quality of the thumbnail (between 1 and 100)
+              }
+          );
+
+          return deferred.promise;
+      }
+
+
+      //录制视频
+      $scope.captureVideo=function () {
+
+
+              if (ionic.Platform.isIOS()) {
+                  var options = { limit: 1, duration:600 };
+
+                  $cordovaCapture.captureVideo(options).then(function(videoData) {
+                      // Success! Video data is here
+                      var path=videoData[0].fullPath;
+                      $scope.uploadVideoChat(path)
+                  }, function(err) {
+                      // An error occurred. Show a message to the user
+                      var str='';
+                      for(var field in err)
+                          str+=err[field];
+                      console.error('error=\r\n' + str);
+                  });
+              }else if(ionic.Platform.isAndroid()){
+                  var options = { limit: 1, duration: 600 };
+                  $cordovaCapture.captureVideo(options).then(function(videoData) {
+                      // Success! Video data is here
+
+                      var path=videoData[0].fullPath;
+                      //TODO:send video msg
+                      $scope.uploadVideoChat(path);
+
+                  }, function(err) {
+                      // An error occurred. Show a message to the user
+                      var str='';
+                      for(var field in err)
+                          str+=err[field];
+                      console.error('error=\r\n' + str);
+                  });
+              }
+      }
+
+      //视频播放
+      $scope.moviePlay=function (path) {
+
+              var open = cordova.plugins.disusered.open;
+              function success() {
+                  console.log('Success');
+              }
+
+              function error(code) {
+                  if (code === 1) {
+                      console.log('No file handler found');
+                  } else {
+                      console.log('Undefined error');
+                  }
+              }
+              open(path, success, error);
+
       }
 
 

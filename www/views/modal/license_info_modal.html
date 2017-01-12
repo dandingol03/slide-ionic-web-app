@@ -1,0 +1,97 @@
+<ion-modal-view  class=" carInfo_modal animated slideInDown>" style="background: transparent">
+    <ion-content
+            class="carInfo_content"
+            style="margin: 0 auto;top: 0%;background-color: #f8f8f8;;border:0">
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-stable" style="position: static;height:8%;width: 100%;padding-left: 10px;padding-right: 10px; background-color: white; border-bottom: 1px solid #f8f8f8;">
+            <div class="title" style="display: inline-block;width: 100%;text-align:center;">
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.1em; color: #737373;" ng-click="close_licenseInfoModal()">
+                    <i class="ion-chevron-left"></i>
+                </span>
+                <span style="display: inline-block;width:65%;text-align: center; font-size: medium;color: #737373;padding-left: 5%;">
+                    填写行驶证信息
+                </span>
+                <span style="display: inline-block;font-size:0.8em;text-align: center;width: 20%;color: #737373;"
+                      ng-click="close_licenseInfoModal()">
+                 保存
+              </span>
+                <span style="display: inline-block;width: 5%;">
+              </span>
+            </div>
+        </div>
+
+
+            <div class="list padding" style="padding:0;background-color:white">
+
+                <div class="item"
+                     style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #ddd;
+               padding:4px 10px;background-color:transparent;overflow: initial">
+
+                  <span  style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;font-size: 0.9em;">
+                      厂牌型号:
+                  </span>
+
+                    <span style="width: 60%;display: inline-block;text-align: left;">
+                      <input type="text" placeholder="输入厂牌型号"
+                             style="display:inline-block;background-color: transparent;" ng-value="carInfo.factoryNum"
+                             ng-model="carInfo.factoryNum"
+                             ng-focus="focusInFactoryNum()"
+                             ng-blur="blurFactoryNum()"
+                      />
+                  </span>
+
+                </div>
+
+                <div class="item"
+                     style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #ddd;
+               padding:4px 10px;background-color:transparent;overflow: initial">
+
+                  <span class="input-label" style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;font-size: 0.9em;">
+                      发动机号:
+                  </span>
+                    <span style="width: 30%;display: inline-block;text-align: left;">
+                      <input type="text" placeholder="输入发动机号"
+                             style="display:inline-block;background-color: transparent;"
+                             ng-value="carInfo.engineNum"
+                             ng-model="carInfo.engineNum"
+                             ng-change="validate(carInfo,'engineNum','/^\\d{6}/')"
+                      />
+                  </span>
+                    <div style="width: 100%;text-align: center;font-size: 0.7em;color:#ff3b30"
+                         ng-if="carInfo['engineNum_error']==true">
+                        请至少输入6位的发动机号
+                    </div>
+
+
+                </div>
+
+                <div class="item"
+                     style="border:0;
+               padding:4px 10px;background-color:transparent;overflow: initial;">
+
+                  <span class="input-label" style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;font-size: 0.9em;">
+                      车架号:
+                  </span>
+                    <span style="width: 60%;display: inline-block;text-align: left;">
+                      <input type="text" placeholder="设置车架号"
+                             style="display:inline-block;background-color: transparent;"
+                             ng-value="carInfo.frameNum"
+                             ng-model="carInfo.frameNum"
+                             ng-change="validate(carInfo,'frameNum','/^\\w{17}$/')"
+                      />
+                  </span>
+                    <div style="width: 100%;text-align: center;font-size: 0.8em;color:#ff3b30"
+                         ng-if="carInfo['frameNum_error']==true">
+                        请输入17位车架号
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+    </ion-content>
+
+</ion-modal-view>

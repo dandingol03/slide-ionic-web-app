@@ -1184,7 +1184,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.121:3000';
+            return 'http://139.129.96.231:3000';
           else
             return "/proxy/node_server";
 
@@ -1337,7 +1337,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                   json=JSON.parse(json);
               switch (json.type) {
                   case 'ack':
-                      console.log(json.msg);
                       if(json.result=='ok')
                       {
                           if(self.tmpMsg!==undefined&&self.tmpMsg!==null)

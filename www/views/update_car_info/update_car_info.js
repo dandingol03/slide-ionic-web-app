@@ -903,6 +903,25 @@ angular.module('starter')
         };
         /*** bind append_carNumPrefix_modal ***/
 
+
+        /*** bind license_info_modal***/
+        $ionicModal.fromTemplateUrl('views/modal/license_info_modal.html',{
+            scope:  $scope,
+            animation: 'animated '+' bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.license_info_modal = modal;
+        });
+
+        $scope.open_licenseInfoModal= function(){
+            $scope.license_info_modal.show();
+        };
+
+        $scope.close_licenseInfoModal= function() {
+            $scope.license_info_modal.hide();
+        };
+        /*** license_info_modal ***/
+
         $scope.selectCarNumPrefixByCity=function () {
             $scope.open_append_carNumPrefixModal();
         }
