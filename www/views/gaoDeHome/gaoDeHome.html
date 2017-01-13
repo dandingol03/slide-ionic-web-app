@@ -1,16 +1,20 @@
-<ion-view>
-    <ion-nav-bar class="bar-calm" align-title="center" >
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear bar_arr"
-                    style="font-size: 2em;"
-                    ng-click="go_back()">
-                <i class="ion-chevron-left"></i>
-            </button>
-        </ion-nav-buttons>
 
-    </ion-nav-bar>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view hide-nav-bar="true">
 
     <ion-content style="width: 100%;padding: 0px;position: relative;height: 100%;" scroll="true">
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+            <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:left;margin-top:4%">
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
+                    <i class="ion-chevron-left"></i>
+                </span>
+            </h1>
+        </div>
+
+
+
         <div class="list list-inset " style="margin-bottom: 0px;height: 100%;margin:0;position: relative;">
 
             <!--<div class="item"-->
@@ -92,4 +96,5 @@
         </div>
     </ion-content>
 
-</ion-view>
+  </ion-view>
+</ion-nav-view>

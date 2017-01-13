@@ -1,32 +1,29 @@
-<ion-view class="passwordForget-view" view-title="车辆管理" >
 
-    <ion-nav-bar class="bar-stable" align-title="center" >
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear bar_arr"
-                    style="font-size: 2.4em;color:#bf530c"
-                    ng-click="go_back()">
-                <i class="ion-chevron-left"></i>
-            </button>
-        </ion-nav-buttons>
-
-        <ion-nav-buttons side="right">
-            <button class="button button-icon button-clear bar_arr"
-                    ng-click="fetchRelativeCars()">
-                <div style="color:#bf530c">
-                    <span  style="font-size: 1.8em;display: inline-block"> <i class="ion-refresh"></i></span>
-                </div>
-            </button>
-        </ion-nav-buttons>
-    </ion-nav-bar>
-
-
-
-    <!--<ion-content scroll="false"-->
-                 <!--style="background-image: url(../../img/bkg2@2x.png);background-repeat: no-repeat;-->
-                 <!--background-size: 100%;background-position: 0% 100%;">-->
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view class="passwordForget-view" view-title="车辆管理" hide-nav-bar="true">
 
     <ion-content scroll="false" style=" background-image: url('img/flow_and_moutain.png');background-repeat: no-repeat;
     background-size: 100%;background-position: 0% 100%;">
+
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+            <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:4%">
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
+                    <i class="ion-chevron-left"></i>
+                </span>
+                <span style="display: inline-block;width: 70%;text-align: center;">
+                    车辆管理
+                </span>
+                <span style="display: inline-block;font-size:1.5em;text-align: center;width: 20%;"
+                      ng-click="fetchRelativeCars()">
+                  <i class="ion-refresh"></i>
+              </span>
+                <span style="display: inline-block;width: 5%;">
+              </span>
+            </h1>
+        </div>
+
 
 
 
@@ -59,42 +56,6 @@
 
                 <div class="list list-inset"
                      style="margin-bottom: 10%;margin-left: 0;margin-right: 0;background:transparent;">
-
-                    <!-- 新界面 -->
-
-                    <!--<div class="item"-->
-                         <!--style="height: 40px;position: relative;margin-top:1px;margin-bottom: 1px;background:transparent;-->
-                                <!--border:1px solid rgba(88, 73, 58, 0.95);border-top-left-radius: 8px;border-top-right-radius: 8px;">-->
-
-                        <!--<div style="position: absolute;width: 18.2%;height: 100%;left:0;top:0;border-right:1px solid rgba(88, 73, 58, 0.95);">-->
-                            <!--<div style="width:100%;height: 100%;display: table;">-->
-                                <!--<span style="display: table-cell;vertical-align: middle;font-size: 0.8em;-->
-                                      <!--text-align: center;color:rgba(88, 73, 58, 0.95)">-->
-                                <!--</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-
-
-                        <!--<span style="position: absolute;left:18%;width: 59%;height: 100%;top:0;border-right: 1px solid rgba(88, 73, 58, 0.95)">-->
-
-                            <!--<div style="width: 100%;height: 100%;display: table;">-->
-                              <!--<div style="display: table-cell;vertical-align: middle;text-align: center;">-->
-                                <!--<div style="font-size: 1em;color:rgba(88, 73, 58, 0.95);">-->
-                                  <!--车辆摘要-->
-                                <!--</div>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                        <!--</span>-->
-
-                        <!--<span style="width:21%;height:100%;position: absolute;left:77%;top:0;text-align: center;">-->
-                            <!--<div style="width: 100%;height: 100%;display: table;">-->
-                                <!--<span style="display:table-cell;vertical-align: middle;color:rgba(88, 73, 58, 0.95)">-->
-                                    <!--详细-->
-                                <!--</span>-->
-                            <!--</div>-->
-                        <!--</span>-->
-                    <!--</div>-->
-
                     <ion-scroll style="height: 70%;">
                         <!--<div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"-->
                              <!--ng-style="$index==0?firstRowStyle:$index==(relativeCars.length-1)?lastRowStyle:notFirstRowStyle">-->
@@ -125,18 +86,7 @@
                                 </div>
                             </div>
 
-
-                            <!--<div style="position: absolute;width: 1px;height: 100%;left:18%;top:0;background: #aaa;">-->
-
-                                <!--<div style="width: 100%;height: 100%;position: relative;">-->
-                                    <!--<div style=" position: absolute;top: 40%;margin-left: -6px;z-index: 9999;background:transparent;">-->
-                                        <!--<span style="font-size:0.8em;"><i class="fa fa-circle-o"></i></span>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-
-                            <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
+                           <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
                             <span style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
                             <div style="width: 100%;height: 100%;display: table;">
                               <div style="display: table-cell;vertical-align: middle;">
@@ -189,3 +139,5 @@
 
 </ion-view>
 
+    </ion-view>
+</ion-nav-view>

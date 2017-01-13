@@ -1,8 +1,7 @@
 <ion-modal-view  class=" carInfo_modal animated slideInDown>" style="background: transparent">
     <ion-content
             class="carInfo_content"
-            style="margin: 0 auto;top: 0%;background-image: url('img/flow_and_moutain.png');background-repeat: no-repeat;
-                   background-size: 100%;background-position: 0% 100%;">
+            style="margin: 0 auto;top: 0%;">
 
         <!-- header bar -->
         <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;">
@@ -11,7 +10,7 @@
                     <i class="fa fa-chevron-left"></i>
                 </span>
                 <span style="display: inline-block;width: 70%;text-align: center;">
-                    绑定新车
+                    帮助
                 </span>
                 <span style="display: inline-block;font-size: 2em;text-align: center;width: 20%;"
                       ng-click="closeHelpModal()">
@@ -21,6 +20,22 @@
               </span>
             </h1>
         </div>
+
+        <ion-slide-box does-continue="false" show-pager="true"  active-slide="myActiveSlide" >
+            <ion-slide>
+                <img src="img/guide1.png"/>
+            </ion-slide>
+
+            <ion-slide>
+                <img src="img/guide2.png"/>
+            </ion-slide>
+
+            <ion-slide>
+                <img src="img/guide3.png"/>
+            </ion-slide>
+
+        </ion-slide-box>
+
 
 
     </ion-content>
