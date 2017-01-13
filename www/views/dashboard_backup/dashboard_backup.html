@@ -2,54 +2,55 @@
 <ion-nav-view class="slide-left-right" hide-nav-bar="true">
     <ion-view class="dashboard-view" hide-nav-bar="true">
 
-        <ion-content class="background">
+        <ion-content>
             <div class="banner">
                 <img src="img/newBanner@2x.png"/>
             </div>
 
-            <div style="margin-top: 30px;">
+            <div style="height: 60%;background-image: url('img/bkg1@2x.png');background-repeat: no-repeat;
+    background-size: 100%;">
 
                 <div style="margin-bottom: 40px;">
-                    <div style="display:inline-block;width:40%"
+                    <div style="display:inline-block;width: 49%;margin-top:10%"
                          ng-click="goIntoCarInsurance('car')">
                         <div style="text-align: center">
                             <img src="img/car@2x.png" class="animated zoomIn" style="max-width: 80px;"/>
                         </div>
-                        <div class="label" >
+                        <div class="label" style="text-align: center;">
                           <span>
                             车险
                           </span>
                         </div>
                     </div>
 
-                    <div style="display:inline-block;width:40%"
+                    <div style="display:inline-block;width: 49%;margin-top:10%"
                          ng-click="goto('life')">
                         <div style="text-align: center">
                             <img src="img/life@2x.png" class="animated zoomIn" style="max-width: 80px;"/>
                         </div>
-                        <div class="label">
+                        <div class="label" style="text-align: center;">
                             <span>寿险</span>
                         </div>
                     </div>
                 </div>
 
                 <div >
-                    <div style="display:inline-block;width:40%"
+                    <div style="display:inline-block;width: 49%;"
                          ng-click="goto('maintain')">
                         <div style="text-align: center">
                             <img src="img/maintain@2x.png" class="animated zoomIn" style="max-width: 80px;"/>
                         </div>
-                        <div class="label">
+                        <div class="label" style="text-align: center;">
                             维修
                         </div>
                     </div>
 
-                    <div style="display:inline-block;width:40%"
+                    <div style="display:inline-block;width: 49%;"
                          ng-click="carDrivingManageSelect()">
                         <div style="text-align: center">
                             <img src="img/drivingService@2x.png" class="animated zoomIn" style="max-width: 80px;"/>
                         </div>
-                        <div class="label">
+                        <div class="label" style="text-align: center;">
                             增值服务
                         </div>
                     </div>

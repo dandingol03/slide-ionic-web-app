@@ -8,15 +8,23 @@
 
 
     <!-- header bar -->
-
-    <div style="width: 100%;height:55px;background: #00c9ff;position: relative">
-      <div style="position: absolute;top:20%;left: 5%;" ng-click="closeCompanyModal()">
-          <span style="font-size: 3.4em;color:#fff;"><i class="ion-ios-arrow-back"></i></span>
-      </div>
-      <div style="position:absolute;top:38%;left:14%;" ng-click="closeCompanyModal()">
-        <span style="font-size: 1.6em;color:#fff;">返回</span>
-      </div>
+    <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+      <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:4%">
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;" ng-click="closeCompanyModal()">
+                    <i class="fa fa-chevron-left"></i>
+                </span>
+        <span style="display: inline-block;width: 70%;text-align: center;">
+                   选择公司
+                </span>
+        <span style="display: inline-block;font-size:1.5em;text-align: center;width: 20%;"
+              ng-click="closeCompanyModal()">
+                  <i class="ion-close-circled"></i>
+              </span>
+        <span style="display: inline-block;width: 5%;">
+              </span>
+      </h1>
     </div>
+
 
 
 
@@ -50,15 +58,19 @@
         </div>
       </ion-scroll>
 
-
-
-      <div
-              class="bar bar-footer bar-assertive"
-              style="width: 70%;margin-left:15%;margin-right:15%; margin-bottom: 30%"
-              ng-click="apply()"
-      >
-        <div class="title">确认公司选择</div>
+      <div style="height: 15%;width: 100%;">
+        <div style="width: 100%;height: 100%;display:table;">
+          <div style="display: table-cell;vertical-align: middle;text-align: center">
+            <button class="card" ng-click="apply()"
+                    style="background-color:rgba(250, 250, 250, 0.46);border-radius:6px;width: 60%;font-size:large;color:#323232;">
+              确认公司选择
+            </button>
+          </div>
+        </div>
       </div>
+
+
+
 
 
     </div>
