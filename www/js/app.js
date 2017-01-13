@@ -1145,6 +1145,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/maintainHome/maintainHome.html'
           })
 
+          .state('config_app',{
+              url:'/config_app:params',
+              controller:'configAppController',
+              templateUrl:'views/config_app/config_app.html'
+          })
+
+
+
+
         // if none of the above states are matched, use this as the fallback
 
       $urlRouterProvider.otherwise('/login');

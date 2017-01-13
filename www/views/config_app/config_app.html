@@ -1,0 +1,140 @@
+
+<ion-view  view-title='用户手册' >
+    <ion-nav-bar class="bar-stable title-bolder" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2.4em;"
+                    ng-click="goBack()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+
+    </ion-nav-bar>
+
+    <ion-content style="padding:0;margin:0;">
+
+        <div style="width:100%;height:20px;background: #eee;border-bottom: 1px solid #ccc;"></div>
+
+
+        <!-- 设置推送权限图例 -->
+        <div ng-if="type=='notification'">
+
+            <div class="list padding">
+
+                <div class="item" style="padding:10px 10px;margin:0;text-align: center;border:0px;border-bottom: 1px solid #ddd;">
+                    <span style="font-size: 1.2em;color: #222;font-weight: bolder;">
+                        如何设置推送在后台也能接收  ?
+                    </span>
+                </div>
+
+                <div class="item" style="padding:10px 10px;margin:0;border:0px;">
+                    <div style="white-space: normal;">
+                       首先打开手机桌面或者应用程序中的手机管家，如下图
+                    </div>
+                </div>
+
+                <!-- 查看图例 -->
+                <div class="item-divider card" style="padding:8px 10px;border: 1px solid #ccc;border-radius: 4px;background: #eee;
+                        text-align: center;margin-bottom: 2px;margin-top:0px;"
+                    ng-click="togglePictureExample('phoneManager')">
+                    <span style="font-weight: bolder;font-size: 1.2em;color:#444;">
+                        查看图例
+                    </span>
+                </div>
+
+                <div ng-if="pictureExample.notification.phoneManager==true">
+                    <div class="item" style="padding:8px 10px;border:0;text-align: center;">
+                        <img src="img/guideNotification3.png" alt="" style="max-height: 500px;">
+                    </div>
+                </div>
+
+                <div class="item" style="padding:10px 10px;margin:0;border:0px;">
+                    <div style="white-space: normal;">
+                        接着,打开手机管家的设置，找到内存加速白名单的入口
+                    </div>
+                </div>
+
+
+                <div class="item-divider card" style="padding:8px 10px;border: 1px solid #ccc;border-radius: 4px;background: #eee;
+                        text-align: center;margin-bottom: 2px;margin-top:0px;"
+                     ng-click="togglePictureExample('memoryWhiteList')">
+                    <span style="font-weight: bolder;font-size: 1.2em;color:#444;">
+                        查看图例
+                    </span>
+                </div>
+
+                <div ng-if="pictureExample.notification.memoryWhiteList==true">
+                    <div class="item" style="padding:8px 10px;border:0;text-align: center;">
+                        <img src="img/guideNotification1.png" alt="" style="max-height: 500px;">
+                    </div>
+                </div>
+
+
+                <div class="item" style="padding:10px 10px;margin:0;border:0px;">
+                    <div style="white-space: normal;">
+                        在内存白名单中,勾选ionic-web-app,使其在后台中也能存活
+                    </div>
+                </div>
+
+
+                <div class="item-divider card" style="padding:8px 10px;border: 1px solid #ccc;border-radius: 4px;background: #eee;
+                        text-align: center;margin-bottom: 2px;margin-top:0px;"
+                     ng-click="togglePictureExample('toggleProject')">
+                    <span style="font-weight: bolder;font-size: 1.2em;color:#444;">
+                        查看图例
+                    </span>
+                </div>
+
+
+                <div ng-if="pictureExample.notification.toggleProject==true">
+                    <div class="item" style="padding:8px 10px;border:0;text-align: center;">
+                        <img src="img/guideNotification2.png" alt="" style="max-height: 500px;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <!-- 设置内存白名单 -->
+        <div ng-if="type=='memoryWhiteList'">
+            <div class="list padding">
+
+                <div class="item" style="padding:10px 10px;margin:0;text-align: center;border:0px;border-bottom: 1px solid #ddd;">
+                    <span style="font-size: 1.2em;color: #222;font-weight: bolder;">
+                        如何设置应用程序在后台保持存活  ?
+                    </span>
+                </div>
+
+                <div class="item" style="padding:10px 10px;margin:0;border:0px;">
+                    <div style="white-space: normal;">
+                        在内存白名单中,勾选ionic-web-app,使其在后台中也能存活,如下图
+                    </div>
+                </div>
+
+                <!-- 查看图例 -->
+                <div class="item-divider card" style="padding:8px 10px;border: 1px solid #ccc;border-radius: 4px;background: #eee;
+                        text-align: center;margin-bottom: 2px;margin-top:0px;"
+                     ng-click="togglePictureExample('toggleProject')">
+                    <span style="font-weight: bolder;font-size: 1.2em;color:#444;">
+                        查看图例
+                    </span>
+                </div>
+
+                <div ng-if="pictureExample.memoryWhiteList.toggleProject==true">
+                    <div class="item" style="padding:8px 10px;border:0;text-align: center;">
+                        <img src="img/guideNotification2.png" alt="" style="max-height: 500px;">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+    </ion-content>
+
+</ion-view>
