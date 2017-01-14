@@ -367,6 +367,21 @@ angular.module('starter')
             $state.go('gaode_service_select');
         }
 
+        $scope.locationByBaiduSDK=function (suc,err) {
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function(r){
+                if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                    if(suc!==undefined&&suc!==null)
+                        suc(r.point);
+                }
+                else {
+                    console.log('err='+this.getStatus());
+                    if(err!==undefined&&err!==null)
+                        err(this.getStatus());
+                }
+            },{enableHighAccuracy: true})
+        }
+
         BaiduMapService.getBMap().then(function (res) {
 
 
@@ -377,10 +392,7 @@ angular.module('starter')
                 if(json.re==1) {
                     var map=$scope.map;
 
-
                     map.addEventListener("click", $scope.clickFunc);
-
-
                     if(window.cordova)
                     {
                         $ionicLoading.show({
@@ -390,7 +402,6 @@ angular.module('starter')
                             maxWidth: 200,
                             showDelay: 0
                         });
-
 
                         // var posOptions = {timeout: 10000, enableHighAccuracy: false};
                         // $cordovaGeolocation
@@ -432,24 +443,22 @@ angular.module('starter')
                         //         alert('error=\r\n' + err.toString());
                         //     });
 
-                        //百度地图获取自身定位
-                        var geolocation = new BMap.Geolocation();
-                        geolocation.getCurrentPosition(function(r){
-                            if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                                var mk = new BMap.Marker(r.point);
-                                map.addOverlay(mk);
-                                map.panTo(r.point);
-                                $scope.mk=mk;
-                                map.centerAndZoom(r.point, 12);
-                                console.log('您的位置：'+r.point.lng+','+r.point.lat);
-                                $ionicLoading.hide();
-                            }
-                            else {
-                                console.log('err='+this.getStatus());
-                                $ionicLoading.hide();
-                            }
-                        },{enableHighAccuracy: true})
 
+                        //百度地图获取自身定位
+                        $scope.locationByBaiduSDK(function (point) {
+
+                            var mk = new BMap.Marker(point);
+                            map.addOverlay(mk);
+                            map.panTo(point);
+                            $scope.mk=mk;
+                            var bmapPoint=new BMap.Point(point.lng,point.lat);
+                            map.centerAndZoom(bmapPoint, 12);
+                            console.log('您的位置：'+point.lng+','+point.lat);
+                            $ionicLoading.hide();
+                        },function (err) {
+                            console.log('err='+err);
+                            $ionicLoading.hide();
+                        })
 
                     }else{
 
