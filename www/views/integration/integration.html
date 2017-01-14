@@ -1,30 +1,33 @@
-<ion-view view-title="我的积分" >
 
-  <ion-nav-bar class="bar-stable" align-title="center" >
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr"
-              ng-click="go_back()"
-              style="font-size: 2.4em;"
-      >
-        <i class="ion-chevron-left"></i>
-      </button>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view view-title="我的积分" hide-nav-bar="true">
 
-      <div style="position: absolute;right: 5%;margin-top: 1%;border: 1px solid;border-radius: 6px;border-color: #DC4343;
-                  text-align: center;padding: 1%;background-color: #DC4343;"
-           ng-click="checkIdCard()">
-        <span style="margin:0;color:white">积分提现</span>
-      </div>
-    </ion-nav-buttons>
+  <ion-content class="padding" lazy-scroll style="padding:0;background-image: url('img/flow_and_moutain.png');background-repeat: no-repeat;
+    background-size: 100%;background-position: 0% 100%;">
 
-  </ion-nav-bar>
+    <!-- header bar -->
+    <div class="bar bar-header bar-dark" style="position: static;height:44px;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+      <h1 class="title" style="display: inline-block;width:100%;text-align:center;">
+        <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
+          <i class="ion-chevron-left"></i>
+        </span>
+        <span style="display: inline-block;width: 60%;text-align: center;">
+          我的积分
+        </span>
+        <button style="display: inline-block;font-size:0.8em;text-align: center;background: rgba(255, 255, 255, 0.69);"
+              ng-click="checkIdCard()">
+         积分提现
+        </button>
+        <span style="display: inline-block;width: 5%;">
+        </span>
+      </h1>
+    </div>
 
 
-  <ion-content class="padding" lazy-scroll>
-
-    <ul class="list">
+    <ul class="list" style="padding:10px;background: transparent;">
 
       <li class="item item-icon-right"
-          style="padding-top:0px;padding-left:0px;padding-bottom:0px;border: 0px;"
+          style="padding-top:0px;padding-left:0px;padding-bottom:0px;border: 0px;background: transparent;"
           >
         <div style="width: 25%;float:left;">
            <span style="display: inline-block">
@@ -113,14 +116,14 @@
     <!--</div>-->
 
 
-    <div class="item" style="border: 0px;">
+    <div class="item" style="border: 0px;background: transparent;padding-bottom:5%">
       <span>您已积累积分</span>
       {{scoreBalance}}
     </div>
 
 
 
-    <div class="list" ng-if="score_tab==0">
+    <div class="list" ng-if="score_tab==0" style="margin: 8px;">
 
       <div class="item item-divider" style="background:#CBCBCB;border-top-left-radius: 10px;border-top-right-radius: 10px;">
         <div style="display: inline-block;width: 33%;text-align: center">
@@ -196,3 +199,4 @@
 
 
 </ion-view>
+</ion-nav-view>

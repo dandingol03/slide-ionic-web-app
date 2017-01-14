@@ -1,29 +1,26 @@
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view view-title="服务订单" hide-nav-bar="true">
 
-  <ion-view  view-title="服务订单">
+    <ion-content scroll="false" style="background-image: url('img/flow_and_moutain.png');background-repeat: no-repeat;
+    background-size: 100%;background-position: 0% 100%;">
 
-      <ion-nav-bar class="bar-stable" align-title="center" >
-        <ion-nav-buttons side="left">
-          <button class="button button-icon button-clear bar_arr"
-                  ng-click="go_back()"
-                  style="font-size: 2em;"
-          >
-            <i class="ion-chevron-left"></i>
-          </button>
-        </ion-nav-buttons>
-
-
-        <ion-nav-buttons side="right">
-          <button class="button button-icon button-clear bar_arr"
-                  ng-click="fetchServiceOrders()"
-                  style="font-size: 2em;"
-          >
-            <i class="ion-refresh"></i>
-          </button>
-        </ion-nav-buttons>
-
-      </ion-nav-bar>
-
-    <ion-content scroll="false">
+      <!-- header bar -->
+      <div class="bar bar-header bar-dark" style="position: static;height:44px;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+        <h1 class="title" style="display: inline-block;width:100%;text-align:center;">
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="goBack()">
+                    <i class="ion-chevron-left"></i>
+                </span>
+          <span style="display: inline-block;width: 70%;text-align: center;">
+                    服务订单
+                </span>
+          <span style="display: inline-block;font-size:1.5em;text-align: center;width: 20%;"
+                ng-click="fetchServiceOrders()">
+                  <i class="ion-refresh"></i>
+              </span>
+          <span style="display: inline-block;width: 5%;">
+              </span>
+        </h1>
+      </div>
 
 
       <div style="margin-top:5%;margin-left:5%;width:90%;height: 40px;padding: 0;">
@@ -34,12 +31,12 @@
              style="border-top-left-radius: 7px;border-bottom-left-radius: 7px;"
              ng-click="tab_change(0)">
           <div style="width: 100%;height: 100%;display: table;">
-            <span style="display: table-cell;vertical-align: middle;text-align: center;">已申请</span>
+            <span style="display: table-cell;vertical-align: middle;text-align: center;">已下单</span>
           </div>
         </div>
         <div ng-style="tabIndex==1?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(1)">
           <div style="width: 100%;height: 100%;display: table;">
-            <span style="display: table-cell;vertical-align: middle;text-align: center;">寿险方案</span>
+            <span style="display: table-cell;vertical-align: middle;text-align: center;">服务中</span>
           </div>
         </div>
         <div ng-style="tabIndex==2?selectedTabStyle:unSelectedTabStyle"
@@ -56,12 +53,12 @@
       <!--<div>-->
       <div ng-style="orderRemain">
 
-            <div class="list list-inset " style="margin-left:0px;margin-right:0px;margin-top:0px;height: 100%;" >
+            <div class="list list-inset " style="margin-left:0px;margin-right:0px;margin-top:0px;height: 100%;background: transparent;" >
 
               <!-- 已下单 -->
               <div class="item"
                    ng-if="tabIndex==0"
-                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;padding:10px 4px ;height: 100%;">
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;padding:10px 4px ;height: 100%;background: transparent;">
                 <div class="list list-inset" style="margin-top:0px;">
 
 
@@ -186,7 +183,7 @@
               <!-- 服务中订单 -->
               <div class="item"
                    ng-if="tabIndex==1"
-                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;padding:10px 4px;height: 100%;">
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;padding:10px 4px;height: 100%;background: transparent;">
 
                 <div class="list list-inset" style="margin-top:0px;height: 100%;">
 
@@ -289,7 +286,7 @@
               <!-- 待支付订单 -->
               <div class="item"
                    ng-if="tabIndex==2"
-                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;padding:10px;"
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;padding:10px;background: transparent;"
               >
 
                 <div class="list list-inset" style="margin-top:0px;">
@@ -338,7 +335,7 @@
 
   </ion-view>
 
-
+</ion-nav-view>
 
 
 

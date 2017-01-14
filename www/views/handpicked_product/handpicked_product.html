@@ -1,9 +1,16 @@
-<ion-view view-title='寿险精选产品' >
-
-    <ion-nav-bar class="bar-stable" align-title="center" >
-    </ion-nav-bar>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view view-title="寿险精选产品" hide-nav-bar="true">
 
     <ion-content scroll="false" >
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-dark" style="position: static;height:44px;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+            <h1 class="title" style="display: inline-block;width:100%;text-align:center;">
+                <span style="display: inline-block;width:100%;text-align: center;">
+                    寿险订单
+                </span>
+            </h1>
+        </div>
 
         <div class="list padding">
             <div ng-repeat="product in products" style="margin-bottom: 20px;">
@@ -24,3 +31,4 @@
 
     </ion-content>
 </ion-view>
+</ion-nav-view>
