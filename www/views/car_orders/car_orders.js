@@ -248,11 +248,11 @@ angular.module('starter')
 
       $scope.selectedTabStyle=
           {
-              display:'inline-block',color:'#fff',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(55, 144, 139)','background-color':'rgb(55, 144, 139)'
+              display:'inline-block',color:'#fff',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgba(17, 17, 17, 0.6)','background-color':'rgba(17, 17, 17, 0.6)'
           };
       $scope.unSelectedTabStyle=
           {
-              display:'inline-block',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(68, 78, 78)'
+              display:'inline-block',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgba(17, 17, 17, 0.6)'
           };
 
 
