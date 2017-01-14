@@ -12,6 +12,53 @@ angular.module('starter')
 
         $ionicHistory.clearHistory();
 
+        $scope.userCounters = null;
+        $scope.orderCounters = null;
+        $http({
+            method: "POST",
+            url: Proxy.local()+'/svr/request',
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token,
+            },
+            data:
+                {
+                    request:'fetchUserCounters',
+                }
+        }).then(function(res){
+            var json = res.data;
+            if(json.re==1){
+                $scope.userCounters=json.data;
+            }
+            else{
+
+            }
+        });
+
+        $http({
+            method: "POST",
+            url: Proxy.local()+'/svr/request',
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token,
+            },
+            data:
+                {
+                    request:'fetchOrderCounters',
+                }
+        }).then(function(res){
+            var json = res.data;
+            if(json.re==1){
+                $scope.orderCounters=json.data;
+            }
+            else{
+
+            }
+        })
+
+
+
+
+
+
         $scope.serviceTypeMap={
             11:'维修-日常保养',
             12:'维修-故障维修',
@@ -108,9 +155,6 @@ angular.module('starter')
                 "duration":400, // in milliseconds (ms), default 400
             });
         }
-
-
-
 
 
 
@@ -249,12 +293,9 @@ angular.module('starter')
         };
 
 
-
         $scope.uploadOwnerIdCardPhoto=function(){
             $scope.open_uploadOwnerIdCardModal();
         }
-
-
 
 
         $scope.select_type=function(){
@@ -282,7 +323,6 @@ angular.module('starter')
 
             }
         }
-
 
 
         //1.附件,通过图库
