@@ -1145,6 +1145,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/maintainHome/maintainHome.html'
           })
 
+          .state('config_app',{
+              url:'/config_app:params',
+              controller:'configAppController',
+              templateUrl:'views/config_app/config_app.html'
+          })
+
+
+
+
         // if none of the above states are matched, use this as the fallback
 
       $urlRouterProvider.otherwise('/login');
@@ -1190,7 +1199,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://139.129.96.231:3000';
+            return 'http://192.168.1.121:3000';
           else
             return "/proxy/node_server";
 

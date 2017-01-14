@@ -1,74 +1,56 @@
 
-<ion-view class="passwordForget-view" view-title="帮助" >
+<ion-view  view-title="帮助与设置" >
     <ion-nav-bar class="bar-stable" align-title="center" >
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear bar_arr"
-                    style="font-size: 2.4em;color:#bf530c"
-                    ng-click="go_back()">
+                    style="font-size: 2.4em;"
+                    ng-click="goBack()">
                 <i class="ion-chevron-left"></i>
             </button>
         </ion-nav-buttons>
 
-        <ion-nav-buttons side="right">
-            <button class="button button-icon button-clear bar_arr">
-                <div style="color:#bf530c">
-                    <span  style="font-size: 1.8em;display: inline-block"> <i class="ion-refresh"></i></span>
-                </div>
-            </button>
-        </ion-nav-buttons>
     </ion-nav-bar>
 
-    <ion-content   lazy-scroll style="position: relative">
+    <ion-content style="padding:0;margin:0;">
 
 
-        <div class="item-divider" style="margin-left:5%;font-size:larger">
-                <span>
-                    APP权限设置指导
-                </span>
+        <div class="item-divider" style="padding:14px 10px;border-bottom: 1px solid #aaa;background: #ddd;">
+            <span style="font-weight: bolder;font-size: 1.1em;">
+                APP权限设置指导
+            </span>
         </div>
 
-        <div class="list padding">
+        <div class="list padding" style="padding:4px 10px;">
 
-            <div class="item shadow"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-                          padding:10px;background-color:transparent;overflow:initial"
-                 ng-click="openHelpModal()">
-                <span class="input-label"
-                      style="display: inline-block;width: 80%;text-align: left;margin-left: 5%;">
-                    如何设置权限管理:
+            <!-- 设置推送权限 -->
+            <div class="item " ng-click="navigate('notification')"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #aaa;
+                          padding:4px 2px;overflow:initial">
+                <span style="display: inline-block;width: 70%;text-align: left;font-size: 1.1em;vertical-align: middle;font-weight: bolder;">
+                    1.如何正确设置推送权限
                 </span>
-                <span style="display:inline-block;width: 20%;text-align: right;vertical-align: middle;
-                              font-size: 2em;">
+                <span style="display:inline-block;width: 20%;text-align: right;
+                              font-size: 2em;vertical-align: middle;">
                     <i class="ion-ios-arrow-forward"></i>
                 </span>
-            </div>
-
-            <div class="item shadow"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-                          padding:10px;background-color:transparent;overflow:initial">
-                <span class="input-label"
-                      style="display: inline-block;width: 80%;text-align: left;margin-left: 5%;">
-                    如何设置内存白名单:
-                </span>
-                <span style="display:inline-block;width: 20%;text-align: right;vertical-align: middle;
-                              font-size: 2em;">
-                    <i class="ion-ios-arrow-forward"></i>
-                </span>
+                <span style="display: inline-block;width: 10%;"></span>
             </div>
 
 
-            <div class="item shadow"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-                          padding:10px;background-color:transparent;overflow:initial">
-                <span class="input-label"
-                      style="display: inline-block;width: 80%;text-align: left;margin-left: 5%;">
-                    如何设置权限管理:
+            <!-- 设置内存白名单 -->
+            <div class="item " ng-click="navigate('memoryWhiteList')"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #aaa;
+                          padding:4px 2px;overflow:initial">
+                <span style="display: inline-block;width: 70%;text-align: left;font-size: 1.1em;vertical-align: middle;font-weight: bolder;">
+                    2.如何设置内存白名单
                 </span>
-                <span style="display:inline-block;width: 20%;text-align: right;vertical-align: middle;
-                              font-size: 2em;">
+                <span style="display:inline-block;width: 20%;text-align: right;
+                              font-size: 2em;vertical-align: middle;">
                     <i class="ion-ios-arrow-forward"></i>
                 </span>
+                <span style="display: inline-block;width: 10%;"></span>
             </div>
+
 
 
         </div>

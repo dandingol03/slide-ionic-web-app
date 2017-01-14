@@ -1,23 +1,25 @@
-<ion-view class="passwordForget-view" view-title="个人资料" >
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view class="passwordForget-view" view-title="个人资料" hide-nav-bar="true">
 
-  <ion-nav-bar class="bar-stable" align-title="center" >
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr"
-              style="font-size: 2.4em;color:#bf530c"
-              ng-click="go_back()">
-        <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
-  </ion-nav-bar>
+  <ion-content class=" cart_detail" style="background-image: url('img/flow_and_moutain.png');background-repeat: no-repeat;
+    background-size: 100%;background-position: 0% 100%;">
 
 
-  <ion-content class=" cart_detail" >
+    <!-- header bar -->
+    <div class="bar bar-header bar-dark" style="position: static;height:44px;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+      <h1 class="title" style="display: inline-block;width:100%;text-align:center;">
+        <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
+          <i class="ion-chevron-left"></i>
+        </span>
+        <span style="display: inline-block;width:90%;text-align: center;padding-right: 15%;">
+          个人资料
+        </span>
+      </h1>
+    </div>
 
+    <div class="list list-inset padding" style="margin-bottom:40px;background: transparent;">
 
-
-    <div class="list list-inset padding" style="margin-bottom:40px;">
-
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
         <span class="input-label"
               style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
               text-align: center;padding-bottom: 5px;padding-top:5px;">
@@ -33,7 +35,7 @@
         </span>
       </div>
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
         <span class="input-label"
               style="display: inline-block;font-size: 1.5em;color:#bf530c;width: 8%;
               text-align: center;padding-bottom: 5px;padding-top:5px;">
@@ -42,7 +44,7 @@
         <span style="width: 15%;display: inline-block;">
           身份证:
         </span>
-        <input type="text" style="width: 48%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+        <input type="text" style="width: 48%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;"
                ng-value="contactInfo.perIdCard"
                ng-model="contactInfo.perIdCard"
                ng-change="validate(contactInfo,'perIdCard','/^\\d{18}$/')"
@@ -55,7 +57,7 @@
       </div>
 
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
         <span class="input-label"
               style="display: inline-block;font-size: 2.4em;color:#bf530c;width: 8%;
               text-align: center;padding-bottom: 5px;padding-top:5px;">
@@ -64,7 +66,7 @@
         <span style="width: 15%;display: inline-block;">
           电话:
         </span>
-        <input type="text" style="width: 37%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+        <input type="text" style="width: 37%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;"
                ng-value="contactInfo.mobilePhone"
                ng-model="contactInfo.mobilePhone"
                ng-change="validate(contactInfo,'mobilePhone','/^\\d{11}$/')"
@@ -76,7 +78,7 @@
         </span>
       </div>
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
         <span class="input-label"
               style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
               text-align: center;padding-bottom: 5px;padding-top:5px;">
@@ -85,7 +87,7 @@
         <span style="width: 15%;display: inline-block;">
           邮箱:
         </span>
-        <input type="text" style="width: 50%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+        <input type="text" style="width: 50%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;;"
                ng-value="contactInfo.EMAIL"
                ng-model="contactInfo.EMAIL"
                ng-change="validate(contactInfo,'EMAIL','/^.*@.*\\.com$/')"
@@ -95,7 +97,7 @@
         </span>
       </div>
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;">
+      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
         <span class="input-label"
               style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
               text-align: center;padding-bottom: 5px;padding-top:5px;">
@@ -104,7 +106,7 @@
         <span style="width: 15%;display: inline-block;">
           地址:
         </span>
-        <input type="text" style="width: 70%;display: inline-block;padding-left: 5px;font-weight:bolder;background: rgba(170, 170, 170, 0.14902);"
+        <input type="text" style="width: 70%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;"
                ng-value="contactInfo.perAddress"
                ng-model="contactInfo.perAddress"
         />
@@ -114,7 +116,7 @@
 
 
       <div class="item"
-           style="margin:1px;border:1px solid #222;padding:10px;background-color:transparent;border:0px;">
+           style="margin:1px;border:1px solid #222;padding:10px;background-color:transparent;border:0px;background: transparent;">
         <button class="button button-calm" style="width: 60%;margin-left:20%;font-weight: bolder;"
                 ng-click="saveContactInfo()">
           保存提交
@@ -129,3 +131,4 @@
 
 
 </ion-view>
+</ion-nav-view>

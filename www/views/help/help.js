@@ -5,41 +5,22 @@
  * Created by apple-2 on 16/8/23.
  */
 angular.module('starter')
-    .controller('helpController',function($scope,$state,$http,$rootScope,
-                                        Proxy,$ionicSideMenuDelegate,$ionicHistory,
-                                        $cordovaPreferences,$ionicModal){
+    .controller('helpController',function($scope,$state,$ionicHistory){
 
-        $scope.go_back=function(){
-            window.history.back();
+        $scope.goBack=function(){
+            $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         };
-        $scope.go_to=function(state){
+
+        $scope.goto=function(state){
             $state.go(state);
         };
 
-        /*** 引导页模态框 ***/
-        $ionicModal.fromTemplateUrl('views/modal/help_modal.html',{
-            scope:  $scope,
-            animation: 'animated '+'bounceInUp',
-            hideDelay:920
-        }).then(function(modal) {
-            $scope.help_modal = modal;
-        });
-
-        $scope.openHelpModal= function(){
-            try{
-                $scope.help_modal.show();
-            }catch(e){
-                alert('error=\r\n'+ e.toString());
-            }
-        };
-
-        $scope.closeHelpModal= function() {
-            $scope.help_modal.hide();
-        };
-        /*** 绑定新车模态框 ***/
-
-
-
-
+        $scope.navigate=function (type) {
+            $state.go('config_app', {params: JSON.stringify({type: type})});
+        }
 
     });

@@ -390,45 +390,66 @@ angular.module('starter')
                             maxWidth: 200,
                             showDelay: 0
                         });
-                        var posOptions = {timeout: 10000, enableHighAccuracy: false};
-                        $cordovaGeolocation
-                            .getCurrentPosition(posOptions)
-                            .then(function (position) {
-                                var lat = position.coords.latitude;
-                                var lng = position.coords.longitude;
-                                console.log(lng + ',' + lat);
-                                alert('lng=' + lng + '\r\n' + 'lat=' + lat);
-                                var ggPoint = new BMap.Point(lng, lat);
-                                var convertor = new BMap.Convertor();
-                                var pointArr = [];
-                                pointArr.push(ggPoint);
 
-                                var translateCallback = function (data) {
-                                    if (data.status === 0) {
-                                        alert('data callback');
-                                        var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
-                                        var marker = new BMap.Marker(data.points[0],{icon:bIcon});
-                                        map.addOverlay(marker);
-                                        var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
-                                        label.setStyle({
-                                            color: '#222',
-                                            fontSize: "12px",
-                                            height: "20px",
-                                            lineHeight: "20px",
-                                            fontFamily: "微软雅黑",
-                                            border: '0px'
-                                        });
-                                        marker.setLabel(label); //添加百度label
-                                        $scope.mk=marker;
-                                        map.centerAndZoom(data.points[0],12);
-                                        $ionicLoading.hide();
-                                    }
-                                }
-                                convertor.translate(pointArr, 1, 5, translateCallback)
-                            }, function (err) {
+
+                        // var posOptions = {timeout: 10000, enableHighAccuracy: false};
+                        // $cordovaGeolocation
+                        //     .getCurrentPosition(posOptions)
+                        //     .then(function (position) {
+                        //         var lat = position.coords.latitude;
+                        //         var lng = position.coords.longitude;
+                        //         console.log(lng + ',' + lat);
+                        //         alert('lng=' + lng + '\r\n' + 'lat=' + lat);
+                        //         var ggPoint = new BMap.Point(lng, lat);
+                        //         var convertor = new BMap.Convertor();
+                        //         var pointArr = [];
+                        //         pointArr.push(ggPoint);
+                        //
+                        //         var translateCallback = function (data) {
+                        //             if (data.status === 0) {
+                        //                 alert('data callback');
+                        //                 var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
+                        //                 var marker = new BMap.Marker(data.points[0],{icon:bIcon});
+                        //                 map.addOverlay(marker);
+                        //                 var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
+                        //                 label.setStyle({
+                        //                     color: '#222',
+                        //                     fontSize: "12px",
+                        //                     height: "20px",
+                        //                     lineHeight: "20px",
+                        //                     fontFamily: "微软雅黑",
+                        //                     border: '0px'
+                        //                 });
+                        //                 marker.setLabel(label); //添加百度label
+                        //                 $scope.mk=marker;
+                        //                 map.centerAndZoom(data.points[0],12);
+                        //                 $ionicLoading.hide();
+                        //             }
+                        //         }
+                        //         convertor.translate(pointArr, 1, 5, translateCallback)
+                        //     }, function (err) {
+                        //         $ionicLoading.hide();
+                        //         alert('error=\r\n' + err.toString());
+                        //     });
+
+                        //百度地图获取自身定位
+                        var geolocation = new BMap.Geolocation();
+                        geolocation.getCurrentPosition(function(r){
+                            if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                                var mk = new BMap.Marker(r.point);
+                                map.addOverlay(mk);
+                                map.panTo(r.point);
+                                $scope.mk=mk;
+                                map.centerAndZoom(r.point, 12);
+                                console.log('您的位置：'+r.point.lng+','+r.point.lat);
                                 $ionicLoading.hide();
-                                alert('error=\r\n' + err.toString());
-                            });
+                            }
+                            else {
+                                console.log('err='+this.getStatus());
+                                $ionicLoading.hide();
+                            }
+                        },{enableHighAccuracy: true})
+
 
                     }else{
 
