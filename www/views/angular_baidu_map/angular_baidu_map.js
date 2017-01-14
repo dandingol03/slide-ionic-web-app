@@ -408,6 +408,7 @@ angular.module('starter')
                             }else{
                                 $scope.distanceMax=distance;
                             }
+                            //25公里为搜索范围,群体的最大距离为12公里，半径为6公里
                             if (distance <= 25000)
                             {
                                 place.distance=distance;
@@ -415,27 +416,52 @@ angular.module('starter')
                                 for(var tag in $scope.populations)
                                 {
                                     var population=$scope.populations[tag];
+                                    //如果群体已存在
                                     if(population!==undefined&&population!==null)
                                     {
-                                        var bias=map.getDistance(new BMap.Point(population.center.lng,population.center.lat),
-                                                            new BMap.Point(place.longitude, place.latitude)).toFixed(2);
-                                        if(bias<=12000)
-                                        {
 
-                                            population.center={
-                                                lng:(population.center.lng*population.plots.length+place.longitude)/(population.plots.length+1),
-                                                lat:(population.center.lat*population.plots.length+place.latitude)/(population.plots.length+1)
+                                        var bias=map.getDistance(new BMap.Point(population.center.lng,population.center.lat),
+                                            new BMap.Point(place.longitude, place.latitude)).toFixed(2);
+
+                                        if(population.plots.length>1)
+                                        {
+                                            if(bias<=6000)
+                                            {
+
+                                                population.center={
+                                                    lng:(population.center.lng*population.plots.length+place.longitude)/(population.plots.length+1),
+                                                    lat:(population.center.lat*population.plots.length+place.latitude)/(population.plots.length+1)
+                                                }
+                                                population.plots.push(
+                                                    {
+                                                        name:place.name!==undefined&&place.name!==null?place.name:place.unitName,
+                                                        distance:place.distance,
+                                                        address:place.address,
+                                                        phone:place.phone,
+                                                        placeId:place.placeId!==undefined&&place.placeId!==null?place.placeId:place.unitId
+                                                    });
+                                                flagOfBia=false;
+                                                break;
                                             }
-                                            population.plots.push(
-                                                {
-                                                    name:place.name!==undefined&&place.name!==null?place.name:place.unitName,
-                                                    distance:place.distance,
-                                                    address:place.address,
-                                                    phone:place.phone,
-                                                    placeId:place.placeId!==undefined&&place.placeId!==null?place.placeId:place.unitId
-                                                });
-                                            flagOfBia=false;
-                                            break;
+                                        }else{
+                                            if(bias<=12000)
+                                            {
+
+                                                population.center={
+                                                    lng:(population.center.lng*population.plots.length+place.longitude)/(population.plots.length+1),
+                                                    lat:(population.center.lat*population.plots.length+place.latitude)/(population.plots.length+1)
+                                                }
+                                                population.plots.push(
+                                                    {
+                                                        name:place.name!==undefined&&place.name!==null?place.name:place.unitName,
+                                                        distance:place.distance,
+                                                        address:place.address,
+                                                        phone:place.phone,
+                                                        placeId:place.placeId!==undefined&&place.placeId!==null?place.placeId:place.unitId
+                                                    });
+                                                flagOfBia=false;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
