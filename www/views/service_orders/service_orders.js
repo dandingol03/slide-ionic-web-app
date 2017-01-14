@@ -43,19 +43,18 @@ angular.module('starter')
       $scope.tabIndex=i;
     };
 
-
-      $scope.selectedTabStyle={
-          display: 'table',width: '100%',height:'100%',position: 'relative',
-          'text-align': 'center',border: '1px solid #fff9df','border-bottom':'0px',background:'cadetblue'
-      };
-
-      $scope.unSelectedTabStyle={
-          display: 'table',width: '100%',height:'100%',
-          'text-align': 'center',border: '1px solid rgba(255, 249, 223, 0.32)','border-bottom':'0px',background:'rgba(95, 158, 160, 0.39)'
-      }
+      $scope.selectedTabStyle=
+          {
+              display:'inline-block',color:'#fff',width:'32.4%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(55, 144, 139)','background-color':'rgb(55, 144, 139)'
+          };
+      $scope.unSelectedTabStyle=
+          {
+              display:'inline-block',width:'32.4%',float:'left',height:'100%','border': '1px solid','border-color': 'rgb(68, 78, 78)'
+          };
 
 
-    $scope.serviceTypeMap={11:'维修-日常保养',12:'维修-故障维修',13:'维修-事故维修',
+
+      $scope.serviceTypeMap={11:'维修-日常保养',12:'维修-故障维修',13:'维修-事故维修',
       21:'车驾管-审车',22:'车驾管-审证',23:'车驾管-接送机',24:'车驾管-接送站',
       31:'鈑喷'};
 
