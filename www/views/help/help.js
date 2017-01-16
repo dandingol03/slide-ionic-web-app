@@ -5,7 +5,7 @@
  * Created by apple-2 on 16/8/23.
  */
 angular.module('starter')
-    .controller('helpController',function($scope,$state,$ionicHistory){
+    .controller('helpController',function($scope,$state,$ionicHistory,$ionicNativeTransitions ){
 
         $scope.goBack=function(){
             $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {

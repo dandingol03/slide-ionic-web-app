@@ -68,11 +68,11 @@ angular.module('starter')
 
         $scope.selectedTabStyle=
             {
-                display:'inline-block',color:'#0A9DC7',width:'31%',float:'left',height:'100%','border': '0px','background-color':'#fff'
+                display:'inline-block',color:'#0A9DC7',width:'33.333%',float:'left',height:'100%','border': '0px','background-color':'#fff'
             };
         $scope.unSelectedTabStyle=
             {
-                display:'inline-block',color:'#323232',width:'31%',float:'left',height:'100%','border': '0px',
+                display:'inline-block',color:'#323232',width:'33.333%',float:'left',height:'100%','border': '0px',
             };
 
         $scope.textareaFocusClass='card';
