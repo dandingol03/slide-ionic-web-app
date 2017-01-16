@@ -1,0 +1,62 @@
+<ion-view  class="passwordForget-view" view-title="个人头像">
+
+    <ion-nav-bar class="bar-stable" align-title="center" >
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear bar_arr"
+                    style="font-size: 2em;color:#bf530c"
+                    ng-click="go_back()">
+                <i class="ion-chevron-left"></i>
+            </button>
+        </ion-nav-buttons>
+
+
+        <ion-nav-buttons side="right">
+            <button class="button button-dark"
+                    style="font-size: 1.2em;color:#fff;margin-right: 15px;"
+                    ng-click="savePortrait()">
+                保存
+            </button>
+        </ion-nav-buttons>
+
+    </ion-nav-bar>
+
+    <ion-content scroll="false" style="padding:0;margin:0;background: #eee;" >
+
+        <div class="list list-inset " style="margin:0;">
+
+            <div class="item" style="padding:12px;margin:0;border:0;background: #fff;">
+                <span style="width: 5%;display: inline-block;"></span>
+
+
+                <span style="width: 60%;display: inline-block;text-align: left;vertical-align: middle;">
+                    <div style="width: 70px;height: 70px;">
+
+                        <!-- 头像显示 -->
+                        <div ng-if="portrait.path!==undefined&&portrait.path!==null">
+                            <img ng-src="{{portrait.path}}" style="width: 70px;height: 70px;border-radius: 70px;">
+                        </div>
+
+                        <!-- 占位符 -->
+                        <div ng-if="portrait.path==undefined||portrait.path==null||portrait.path==''">
+                            <img src="img/person.jpg" style="width: 70px;height: 70px;border-radius: 70px;">
+                        </div>
+
+                    </div>
+                </span>
+                <span style="width: 30%;display: inline-block;text-align: center;vertical-align: middle;padding:10px;"
+                    ng-click="addAttachment(portrait,'path')">
+                    <span style="font-size:1.2em;font-weight: bolder;color:#ff5026;">更换头像</span>
+                </span>
+                <span style="width: 5%;display: inline-block;"></span>
+            </div>
+
+        </div>
+    </ion-content>
+
+
+
+
+
+</ion-view>
+
+

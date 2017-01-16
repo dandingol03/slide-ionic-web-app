@@ -19,6 +19,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         baiduMapApiProvider.version('2.0').accessKey('hxMVpPXqcpdNGMrLTGLxN3mBBKd6YiT6');
     })
 
+
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
                   $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions,
@@ -33,7 +34,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
           cordova.plugins.Keyboard.disableScroll(false);
-
+            ionic.Platform.isFullScreen = true
         }
         if (window.StatusBar) {
           // org.apache.cordova.statusbar required
@@ -165,28 +166,39 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
         }
 
-        var onReceiveNotification = function(data) {
-          try{
-            console.log('received notification :' + data);
-            alert('notification got');
-            var notification = angular.fromJson(data);
-            //app 是否处于正在运行状态
-            var isActive = notification.notification;
 
+        //通知的回调
+        $rootScope.onReceiveNotification = function(event) {
+            try{
 
-            //ios
-            if (ionic.Platform.isIOS()) {
-              window.alert(notification);
+                alert('notification got in $rootScope');
+                var alertContent=null;
+                var extras=null;
+                if(device.platform == "Android") {
+                    alertContent = event.alert;
+                    extras=event.extras;
+                } else {
+                    alertContent = event.aps.alert
+                }
+                if(Object.prototype.toString.call(extras)=='[object String]')
+                    extras=JSON.parse(extras);
 
-            } else {
-              //非 ios(android)
+                extras=extras.extras;
+                if(Object.prototype.toString.call(extras)=='[object String]')
+                    extras=JSON.parse(extras);
+
+                switch (extras.type) {
+                    case 'from-service':
+                        alert('orderId='+extras.orderId+'\r\n'+'servicePersonId='+extras.servicePersonId);
+                        break;
+                    default:
+                        break;
+                }
+            }catch(e)
+            {
+                alert(e);
             }
-          }catch(e)
-          {
-            alert(e);
-          }
         };
-
 
 
         $rootScope.waitConfirms=[
@@ -451,7 +463,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
           document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
-          document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
+          document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
               // 系统设置中已关闭应用推送。
@@ -1149,6 +1161,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               url:'/config_app:params',
               controller:'configAppController',
               templateUrl:'views/config_app/config_app.html'
+          })
+
+          .state('personal_portrait',{
+              url:'/personal_portrait:params',
+              controller:'personalPortraitController',
+              templateUrl:'views/personal_portrait/personal_portrait.html'
           })
 
 
