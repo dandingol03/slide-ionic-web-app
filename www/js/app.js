@@ -34,7 +34,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
           cordova.plugins.Keyboard.disableScroll(false);
-
+            ionic.Platform.isFullScreen = true
         }
         if (window.StatusBar) {
           // org.apache.cordova.statusbar required
@@ -166,28 +166,29 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
         }
 
-        var onReceiveNotification = function(data) {
-          try{
-            console.log('received notification :' + data);
-            alert('notification got');
-            var notification = angular.fromJson(data);
-            //app 是否处于正在运行状态
-            var isActive = notification.notification;
+
+        //通知的回调
+        $rootScope.onReceiveNotification = function(data) {
+            try{
+                console.log('received notification :' + data);
+                alert('notification got in $rootScope');
+                var notification = angular.fromJson(data);
+                //app 是否处于正在运行状态
+                var isActive = notification.notification;
 
 
-            //ios
-            if (ionic.Platform.isIOS()) {
-              window.alert(notification);
+                //ios
+                if (ionic.Platform.isIOS()) {
+                    window.alert(notification);
 
-            } else {
-              //非 ios(android)
+                } else {
+                    //非 ios(android)
+                }
+            }catch(e)
+            {
+                alert(e);
             }
-          }catch(e)
-          {
-            alert(e);
-          }
         };
-
 
 
         $rootScope.waitConfirms=[
@@ -452,7 +453,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
           document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
-          document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
+          document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
               // 系统设置中已关闭应用推送。
@@ -1152,6 +1153,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/config_app/config_app.html'
           })
 
+          .state('personal_portrait',{
+              url:'/personal_portrait:params',
+              controller:'personalPortraitController',
+              templateUrl:'views/personal_portrait/personal_portrait.html'
+          })
+
 
 
 
@@ -1200,7 +1207,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.121:3000';
+            return 'http://192.168.3.2:3000';
           else
             return "/proxy/node_server";
 

@@ -29,19 +29,6 @@ angular.module('starter')
         $WebSocket.connect();
 
 
-
-        document.addEventListener("jpush.receiveNotification", function (event) {
-            var alertContent=null;
-            if(device.platform == "Android") {
-                alertContent = event.alert
-            } else {
-                alertContent = event.aps.alert
-            }
-            alert("open Notificaiton:" + alertContent)
-        }, false)
-
-
-
         /*** 授权模态框 ***/
         $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
             scope:  $scope,
