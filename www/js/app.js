@@ -171,29 +171,30 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         $rootScope.onReceiveNotification = function(event) {
             try{
 
-                alert('notification got in $rootScope');
+
                 var alertContent=null;
                 var extras=null;
                 if(device.platform == "Android") {
                     alertContent = event.alert;
                     extras=event.extras;
+                    if(Object.prototype.toString.call(extras)=='[object String]')
+                        extras=JSON.parse(extras);
+
+                    extras=extras.extras;
+                    if(Object.prototype.toString.call(extras)=='[object String]')
+                        extras=JSON.parse(extras);
+
+                    switch (extras.type) {
+                        case 'from-service':
+                            alert('orderId='+extras.orderId+'\r\n'+'servicePersonId='+extras.servicePersonId);
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
                     alertContent = event.aps.alert
                 }
-                if(Object.prototype.toString.call(extras)=='[object String]')
-                    extras=JSON.parse(extras);
 
-                extras=extras.extras;
-                if(Object.prototype.toString.call(extras)=='[object String]')
-                    extras=JSON.parse(extras);
-
-                switch (extras.type) {
-                    case 'from-service':
-                        alert('orderId='+extras.orderId+'\r\n'+'servicePersonId='+extras.servicePersonId);
-                        break;
-                    default:
-                        break;
-                }
             }catch(e)
             {
                 alert(e);
