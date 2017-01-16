@@ -189,9 +189,98 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                 switch (extras.type) {
                     case 'from-service':
-                        alert('orderId='+extras.orderId+'\r\n'+'servicePersonId='+extras.servicePersonId);
-                        break;
-                    default:
+                        //TODO:加入语音提醒
+                        try{
+                            var orderId=extras.orderId;
+                            var servicePersonId=extras.servicePersonId;
+                            var content='工号为'+servicePersonId+'的服务人员发出接单请求';
+
+                            alert('make notification');
+                            alert('orderId='+orderId);
+                            alert('content=' + content);
+
+
+                            $http({
+                                method: "post",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token,
+                                },
+                                data: {
+                                    request: 'createNotification',
+                                    info:{
+                                        ownerId:orderId,
+                                        content:content,
+                                        notyTime:new Date(),
+                                        side:'customer',
+                                        subType:null,
+                                        type:'service'
+
+                                    }
+                                }
+                            }).then(function (res) {
+                                var json = res.data;
+                                if (json.re == 1) {
+                                    alert('json re==1');
+                                    var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
+                                        content+'&ttsToken='+$rootScope.ttsToken;
+                                    var fileSystem=cordova.file.externalApplicationStorageDirectory;
+                                    var target=fileSystem+'temp.mp3';
+                                    var trustHosts = true;
+                                    var options = {
+                                        fileKey: 'file',
+                                        headers: {
+                                            'Authorization': "Bearer " + $rootScope.access_token
+                                        }
+                                    };
+                                    alert('begin download audio');
+                                    $cordovaFileTransfer.download(url, target, options, trustHosts)
+                                        .then(function (res) {
+
+                                            alert('popup a toaster');
+                                            toaster.pop({
+                                                type:'black',
+                                                title:"信息",
+                                                body:content,
+                                                timeout:0,
+                                                showCloseButton: true,
+                                                onHideCallback: function () {
+                                                    $state.go('notification');
+                                                }
+                                            });
+
+                                            //TODO:播放录音
+                                            var filepath=fileSystem+'temp.mp3';
+                                            filepath = filepath.replace('file://','');
+                                            var media = $cordovaMedia.newMedia(filepath);
+
+                                            if(ionic.Platform.isIOS()) {
+                                            }else if(ionic.Platform.isAndroid()) {
+                                                media.play();
+                                            }else{}
+                                            console.log('tts speach generate success');
+                                        }, function (err) {
+                                            console.log('err=========================');
+                                            var str='';
+                                            for(var field in err)
+                                                str+=field+':'+'\r\n'+err[field];
+                                            console.log('error=' + str);
+                                        }, function (progress) {
+
+                                        });
+
+                                }
+                            }).catch(function (err) {
+                                var str='';
+                                for(var field in err)
+                                    str+=err[field];
+                                alert('err=\r\n'+str);
+                            });
+
+                        }catch(e)
+                        {
+                            alert('err=' + e.toString());
+                        }
                         break;
                 }
             }catch(e)
@@ -236,101 +325,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             if(message.type!=undefined&&message.type!=null){
                 alert('type='+message.type);
               switch(message.type){
-
-                  case 'from-service':
-                    //TODO:加入语音提醒
-                    try{
-                        var order=message.order;
-                        var servicePersonId=message.servicePersonId;
-                        var content='工号为'+servicePersonId+'的服务人员发出接单请求';
-
-                        alert('make notification');
-                        alert('orderId='+order.orderId);
-                        alert('content=' + content);
-
-
-                        $http({
-                            method: "post",
-                            url: Proxy.local() + "/svr/request",
-                            headers: {
-                                'Authorization': "Bearer " + $rootScope.access_token,
-                            },
-                            data: {
-                                request: 'createNotification',
-                                info:{
-                                    ownerId:order.orderId,
-                                    content:content,
-                                    notyTime:new Date(),
-                                    side:'customer',
-                                    subType:null,
-                                    type:'service'
-
-                                }
-                            }
-                        }).then(function (res) {
-                            var json = res.data;
-                            if (json.re == 1) {
-                                alert('json re==1');
-                                var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
-                                    content+'&ttsToken='+$rootScope.ttsToken;
-                                 var fileSystem=cordova.file.externalApplicationStorageDirectory;
-                                 var target=fileSystem+'temp.mp3';
-                                 var trustHosts = true;
-                                 var options = {
-                                     fileKey: 'file',
-                                     headers: {
-                                         'Authorization': "Bearer " + $rootScope.access_token
-                                     }
-                                 };
-                                alert('begin download audio');
-                                $cordovaFileTransfer.download(url, target, options, trustHosts)
-                                     .then(function (res) {
-
-                                         alert('popup a toaster');
-                                        toaster.pop({
-                                            type:'black',
-                                            title:"信息",
-                                            body:content,
-                                            timeout:0,
-                                            showCloseButton: true,
-                                            onHideCallback: function () {
-                                                $state.go('notification');
-                                            }
-                                        });
-
-                                         //TODO:播放录音
-                                        var filepath=fileSystem+'temp.mp3';
-                                        filepath = filepath.replace('file://','');
-                                        var media = $cordovaMedia.newMedia(filepath);
-
-                                        if(ionic.Platform.isIOS()) {
-                                        }else if(ionic.Platform.isAndroid()) {
-                                            media.play();
-                                        }else{}
-                                        console.log('tts speach generate success');
-                                    }, function (err) {
-                                        console.log('err=========================');
-                                        var str='';
-                                        for(var field in err)
-                                            str+=field+':'+'\r\n'+err[field];
-                                        console.log('error=' + str);
-                                    }, function (progress) {
-
-                                    });
-
-                            }
-                        }).catch(function (err) {
-                            var str='';
-                            for(var field in err)
-                                str+=err[field];
-                            alert('err=\r\n'+str);
-                        });
-
-                    }catch(e)
-                    {
-                        alert('err=' + e.toString());
-                    }
-                  break;
 
                   case 'from-background':
 
@@ -1217,7 +1211,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.121:3000';
+            return 'http://192.168.1.148:3000';
           else
             return "/proxy/node_server";
 
