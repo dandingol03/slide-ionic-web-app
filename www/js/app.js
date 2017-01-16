@@ -168,21 +168,31 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
         //通知的回调
-        $rootScope.onReceiveNotification = function(data) {
+        $rootScope.onReceiveNotification = function(event) {
             try{
-                console.log('received notification :' + data);
+
                 alert('notification got in $rootScope');
-                var notification = angular.fromJson(data);
-                //app 是否处于正在运行状态
-                var isActive = notification.notification;
-
-
-                //ios
-                if (ionic.Platform.isIOS()) {
-                    window.alert(notification);
-
+                var alertContent=null;
+                var extras=null;
+                if(device.platform == "Android") {
+                    alertContent = event.alert;
+                    extras=event.extras;
                 } else {
-                    //非 ios(android)
+                    alertContent = event.aps.alert
+                }
+                if(Object.prototype.toString.call(extras)=='[object String]')
+                    extras=JSON.parse(extras);
+
+                extras=extras.extras;
+                if(Object.prototype.toString.call(extras)=='[object String]')
+                    extras=JSON.parse(extras);
+
+                switch (extras.type) {
+                    case 'from-service':
+                        alert('orderId='+extras.orderId+'\r\n'+'servicePersonId='+extras.servicePersonId);
+                        break;
+                    default:
+                        break;
                 }
             }catch(e)
             {
@@ -1207,7 +1217,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.3.2:3000';
+            return 'http://192.168.1.121:3000';
           else
             return "/proxy/node_server";
 
