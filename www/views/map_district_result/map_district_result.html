@@ -1,24 +1,25 @@
-
-<ion-view view-title='{{title}}' >
-
-    <ion-nav-bar class="bar-stable" align-title="center" >
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear bar_arr" style="font-size: 2.4em;"
-                    ng-click="go_back()">
-                <i class="ion-chevron-left"></i>
-            </button>
-        </ion-nav-buttons>
-        <ion-nav-buttons side="right">
-            <button class="button button-icon button-clear bar_arr"
-                    ng-click="refresh()">
-                <div style="color:rgb(55, 144, 139)">
-                    <span  style="font-size: 1.8em;display: inline-block"> <i class="ion-refresh"></i></span>
-                </div>
-            </button>
-        </ion-nav-buttons>
-    </ion-nav-bar>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view view-title='{{title}}' hide-nav-bar="true">
 
     <ion-content scroll="false" >
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+            <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:4%">
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
+                    <i class="ion-chevron-left"></i>
+                </span>
+                <span style="display: inline-block;width: 70%;text-align: center;">
+                    {{title}}
+                </span>
+                <span style="display: inline-block;font-size:1.5em;text-align: center;width: 20%;"
+                      ng-click="refresh()">
+                  <i class="ion-refresh"></i>
+              </span>
+                <span style="display: inline-block;width: 5%;">
+              </span>
+            </h1>
+        </div>
 
         <div style="width: 100%;height: 35px;padding:6px 0px;text-align: center;background: #eee;">
                 <span style="color:#444;font-size: 1em;">当前区域共搜索出{{recordCount}}条结果</span>
@@ -58,3 +59,4 @@
 
     </ion-content>
 </ion-view>
+</ion-nav-view>
