@@ -163,10 +163,23 @@
                       <span style="width:20%;height:100%;position: absolute;left:80%;top:0;text-align: center;">
                         <div style="width: 100%;height: 100%;display: table;">
                           <span style="display:table-cell;vertical-align: middle;">
-                            <span style="font-size: 0.8em;display: inline-block;vertical-align: baseline;">详细&nbsp;</span>
-                            <span style="font-size: 3em;display: inline-block;vertical-align: middle;">
-                              <i class="ion-ios-arrow-forward"></i>
-                            </span>
+
+                            <!-- 未接单 -->
+                            <div ng-if="order.candidateState!=true">
+                                <span style="font-size: 0.8em;display: inline-block;vertical-align: baseline;">详细&nbsp;</span>
+                                <span style="font-size: 3em;display: inline-block;vertical-align: middle;">
+                                  <i class="ion-ios-arrow-forward"></i>
+                                </span>
+                            </div>
+
+                            <!-- 有服务人员接单 -->
+                            <div ng-if="order.candidateState==true">
+                              <span class="rotate" style="font-size: 0.8em;display: inline-block;vertical-align: middle;padding:4px 12px;
+                                  border:1px solid #ff4f39;border-radius: 6px;">
+                                已接单
+                              </span>
+                            </div>
+
                           </span>
                         </div>
                       </span>

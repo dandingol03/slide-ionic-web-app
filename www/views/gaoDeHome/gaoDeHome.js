@@ -286,28 +286,25 @@ angular.module('starter')
             var pointArr = [];
             pointArr.push(e.point);
 
-            var translateCallback = function (data) {
-                if (data.status === 0) {
-                    if($scope.mk!=null&&$scope.mk!=undefined){
-                        map.removeOverlay($scope.mk);
-                    }
-                    var marker = new BMap.Marker(data.points[0],{icon:bIcon,offset:new BMap.Size(-20,-20)});
-                    map.addOverlay(marker);
-                    var label = new BMap.Label("中心", {offset: new BMap.Size(-20, -20)});
-                    label.setStyle({
-                        color: '#222',
-                        fontSize: "12px",
-                        height: "20px",
-                        lineHeight: "20px",
-                        fontFamily: "微软雅黑",
-                        border: '0px'
-                    });
-                    marker.setLabel(label); //添加百度label
-                    $scope.mk=marker;
-                    map.panTo(e.point);
-                }
+            if($scope.mk!=null&&$scope.mk!=undefined){
+                map.removeOverlay($scope.mk);
             }
-            convertor.translate(pointArr, 1, 5, translateCallback);
+            var marker = new BMap.Marker(e.point,{icon:bIcon,offset:new BMap.Size(-20,-20)});
+            var label = new BMap.Label("您的位置", {offset: new BMap.Size(-20, -20)});
+            label.setStyle({
+                color: '#222',
+                fontSize: "12px",
+                height: "20px",
+                lineHeight: "20px",
+                fontFamily: "微软雅黑",
+                border: '0px'
+            });
+            marker.setLabel(label); //添加百度label
+            map.addOverlay(marker);
+            $scope.mk=marker;
+            map.panTo(e.point);
+
+
         }
 
 
@@ -392,7 +389,32 @@ angular.module('starter')
                 if(json.re==1) {
                     var map=$scope.map;
 
-                    map.addEventListener("click", $scope.clickFunc);
+                    map.addEventListener("click", function (e) {
+                        alert(e.point.lng + "," + e.point.lat);
+
+                        var BMap=$scope.bMap;
+
+                        var map=$scope.map;
+                        if($scope.mk!=null&&$scope.mk!=undefined){
+                            map.removeOverlay($scope.mk);
+                        }
+                        var marker = new BMap.Marker(e.point);
+                        var label = new BMap.Label("您的位置", {offset: new BMap.Size(-20, -20)});
+                        label.setStyle({
+                            color: '#222',
+                            fontSize: "12px",
+                            height: "20px",
+                            lineHeight: "20px",
+                            fontFamily: "微软雅黑",
+                            border: '0px'
+                        });
+                        marker.setLabel(label); //添加百度label
+                        map.addOverlay(marker);
+                        $scope.mk=marker;
+                        map.panTo(e.point);
+
+
+                    });
                     if(window.cordova)
                     {
                         $ionicLoading.show({
@@ -403,62 +425,51 @@ angular.module('starter')
                             showDelay: 0
                         });
 
-                        // var posOptions = {timeout: 10000, enableHighAccuracy: false};
-                        // $cordovaGeolocation
-                        //     .getCurrentPosition(posOptions)
-                        //     .then(function (position) {
-                        //         var lat = position.coords.latitude;
-                        //         var lng = position.coords.longitude;
-                        //         console.log(lng + ',' + lat);
-                        //         alert('lng=' + lng + '\r\n' + 'lat=' + lat);
-                        //         var ggPoint = new BMap.Point(lng, lat);
-                        //         var convertor = new BMap.Convertor();
-                        //         var pointArr = [];
-                        //         pointArr.push(ggPoint);
-                        //
-                        //         var translateCallback = function (data) {
-                        //             if (data.status === 0) {
-                        //                 alert('data callback');
-                        //                 var bIcon = new BMap.Icon('img/mark_b.png', new BMap.Size(20,25));
-                        //                 var marker = new BMap.Marker(data.points[0],{icon:bIcon});
-                        //                 map.addOverlay(marker);
-                        //                 var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
-                        //                 label.setStyle({
-                        //                     color: '#222',
-                        //                     fontSize: "12px",
-                        //                     height: "20px",
-                        //                     lineHeight: "20px",
-                        //                     fontFamily: "微软雅黑",
-                        //                     border: '0px'
-                        //                 });
-                        //                 marker.setLabel(label); //添加百度label
-                        //                 $scope.mk=marker;
-                        //                 map.centerAndZoom(data.points[0],12);
-                        //                 $ionicLoading.hide();
-                        //             }
-                        //         }
-                        //         convertor.translate(pointArr, 1, 5, translateCallback)
-                        //     }, function (err) {
-                        //         $ionicLoading.hide();
-                        //         alert('error=\r\n' + err.toString());
-                        //     });
+                        //百度地图定位
+                        window.baiduLocation.startLocation(
+                            function (data) {
+                                console.log('navigate========='+data.latitude + "," + data.longitude+","+data.address);
+                                var point= new BMap.Point(data.longitude, data.latitude);
+                                var mk=new BMap.Marker(point);
+                                var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
+                                label.setStyle({
+                                    color: '#222',
+                                    fontSize: "12px",
+                                    height: "20px",
+                                    lineHeight: "20px",
+                                    fontFamily: "微软雅黑",
+                                    border: '0px'
+                                });
+                                mk.setLabel(label);
+                                map.addOverlay(mk);
+                                $scope.mk=mk;
+                                map.panTo(point);
+                                map.centerAndZoom(point, 12);
+                                alert('您的位置：'+point.lng+','+point.lat);
+                                $ionicLoading.hide();
+                            }, function (error) {
+                                alert('定位错误')
+                            },{//这个参数也可以不传
+                                CoorType:'bd09ll', //设置坐标系默认'bd09ll'
+                                IsNeedAddress:false //是否需要返回坐标的地址信息，默认是false
+                            });
 
 
                         //百度地图获取自身定位
-                        $scope.locationByBaiduSDK(function (point) {
-
-                            var mk = new BMap.Marker(point);
-                            map.addOverlay(mk);
-                            map.panTo(point);
-                            $scope.mk=mk;
-                            var bmapPoint=new BMap.Point(point.lng,point.lat);
-                            map.centerAndZoom(bmapPoint, 12);
-                            console.log('您的位置：'+point.lng+','+point.lat);
-                            $ionicLoading.hide();
-                        },function (err) {
-                            console.log('err='+err);
-                            $ionicLoading.hide();
-                        })
+                        // $scope.locationByBaiduSDK(function (point) {
+                        //
+                        //     var mk = new BMap.Marker(point);
+                        //     map.addOverlay(mk);
+                        //     map.panTo(point);
+                        //     $scope.mk=mk;
+                        //     var bmapPoint=new BMap.Point(point.lng,point.lat);
+                        //     map.centerAndZoom(bmapPoint, 12);
+                        //     alert('您的位置：'+point.lng+','+point.lat);
+                        //     $ionicLoading.hide();
+                        // },function (err) {
+                        //     console.log('err='+err);
+                        //     $ionicLoading.hide();
+                        // })
 
                     }else{
 

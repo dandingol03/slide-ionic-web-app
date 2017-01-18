@@ -67,6 +67,10 @@ angular.module('starter')
       $scope.orders3 = [];
 
 
+      /**
+       * refresh invoke
+       *
+       * **/
       $scope.fetchServiceOrders=function () {
 
           $scope.orders1 = [];

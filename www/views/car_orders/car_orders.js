@@ -140,7 +140,6 @@ angular.module('starter')
 
     $scope.orders=$rootScope.car_orders;
 
-    $scope.prices=$rootScope.car_insurance.prices;
 
 
     $scope.goto=function(url){

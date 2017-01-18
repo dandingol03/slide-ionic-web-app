@@ -1431,3 +1431,11 @@ ion-header-bar.title-bolder .title{
   font-weight: bolder;
   font-size:1.6em !important;
 }
+
+span.rotate{
+  transform:rotate(12deg);
+  -ms-transform:rotate(12deg); /* Internet Explorer */
+  -moz-transform:rotate(12deg); /* Firefox */
+  -webkit-transform:rotate(12deg); /* Safari 和 Chrome */
+  -o-transform:rotate(12deg); /* Opera */
+}

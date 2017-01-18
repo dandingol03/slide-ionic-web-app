@@ -8,7 +8,7 @@ angular.module('starter')
 
   .controller('serviceOrderDetailController',function($scope,$stateParams,$http,
                                                       $rootScope,$ionicLoading,Proxy,
-                                                        $ionicPopup,$state){
+                                                        $ionicPopup,$state,$ionicNativeTransitions){
 
       $scope.serviceTypeMap={11:'维修-日常保养',12:'维修-故障维修',13:'维修-事故维修',
           21:'车驾管-审车',22:'车驾管-审证',23:'车驾管-接送机',24:'车驾管-取送车',
@@ -21,7 +21,7 @@ angular.module('starter')
 
     $scope.order=$stateParams.order;
 
-    if($scope.order!==undefined&&$scope.order!==null)
+    if($scope.order!==undefined&&$scope.order!==null&&$scope.order!='')
     {
         if(Object.prototype.toString.call($scope.order)=='[object String]')
         {
@@ -56,7 +56,11 @@ angular.module('starter')
 
 
     $scope.go_back=function(){
-      window.history.back();
+        $ionicNativeTransitions.stateGo('service_orders', {}, {}, {
+            "type": "slide",
+            "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+            "duration": 240, // in milliseconds (ms), default 400
+        });
     };
 
     $scope.goTo=function (state) {
@@ -262,7 +266,7 @@ angular.module('starter')
 
       //取消订单
       $scope.cancleOrder = function(state){
-    
+
               //取消"已下单"的订单
               if($scope.order.orderState==1){
                   //指定了服务人员
@@ -302,7 +306,7 @@ angular.module('starter')
                                   str+=err[field];
                               console.error('err=\r\n'+str);
                           });
-    
+
                       }
                       else {
                           alert("距离预约时间不足两小时，无法取消订单！");
@@ -350,22 +354,22 @@ angular.module('starter')
                                           }
                                       }
                                   })
-    
+
                               }
-    
+
                           })
-    
+
                       }
                       else {
                           alert("距离预约时间不足两小时，无法取消订单！");
                       }
-    
+
                   }
               }
-    
+
               //取消服务中的订单（已有确定人员接单但还未执行））
               if($scope.order.orderState==2){
-    
+
                   var date = new Date();
                   $scope.timeDifference = parseInt((new Date($scope.order.estimateTime)-date) /(1000*60*60));
                   if ($scope.timeDifference >= 2) {
@@ -395,22 +399,22 @@ angular.module('starter')
                                   $state.go('service_orders');
                               });
                           }
-    
+
                       }).catch(function(err) {
                           var str='';
                           for(var field in err)
                               str+=err[field];
                           console.error('err=\r\n'+str);
                       });
-    
+
                   }
                   else {
                       alert("距离预约时间不足两小时，无法取消订单！");
                   }
-    
+
               }
       }
-      
+
       //完成订单
       $scope.finishOrder=function () {
           $http({
@@ -475,6 +479,6 @@ angular.module('starter')
               }
           });
       }
-      
+
 
   });

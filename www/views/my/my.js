@@ -29,6 +29,7 @@ angular.module('starter')
                 .success(function(value) {
                     $cordovaPreferences.store('password', '')
                         .success(function(value) {
+                            $rootScope.access_token=null;
                             $state.go('login');
                             $rootScope.flags.carManage.onFresh=true;
                         })

@@ -23,7 +23,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
     .run(function($ionicPlatform,$rootScope,$interval,
                   $cordovaToast,$ionicHistory,$location,
                   $ionicPopup,Proxy,$http,$state,$ionicNativeTransitions,
-                  $timeout,toaster,$cordovaFileTransfer,$cordovaMedia) {
+                  $timeout,toaster,$cordovaFileTransfer,$cordovaMedia,$cordovaPreferences,$q) {
 
 
 
@@ -63,47 +63,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           //
           // }, 300);
 
-
-          $rootScope.car_orders=[
-          [
-            {feeDate:"2016-02-01",carNum:"鲁A00003",insuranceFeeTotal:2000},
-            {feeDate:"2016-03-17",carNum:"鲁A00003",insuranceFeeTotal:2000},
-            {feeDate:"2016-05-20",carNum:"鲁A00003",insuranceFeeTotal:2000}
-          ],
-          {},
-          [
-            {companyName:'',products:[]},
-            {companyName:'',products:[]}
-          ]
-        ];
-
-        $rootScope.car_insurance={
-          prices:[
-            {
-              companyName:'永安财产保险',
-              products: [
-                {
-                  productId:1,productName:'车辆损失险',insuranceType:null
-                },
-                {
-                  productId:null,insuranceType:null,productName:'第三者责任险',
-                  insuranceTypes:['5万','10万','20万']
-                }
-              ]
-            },
-            {
-              companyName:'泰山财产保险',
-              products:[
-                {
-                  productId:1,productName:'车辆损失险',insuranceType:null
-                },
-                {
-                  productId:2,insuranceType:'5万',productName:'第三者责任险'
-                }
-              ]
-            }
-          ]
-        };
 
         $rootScope.life_insurance={
 
@@ -154,6 +113,30 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
 
+        $rootScope.getOrderInfo=function (orderId) {
+            var deferred=$q.defer();
+
+            $http({
+                method: "post",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
+                    {
+                        request:'getCarServiceOrderByOrderId',
+                        info:{
+                            orderId:orderId
+                        }
+                    }
+            }).then(function (res) {
+                var json=res.data;
+                deferred.resolve(json);
+            });
+
+            return deferred.promise;
+        }
+
         var onTagsWithAlias = function(event) {
           try {
             console.log("onTagsWithAlias");
@@ -171,28 +154,304 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         $rootScope.onReceiveNotification = function(event) {
             try{
 
-
-                var alertContent=null;
                 var extras=null;
                 if(device.platform == "Android") {
-                    alertContent = event.alert;
+
                     extras=event.extras;
-                    if(Object.prototype.toString.call(extras)=='[object String]')
-                        extras=JSON.parse(extras);
 
-                    extras=extras.extras;
-                    if(Object.prototype.toString.call(extras)=='[object String]')
-                        extras=JSON.parse(extras);
-
-                    switch (extras.type) {
-                        case 'from-service':
-                            alert('orderId='+extras.orderId+'\r\n'+'servicePersonId='+extras.servicePersonId);
-                            break;
-                        default:
-                            break;
-                    }
                 } else {
-                    alertContent = event.aps.alert
+                    console.log('platform doesn\'t support');
+                    return ;
+                }
+
+                if(Object.prototype.toString.call(extras)=='[object String]')
+                    extras=JSON.parse(extras);
+
+                extras=extras.extras;
+                if(Object.prototype.toString.call(extras)=='[object String]')
+                    extras=JSON.parse(extras);
+
+                switch (extras.type) {
+                    case 'from-service':
+                        //TODO:加入语音提醒
+                        try{
+                            var orderId=extras.orderId;
+                            var servicePersonId=extras.servicePersonId;
+                            var content='工号为'+servicePersonId+'的服务人员发出接单请求';
+
+
+                            console.log('orderId='+orderId);
+                            console.log('content=' + content);
+
+
+                            $http({
+                                method: "post",
+                                url: Proxy.local() + "/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token,
+                                },
+                                data: {
+                                    request: 'createNotification',
+                                    info:{
+                                        ownerId:orderId,
+                                        content:content,
+                                        notyTime:new Date(),
+                                        side:'customer',
+                                        subType:null,
+                                        type:'service'
+
+                                    }
+                                }
+                            }).then(function (res) {
+                                var json = res.data;
+                                if (json.re == 1) {
+                                    alert('json re==1');
+                                    var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
+                                        content+'&ttsToken='+$rootScope.ttsToken;
+                                    var fileSystem=cordova.file.externalApplicationStorageDirectory;
+                                    var target=fileSystem+'temp.mp3';
+                                    var trustHosts = true;
+                                    var options = {
+                                        fileKey: 'file',
+                                        headers: {
+                                            'Authorization': "Bearer " + $rootScope.access_token
+                                        }
+                                    };
+                                    alert('begin download audio');
+                                    $cordovaFileTransfer.download(url, target, options, trustHosts)
+                                        .then(function (res) {
+
+                                            var order=null;
+                                            $rootScope.getOrderInfo(orderId).then(function (json) {
+                                                if(json.re==1) {
+                                                    order=json.data;
+                                                }
+                                            });
+
+                                            $rootScope.getOrderInfo(orderId).then(function (json) {
+                                                if(json.re==1) {
+                                                    var order=json.data;
+                                                    //直接进入服务订单详请界面
+                                                    $state.go('service_order_detail',{order:JSON.stringify(order)});
+                                                }
+                                            });
+
+
+                                            toaster.pop({
+                                                type:'black',
+                                                title:"信息",
+                                                body:content,
+                                                timeout:0,
+                                                showCloseButton: true,
+                                                onHideCallback: function () {
+                                                    //TODO:validate accessToken
+
+                                                    if($rootScope.access_token!==undefined&&$rootScope.access_token!==null)
+                                                    {
+                                                        //服务人员接单
+                                                        if(order!==undefined&&order!==null)
+                                                            $state.go('service_order_detail',{order:JSON.stringify(order)});
+                                                        else
+                                                            $state.go('service_order_detail',{});
+                                                    }else{
+                                                        $cordovaPreferences.fetch('username')
+                                                            .success(function(value) {
+                                                                if(value!==undefined&&value!==null&&value!='')
+                                                                    $scope.user.username=value;
+                                                                $cordovaPreferences.fetch('password')
+                                                                    .success(function(value) {
+                                                                        if(value!==undefined&&value!==null&&value!='')
+                                                                            $scope.user.password=value;
+                                                                        if($scope.user.username!==undefined&&$scope.user.username!==null&&$scope.user.username!=''
+                                                                            &&$scope.user.password!==undefined&&$scope.user.password!==null&&$scope.user.password!='')
+                                                                        {
+
+                                                                            $http({
+                                                                                method: "POST",
+                                                                                data: "grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,
+                                                                                url: Proxy.local() + '/login',
+                                                                                headers: {
+                                                                                    'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                                                                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                                                                }
+                                                                            }).then(function (res) {
+                                                                                var json = res.data;
+                                                                                var access_token = json.access_token;
+                                                                                $rootScope.access_token=access_token;
+                                                                                //服务人员接单
+                                                                                if(order!==undefined&&order!==null)
+                                                                                    $state.go('service_order_detail',{order:JSON.stringify(order)});
+                                                                                else
+                                                                                    $state.go('service_order_detail',{});
+                                                                            }).catch(function(err) {
+                                                                                var str='';
+                                                                                for(var field in err)
+                                                                                    str+=field+'\r\n'+err[field];
+                                                                                alert(str);
+                                                                            });
+                                                                        }else{
+                                                                            var lackAlert = $ionicPopup.alert({
+                                                                                template: '请登录App后查看服务订单',
+                                                                                title: '错误'
+                                                                            });
+                                                                        }
+                                                                    })
+                                                                    .error(function(error) {
+                                                                        alert("Error: " + error);
+                                                                    });
+                                                            })
+                                                            .error(function(error) {
+                                                                alert("Error: " + error);
+                                                            });
+                                                    }
+
+                                                }
+                                            });
+
+                                            //TODO:播放录音
+                                            var filepath=fileSystem+'temp.mp3';
+                                            filepath = filepath.replace('file://','');
+                                            var media = $cordovaMedia.newMedia(filepath);
+
+                                            if(ionic.Platform.isIOS()) {
+                                            }else if(ionic.Platform.isAndroid()) {
+                                                media.play();
+                                            }else{}
+                                            console.log('tts speach generate success');
+                                        }, function (err) {
+                                            console.log('err=========================');
+                                            var str='';
+                                            for(var field in err)
+                                                str+=field+':'+'\r\n'+err[field];
+                                            console.log('error=' + str);
+                                        }, function (progress) {
+
+                                        });
+
+                                }
+                            }).catch(function (err) {
+                                var str='';
+                                for(var field in err)
+                                    str+=err[field];
+                                alert('err=\r\n'+str);
+                            });
+
+                        }catch(e)
+                        {
+                            alert('err=' + e.toString());
+                        }
+                        break;
+
+                    case 'from-background':
+
+                        //车险报价或者寿险报价
+
+
+                        var orderState=extras.orderState;
+                        switch (orderState) {
+                            case 3:
+                                //报价完成
+                                var orderId=extras.orderId;
+                                var orderNum=extras.orderNum;
+                                var orderType=extras.orderType;
+                                var date=extras.date;
+                                var msg=null;
+                                if(orderType==1)
+                                {
+                                    msg='订单号为'+orderNum+'的车险订单已报价完成\r\n'+'是否现在进入车险订单页面查看';
+                                    $rootScope.flags.carOrders.onFresh=true;
+                                }
+                                else if(orderType==2)
+                                {
+                                    msg='订单号为'+orderNum+'的寿险订单已报价完成\r\n'+'是否现在进入寿险订单页面查看';
+                                    $rootScope.flags.lifeOrders.onFresh=true;
+                                }
+
+
+                                $http({
+                                    method: "POST",
+                                    url: Proxy.local() + "/svr/request",
+                                    headers: {
+                                        'Authorization': "Bearer " + $rootScope.access_token
+                                    },
+                                    data: {
+                                        request: 'createNotification',
+                                        info: {
+                                            type: orderType==1?'car':'life',
+                                            ownerId: orderId,
+                                            content: content,
+                                            notyTime: new Date(),
+                                            side: 'customer',
+                                            subType:orderType
+                                        }
+                                    }
+                                }).then(function (res) {
+                                    var json = res.data;
+                                    if (json.re == 1) {
+
+                                        var cmd=null;
+                                        switch(orderType)
+                                        {
+                                            case 1:
+                                                cmd='fetchCarOrderByOrderId';
+                                                break;
+                                            case 2:
+                                                cmd='fetchLifeOrderByOrderId';
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+
+
+
+                                        $http({
+                                            method: "POST",
+                                            url: Proxy.local() + '/'+cmd,
+                                            headers: {
+                                                'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                                                'Content-Type': 'application/x-www-form-urlencoded'
+                                            },
+                                            data: {
+                                                info: {
+                                                    orderId:orderId
+                                                }
+                                            }
+                                        }).then(function (res) {
+                                            var json=res.data;
+                                            if(json.re==1) {
+                                                var order=json.data;
+                                                //TODO:popup a custom message
+                                                toaster.pop({
+                                                    type:'black',
+                                                    title:"信息",
+                                                    body:msg,
+                                                    timeout:0,
+                                                    showCloseButton: true,
+                                                    onHideCallback: function () {
+                                                        $state.go('car_order_prices',{order:JSON.stringify(order)});
+                                                    }
+                                                });
+
+                                            }
+                                        })
+
+                                    }
+                                }).catch(function (err) {
+                                    var str='';
+                                    for(var field in err)
+                                        str+=err[field];
+                                    console.error('err=\r\n'+str);
+                                })
+
+                                break;
+                        }
+
+
+                        break;
+                    default:
+
+                        break;
                 }
 
             }catch(e)
@@ -237,101 +496,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             if(message.type!=undefined&&message.type!=null){
                 alert('type='+message.type);
               switch(message.type){
-
-                  case 'from-service':
-                    //TODO:加入语音提醒
-                    try{
-                        var order=message.order;
-                        var servicePersonId=message.servicePersonId;
-                        var content='工号为'+servicePersonId+'的服务人员发出接单请求';
-
-                        alert('make notification');
-                        alert('orderId='+order.orderId);
-                        alert('content=' + content);
-
-
-                        $http({
-                            method: "post",
-                            url: Proxy.local() + "/svr/request",
-                            headers: {
-                                'Authorization': "Bearer " + $rootScope.access_token,
-                            },
-                            data: {
-                                request: 'createNotification',
-                                info:{
-                                    ownerId:order.orderId,
-                                    content:content,
-                                    notyTime:new Date(),
-                                    side:'customer',
-                                    subType:null,
-                                    type:'service'
-
-                                }
-                            }
-                        }).then(function (res) {
-                            var json = res.data;
-                            if (json.re == 1) {
-                                alert('json re==1');
-                                var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
-                                    content+'&ttsToken='+$rootScope.ttsToken;
-                                 var fileSystem=cordova.file.externalApplicationStorageDirectory;
-                                 var target=fileSystem+'temp.mp3';
-                                 var trustHosts = true;
-                                 var options = {
-                                     fileKey: 'file',
-                                     headers: {
-                                         'Authorization': "Bearer " + $rootScope.access_token
-                                     }
-                                 };
-                                alert('begin download audio');
-                                $cordovaFileTransfer.download(url, target, options, trustHosts)
-                                     .then(function (res) {
-
-                                         alert('popup a toaster');
-                                        toaster.pop({
-                                            type:'black',
-                                            title:"信息",
-                                            body:content,
-                                            timeout:0,
-                                            showCloseButton: true,
-                                            onHideCallback: function () {
-                                                $state.go('notification');
-                                            }
-                                        });
-
-                                         //TODO:播放录音
-                                        var filepath=fileSystem+'temp.mp3';
-                                        filepath = filepath.replace('file://','');
-                                        var media = $cordovaMedia.newMedia(filepath);
-
-                                        if(ionic.Platform.isIOS()) {
-                                        }else if(ionic.Platform.isAndroid()) {
-                                            media.play();
-                                        }else{}
-                                        console.log('tts speach generate success');
-                                    }, function (err) {
-                                        console.log('err=========================');
-                                        var str='';
-                                        for(var field in err)
-                                            str+=field+':'+'\r\n'+err[field];
-                                        console.log('error=' + str);
-                                    }, function (progress) {
-
-                                    });
-
-                            }
-                        }).catch(function (err) {
-                            var str='';
-                            for(var field in err)
-                                str+=err[field];
-                            alert('err=\r\n'+str);
-                        });
-
-                    }catch(e)
-                    {
-                        alert('err=' + e.toString());
-                    }
-                  break;
 
                   case 'from-background':
 
@@ -424,11 +588,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                       console.log('You are not sure');
                                   }
 
-                              })
+                              });
                               break;
                       }
 
-                    break;
+
+                      break;
 
               }
             }
@@ -1170,12 +1335,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/personal_portrait/personal_portrait.html'
           })
 
-
-
-
         // if none of the above states are matched, use this as the fallback
-
-      $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/login');
 
     })
 
@@ -1218,7 +1379,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.121:3000';
+            return 'http://192.168.3.2:3000';
           else
             return "/proxy/node_server";
 
