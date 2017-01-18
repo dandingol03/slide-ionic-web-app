@@ -3,7 +3,7 @@
  */
 angular.module('starter')
 
-    .controller('appendCarInsurancederController',function($scope,$state,$http, $location,
+    .controller('xCarInsurancederController',function($scope,$state,$http, $location,
                                                            $rootScope,$ionicActionSheet,$cordovaCamera,$cordovaImagePicker,
                                                            $ionicModal,Proxy,$stateParams,$cordovaFileTransfer,
                                                            $q,$ionicPopup,$ionicLoading,$timeout) {

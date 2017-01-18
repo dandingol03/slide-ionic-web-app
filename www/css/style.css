@@ -1439,3 +1439,10 @@ span.rotate{
   -webkit-transform:rotate(12deg); /* Safari 和 Chrome */
   -o-transform:rotate(12deg); /* Opera */
 }
+
+.car-insuranceder-cover{
+  background-image: url('../img/flow_and_moutain.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: 0% 100%;
+}

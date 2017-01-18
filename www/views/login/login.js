@@ -140,24 +140,6 @@ angular.module('starter')
       };
 
 
-
-        $http({
-            method: "POST",
-            url: Proxy.local() + '/'+'fetchCarOrderByOrderId',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: {
-                info: {
-                    orderId:533
-                }
-            }
-        }).then(function (res) {
-            var json=res.data;
-            console.log('...');
-        })
-
-
         if(window.cordova)
         {
             $ionicPlatform.ready (function () {

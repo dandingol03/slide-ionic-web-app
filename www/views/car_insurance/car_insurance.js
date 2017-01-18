@@ -6,7 +6,7 @@ angular.module('starter')
   .controller('carInsuranceController',function($scope,$state,$http,
                                                 $rootScope,$ionicActionSheet,
                                                 $ionicModal,Proxy,$stateParams,$ionicPopup,
-                                                $ionicScrollDelegate,$ionicLoading){
+                                                $ionicScrollDelegate,$ionicLoading,$timeout){
     if($stateParams.carInfo!==undefined&&$stateParams.carInfo!==null&&$stateParams.carInfo!=="")
     {
       var carInfo=$stateParams.carInfo;
@@ -209,7 +209,17 @@ angular.module('starter')
     };
     $scope.closeCompanyModal = function() {
       $scope.car_company_modal.hide();
+        var element = angular.element(document.querySelector("body"));
+        element.removeClass('modal-open')
     };
+
+
+
+
+
+    $scope.$on('$destroy', function() {
+        $scope.car_company_modal.remove();
+    });
     /**************选择公司模态框*************************/
 
     /**************选择车险相关人员模态框*************************/
@@ -593,9 +603,9 @@ angular.module('starter')
 
             }
 
-
-            $state.go('append_car_insuranceder',{info:JSON.stringify(info)});
             $scope.closeCompanyModal();
+            $state.go('append_car_insuranceder',{info:JSON.stringify(info)});
+
         }else{
             var alertPopup = $ionicPopup.alert({
                 title: '错误',
@@ -607,7 +617,7 @@ angular.module('starter')
 
     }
 
-      
+
     //向上滚动
     $scope.scrollUpStep=function () {
         $ionicScrollDelegate.$getByHandle('products_scroll').scrollTop(true);
@@ -615,8 +625,8 @@ angular.module('starter')
     //向下滚动
     $scope.scrollDownStep=function () {
         $ionicScrollDelegate.$getByHandle('products_scroll').scrollBottom(true);
-    }  
-    
+    }
+
     $scope.previou_page=function(){
       var curIndex=($scope.companyIndex-1)*$scope.page_size;
       if(curIndex>=0) {
