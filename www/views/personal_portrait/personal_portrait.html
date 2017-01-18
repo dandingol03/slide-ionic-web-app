@@ -1,26 +1,29 @@
-<ion-view  class="passwordForget-view" view-title="个人头像">
 
-    <ion-nav-bar class="bar-stable" align-title="center" >
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear bar_arr"
-                    style="font-size: 2em;color:#bf530c"
-                    ng-click="go_back()">
-                <i class="ion-chevron-left"></i>
-            </button>
-        </ion-nav-buttons>
-
-
-        <ion-nav-buttons side="right">
-            <button class="button button-dark"
-                    style="font-size: 1.2em;color:#fff;margin-right: 15px;"
-                    ng-click="savePortrait()">
-                保存
-            </button>
-        </ion-nav-buttons>
-
-    </ion-nav-bar>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+    <ion-view class="passwordForget-view" view-title="个人头像" hide-nav-bar="true">
 
     <ion-content scroll="false" style="padding:0;margin:0;background: #eee;" >
+
+
+        <!-- header bar -->
+        <div class="bar bar-header bar-dark" style="position: static;height:44px;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+            <h1 class="title" style="display: inline-block;width:100%;text-align:center;">
+                <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
+                    <i class="ion-chevron-left"></i>
+                </span>
+                <span style="display: inline-block;width: 70%;text-align: center;">
+                    车辆管理
+                </span>
+                <button class="button button-dark"
+                        style="font-size:0.8em;color:#fff;margin-right: 15px;margin-top:8px"
+                        ng-click="savePortrait()">
+                    保存
+                </button>
+                <span style="display: inline-block;width: 5%;">
+              </span>
+            </h1>
+        </div>
+
 
         <div class="list list-inset " style="margin:0;">
 
@@ -58,5 +61,5 @@
 
 
 </ion-view>
-
+</ion-nav-view>
 
