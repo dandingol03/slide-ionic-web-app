@@ -305,6 +305,14 @@ angular.module('starter')
 
         }
 
+        $scope.goto = function(state){
+            $state.go(state);
+
+        }
+
+
+
+
         $scope.togglePwdPersistent = function(){
           if($scope.pwdPersisted==true){
               $scope.pwdPersisted=false;
