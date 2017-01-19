@@ -17,7 +17,7 @@
 
 
         <!-- 设置推送权限图例 -->
-        <div ng-if="type=='notification'">
+        <div ng-if="type=='whiteList'">
 
             <div class="list padding">
 
@@ -42,7 +42,7 @@
                     </span>
                 </div>
 
-                <div ng-if="pictureExample.notification.phoneManager==true">
+                <div ng-if="pictureExample.whiteList.phoneManager==true">
                     <div class="item" style="padding:8px 10px;border:0;text-align: center;">
                         <img src="img/guideNotification3.png" alt="" style="max-height: 500px;">
                     </div>
@@ -63,7 +63,7 @@
                     </span>
                 </div>
 
-                <div ng-if="pictureExample.notification.memoryWhiteList==true">
+                <div ng-if="pictureExample.whiteList.memoryWhiteList==true">
                     <div class="item" style="padding:8px 10px;border:0;text-align: center;">
                         <img src="img/guideNotification1.png" alt="" style="max-height: 500px;">
                     </div>
@@ -86,7 +86,7 @@
                 </div>
 
 
-                <div ng-if="pictureExample.notification.toggleProject==true">
+                <div ng-if="pictureExample.whiteList.toggleProject==true">
                     <div class="item" style="padding:8px 10px;border:0;text-align: center;">
                         <img src="img/guideNotification2.png" alt="" style="max-height: 500px;">
                     </div>
@@ -97,8 +97,8 @@
 
         </div>
 
-        <!-- 设置内存白名单 -->
-        <div ng-if="type=='memoryWhiteList'">
+        <!-- 设置后台保活 -->
+        <div ng-if="type=='keepAlive'">
             <div class="list padding">
 
                 <div class="item" style="padding:10px 10px;margin:0;text-align: center;border:0px;border-bottom: 1px solid #ddd;">
@@ -107,26 +107,71 @@
                     </span>
                 </div>
 
+                <!-- 保活设置权限 -->
                 <div class="item" style="padding:10px 10px;margin:0;border:0px;">
                     <div style="white-space: normal;">
-                        在内存白名单中,勾选ionic-web-app,使其在后台中也能存活,如下图
+                        首先打开手机管家,点击权限管理,如下图
                     </div>
                 </div>
 
-                <!-- 查看图例 -->
                 <div class="item-divider card" style="padding:8px 10px;border: 1px solid #ccc;border-radius: 4px;background: #eee;
                         text-align: center;margin-bottom: 2px;margin-top:0px;"
-                     ng-click="togglePictureExample('toggleProject')">
+                     ng-click="togglePictureExample('authorityConfig')">
                     <span style="font-weight: bolder;font-size: 1.2em;color:#444;">
                         查看图例
                     </span>
                 </div>
 
-                <div ng-if="pictureExample.memoryWhiteList.toggleProject==true">
+                <div ng-if="pictureExample.keepAlive.authorityConfig==true">
                     <div class="item" style="padding:8px 10px;border:0;text-align: center;">
-                        <img src="img/guideNotification2.png" alt="" style="max-height: 500px;">
+                        <img src="img/keepAlive_guide1.png" alt="" style="max-height: 500px;">
                     </div>
                 </div>
+
+
+
+                <div class="item" style="padding:10px 10px;margin:0;border:0px;">
+                    <div style="white-space: normal;">
+                        在权限管理的应用标签中点选ionic-web-app应用
+                    </div>
+                </div>
+
+                <div class="item-divider card" style="padding:8px 10px;border: 1px solid #ccc;border-radius: 4px;background: #eee;
+                        text-align: center;margin-bottom: 2px;margin-top:0px;"
+                     ng-click="togglePictureExample('selectProject')">
+                    <span style="font-weight: bolder;font-size: 1.2em;color:#444;">
+                        查看图例
+                    </span>
+                </div>
+
+                <div ng-if="pictureExample.keepAlive.selectProject==true">
+                    <div class="item" style="padding:8px 10px;border:0;text-align: center;">
+                        <img src="img/keepAlive_projectSelect.png" alt="" style="max-height: 500px;">
+                    </div>
+                </div>
+
+                <div class="item" style="padding:10px 10px;margin:0;border:0px;">
+                    <div style="white-space: normal;">
+                        在ionic-web-app应用内,打开应用自动启动
+                    </div>
+                </div>
+
+                <div class="item-divider card" style="padding:8px 10px;border: 1px solid #ccc;border-radius: 4px;background: #eee;
+                        text-align: center;margin-bottom: 2px;margin-top:0px;"
+                     ng-click="togglePictureExample('openAutoStart')">
+                    <span style="font-weight: bolder;font-size: 1.2em;color:#444;">
+                        查看图例
+                    </span>
+                </div>
+
+                <div ng-if="pictureExample.keepAlive.openAutoStart==true">
+                    <div class="item" style="padding:8px 10px;border:0;text-align: center;">
+                        <img src="img/keepAlive_openAutoStart.png" alt="" style="max-height: 500px;">
+                    </div>
+                </div>
+
+
+
 
 
             </div>
