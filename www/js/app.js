@@ -223,6 +223,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                             var servicePersonId=extras.servicePersonId;
                             var content='工号为'+servicePersonId+'的服务人员发出接单请求';
                             var user={};
+                            var date=new Date(extras.date);
 
                             console.log('orderId='+orderId);
                             console.log('content=' + content);
@@ -241,7 +242,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                             info:{
                                                 ownerId:orderId,
                                                 content:content,
-                                                notyTime:new Date(),
+                                                notyTime:date,
                                                 side:'customer',
                                                 subType:null,
                                                 type:'service'
@@ -271,48 +272,39 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                     $rootScope.getOrderInfo(orderId).then(function (json) {
                                                         if(json.re==1) {
                                                             order=json.data;
-                                                        }
-                                                    });
 
-                                                    $rootScope.getOrderInfo(orderId).then(function (json) {
-                                                        if(json.re==1) {
-                                                            var order=json.data;
-                                                            //直接进入服务订单详请界面
-                                                            $state.go('service_order_detail',{order:JSON.stringify(order)});
-                                                        }
-                                                    });
+                                                            toaster.pop({
+                                                                type:'black',
+                                                                title:"信息",
+                                                                body:content,
+                                                                timeout:0,
+                                                                showCloseButton: true,
+                                                                onHideCallback: function () {
+                                                                    //TODO:validate accessToken
 
-
-                                                    toaster.pop({
-                                                        type:'black',
-                                                        title:"信息",
-                                                        body:content,
-                                                        timeout:0,
-                                                        showCloseButton: true,
-                                                        onHideCallback: function () {
-                                                            //TODO:validate accessToken
-
-                                                            if($rootScope.access_token!==undefined&&$rootScope.access_token!==null)
-                                                            {
-                                                                //服务人员接单
-                                                                if(order!==undefined&&order!==null)
-                                                                    $state.go('service_order_detail',{order:JSON.stringify(order)});
-                                                                else
-                                                                    $state.go('service_order_detail',{});
-                                                            }else{
-
-                                                                $rootScope.getAccessToken().then(function (json) {
-                                                                    if(json.re==1) {
+                                                                    if($rootScope.access_token!==undefined&&$rootScope.access_token!==null)
+                                                                    {
                                                                         //服务人员接单
                                                                         if(order!==undefined&&order!==null)
                                                                             $state.go('service_order_detail',{order:JSON.stringify(order)});
                                                                         else
                                                                             $state.go('service_order_detail',{});
+                                                                    }else{
+
+                                                                        $rootScope.getAccessToken().then(function (json) {
+                                                                            if(json.re==1) {
+                                                                                //服务人员接单
+                                                                                if(order!==undefined&&order!==null)
+                                                                                    $state.go('service_order_detail',{order:JSON.stringify(order)});
+                                                                                else
+                                                                                    $state.go('service_order_detail',{});
+                                                                            }
+                                                                        });
+
                                                                     }
-                                                                });
 
-                                                            }
-
+                                                                }
+                                                            });
                                                         }
                                                     });
 
@@ -410,11 +402,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                                                 }
                                             }
-                                        }).then(function (json) {
+                                        }).then(function (res) {
+                                            var json=res.data;
                                             if(json.re==1) {
 
 
 
+                                                alert('ttsToken='+$rootScope.ttsToken);
                                                 var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
                                                     msg+'&ttsToken='+$rootScope.ttsToken;
                                                 var fileSystem=cordova.file.externalApplicationStorageDirectory;
@@ -467,11 +461,27 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                                     showCloseButton: true,
                                                                     onHideCallback: function () {
                                                                         if($rootScope.access_token!==undefined&&$rootScope.access_token!==null)
-                                                                            $state.go('car_order_prices',{order:JSON.stringify(order)});
+                                                                        {
+                                                                            if(orderType==1)
+                                                                                $state.go('car_order_prices',{order:JSON.stringify(order)});
+                                                                            else
+                                                                            {
+                                                                                $rootScope.lifeInsuranceOrder=order;
+                                                                                $state.go('life_plan',{order:JSON.stringify(order)});
+                                                                            }
+                                                                        }
                                                                         else{
                                                                             $rootScope.getAccessToken().then(function (json) {
                                                                                 if(json.re==1)
-                                                                                    $state.go('car_order_prices',{order:JSON.stringify(order)});
+                                                                                {
+                                                                                    if(orderType==1)
+                                                                                        $state.go('car_order_prices',{order:JSON.stringify(order)});
+                                                                                    else
+                                                                                    {
+                                                                                        $rootScope.lifeInsuranceOrder=order;
+                                                                                        $state.go('life_plan',{order:JSON.stringify(order)});
+                                                                                    }
+                                                                                }
                                                                             });
                                                                         }
                                                                     }
@@ -488,6 +498,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                                                         if(ionic.Platform.isIOS()) {
                                                         }else if(ionic.Platform.isAndroid()) {
+                                                            alert('play media');
                                                             media.play();
                                                         }else{}
                                                         console.log('tts speach generate success');

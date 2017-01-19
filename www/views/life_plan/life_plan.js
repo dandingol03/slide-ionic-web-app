@@ -6,7 +6,7 @@ angular.module('starter')
 /**
  * 本页面不开启缓存
  */
-  .controller('lifePlanController',function($scope,$state,$http,
+  .controller('lifePlanController',function($scope,$state,$http,$ionicNativeTransitions,
                                                        $location,$rootScope,$stateParams,
                                                        $ionicPopup,Proxy){
 
@@ -53,16 +53,16 @@ angular.module('starter')
 
     $scope.go_back=function(){
         $rootScope.life_orders_tabIndex=1;
-        window.history.back();
+        $ionicNativeTransitions.stateGo('life_insurance_order', {}, {}, {
+            "type": "slide",
+            "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+            "duration": 240, // in milliseconds (ms), default 400
+        });
     }
 
 
     $scope.tab_change=function(i){
       $scope.tabIndex=i;
-    }
-
-    $scope.go_back=function(){
-      window.history.back();
     }
 
     $scope.toggle=function (item,field) {
