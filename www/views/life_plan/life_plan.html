@@ -1,22 +1,24 @@
-<ion-view view-title="寿险订单">
 
-  <ion-nav-bar class="bar-stable" align-title="center" >
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear bar_arr"
-              ng-click="go_back()"
-              style="font-size: 2.4em;"
-      >
-        <i class="ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
+<ion-nav-view class="slide-left-right" hide-nav-bar="true">
+  <ion-view view-title="寿险订单" hide-nav-bar="true">
 
-  </ion-nav-bar>
+  <ion-content scroll="true" lazy-scroll style="background-image: url('img/bkg2.png');background-repeat: no-repeat;
+    background-size: 100%;background-position: 0% 100%;">
+
+    <!-- header bar -->
+    <div class="bar bar-header bar-dark" style="position: static;height:44px;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+      <h1 class="title" style="display: inline-block;width:100%;text-align:center;">
+        <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
+          <i class="ion-chevron-left"></i>
+        </span>
+        <span style="display: inline-block;width:90%;text-align: center;padding-right:15%">
+          寿险订单
+        </span>
+      </h1>
+    </div>
 
 
-  <ion-content scroll="true" lazy-scroll>
-
-
-    <div class="list list-inset padding" style="margin-bottom:40px;" >
+    <div class="list list-inset padding" style="margin-bottom:40px;background:transparent" >
 
 
       <!-- 寿险估价列表 -->
@@ -79,3 +81,4 @@
   </ion-content>
 
 </ion-view>
+</ion-nav-view>
