@@ -583,6 +583,41 @@ angular.module('starter')
             }
         }
 
+        $scope.playRecord=function () {
+            if($scope.media&&$scope.media.media)
+            {
+                try{
+                    $scope.media.media.getCurrentPosition(function (pos) {
+                        if(pos>0)
+                        {
+                            alert('音频仍在播放');
+                        }
+                        else{
+                            if($scope.isRecording==false&&$scope.media!==undefined&&$scope.media!==null)
+                            {
+                                if( ionic.Platform.isIOS()){
+                                    CordovaAudio.playingRecorder(function(success) {
+                                        alert('success=\r\n'+success);
+                                    })
+                                }else if(ionic.Platform.isAndroid()){
+                                    $scope.media.play();
+                                }
+                            }
+                        }
+                    });
+
+                }catch(e)
+                {
+                    alert('error=\r\n' + e.toString());
+                }
+            }else{
+                var myPopup = $ionicPopup.alert({
+                    template: '请先录音再选择播放',
+                    title: '<strong style="color:red">错误</strong>'
+                });
+            }
+        }
+
 
         $scope.audioPos=0;
 

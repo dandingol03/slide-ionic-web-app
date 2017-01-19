@@ -53,7 +53,7 @@ angular.module('starter')
 
     $scope.go_back=function(){
         $rootScope.life_orders_tabIndex=1;
-        $ionicNativeTransitions.stateGo('life_insurance_order', {}, {}, {
+        $ionicNativeTransitions.stateGo('life_insurance_orders', {}, {}, {
             "type": "slide",
             "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
             "duration": 240, // in milliseconds (ms), default 400

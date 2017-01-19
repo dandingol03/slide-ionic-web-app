@@ -41,10 +41,10 @@ angular.module('starter')
         }
 
         $scope.pictureExample={
-            notification:{
+            whiteList:{
                 phoneManager:false
             },
-            memoryWhiteList:{
+            keepAlive:{
 
             }
         };
