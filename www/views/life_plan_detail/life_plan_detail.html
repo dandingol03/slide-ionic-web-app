@@ -3,7 +3,7 @@
   <ion-view view-title="{{title}}" hide-nav-bar="true">
 
 
-  <ion-content class="padding cart_detail" style="background-image: url('img/bkg2.png');background-repeat: no-repeat;
+  <ion-content class="cart_detail" style="background-image: url('img/bkg2.png');background-repeat: no-repeat;
     background-size: 100%;background-position: 0% 100%;" >
 
     <!-- header bar -->
@@ -46,38 +46,48 @@
       </ul>
     </div>
 
-
-
-
-
-    <ion-slide-box does-continue="false" show-pager="true"  active-slide="myActiveSlide" on-slide-changed="slide_cb($index)" style="background: transparent;">
+    <ion-slide-box does-continue="false" show-pager="true"  active-slide="myActiveSlide" on-slide-changed="slide_cb($index)" style="background: transparent;padding:10px">
       <ion-slide style="background: transparent;">
         <div class="item_desc" style="background: transparent;">
           <div class="prop_over">
             <h4>产品简介</h4>
             <ion-list style="background: transparent;">
-              <ion-item style="background: transparent;">
-                <div class="row" style="background: transparent;">
-                  <div class="col"><p><i class="ion-record"></i></p></div>
-                  <div class="col"><p></p></div>
+              <ion-item style="background: transparent;padding: 16px;">
+                <div style="background: transparent;">
+                  <div class="col">
+                    <p style="display: inline-block;width:10%;"><i class="ion-record"></i></p>
+                    <p style="display: inline-block;width:90%;">产品特色：</p>
+                  </div>
+                </div>
+                  <div style="padding: 5px;"><p style="font-size:0.9em">康运升级责任更全</p></div>
+                  <div style="padding: 5px;"><p style="font-size:0.9em">轻症责任保障更久</p></div>
+                  <div style="padding: 5px;"><p style="font-size:0.9em">轻症赔付保费豁免</p></div>
+                  <div style="padding: 5px;"><p style="font-size:0.9em">保费更低保障更多</p></div>
                 </div>
               </ion-item>
             </ion-list>
             <h4>保障范围</h4>
             <ion-list style="background: transparent;">
-              <ion-item style="background: transparent;">
-                <div class="row">
-                  <div class="col"><p><i class="ion-record"></i></p></div>
-                  <div class="col"><p></p></div>
+              <ion-item style="background: transparent;border:0px">
+                <div>
+                  <div class="col"><p><i style="font-size:8px;color: #e99d23;" class="ion-record"></i></p></div>
+                  <div class="col"><p>含身故保险金、重大疾病保险金、</p></div>
+                  <div class="col"><p>轻症疾病保险金、轻症疾病豁免保险费</p></div>
                 </div>
               </ion-item>
             </ion-list>
             <h4>适用人群</h4>
             <ion-list style="background: transparent;">
-              <ion-item style="background: transparent;">
+              <ion-item style="background: transparent;border:0px">
                 <div class="row">
-                  <div class="col"><p><i class="ion-record"></i></p></div>
-                  <div class="col"><p></p></div>
+                  <div class="col">
+                    <p style="display: inline-block;width:10%;">
+                      <i style="font-size:8px;color: #e99d23;" class="ion-record"></i>
+                    </p>
+                    <p style="display: inline-block;width:90%;">
+                      为28 天-60 周岁（含）
+                    </p>
+                  </div>
                 </div>
               </ion-item>
             </ion-list>
@@ -94,26 +104,26 @@
 
               <ion-item style="background: transparent;">
                 <div class="row">
-                  <div class="col">
-                    <p><i class="ion-record"></i>产品名称</p>
+                  <div style="width:30%">
+                    <span><i class="ion-record"></i>产品名称:</span>
                   </div>
-                  <div class="col"><p>{{item.main.product.productName}}</p></div>
+                  <div style="width:70%"><span>{{item.main.product.productName}}</span></div>
                 </div>
               </ion-item>
 
               <ion-item style="background: transparent;">
                 <div class="row" style="background: transparent;">
-                  <div class="col" style="background: transparent;">
-                    <p><i class="ion-record"></i>每年缴费:</p>
+                  <div style="background: transparent;width:30%">
+                    <span><i class="ion-record"></i>每年缴费:</span>
                   </div>
-                  <div class="col"><p>{{item.main.insuranceFeeYear}}</p></div>
+                  <div style="width:70%"><span>{{item.main.insuranceFeeYear}}</span></div>
                 </div>
               </ion-item>
 
 
               <ion-item style="background: transparent;">
                 <div class="row" style="background: transparent;">
-                  <label class="item item-input" style="width: 50%;style="background: transparent;"">
+                  <label class="item item-input" style="width: 30%;background: transparent;">
                     <i class="ion-record"></i>缴费年限:
                   </label>
                   <div
@@ -140,7 +150,7 @@
 
               <ion-item style="background: transparent;">
                 <div class="row" style="background: transparent;">
-                  <label class="item item-input" style="width: 50%;background: transparent;">
+                  <label class="item item-input" style="width:30%;">
                     <i class="ion-record"></i>保额:
                   </label>
                   <label class="item item-input">
@@ -159,10 +169,10 @@
 
               <ion-item style="background: transparent;">
                 <div class="row" style="background: transparent;">
-                  <div class="col" style="background: transparent;">
-                    <p style="color:#f00;background: transparent;"><i class="ion-record"></i>主险保费:</p>
+                  <div style="background: transparent;width:30%;">
+                    <span style="color:#f00;background: transparent;"><i class="ion-record"></i>主险保费:</span>
                   </div>
-                  <div class="col"><p>{{item.insuranceFee}}</p></div>
+                  <div><span>{{item.insuranceFee}}</span></div>
                 </div>
               </ion-item>
 

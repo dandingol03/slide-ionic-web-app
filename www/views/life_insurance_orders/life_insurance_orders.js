@@ -33,6 +33,7 @@ angular.module('starter')
           if($ionicHistory.backView())
           {
               window.history.back();
+              $state.go('tabs.my');
           }else{
               $state.go('tabs.my');
           }
