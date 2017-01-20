@@ -1138,12 +1138,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             templateUrl:'views/append_car_insuranceder/append_car_insuranceder.html'
           })
 
-            .state('x_car_insuranceder',{
-                url:'/x_car_insuranceder/:info',
-                controller:'xCarInsurancederController',
-                templateUrl:'views/x_car_insuranceder/x_car_insuranceder.html'
-            })
 
+          .state('map_lead_page',{
+              url:'/map_lead_page',
+              controller:'mapLeadPageController',
+              templateUrl:'views/map_lead_page/map_lead_page.html'
+            })
 
           .state('append_life_insurer',{
             url:'/append_life_insurer/:info',

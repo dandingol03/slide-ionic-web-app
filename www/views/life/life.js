@@ -3,10 +3,14 @@
  */
 angular.module('starter')
     .controller('lifeController',function($scope,$state,$stateParams,$ionicActionSheet,
-                                          $rootScope,$ionicPopup,$http, Proxy){
+                                          $rootScope,$ionicPopup,$http, Proxy,$ionicNativeTransitions){
 
         $scope.go_back=function(){
-            window.history.back();
+            $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
 
         //寿险

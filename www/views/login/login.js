@@ -139,17 +139,17 @@ angular.module('starter')
 
       };
 
+        $rootScope.screen={
+            height:screen.height
+        }
 
         if(window.cordova)
         {
             $ionicPlatform.ready (function () {
 
 
-
                 if(ionic.Platform.isAndroid())
                 {
-
-
 
                     //检查是否含有danding.wav文件
                     $cordovaFile.checkFile(cordova.file.externalRootDirectory, "danding.wav")
