@@ -15,6 +15,15 @@ angular.module('starter')
         $scope.root={
         };
 
+        $scope.height=$rootScope.screen.height;
+        $scope.st={width:'100%',height:$scope.height-70+'px'};
+
+
+
+        $scope.goto=function (state) {
+            $state.go(state);
+        }
+
         $scope.Mutex = function (item, field, cluster) {
             if (item[field]) {
                 item[field] = false;

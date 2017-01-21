@@ -1138,12 +1138,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             templateUrl:'views/append_car_insuranceder/append_car_insuranceder.html'
           })
 
-            .state('x_car_insuranceder',{
-                url:'/x_car_insuranceder/:info',
-                controller:'xCarInsurancederController',
-                templateUrl:'views/x_car_insuranceder/x_car_insuranceder.html'
-            })
 
+          .state('map_lead_page',{
+              url:'/map_lead_page',
+              controller:'mapLeadPageController',
+              templateUrl:'views/map_lead_page/map_lead_page.html'
+            })
 
           .state('append_life_insurer',{
             url:'/append_life_insurer/:info',
@@ -1465,7 +1465,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://139.129.96.231:3000';
+            return 'http://192.168.1.121:3000';
           else
             return "/proxy/node_server";
 
