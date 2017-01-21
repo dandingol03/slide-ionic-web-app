@@ -305,13 +305,6 @@ angular.module('starter')
 
         }
 
-        $scope.goto = function(state){
-            $state.go(state);
-
-        }
-
-
-
 
         $scope.togglePwdPersistent = function(){
           if($scope.pwdPersisted==true){
@@ -454,9 +447,6 @@ angular.module('starter')
         // );
         //
         // $scope.$on('$destroy', deregister)
-
-
-
 
         $scope.doLogin=function(){
 
@@ -739,20 +729,6 @@ angular.module('starter')
         });
       }
 
-
-      $scope.baidu=function(){
-        $http({
-          method:'GET',
-          url:"/proxy/send",
-          headers:{
-            'Access-Control-Allow-Origin':'*'
-          }}).
-        success(function (response) {
-          console.log('success');
-        }).error(function(err) {
-          console.log('...');
-        });
-      }
 
       $scope.goFetchPassword=function(){
           $state.go('passwordForget');

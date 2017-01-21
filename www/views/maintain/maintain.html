@@ -2,7 +2,7 @@
 <ion-nav-view class="slide-left-right" hide-nav-bar="true">
     <ion-view  view-title="维修服务" hide-nav-bar="true">
 
-    <ion-content delegate-handle="maintain" style="padding:0;margin:0;background-color:rgba(128, 128, 128, 0.2);
+    <ion-content scroll="false" delegate-handle="maintain" style="padding:0;margin:0;background-color:rgba(128, 128, 128, 0.2);
     background-image: url('img/bkg_old@2x.png');background-repeat: no-repeat;background-size: 100%;background-position: 0% 20%;">
 
         <!-- header bar -->
@@ -18,7 +18,7 @@
         </div>
 
 
-        <div style="margin-bottom:10px; width: 100%;height: 50px;padding:0;background-color: white; border-bottom: 1px solid #ddd;">
+        <div style="margin-bottom:10px; width: 100%;height:8%;padding:0;background-color: white; border-bottom: 1px solid #ddd;">
 
             <div ng-style="tabIndex==0?selectedTabStyle:unSelectedTabStyle"
                  style="border-top-left-radius: 7px;border-bottom-left-radius: 7px;"
@@ -47,10 +47,11 @@
             <div style="width: 1%;float:left;display: inline-block;height: 100%;"></div>
         </div>
 
-        <div style="margin-top:2px;">
+        <div style="margin-top:2px;height:80%">
             <!-- 日常保养 -->
-            <div ng-if="tabIndex==0" style="height: 100%;width: 100%;background-image: url('img/bkg1@2x.png');background-repeat: no-repeat;background-size: 100%;">
+            <div ng-if="tabIndex==0" style="height: 100%;width: 100%;background-image: url('img/bkg_mt@2x.png');background-color:#fff;background-repeat: no-repeat;background-size: 100%;">
 
+                <ion-scroll style="height: 80%;">
                 <div style="height: 70%;width: 100%;">
                     <div class="item" style="padding: 9px;padding-left:4px;padding-right:11px;margin-top:2px;background: transparent;
                         width: 100%;border:0px;">
@@ -288,12 +289,15 @@
                             </li>
                         </ul>
 
+
                         <div style="min-height: 10px;">
                         </div>
 
                     </div>
 
                 </div>
+
+                </ion-scroll>
 
                 <div class="list" style="padding:10px;padding-top: 0px;height: 30%;">
                     <div class="item"
@@ -324,8 +328,6 @@
                 </div>
 
             </div>
-
-
 
 
             <!-- 文本、音频、视频 -->
