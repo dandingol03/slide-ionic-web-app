@@ -109,7 +109,7 @@ angular.module('starter')
 
 
 
-    $scope.car_insurance.relativePersons={};
+    //$scope.car_insurance.relativePersons={};
 
       $scope.fetchRelativePersons=function () {
           $ionicLoading.show({
