@@ -76,15 +76,30 @@ angular.module('starter')
           $ionicLoading.show({
               template:'<p class="item-icon-left">拉取个人信息<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
           });
+
           $http({
               method: "POST",
-              url: "/proxy/node_server/svr/request",
+              url: Proxy.local() + "/svr/request",
               headers: {
                   'Authorization': "Bearer " + $rootScope.access_token
               },
               data: {
-                  request:'checkPortrait'
+                  request: 'fetchScoreBalance'
               }
+          }).then(function (res) {
+              var json=res.data;
+              if(json.re==1)
+                  $scope.score=json.data;
+              return $http({
+                  method: "POST",
+                  url: "/proxy/node_server/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                      request:'checkPortrait'
+                  }
+              });
           }).then(function (res) {
               var json=res.data;
               if(json.re==1) {

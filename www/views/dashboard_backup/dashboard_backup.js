@@ -22,7 +22,7 @@ angular.module('starter')
             hideDelay:920
         }).then(function(modal) {
             $scope.grant_authority_modal = modal;
-            //$scope.openGrantAuthorityModal();
+            $scope.openGrantAuthorityModal();
         });
 
         $scope.openGrantAuthorityModal= function(){

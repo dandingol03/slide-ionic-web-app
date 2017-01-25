@@ -533,8 +533,6 @@ angular.module('starter')
                   $WebSocket.login($scope.user.username,$scope.user.password,access_token);
 
 
-
-
                   //获取个人信息
                   $http({
                       method: "POST",
