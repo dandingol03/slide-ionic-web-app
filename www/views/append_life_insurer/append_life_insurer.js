@@ -165,7 +165,6 @@ angular.module('starter')
     }
 
 
-
     //1.附件,通过图库
     $scope.pickImage=function(item,field){
       var options = {
