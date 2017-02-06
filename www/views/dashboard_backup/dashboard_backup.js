@@ -15,29 +15,7 @@ angular.module('starter')
 
 
 
-        /*** 授权模态框 ***/
-        $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
-            scope:  $scope,
-            animation: 'animated '+'bounceInUp',
-            hideDelay:920
-        }).then(function(modal) {
-            $scope.grant_authority_modal = modal;
-            //$scope.openGrantAuthorityModal();
-        });
 
-        $scope.openGrantAuthorityModal= function(){
-            try{
-
-                $scope.grant_authority_modal.show();
-            }catch(e){
-                alert('error=\r\n'+ e.toString());
-            }
-        };
-
-        $scope.closeGrantAuthorityModal= function() {
-            $scope.grant_authority_modal.hide();
-        };
-        /*** 授权模态框 ***/
 
 
         $scope.userCounters = null;

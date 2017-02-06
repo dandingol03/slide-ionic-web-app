@@ -12,9 +12,10 @@ angular.module('starter')
             });
         }
 
+        //申请权限
+        $scope.requestPermissions=function () {
 
-
-
+        }
 
 
     })

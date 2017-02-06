@@ -1,34 +1,30 @@
 <ion-nav-view class="slide-left-right" hide-nav-bar="true">
     <ion-view view-title="填写寿险意向" hide-nav-bar="true">
 
-        <ion-content scroll="false" >
+        <ion-content  >
 
-            <ion-slide-box on-slide-changed="slideHasChanged($index)" style="width: 100%;height: 100%;">
-                <!-- 告知图标含义 -->
+
+            <ion-slide-box>
                 <ion-slide>
-
-                    <div style="width: 100%;height: 70%;text-align: center;">
-                        <img src="img/gaode01.png" alt="" style="max-height: 100%;">
-                    </div>
-
-                    <div style="width: 100%;height: 30%;position: relative">
-                        <div style="width: 100%;height: 100%;display: table;text-align: center;">
-                            <span style="display: table-cell;vertical-align: middle;">蓝色图标代表您当前通过网络定位所得到的位置</span>
-                        </div>
-                        <div style="position: absolute;right: 20px;bottom: 10px;text-align: center;">
-                            <button style="background:transparent;border-color:#11c1f3;color:#11c1f3;padding-left:18px;padding-right: 18px;
-                            height: 35px !important;min-height: 35px;line-height: 35px;" ng-click="go_back()"
-                                    class="button button-outline button-calm">
-                                跳过
-                            </button>
-                        </div>
-                    </div>
-
-
+                    <img src="img/authority_grant.png" style="width: 90%;margin-left:5%;"/>
+                    <button class="button button-outline button-positive" style="position: absolute;bottom:70px;left:40%;
+                        padding-left:28px;padding-right: 28px;" ng-click="requestPermissions()">
+                        授权
+                    </button>
                 </ion-slide>
-                <!-- 告知如何定位 -->
                 <ion-slide>
-                    <div class="box yellow"><h1>YELLOW</h1></div>
+                    <img src="img/whitelist_set.png" style="width: 90%;margin-left:5%;"/>
+                    <button class="button button-outline button-positive" style="position: absolute;bottom:70px;left:13%;
+                        padding-left:12px;padding-right: 12px;" ng-click="">
+                        进入'我',查看帮助中的'内存白名单设置'
+                    </button>
+                </ion-slide>
+                <ion-slide on-slide-changed="slideHasChanged(index)">
+                    <img src="img/backend_keepAlive.png" style="width: 90%;margin-left:5%;"/>
+                   <button class="button button-outline button-positive" style="position: absolute;bottom:70px;left:18%;
+                        padding-left:12px;padding-right: 12px;" ng-click="">
+                    进入'我',查看帮助中的'后台保活'
+                    </button>
                 </ion-slide>
             </ion-slide-box>
 

@@ -5,11 +5,18 @@ angular.module('starter')
   .controller('myController',function($scope,$state,$http,$rootScope,
                                       Proxy,$ionicSideMenuDelegate,$ionicHistory,
                                       $cordovaPreferences,$ionicModal,$timeout,
-                                      $cordovaFileTransfer,$ionicLoading){
+                                      $cordovaFileTransfer,$ionicLoading,$ionicPopover){
 
 
     $scope.toggleLeft=function () {
         $ionicSideMenuDelegate.toggleLeft();
+    }
+
+    $scope.goConfigPane=function () {
+        $scope.popover.instance.hide();
+        $timeout(function () {
+            $state.go('authority_setter');
+        },400);
     }
 
     $scope.go_to=function(state){
@@ -76,15 +83,30 @@ angular.module('starter')
           $ionicLoading.show({
               template:'<p class="item-icon-left">拉取个人信息<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
           });
+
           $http({
               method: "POST",
-              url: "/proxy/node_server/svr/request",
+              url: Proxy.local() + "/svr/request",
               headers: {
                   'Authorization': "Bearer " + $rootScope.access_token
               },
               data: {
-                  request:'checkPortrait'
+                  request: 'fetchScoreBalance'
               }
+          }).then(function (res) {
+              var json=res.data;
+              if(json.re==1)
+                  $scope.score=json.data;
+              return $http({
+                  method: "POST",
+                  url: "/proxy/node_server/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                      request:'checkPortrait'
+                  }
+              });
           }).then(function (res) {
               var json=res.data;
               if(json.re==1) {
@@ -239,6 +261,33 @@ angular.module('starter')
       $scope.wxCancel=function () {
           $scope.closeWxShareModal();
       }
+
+
+
+      /****** 设置 popover******/
+      $scope.popover={};
+
+      $ionicPopover.fromTemplateUrl('config-popover.html', {
+          scope: $scope
+      }).then(function(ins) {
+          $scope.popover.instance = ins;
+      });
+
+
+
+      $scope.openPopover = function($event) {
+          $scope.popover.instance.show($event);
+      };
+      $scope.closePopover = function() {
+          $scope.popover.instance.hide();
+      };
+
+      $scope.$on('$destroy', function() {
+          $scope.popover.instance.remove();
+      });
+
+      /************设置 popover*************/
+
 
 
       $scope.gotoNotificationPanel=function () {

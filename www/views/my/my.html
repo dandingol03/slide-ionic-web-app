@@ -26,15 +26,46 @@
                 <div style="height: 10%;width: 100%;background-color:transparent">
                     <div class="item" style="padding:4px;border-bottom:1px solid white;background-color:rgba(17, 17, 17, 0.6);height:50px">
                         <ul style="height: 40px;margin-top:5px;">
+                            <!--<li style="width:15%;float: right;text-align: center;"-->
+                                <!--ng-click="go_to('passwordModify')">-->
+                                <!--<div style="font-size: 1.2em;color:#fff;">-->
+                                    <!--<span><i class="fa fa-unlock-alt"></i></span>-->
+                                <!--</div>-->
+                                <!--<div style="font-size:0.8em;color: #fff;">-->
+                                    <!--<span style="font-weight: bolder;">密码修改</span>-->
+                                <!--</div>-->
+                            <!--</li>-->
+
+
+
                             <li style="width:15%;float: right;text-align: center;"
-                                ng-click="go_to('passwordModify')">
+                                ng-click="openPopover($event)">
                                 <div style="font-size: 1.2em;color:#fff;">
-                                    <span><i class="fa fa-unlock-alt"></i></span>
+                                    <span><i class="fa fa-cog"></i></span>
                                 </div>
-                                <div style="font-size:0.8em;color: #fff;">
-                                    <span style="font-weight: bolder;">密码修改</span>
+                                <div style="font-size:0.8em;color: #fff;position: relative">
+                                    <span style="font-weight: bolder;">设置</span>
+                                    <script id='config-popover.html' type="text/ng-template">
+                                        <ion-popover-view
+                                                style="top:70px;right: 128px;height: 92px;left:0 !important;
+                                                margin-left:0;margin-top:12px;width: 130px;">
+                                            <ion-content style="margin:0;padding:0;background: #444;">
+                                                <div class="list">
+                                                    <div class="item" style="text-align: center;margin-bottom: 1px;border-bottom: 1px solid;
+                                                            padding: 12px;height: 45px;background: #444" ng-click="goConfigPane()">
+                                                        <span style="color:#fff;">查看权限</span>
+                                                    </div>
+                                                    <div class="item" style="text-align: center;padding: 12px;height: 45px;background: #444"
+                                                        ng-click="go_to('passwordModify')">
+                                                        <span style="color:#fff;">密码修改</span>
+                                                    </div>
+                                                </div>
+                                            </ion-content>
+                                        </ion-popover-view>
+                                    </script>
                                 </div>
                             </li>
+
 
 
                             <li style="width:15%;float: right;text-align: center;"
@@ -105,7 +136,7 @@
 
                   <div style="position: absolute;left:5%;bottom:5%;">
                       <span style="color:#646464;font-size:1em">积分:</span>
-                      <span style="color:#646464;font-size:1em;">${{score}}</span>
+                      <span style="color: #961b1b;font-size: 1.6em;">${{score}}</span>
                   </div>
 
 

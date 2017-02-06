@@ -1398,6 +1398,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               templateUrl:'views/personal_portrait/personal_portrait.html'
           })
 
+          .state('authority_setter',{
+              url:'/authority_setter',
+              controller:'authoritySetterController',
+              templateUrl:'views/authority_setter/authority_setter.html'
+          })
+
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/login');
 
