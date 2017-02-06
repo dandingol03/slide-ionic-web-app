@@ -59,15 +59,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           //         timeout:0,
           //         showCloseButton: true
           //     });
-          //
-          //
           // }, 300);
 
 
         $rootScope.life_insurance={
 
         };
-
 
         $rootScope.waitConfirm={};
 
@@ -109,7 +106,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
         }
 
-          $rootScope.msg=[];
+        $rootScope.msg=[];
 
         $rootScope.getAccessToken=function () {
             var deferred=$q.defer();
@@ -183,7 +180,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             var result = "result code:" + event.resultCode + " ";
             result += "tags:" + event.tags + " ";
             result += "alias:" + event.alias + " ";
-            alert('result=\r\n' + result);
+           // alert('result=\r\n' + result);
           } catch(exception) {
             console.log(exception);
           }
@@ -200,6 +197,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     extras=event.extras;
 
                 } else {
+
                     console.log('platform doesn\'t support');
                     return ;
                 }
@@ -213,8 +211,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     console.log(field + ':' + extras[field]);
 
 
-                alert('type='+extras.type);
-
+              //  alert('type='+extras.type);
                 switch (extras.type) {
                     case 'from-service':
                         //TODO:加入语音提醒
@@ -252,7 +249,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                     }).then(function (res) {
                                         var json = res.data;
                                         if (json.re == 1) {
-                                            alert('json re==1');
+                                          //  alert('json re==1');
                                             var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
                                                 content+'&ttsToken='+$rootScope.ttsToken;
                                             var fileSystem=cordova.file.externalApplicationStorageDirectory;
@@ -264,7 +261,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                     'Authorization': "Bearer " + $rootScope.access_token
                                                 }
                                             };
-                                            alert('begin download audio');
+                                          //  alert('begin download audio');
                                             $cordovaFileTransfer.download(url, target, options, trustHosts)
                                                 .then(function (res) {
 
@@ -333,7 +330,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                         var str='';
                                         for(var field in err)
                                             str+=err[field];
-                                        alert('err=\r\n'+str);
+                                    //    alert('err=\r\n'+str);
                                     });
                                 }else{
                                     var myPopup = $ionicPopup.alert({
@@ -366,10 +363,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                 var date=extras.date;
                                 var msg=null;
                                 var content='订单号为'+orderNum+'的车险订单已报价完成';
-                                alert('orderId=' + orderId);
-                                alert('orderNum=' + orderNum);
-                                alert('orderType=' + orderType);
-                                alert('date='+date);
+                              //  alert('orderId=' + orderId);
+                              //  alert('orderNum=' + orderNum);
+                              //  alert('orderType=' + orderType);
+                              //  alert('date='+date);
                                 if(orderType==1)
                                 {
                                     msg='订单号为'+orderNum+'的车险订单已报价完成\r\n'+'是否现在进入车险订单页面查看';
@@ -408,7 +405,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
 
-                                                alert('ttsToken='+$rootScope.ttsToken);
+                                             //   alert('ttsToken='+$rootScope.ttsToken);
                                                 var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
                                                     msg+'&ttsToken='+$rootScope.ttsToken;
                                                 var fileSystem=cordova.file.externalApplicationStorageDirectory;
@@ -498,7 +495,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                                                         if(ionic.Platform.isIOS()) {
                                                         }else if(ionic.Platform.isAndroid()) {
-                                                            alert('play media');
+                                                        //    alert('play media');
                                                             media.play();
                                                         }else{}
                                                         console.log('tts speach generate success');
@@ -573,7 +570,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
             if(message.type!=undefined&&message.type!=null){
-                alert('type='+message.type);
+             //   alert('type='+message.type);
               switch(message.type){
 
                   case 'from-background':
@@ -678,14 +675,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
 
           }catch(e){
-            alert('exception=\r\n' + e.toString());
+        //    alert('exception=\r\n' + e.toString());
           }
         }
 
 
         var onGetRegistradionID = function(data) {
           try {
-            alert("JPushPlugin:registrationID is " + data);
+         //   alert("JPushPlugin:registrationID is " + data);
             if(data!==undefined&&data!==null)
               $rootScope.registrationId=data;
           } catch(exception) {
@@ -1460,12 +1457,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }])
 
 
-
     .factory('Proxy', function() {
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http:// 192.168.1.100:3000';
+            return 'http://192.168.8.198:3000';
           else
             return "/proxy/node_server";
 
@@ -1544,7 +1540,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     return value;
                 }
             };
-
             ctrl.$parsers.push(maxValidator);
             ctrl.$formatters.push(maxValidator);
         }};

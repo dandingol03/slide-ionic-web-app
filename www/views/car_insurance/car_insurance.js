@@ -212,11 +212,6 @@ angular.module('starter')
         var element = angular.element(document.querySelector("body"));
         element.removeClass('modal-open')
     };
-
-
-
-
-
     $scope.$on('$destroy', function() {
         $scope.car_company_modal.remove();
     });
@@ -734,10 +729,10 @@ angular.module('starter')
           if(res.data.re==1){
             var json =res.data;
             personId=json.data.personId;
-            alert('personid='+personId);
+         //   alert('personid='+personId);
             var suffix='';
             var imageType='perIdCard';
-            alert('path='+$scope.life_insurance.insurer.perIdCard1_img);
+         //   alert('path='+$scope.life_insurance.insurer.perIdCard1_img);
             if($scope.life_insurance.insurer.perIdCard1_img.indexOf('.jpg')!=-1)
               suffix='jpg';
             else if($scope.life_insurance.insurer.perIdCard1_img.indexOf('.png')!=-1)
@@ -758,16 +753,16 @@ angular.module('starter')
 
             $cordovaFileTransfer.upload(server, $scope.life_insurance.insurer.perIdCard1_img, options)
               .then(function(res) {
-                alert('upload perIdCard1 success');
+            //    alert('upload perIdCard1 success');
                 for(var field in res) {
-                  alert('field=' + field + '\r\n' + res[field]);
+            //      alert('field=' + field + '\r\n' + res[field]);
                 }
                 var su=null
                 if($scope.life_insurance.insurer.perIdCard1_img.indexOf('.jpg')!=-1)
                   su='jpg';
                 else if($scope.life_insurance.insurer.perIdCard1_img.indexOf('.png')!=-1)
                   su='png';
-                alert('suffix=' + su);
+            //    alert('suffix=' + su);
                 return $http({
                   method: "POST",
                   url: Proxy.local()+"/svr/request",
@@ -791,7 +786,7 @@ angular.module('starter')
                 var json=res.data;
                 if(json.re==1) {
                   perIdAttachId1=json.data;
-                  alert('perIdAttachId1=' + perIdAttachId1);
+              //    alert('perIdAttachId1=' + perIdAttachId1);
                   var su=null;
                   if($scope.life_insurance.insurer.perIdCard2_img.indexOf('.jpg')!=-1)
                     su='jpg';
@@ -801,9 +796,9 @@ angular.module('starter')
                     '&imageType='+imageType+'&suffix='+su+'&filename='+'perIdAttachId2'+'&personId='+personId;
                   return  $cordovaFileTransfer.upload(server, $scope.life_insurance.insurer.perIdCard2_img, options)
                     .then(function(res) {
-                      alert('upload perIdCard2 success');
+                 //     alert('upload perIdCard2 success');
                       for(var field in res) {
-                        alert('field=' + field + '\r\n' + res[field]);
+                //        alert('field=' + field + '\r\n' + res[field]);
                       }
                       return $http({
                         method: "POST",
@@ -869,7 +864,7 @@ angular.module('starter')
                 }
               })
           }else{}
-          alert('...it is back')
+     //     alert('...it is back')
         }).then(function(res) {
 
         })

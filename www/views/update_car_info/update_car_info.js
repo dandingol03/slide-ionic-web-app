@@ -593,16 +593,16 @@ angular.module('starter')
                                       }}).then(function(res) {
 
 
-                                      alert('upload first license success');
-                                      for(var field in res) {
-                                          alert('field=' + field + '\r\n' + res[field]);
-                                      }
+                                  //    alert('upload first license success');
+                                  //    for(var field in res) {
+                                  //        alert('field=' + field + '\r\n' + res[field]);
+                                  //    }
                                       var su=null
                                       if($scope.carInfo.licenseCard1_img.indexOf('.jpg')!=-1)
                                           su='jpg';
                                       else if($scope.carInfo.licenseCard1_img.indexOf('.png')!=-1)
                                           su='png';
-                                      alert('suffix=' + su);
+                                  //    alert('suffix=' + su);
                                       return $http({
                                           method: "POST",
                                           url: Proxy.local()+"/svr/request",
@@ -626,7 +626,7 @@ angular.module('starter')
                                       if(json.re==1) {
 
                                           $scope.carInfo.licenseAttachId1=json.data;
-                                          alert('licenseAttachId1='+$scope.carInfo.licenseAttachId1)
+                                      //    alert('licenseAttachId1='+$scope.carInfo.licenseAttachId1)
                                           var su=null;
                                           if($scope.carInfo.licenseCard2_img.indexOf('.jpg')!=-1)
                                               su='jpg';
@@ -638,7 +638,7 @@ angular.module('starter')
                                       }
 
                                   }).then(function(res) {
-                                      alert('second image upload success');
+                                  //    alert('second image upload success');
 
                                       var su=null;
                                       if($scope.carInfo.licenseCard2_img.indexOf('.jpg')!=-1)
@@ -668,7 +668,7 @@ angular.module('starter')
                                       var json=res.data;
                                       if(json.re==1) {
                                           $scope.carInfo.licenseAttachId2=json.data;
-                                          alert('licenseAttachId2='+$scope.carInfo.licenseAttachId2)
+                                      //    alert('licenseAttachId2='+$scope.carInfo.licenseAttachId2)
                                           var su=null;
                                           if($scope.carInfo.licenseCard3_img.indexOf('.jpg')!=-1)
                                               su='jpg';
@@ -679,7 +679,7 @@ angular.module('starter')
                                           return  $cordovaFileTransfer.upload(server, $scope.carInfo.licenseCard3_img, options);
                                       }
                                   }).then(function(res) {
-                                      alert('third image upload successfully');
+                                  //    alert('third image upload successfully');
                                       var su=null;
                                       if($scope.carInfo.licenseCard3_img.indexOf('.jpg')!=-1)
                                           su='jpg';
@@ -707,7 +707,7 @@ angular.module('starter')
                                       var json=res.data;
                                       if(json.re==1){
                                           $scope.carInfo.licenseAttachId3=json.data;
-                                          alert('licenseAttachId3='+$scope.carInfo.licenseAttachId3)
+                                      //    alert('licenseAttachId3='+$scope.carInfo.licenseAttachId3)
 
                                           var popup = $ionicPopup.alert({
                                               title: '信息',
@@ -754,11 +754,6 @@ angular.module('starter')
                       }
                     }
                 }
-
-
-
-
-
 
 
             }else{
@@ -1023,7 +1018,7 @@ angular.module('starter')
             $cordovaImagePicker.getPictures(options)
                 .then(function (results) {
                     item[field]=results[0];
-                    alert('img url=' + results[0]);
+                 //   alert('img url=' + results[0]);
                 }, function (error) {
                     alert("error="+error);
                     // error getting photos
@@ -1047,7 +1042,7 @@ angular.module('starter')
 
             $cordovaCamera.getPicture(options).then(function(imageURI) {
                 item[field] = imageURI;
-                alert('image url=' + item[field]);
+            //    alert('image url=' + item[field]);
             }, function(err) {
                 // error
             });

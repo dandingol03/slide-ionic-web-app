@@ -143,10 +143,10 @@ angular.module('starter')
 
                             switch(serviceHour)
                             {
-                                case 0:
+                                case 1:
                                     tip+='上午';
                                     break;
-                                case 1:
+                                case 2:
                                     tip+='下午';
                                     break;
                             }
@@ -904,8 +904,6 @@ angular.module('starter')
         }
 
 
-
-
         $scope.preCheck=function () {
             if ($scope.maintain.estimateTime !== undefined && $scope.maintain.estimateTime !== null) {
                 var flag=false;
@@ -922,7 +920,7 @@ angular.module('starter')
                             if(res)
                             {
                                 $scope.appointMode=true;
-                            }else{
+                            } else{
                             }
                         })
                     }else
@@ -934,11 +932,6 @@ angular.module('starter')
 
                 if(flag)
                     return true;
-
-
-
-
-
 
 
                 //TODO:check serviceSegment

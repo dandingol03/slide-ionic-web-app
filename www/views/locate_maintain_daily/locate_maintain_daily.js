@@ -825,7 +825,7 @@ angular.module('starter')
 
 
 
-      $scope.maintain.estimateTime=new Date();
+      //$scope.maintain.estimateTime=new Date();
 
 
       $scope.generateMaintainDailyOrder=function () {
