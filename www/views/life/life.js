@@ -100,7 +100,6 @@ angular.module('starter')
             }
         }
 
-
         //寿险意向保留
         $scope.saveLifeInsuranceIntend = function()
         {

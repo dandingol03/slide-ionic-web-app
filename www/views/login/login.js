@@ -176,9 +176,9 @@ angular.module('starter')
                     //获取手机版本号
                     $cordovaAppVersion.getVersionNumber().then(function (version) {
                         var appVersion = version;
-                        alert('app version=' + appVersion);
+                        // alert('app version=' + appVersion);
 
-                        alert('server address=' + Proxy.local());
+                        //  alert('server address=' + Proxy.local());
                         $http({
                             method:"GET",
                             url:Proxy.local()+'/getLastAppVersion',
@@ -188,7 +188,7 @@ angular.module('starter')
                             }
                         }).then(function (res) {
                             var json=res.data;
-                            alert('version in server='+json.data);
+                         //   alert('version in server='+json.data);
                             if(json.data>appVersion)
                             {
                                 var confirmPopup = $ionicPopup.confirm({
@@ -204,10 +204,10 @@ angular.module('starter')
                                         //打开浏览器下载apk
                                         $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
                                             .then(function(event) {
-                                                for(var field in event)
-                                                {
-                                                    alert(field + '\r\n' + event[field]);
-                                                }
+                                            //    for(var field in event)
+                                            //    {
+                                            //         alert(field + '\r\n' + event[field]);
+                                            //    }
                                             })
                                             .catch(function(event) {
                                                 // error
@@ -459,7 +459,7 @@ angular.module('starter')
                       try {
 
                           window.plugins.jPushPlugin.getRegistrationID(function(data) {
-                              alert('registrationId=\r\n'+data);
+                          //    alert('registrationId=\r\n'+data);
                               $rootScope.registrationId=data;
                               $scope.login();
                           });
@@ -665,7 +665,7 @@ angular.module('starter')
         $cordovaFileTransfer.upload(server, $scope.photo, options)
             .then(function(result) {
               // Success!
-              alert('upload success');
+            //  alert('upload success');
             }, function(err) {
               // Error
               alert('encounter error');
@@ -719,7 +719,7 @@ angular.module('starter')
             if(Object.prototype.toString.call(life_insurances)!='[object Array]')
               life_insurances=JSON.parse(life_insurances);
             life_insurances.map(function(insurance,i) {
-              alert(insurance);
+         //     alert(insurance);
             });
           }
         }).catch(function(err) {
