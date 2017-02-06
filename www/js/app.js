@@ -41,27 +41,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           StatusBar.styleDefault();
         }
 
-          // $timeout(function () {
-          //     toaster.pop({
-          //         type:'black',
-          //         title:"info",
-          //         body:"customer1,some one has send takeOrder request",
-          //         timeout:0,
-          //         showCloseButton: true,
-          //         onHideCallback: function () {
-          //             alert('toaster is closed');
-          //         }
-          //     });
-          //     toaster.warning({
-          //         type:'black',
-          //         title:"title",
-          //         body:"text1",
-          //         timeout:0,
-          //         showCloseButton: true
-          //     });
-          // }, 300);
-
-
         $rootScope.life_insurance={
 
         };
@@ -198,6 +177,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                 } else {
 
+                    extras = event.aps.alert;
+                    alert("open Notificaiton:" + alertContent);
+
                     console.log('platform doesn\'t support');
                     return ;
                 }
@@ -205,13 +187,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 if(Object.prototype.toString.call(extras)=='[object String]')
                     extras=JSON.parse(extras);
 
-
                 console.log('=====================notification=================');
                 for(var field in extras)
                     console.log(field + ':' + extras[field]);
 
-
-              //  alert('type='+extras.type);
+                alert('type='+extras.type);
                 switch (extras.type) {
                     case 'from-service':
                         //TODO:加入语音提醒
@@ -1461,7 +1441,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.8.198:3000';
+            return 'http://192.168.1.152:3000';
           else
             return "/proxy/node_server";
 
