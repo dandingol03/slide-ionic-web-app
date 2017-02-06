@@ -169,10 +169,6 @@ angular.module('starter')
                         });
 
 
-
-
-
-
                     //获取手机版本号
                     $cordovaAppVersion.getVersionNumber().then(function (version) {
                         var appVersion = version;
@@ -459,7 +455,7 @@ angular.module('starter')
                       try {
 
                           window.plugins.jPushPlugin.getRegistrationID(function(data) {
-                          //    alert('registrationId=\r\n'+data);
+                              alert('registrationId=\r\n'+data);
                               $rootScope.registrationId=data;
                               $scope.login();
                           });
