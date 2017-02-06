@@ -5,11 +5,18 @@ angular.module('starter')
   .controller('myController',function($scope,$state,$http,$rootScope,
                                       Proxy,$ionicSideMenuDelegate,$ionicHistory,
                                       $cordovaPreferences,$ionicModal,$timeout,
-                                      $cordovaFileTransfer,$ionicLoading){
+                                      $cordovaFileTransfer,$ionicLoading,$ionicPopover){
 
 
     $scope.toggleLeft=function () {
         $ionicSideMenuDelegate.toggleLeft();
+    }
+
+    $scope.goConfigPane=function () {
+        $scope.popover.instance.hide();
+        $timeout(function () {
+            $state.go('authority_setter');
+        },400);
     }
 
     $scope.go_to=function(state){
@@ -254,6 +261,33 @@ angular.module('starter')
       $scope.wxCancel=function () {
           $scope.closeWxShareModal();
       }
+
+
+
+      /****** 设置 popover******/
+      $scope.popover={};
+
+      $ionicPopover.fromTemplateUrl('config-popover.html', {
+          scope: $scope
+      }).then(function(ins) {
+          $scope.popover.instance = ins;
+      });
+
+
+
+      $scope.openPopover = function($event) {
+          $scope.popover.instance.show($event);
+      };
+      $scope.closePopover = function() {
+          $scope.popover.instance.hide();
+      };
+
+      $scope.$on('$destroy', function() {
+          $scope.popover.instance.remove();
+      });
+
+      /************设置 popover*************/
+
 
 
       $scope.gotoNotificationPanel=function () {
