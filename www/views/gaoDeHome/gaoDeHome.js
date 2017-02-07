@@ -458,7 +458,7 @@ angular.module('starter')
                         //     });
 
 
-                        百度地图获取自身定位
+                        //百度地图获取自身定位
                         $scope.locationByBaiduSDK(function (point) {
 
                             var mk = new BMap.Marker(point);

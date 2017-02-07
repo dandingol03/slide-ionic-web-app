@@ -177,6 +177,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     extras=event.extras;
 
                 } else {
+                    alert('ios');
                     console.log('platform doesn\'t support');
                     return ;
                 }
@@ -187,11 +188,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 if(Object.prototype.toString.call(extras)=='[object String]')
                     extras=JSON.parse(extras);
 
-
                 console.log('=====================notification=================');
                 for(var field in extras)
                     console.log(field + ':' + extras[field]);
-
 
                 alert('type='+extras.type);
                 switch (extras.type) {
@@ -692,7 +691,17 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         try{
+
             alert("进入try");
+
+            if(window.cordova)
+            {
+                if(device.platform == "Android") {}
+                else{
+                    window.plugins.jPushPlugin.startJPushSDK();
+                }
+            }
+
           window.plugins.jPushPlugin.setDebugMode(true);
           window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
@@ -738,7 +747,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       $ionicPlatform.registerBackButtonAction(function (e) {
           var history=$ionicHistory.viewHistory();
         //判断处于哪个页面时双击退出
-        if ($location.path() == '/login'||history.currentView.stateName=='tabs.dashboard_backup') {
+
+        if ($location.path() == '/login'||history.currentView.stateName=='tabs.dashboard_backup'||history.currentView.stateName=='login') {
           if ($rootScope.backButtonPressedOnceToExit) {
             ionic.Platform.exitApp();
           } else {
@@ -912,7 +922,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
           .state('login',{
               cache:false,
-              url:'/login',
+              url:'/login:params',
               controller: 'loginController',
               templateUrl:'views/login/login.html'
           })
@@ -1422,6 +1432,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
         // if none of the above states are matched, use this as the fallback
+        //TODO:make auhtority grant modal to be start-up page
         $urlRouterProvider.otherwise('/login');
 
     })

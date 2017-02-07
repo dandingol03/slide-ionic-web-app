@@ -14,7 +14,7 @@ angular.module('starter')
             $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
                 "type": "slide",
                 "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
-                "duration": 240, // in milliseconds (ms), default 400
+                "duration": 400, // in milliseconds (ms), default 400
             });
         }
 
