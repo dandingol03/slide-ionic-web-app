@@ -177,7 +177,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                 } else {
                     alert('ios');
-                    window.plugins.jPushPlugin.startJPushSDK();
                     console.log('platform doesn\'t support');
                     return ;
                 }
@@ -678,8 +677,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         try{
-
-            window.plugins.jPushPlugin.startJPushSDK()
+            if(window.cordova)
+            {
+                if(device.platform == "Android") {}
+                else{
+                    window.plugins.jPushPlugin.startJPushSDK();
+                }
+            }
 
           window.plugins.jPushPlugin.setDebugMode(true);
           window.plugins.jPushPlugin.init();
@@ -721,7 +725,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       $ionicPlatform.registerBackButtonAction(function (e) {
           var history=$ionicHistory.viewHistory();
         //判断处于哪个页面时双击退出
-        if ($location.path() == '/login'||history.currentView.stateName=='tabs.dashboard_backup') {
+
+        if ($location.path() == '/login'||history.currentView.stateName=='tabs.dashboard_backup'||history.currentView.stateName=='login') {
           if ($rootScope.backButtonPressedOnceToExit) {
             ionic.Platform.exitApp();
           } else {
@@ -895,7 +900,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
           .state('login',{
               cache:false,
-              url:'/login',
+              url:'/login:params',
               controller: 'loginController',
               templateUrl:'views/login/login.html'
           })

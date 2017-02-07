@@ -6,10 +6,13 @@
             </div>
             <div ng-style="st">
                 <div class="list">
-                    <li class="item item-toggle">
-                        <span style="color:#222;font-weight: bold;margin-left:20px;font-size:1.2em;">文件写入</span>
+                    <li class="item item-toggle" ng-repeat="permission in permissions">
+                        <span style="color:#222;font-weight: bold;margin-left:20px;font-size:1.2em;">
+                            {{permission.name}}
+                        </span>
                         <label class="toggle toggle-positive">
-                            <input type="checkbox" ng-model="config.fileWrite" ng-value="config.fileWrite">
+                            <input type="checkbox" ng-model="permission.val" ng-value="permission.val"
+                                   ng-change="permissionChange(permission,$index)">
                             <div class="track">
                                 <div class="handle"></div>
                             </div>

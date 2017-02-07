@@ -3,7 +3,7 @@
  */
 angular.module('starter')
     .controller('mapLeadPageController',function($scope,$state,$rootScope,
-                                                 $ionicNativeTransitions,$cordovaMedia){
+                                                 $ionicNativeTransitions,$cordovaPreferences,$ionicPlatform){
 
         $scope.go_back=function(){
             $ionicNativeTransitions.stateGo('gaoDeHome', {}, {}, {
@@ -13,6 +13,8 @@ angular.module('starter')
             });
         }
 
+
+
         //申请权限
         $scope.requestPermissions=function () {
 
@@ -20,8 +22,10 @@ angular.module('starter')
             {
                 alert(re);
             });
-
         }
 
+        $scope.start2Use=function () {
+            $state.go('login',{params:JSON.stringify({redirected:true})});
+        }
 
     })

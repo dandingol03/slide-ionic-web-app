@@ -6,7 +6,24 @@ angular.module('starter')
     .controller('loginController',function($scope,$state,$ionicLoading,$http,$ionicPopup,$timeout,$rootScope
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
         ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
-        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion,$cordovaFileOpener2,$cordovaInAppBrowser){
+        ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion
+        ,$cordovaFileOpener2,$cordovaInAppBrowser,$stateParams){
+
+
+
+        if($stateParams.params!==undefined&&$stateParams.params!==null&&$stateParams.params!='')
+        {
+            var params=$stateParams.params;
+            if(Object.prototype.toString.call(params)=='[object String]')
+                params=JSON.parse(params);
+
+            if(params.redirected!==undefined&&params.redirected!==null)
+                $scope.redirected=params.redirected;
+        }
+
+
+        $ionicHistory.clearHistory();
+
 
         $scope.formUser = {};
 
@@ -26,68 +43,45 @@ angular.module('starter')
             console.log('//-----ws\r\n' + msg);
         });
 
-        $WebSocket.connect();
-
-
-        /*** 授权模态框 ***/
-        $ionicModal.fromTemplateUrl('views/modal/grant_authority_modal.html',{
-            scope:  $scope,
-            animation: 'animated '+'bounceInUp',
-            hideDelay:920
-        }).then(function(modal) {
-            $scope.grant_authority_modal = modal;
-            //$scope.openGrantAuthorityModal();
-        });
-
-        $scope.openGrantAuthorityModal= function(){
-            try{
-
-                $scope.grant_authority_modal.show();
-            }catch(e){
-                alert('error=\r\n'+ e.toString());
-            }
-        };
-
-        $scope.closeGrantAuthorityModal= function() {
-            $scope.grant_authority_modal.hide();
-        };
-        /*** 授权模态框 ***/
+        //如果登录不是跳转状态
+        if($scope.redirected!=true)
+            $WebSocket.connect();
 
 
         $scope.getPreferences=function () {
 
             $cordovaPreferences.fetch('preferences')
                 .success(function (data) {
-                    console.log('preference='+data);
+
+
                     if(data!==undefined&&data!==null&&data!='')
                     {
+
                         var preferences=data;
                         if(Object.prototype.toString.call(preferences)=='[object String]')
                             preferences = JSON.parse(preferences);
                         if(preferences.initial==false)
                         {
                         }else{
-                            $timeout(function () {
-                                $scope.openGrantAuthorityModal();
-                            }, 300);
+                            preferences.initial=false;
+                            $cordovaPreferences.store('preferences', preferences)
+                                .success(function(value) {
+                                    $state.go('map_lead_page');
+                                })
+                                .error(function(error) {
+                                    alert("Error: " + error);
+                                })
                         }
-
-                        preferences.initial=false;
-                        $cordovaPreferences.store('preferences', preferences)
-                            .success(function(value) {
-                            })
-                            .error(function(error) {
-                                alert("Error: " + error);
-                            })
 
                     }else{
                         //TODO:初始化preferences
+
                         var preferences={
                             initial:false
                         };
-                        $scope.openGrantAuthorityModal();
                         $cordovaPreferences.store('preferences', preferences)
                             .success(function(value) {
+                                $state.go('map_lead_page');
                             })
                             .error(function(error) {
                                 alert("Error: " + error);
@@ -165,7 +159,6 @@ angular.module('starter')
                                     alert('err===============\r\n' + str);
                                 });
                         }, function (error) {
-                            console.log('err================================\r\n'+'danding.wav doesn\'t exists')
                         });
 
 
@@ -176,9 +169,7 @@ angular.module('starter')
                     //获取手机版本号
                     $cordovaAppVersion.getVersionNumber().then(function (version) {
                         var appVersion = version;
-                        // alert('app version=' + appVersion);
-
-                        //  alert('server address=' + Proxy.local());
+                        console.log('app version=================' + appVersion);
                         $http({
                             method:"GET",
                             url:Proxy.local()+'/getLastAppVersion',
@@ -199,8 +190,6 @@ angular.module('starter')
                                     if(res)
                                     {
 
-
-
                                         //打开浏览器下载apk
                                         $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
                                             .then(function(event) {
@@ -217,45 +206,6 @@ angular.module('starter')
                                         $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
                                             console.log('load stop...');
                                         });
-
-
-                                        // var url = Proxy.local() + '/downloadAndroidApk';
-                                        // var fileSystem=cordova.file.externalRootDirectory;
-                                        // var target=fileSystem+'/Download/android-release.apk';
-                                        // var trustHosts = true;
-                                        // var options = {
-                                        //     fileKey: 'file',
-                                        //     headers: {
-                                        //         'Authorization':"Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW"
-                                        //     }
-                                        // };
-
-                                        //下载apk
-                                        // $cordovaFileTransfer.download(url, target, options, trustHosts).then(function (result) {
-                                        //     $cordovaFileOpener2.open(target, 'application/vnd.android.package-archive'
-                                        //     ).then(function () {
-                                        //         ionic.Platform.exitApp();
-                                        //     }, function (err) {
-                                        //         alert('err=' + err.toString());
-                                        //     });
-                                        //     $ionicLoading.hide();
-                                        // },function (err) {
-                                        //     alert('下载失败');
-                                        // },function (progress) {
-                                        //
-                                        //     $timeout(function () {
-                                        //         console.log('download=======' + progress.loaded);
-                                        //         var downloadProgress = (progress.loaded / progress.total) * 100;
-                                        //
-                                        //         $ionicLoading.show({
-                                        //             template:'<p class="item-icon-left">'+'下载'+ Math.floor(downloadProgress) + '%....'+'<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-                                        //         });
-                                        //         if (downloadProgress > 99) {
-                                        //             $ionicLoading.hide();
-                                        //         }
-                                        //     })
-                                        // });
-
                                     }else{}
                                 })
                             }else{}
@@ -265,7 +215,12 @@ angular.module('starter')
 
                 }
 
-                $scope.getPreferences();
+
+                if($scope.redirected==true)
+                {}
+                else{
+                    $scope.getPreferences();
+                }
 
                 $scope.fetch();
 
@@ -298,11 +253,6 @@ angular.module('starter')
 
 
             })
-        }
-
-        $scope.goto = function(){
-            $state.go('wechatDemo');
-
         }
 
 
@@ -358,14 +308,7 @@ angular.module('starter')
           {
               alert('exception=' + e.toString());
           }
-
-
-
       }
-
-
-
-
 
 
         var options = {
@@ -373,55 +316,6 @@ angular.module('starter')
                 mode: 'datetime',
             };
 
-//*******************测试百悟短信验证码*********************//
-
-      $scope.baiwu = function(){
-
-        $http({
-          method:'POST',
-          url:"/proxy/send",
-          headers:{
-            'Content-Type':'application/json'
-          },
-          data:{  corp_id:'hy6550',
-            corp_pwd:'mm2289',
-            corp_service:'1069003256550',
-            mobile:'18253160627',
-            msg_content:'hello,xyd',
-            corp_msg_id:'',
-            ext:'' // your data” }
-          }}).
-        success(function (response) {
-          console.log('success');
-        }).
-        error(function (err) {
-          var str='';
-          for(var field in err)
-            str+=field+':'+err[field];
-          console.log('error='+str);
-        });
-      }
-
-
-//*******************测试百悟短信验证码*********************//
-
-      $scope.securityCode_generate=function(){
-
-        $http.get('/securityCode?cellphone='+$scope.user.username,{
-          headers:{
-            'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }).then(function(res) {
-          console.log('scurity code generated');
-        }).catch(function (err) {
-          var error='';
-          for(var field in err) {
-            error+=field+':'+err[field]+'\r\n';
-          }
-          alert('error=' + error);
-        });
-      };
 
       $scope.insuranceder={};
 
@@ -439,14 +333,6 @@ angular.module('starter')
         $state.go('register');
       }
 
-
-        // var deregister = $ionicPlatform.registerBackButtonAction(
-        //     function () {
-        //         console.log("close the popup")
-        //     }, 505
-        // );
-        //
-        // $scope.$on('$destroy', deregister)
 
         $scope.doLogin=function(){
 
@@ -654,79 +540,6 @@ angular.module('starter')
 
           })
       }
-
-
-
-      //文件上传
-      $scope.upload=function(){
-        var server='http://192.168.0.199:9030/upload/photo/image.jpg';
-        var options = {};
-        options.fileKey = "file";
-        $cordovaFileTransfer.upload(server, $scope.photo, options)
-            .then(function(result) {
-              // Success!
-            //  alert('upload success');
-            }, function(err) {
-              // Error
-              alert('encounter error');
-            }, function (progress) {
-              // constant progress updates
-            });
-      }
-
-
-
-      $scope.goMap=function () {
-          $state.go('map_search');
-      }
-
-
-      /***  悬浮窗  ***/
-      $ionicPopover.fromTemplateUrl('/views/popover/order_special_popover.html', {
-        scope: $scope
-      }).then(function(popover) {
-        $scope.popover = popover;
-      });
-
-      $scope.openPopover = function($event) {
-        $scope.popover.show($event);
-      };
-      $scope.closePopover = function() {
-        $scope.popover.hide();
-      };
-      /***  悬浮窗  ***/
-
-
-
-      $scope.uploadCarAndOwnerInfo=function()
-      {
-        $http.get("http://localhost:9030/insurance/get_lifeinsurance_list",
-            {
-              data:
-              {
-                request:'uploadCarAndOwnerInfo',
-                info:
-                {
-                  carPhoto:$scope.photo,
-                  ownerIdPhoto:$scope.photo
-                }
-              }
-            }).
-        then(function(res) {
-          if(res.data!==undefined&&res.data!==null)
-          {
-            var life_insurances=res.data.life_insurances;
-            if(Object.prototype.toString.call(life_insurances)!='[object Array]')
-              life_insurances=JSON.parse(life_insurances);
-            life_insurances.map(function(insurance,i) {
-         //     alert(insurance);
-            });
-          }
-        }).catch(function(err) {
-          alert('err=' + err);
-        });
-      }
-
 
       $scope.goFetchPassword=function(){
           $state.go('passwordForget');
