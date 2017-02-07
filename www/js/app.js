@@ -692,8 +692,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         try{
 
-            alert("进入try");
-
             if(window.cordova)
             {
                 if(device.platform == "Android") {}
@@ -702,15 +700,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 }
             }
 
-          window.plugins.jPushPlugin.setDebugMode(true);
-          window.plugins.jPushPlugin.init();
-          window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
-            alert("登录前JPushPlugin:registrationID is ");
+            window.plugins.jPushPlugin.setDebugMode(true);
+            window.plugins.jPushPlugin.init();
+            window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
 
-          document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
-          document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
-          alert("after  addEventListener  onReceiveNotification");
-          document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
+            document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
+            document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
+            alert("after  addEventListener  onReceiveNotification");
+            document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
 
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
