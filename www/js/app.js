@@ -173,9 +173,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 var extras=null;
                 alert('platform='+device.platform);
                 if(device.platform == "Android") {
-
                     extras=event.extras;
-
                 } else {
                     alert('ios');
                     console.log('platform doesn\'t support');
