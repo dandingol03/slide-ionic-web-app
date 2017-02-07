@@ -5585,6 +5585,15 @@ angular.module('ngCordova.plugins.media', [])
   return {
       newMedia: function (src) {
           return new NewMedia(src);
+      },
+      requestPermissions:function () {
+         var q4 = $q.defer();
+          Media.requestPermissions(function (re){
+              q4.resolve(re);
+          },function (err) {
+              q4.reject(err);
+          });
+          return q4.promise;
       }
   };
 }]);

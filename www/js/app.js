@@ -176,10 +176,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     extras=event.extras;
 
                 } else {
-
-                    extras = event.aps.alert;
-                    alert("open Notificaiton:" + alertContent);
-
+                    alert('ios');
+                    window.plugins.jPushPlugin.startJPushSDK();
                     console.log('platform doesn\'t support');
                     return ;
                 }
@@ -680,6 +678,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         try{
+
+            window.plugins.jPushPlugin.startJPushSDK()
 
           window.plugins.jPushPlugin.setDebugMode(true);
           window.plugins.jPushPlugin.init();
@@ -1405,6 +1405,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
         // if none of the above states are matched, use this as the fallback
+        //TODO:make auhtority grant modal to be start-up page
         $urlRouterProvider.otherwise('/login');
 
     })
@@ -1447,7 +1448,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.152:3000';
+            return 'http://192.168.1.114:3000';
           else
             return "/proxy/node_server";
 
