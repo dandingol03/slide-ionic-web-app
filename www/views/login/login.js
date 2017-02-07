@@ -341,7 +341,7 @@ angular.module('starter')
                       try {
 
                           window.plugins.jPushPlugin.getRegistrationID(function(data) {
-                              alert('registrationId=\r\n'+data);
+                              console.log('registrationId=\r\n'+data);
                               $rootScope.registrationId=data;
                               $scope.login();
                           });

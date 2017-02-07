@@ -671,7 +671,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         var onGetRegistradionID = function(data) {
           try {
-            alert("JPushPlugin:registrationID is " + data);
+            console.log("JPushPlugin:registrationID is " + data);
             if(data!==undefined&&data!==null)
               $rootScope.registrationId=data;
           } catch(exception) {
@@ -704,16 +704,16 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
             document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
             document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
-            alert("after  addEventListener  onReceiveNotification");
+            console.log("after  addEventListener  onReceiveNotification");
             document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
 
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
               // 系统设置中已关闭应用推送。
-              alert('system has canceled notification');
+              console.log('system has canceled notification');
             } else if(result > 0) {
               // 系统设置中打开了应用推送。
-              alert('system has opened notification');
+              console.log('system has opened notification');
             }
           });
         }catch(e)
