@@ -3,8 +3,7 @@
  */
 angular.module('starter')
     .controller('authoritySetterController',function($scope,$state,$http,$rootScope,
-                                        Proxy,$cordovaMedia,
-                                        $ionicLoading){
+                                        Proxy,$ionicLoading){
 
 
         $scope.listStyle={};
@@ -12,16 +11,20 @@ angular.module('starter')
         $scope.height=$rootScope.screen.height;
         $scope.st={width:'100%',height:$scope.height-230+'px'};
 
-        $scope.config={
-            fileWrite:false,
-            fileRead:false
-        };
+
 
         //TODO:check this config validate
         if(window.cordova)
         {
-            window.Media.checkAuthorities(function (results) {
-                alert(results);
+            var permissions=[];
+            window.Media.requestPermissions(function (permissions) {
+                permissions.map(function (permission,i) {
+                    if(permission=='true'||permission==true)
+                        permissions.push(true);
+                    else
+                        permission.push(false);
+                });
+                $scope.permissions=permissions;
             });
 
         }

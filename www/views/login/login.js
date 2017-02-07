@@ -728,16 +728,7 @@ angular.module('starter')
           $state.go('passwordForget');
       }
 
-      $scope.init_voice=function () {
-          var options_init={
-              appId:"8974317",
-              apiKey:"Pm9rUkPY2jLPcTLqWvGV99rt",
-              secretKey:"4547c02c2b8e8db4ea7042e642a143ef",
-              speed:"5", //朗读语速，取值范围[0, 9]，数值越大，语速越快
-              pitch:"5"  //音调，取值范围[0, 9]，数值越大，音量越高
-          };
-          baidu_tts.init(options_init);
-      }
+
 
 
       $scope.speak=function () {

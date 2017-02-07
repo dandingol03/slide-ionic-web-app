@@ -41,27 +41,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           StatusBar.styleDefault();
         }
 
-          // $timeout(function () {
-          //     toaster.pop({
-          //         type:'black',
-          //         title:"info",
-          //         body:"customer1,some one has send takeOrder request",
-          //         timeout:0,
-          //         showCloseButton: true,
-          //         onHideCallback: function () {
-          //             alert('toaster is closed');
-          //         }
-          //     });
-          //     toaster.warning({
-          //         type:'black',
-          //         title:"title",
-          //         body:"text1",
-          //         timeout:0,
-          //         showCloseButton: true
-          //     });
-          // }, 300);
-
-
         $rootScope.life_insurance={
 
         };
@@ -180,7 +159,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             var result = "result code:" + event.resultCode + " ";
             result += "tags:" + event.tags + " ";
             result += "alias:" + event.alias + " ";
-           // alert('result=\r\n' + result);
+            alert('result=\r\n' + result);
           } catch(exception) {
             console.log(exception);
           }
@@ -190,17 +169,20 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         //通知的回调
         $rootScope.onReceiveNotification = function(event) {
             try{
-
+                alert('onReceiveNotification');
                 var extras=null;
+                alert('platform='+device.platform);
                 if(device.platform == "Android") {
 
                     extras=event.extras;
 
                 } else {
-
                     console.log('platform doesn\'t support');
                     return ;
                 }
+
+                alert('end');
+
 
                 if(Object.prototype.toString.call(extras)=='[object String]')
                     extras=JSON.parse(extras);
@@ -211,7 +193,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     console.log(field + ':' + extras[field]);
 
 
-              //  alert('type='+extras.type);
+                alert('type='+extras.type);
                 switch (extras.type) {
                     case 'from-service':
                         //TODO:加入语音提醒
@@ -261,7 +243,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                     'Authorization': "Bearer " + $rootScope.access_token
                                                 }
                                             };
-                                          //  alert('begin download audio');
+                                            alert('begin download audio');
                                             $cordovaFileTransfer.download(url, target, options, trustHosts)
                                                 .then(function (res) {
 
@@ -537,6 +519,16 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         };
 
 
+        var onReceiveNotification = function(event){
+            var alertContent;
+            alertContent = event.aps.alert;
+            alert("open Notificaiton:" + alertContent);
+
+        }
+
+
+
+
         $rootScope.waitConfirms=[
           {
             orderNum:'S0001',candidates:[
@@ -554,6 +546,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         //获取自定义消息的回调
         $rootScope.onReceiveMessage = function(event) {
           try{
+              alert('ios');
               console.log('message receiving......');
               var message=null;
               if(device.platform == "Android") {
@@ -565,12 +558,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               if(Object.prototype.toString.call(message)!='[object Object]')
               {
                 message = JSON.parse(message);
-
               }else{}
 
 
             if(message.type!=undefined&&message.type!=null){
-             //   alert('type='+message.type);
+                alert('type='+message.type);
               switch(message.type){
 
                   case 'from-background':
@@ -675,14 +667,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
 
           }catch(e){
-        //    alert('exception=\r\n' + e.toString());
+            alert('exception=\r\n' + e.toString());
           }
         }
 
 
         var onGetRegistradionID = function(data) {
           try {
-         //   alert("JPushPlugin:registrationID is " + data);
+            alert("JPushPlugin:registrationID is " + data);
             if(data!==undefined&&data!==null)
               $rootScope.registrationId=data;
           } catch(exception) {
@@ -700,12 +692,17 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         try{
-
+            alert("进入try");
           window.plugins.jPushPlugin.setDebugMode(true);
           window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
+            alert("登录前JPushPlugin:registrationID is ");
+
           document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
           document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
+          alert("after  addEventListener  onReceiveNotification");
+          document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
+
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
               // 系统设置中已关闭应用推送。
@@ -1467,7 +1464,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.153:3000';
+            return 'http://192.168.1.107:3000';
           else
             return "/proxy/node_server";
 
