@@ -20,7 +20,9 @@ angular.module('starter')
 
             window.Media.requestPermissions(function(re)
             {
-                alert(re);
+                console.log(re);
+            },function (err) {
+                alert(err);
             });
         }
 
