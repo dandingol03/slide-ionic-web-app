@@ -170,7 +170,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         $rootScope.onReceiveNotification = function(event) {
             alert('onReceiveNotification');
             try{
+                alert('onReceiveNotification');
                 var extras=null;
+                alert('platform='+device.platform);
                 if(device.platform == "Android") {
                     extras=event.extras;
                 } else {
@@ -178,6 +180,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     console.log('platform doesn\'t support');
                     return ;
                 }
+
+                alert('end');
+
 
                 if(Object.prototype.toString.call(extras)=='[object String]')
                     extras=JSON.parse(extras);
@@ -234,7 +239,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                     'Authorization': "Bearer " + $rootScope.access_token
                                                 }
                                             };
-                                          //  alert('begin download audio');
+                                            alert('begin download audio');
                                             $cordovaFileTransfer.download(url, target, options, trustHosts)
                                                 .then(function (res) {
 
@@ -510,7 +515,12 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         };
 
 
+        var onReceiveNotification = function(event){
+            var alertContent;
+            alertContent = event.aps.alert;
+            alert("open Notificaiton:" + alertContent);
 
+        }
 
 
         $rootScope.waitConfirms=[
@@ -531,6 +541,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         $rootScope.onReceiveMessage = function(event) {
             alert('onReceiveMessage');
           try{
+              alert('ios');
               console.log('message receiving......');
               var message=null;
               if(device.platform == "Android") {
@@ -542,12 +553,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
               if(Object.prototype.toString.call(message)!='[object Object]')
               {
                 message = JSON.parse(message);
-
               }else{}
 
 
             if(message.type!=undefined&&message.type!=null){
-             //   alert('type='+message.type);
+                alert('type='+message.type);
               switch(message.type){
 
                   case 'from-background':
@@ -678,6 +688,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         try{
+
             // if(window.cordova)
             // {
             //     if(device.platform == "Android") {}
@@ -686,21 +697,20 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             //     }
             // }
             //
-            alert('进入try');
+
           window.plugins.jPushPlugin.setDebugMode(true);
           window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
           document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
           document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
 
-            alert('addEventListener onReceiveNotification');
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
               // 系统设置中已关闭应用推送。
-              alert('system has canceled notification');
+              console.log('system has canceled notification');
             } else if(result > 0) {
               // 系统设置中打开了应用推送。
-              alert('system has opened notification');
+              console.log('system has opened notification');
             }
           });
         }catch(e)
@@ -1457,7 +1467,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.114:3000';
+            return 'http://192.168.1.118:3000';
           else
             return "/proxy/node_server";
 

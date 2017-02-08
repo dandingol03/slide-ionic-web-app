@@ -4,17 +4,12 @@
 angular.module('starter')
     .controller('authoritySetterController',function($scope,$state,$http,$rootScope,
                                         Proxy,$ionicPlatform){
-
-
         $scope.listStyle={};
 
         $scope.height=$rootScope.screen.height;
         $scope.st={width:'100%',height:$scope.height-230+'px'};
 
-        $scope.config={
-            fileWrite:false,
-            fileRead:false
-        };
+
 
 
         $scope.constants=[
@@ -42,7 +37,6 @@ angular.module('starter')
                 }
             });
         }
-
 
         $scope.permissionChange=function (item,i) {
             if(item.val==true)
