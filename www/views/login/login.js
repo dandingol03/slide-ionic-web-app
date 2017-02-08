@@ -266,7 +266,6 @@ angular.module('starter')
                       alert("Error: " + error);
                   })
           }else{
-
               $scope.pwdPersisted=true;
               $cordovaPreferences.store('pwdPersisted', true)
                   .success(function(value) {
@@ -282,12 +281,10 @@ angular.module('starter')
               $cordovaPreferences.fetch('users')
                   .success(function(value) {
                       if(value!==undefined&&value!==null&&value.length>0){
-
                           var buttons=[];
                           value.map(function(user,i) {
                               buttons.push({text: user.username});
                               $scope.users.push(user);
-
                           });
 
                           $ionicActionSheet.show({
@@ -345,7 +342,7 @@ angular.module('starter')
                       try {
 
                           window.plugins.jPushPlugin.getRegistrationID(function(data) {
-                          //    alert('registrationId=\r\n'+data);
+                              alert('registrationId=\r\n'+data);
                               $rootScope.registrationId=data;
                               $scope.login();
                           });
@@ -370,11 +367,9 @@ angular.module('starter')
 
       //登录
       $scope.login = function() {
-
           $ionicLoading.show({
                   template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
           });
-
           $http({
               method: "POST",
               data: "grant_type=password&password=" + $scope.user.password + "&username=" + $scope.user.username,

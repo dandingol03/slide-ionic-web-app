@@ -159,7 +159,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             var result = "result code:" + event.resultCode + " ";
             result += "tags:" + event.tags + " ";
             result += "alias:" + event.alias + " ";
-           // alert('result=\r\n' + result);
+            alert('result=\r\n' + result);
           } catch(exception) {
             console.log(exception);
           }
@@ -168,8 +168,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         //通知的回调
         $rootScope.onReceiveNotification = function(event) {
+            alert('onReceiveNotification');
             try{
-
                 var extras=null;
                 if(device.platform == "Android") {
                     extras=event.extras;
@@ -185,7 +185,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 console.log('=====================notification=================');
                 for(var field in extras)
                     console.log(field + ':' + extras[field]);
-
                 alert('type='+extras.type);
                 switch (extras.type) {
                     case 'from-service':
@@ -199,7 +198,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                             console.log('orderId='+orderId);
                             console.log('content=' + content);
-
 
                             $rootScope.getAccessToken().then(function (json) {
                                 if(json.re==1) {
@@ -512,6 +510,9 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         };
 
 
+
+
+
         $rootScope.waitConfirms=[
           {
             orderNum:'S0001',candidates:[
@@ -528,6 +529,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         //获取自定义消息的回调
         $rootScope.onReceiveMessage = function(event) {
+            alert('onReceiveMessage');
           try{
               console.log('message receiving......');
               var message=null;
@@ -650,23 +652,24 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
 
           }catch(e){
-        //    alert('exception=\r\n' + e.toString());
+            alert('exception=\r\n' + e.toString());
           }
         }
 
 
         var onGetRegistradionID = function(data) {
-          try {
-         //   alert("JPushPlugin:registrationID is " + data);
+            alert("try之前varJPushPlugin:registrationID is " + data);
+          try{
+            alert("varJPushPlugin:registrationID is " + data);
             if(data!==undefined&&data!==null)
               $rootScope.registrationId=data;
-          } catch(exception) {
+          }catch(exception) {
             alert(exception);
           }
         }
 
         $rootScope.onGetRegistradionID = function(data) {
-
+            alert('$rootScope.onGetRegistradionID');
           try {
               console.log("JPushPlugin:registrationID is " + data);
           } catch(exception) {
@@ -675,19 +678,22 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         try{
-            if(window.cordova)
-            {
-                if(device.platform == "Android") {}
-                else{
-                    window.plugins.jPushPlugin.startJPushSDK();
-                }
-            }
-
+            // if(window.cordova)
+            // {
+            //     if(device.platform == "Android") {}
+            //     else{
+            //         window.plugins.jPushPlugin.startJPushSDK();
+            //     }
+            // }
+            //
+            alert('进入try');
           window.plugins.jPushPlugin.setDebugMode(true);
           window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
           document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
           document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
+
+            alert('addEventListener onReceiveNotification');
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
               // 系统设置中已关闭应用推送。
