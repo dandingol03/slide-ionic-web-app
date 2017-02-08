@@ -338,11 +338,8 @@ angular.module('starter')
                       try {
 
                           window.plugins.jPushPlugin.getRegistrationID(function(data) {
-<<<<<<< HEAD
-                              alert('registrationId=\r\n'+data);
-=======
+
                               console.log('registrationId=\r\n'+data);
->>>>>>> 5fea7bee70b2a008c7d0cebbe3863ae3eae0902a
                               $rootScope.registrationId=data;
                               $scope.login();
                           });
