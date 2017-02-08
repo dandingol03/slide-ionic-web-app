@@ -27,7 +27,12 @@ angular.module('starter')
         }
 
         $scope.start2Use=function () {
-            $state.go('login',{params:JSON.stringify({redirected:true})});
+            $ionicNativeTransitions.stateGo('login', {redirected:true}, {}, {
+                "type": "slide",
+                "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 300, // in milliseconds (ms), default 400
+            });
+            //$state.go('login',{params:JSON.stringify({redirected:true})});
         }
 
     })

@@ -10,11 +10,6 @@ angular.module('starter')
         $scope.st={width:'100%',height:$scope.height-230+'px'};
 
 
-
-        $scope.permissions=[
-            {name:'da',val:true}
-            ];
-
         $scope.constants=[
             'android.permission.WRITE_EXTERNAL_STORAGE',
             'android.permission.RECORD_AUDIO',
