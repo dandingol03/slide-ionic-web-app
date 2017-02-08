@@ -182,7 +182,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                 alert('end');
 
-
                 if(Object.prototype.toString.call(extras)=='[object String]')
                     extras=JSON.parse(extras);
 
@@ -523,9 +522,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         }
 
-
-
-
         $rootScope.waitConfirms=[
           {
             orderNum:'S0001',candidates:[
@@ -670,6 +666,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
         var onGetRegistradionID = function(data) {
+            alert("varJPushPlugin:registrationID is " + data);
           try {
             console.log("JPushPlugin:registrationID is " + data);
             if(data!==undefined&&data!==null)
@@ -680,7 +677,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
 
         $rootScope.onGetRegistradionID = function(data) {
-
+            alert("JPushPlugin:registrationID is " + data);
           try {
               console.log("JPushPlugin:registrationID is " + data);
           } catch(exception) {
@@ -690,22 +687,14 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         try{
 
-            if(window.cordova)
-            {
-                if(device.platform == "Android") {}
-                else{
-                    window.plugins.jPushPlugin.startJPushSDK();
-                }
-            }
-
             window.plugins.jPushPlugin.setDebugMode(true);
             window.plugins.jPushPlugin.init();
             window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
 
             document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
             document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
-            console.log("after  addEventListener  onReceiveNotification");
-            document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
+            alert("after  addEventListener  onReceiveNotification");
+            document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
 
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
             if(result == 0) {
