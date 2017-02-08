@@ -165,31 +165,34 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
         }
 
-
         //通知的回调
         $rootScope.onReceiveNotification = function(event) {
-            alert('onReceiveNotification');
+
             try{
-                alert('onReceiveNotification');
+
                 var extras=null;
-                alert('platform='+device.platform);
+
                 if(device.platform == "Android") {
                     extras=event.extras;
                 } else {
                     alert('ios');
-                    console.log('platform doesn\'t support');
-                    return ;
+
+                    extras=event.extras;
+                    alert('extras='+extras);
+                    for(var field in event)
+                        console.log(field + ':\r\n' + event[field]);
+
                 }
 
                 alert('end');
 
-                if(Object.prototype.toString.call(extras)=='[object String]')
-                    extras=JSON.parse(extras);
+                // if(Object.prototype.toString.call(extras)=='[object String]')
+                //     extras=JSON.parse(extras);
 
-                console.log('=====================notification=================');
-                for(var field in extras)
-                    console.log(field + ':' + extras[field]);
-                alert('type='+extras.type);
+                // console.log('=====================notification=================');
+                // for(var field in extras)
+                //     console.log(field + ':' + extras[field]);
+                // alert('type='+extras.type);
                 switch (extras.type) {
                     case 'from-service':
                         //TODO:加入语音提醒
@@ -513,15 +516,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             }
         };
 
-
-        var onReceiveNotification = function(event){
-            var alertContent;
-            alertContent = event.aps.alert;
-            alert("open Notificaiton:" + alertContent);
-
-        }
-
-
         $rootScope.waitConfirms=[
           {
             orderNum:'S0001',candidates:[
@@ -667,9 +661,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
 
         var onGetRegistradionID = function(data) {
-
-
-
+            alert("varJPushPlugin:registrationID is " + data);
           try {
             console.log("JPushPlugin:registrationID is " + data);
 
@@ -691,14 +683,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         try{
 
-
-
           window.plugins.jPushPlugin.setDebugMode(true);
           window.plugins.jPushPlugin.init();
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistradionID);
           document.addEventListener("jpush.receiveMessage",$rootScope.onReceiveMessage, false);
           document.addEventListener("jpush.receiveNotification", $rootScope.onReceiveNotification, false);
-
 
 
           window.plugins.jPushPlugin.getUserNotificationSettings(function(result) {
@@ -1464,7 +1453,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.118:3000';
+            return 'http://139.129.96.231:3000';
           else
             return "/proxy/node_server";
 
