@@ -3,13 +3,25 @@
  */
 angular.module('starter')
     .controller('authoritySetterController',function($scope,$state,$http,$rootScope,
-                                        Proxy,$ionicPlatform){
+                                        Proxy,$ionicPlatform,$ionicNativeTransitions){
+
+        $scope.goBack=function()
+        {
+            $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 300, // in milliseconds (ms), default 400
+            });
+        }
+
         $scope.listStyle={};
 
         $scope.height=$rootScope.screen.height;
-        $scope.st={width:'100%',height:$scope.height-230+'px'};
+        $scope.st={width:'100%',height:$scope.height-200+'px',marginTop:'40px'};
 
-
+        $scope.permissions=[
+            {name:'da',val:true}
+            ];
         $scope.constants=[
             'android.permission.WRITE_EXTERNAL_STORAGE',
             'android.permission.RECORD_AUDIO',
@@ -55,6 +67,4 @@ angular.module('starter')
         $scope.go_to=function(state){
             $state.go(state);
         };
-
-
     });
