@@ -168,15 +168,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         //通知的回调
         $rootScope.onReceiveNotification = function(event) {
-            alert('onReceiveNotification');
+
             try{
-                alert('onReceiveNotification');
+
                 var extras=null;
                 alert('platform='+device.platform);
                 if(device.platform == "Android") {
                     extras=event.extras;
                 } else {
-                    alert('ios');
+                    extras=event.aps;
                     console.log('platform doesn\'t support');
                     return ;
                 }
@@ -381,7 +381,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                             if(json.re==1) {
 
 
-
                                              //   alert('ttsToken='+$rootScope.ttsToken);
                                                 var url = Proxy.local() + '/svr/request?request=generateTTSSpeech' + '&text=' +
                                                     msg+'&ttsToken='+$rootScope.ttsToken;
@@ -512,14 +511,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 alert(e);
             }
         };
-
-
-        var onReceiveNotification = function(event){
-            var alertContent;
-            alertContent = event.aps.alert;
-            alert("open Notificaiton:" + alertContent);
-
-        }
 
 
         $rootScope.waitConfirms=[
@@ -1422,12 +1413,11 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         // if none of the above states are matched, use this as the fallback
         //TODO:make auhtority grant modal to be start-up page
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/tabs.dashboard_backup');
 
     })
 
     .factory('BaiduMapService', function($q, baiduMapApi) {
-
       return {
         getBMap:function(){
           var deferred=$q.defer();
@@ -1438,7 +1428,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         }
       };
     })
-
 
     .factory('BMapService', ['$document', '$q', '$rootScope',
         function($document, $q, $rootScope) {
