@@ -5,7 +5,7 @@ angular.module('starter')
   .controller('myController',function($scope,$state,$http,$rootScope,
                                       Proxy,$ionicSideMenuDelegate,$ionicHistory,
                                       $cordovaPreferences,$ionicModal,$timeout,
-                                      $cordovaFileTransfer,$ionicLoading,$ionicPopover){
+                                      $cordovaFileTransfer,$ionicLoading,$ionicPopover,$q){
 
 
     $scope.toggleLeft=function () {
@@ -70,20 +70,12 @@ angular.module('starter')
       $scope.infos=[];
       $scope.userInfo=$rootScope.user.personInfo;
 
+      console.log('go to my page');
 
-      //同步个人头像
-      if($rootScope.user.portrait!==undefined&&$rootScope.user.portrait!==null&&$rootScope.user.portrait!='')
-      {
-          $scope.portrait={
-              path:$rootScope.user.portrait
-          };
-      }else{
-          $scope.portrait={};
-          //TODO:download your portrait
-          $ionicLoading.show({
-              template:'<p class="item-icon-left">拉取个人信息<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-          });
 
+      //拉取个人积分
+      $scope.fetchPersonScoreBalance=function () {
+          var deferred=$q.defer();
           $http({
               method: "POST",
               url: Proxy.local() + "/svr/request",
@@ -97,71 +89,120 @@ angular.module('starter')
               var json=res.data;
               if(json.re==1)
                   $scope.score=json.data;
-              return $http({
-                  method: "POST",
-                  url: "/proxy/node_server/svr/request",
-                  headers: {
-                      'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data: {
-                      request:'checkPortrait'
-                  }
-              });
-          }).then(function (res) {
-              var json=res.data;
-              if(json.re==1) {
-                  var filePath=json.data;
+              deferred.resolve({re:1});
+          }).catch(function (err) {
+            deferred.reject(err);
+          })
+          return deferred.promise;
+      }
 
-                  var url = Proxy.local() + '/svr/request?request=downloadPortrait&filePath='+filePath;
-                  var fileSystem = null;
-                  if (ionic.Platform.isIOS()) {
-                      $scope.target = 'cdvfile://localhost/persistent/' + 'portrait.png';
-                  } else if (ionic.Platform.isAndroid()) {
-                      fileSystem = cordova.file.externalApplicationStorageDirectory;
-                      $scope.target = fileSystem + 'portrait.png';
-                  }
-
-                  var trustHosts = true;
-                  var options = {
-                      fileKey: 'file',
+      $scope.syncPersonPortrait=function () {
+          var deferred=$q.defer();
+          if($rootScope.user.portrait!==undefined&&$rootScope.user.portrait!==null&&$rootScope.user.portrait!='')
+          {
+              $scope.portrait={
+                  path:$rootScope.user.portrait
+              };
+              deferred.resolve({re:1});
+          }else{
+              if(window.cordova)
+              {
+                  $http({
+                      method: "POST",
+                      url: Proxy.local()+"/svr/request",
                       headers: {
                           'Authorization': "Bearer " + $rootScope.access_token
+                      },
+                      data: {
+                          request:'checkPortrait'
                       }
-                  };
-                  $cordovaFileTransfer.download(url, $scope.target, options, trustHosts)
-                      .then(function (res) {
-                          var json = res.response;
-                          if (Object.prototype.toString.call(json) == '[object String]')
-                              json = JSON.parse(json);
-                          $scope.portrait.path=$scope.target;
-                          $rootScope.user.portrait=$scope.target;
-                          $ionicLoading.hide();
-                      }, function (err) {
-                          // Error
-                          $ionicPopup.alert({
-                              title: '失败',
-                              template: '个人头像同步失败'
-                          });
-                          $ionicLoading.hide();
-                      }, function (progress) {
-                          $timeout(function () {
-                              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
-                          });
-                      });
+                  }).then(function (res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          var filePath=json.data;
 
+                          var url = Proxy.local() + '/svr/request?request=downloadPortrait&filePath='+filePath;
+                          var fileSystem = null;
+                          if (ionic.Platform.isIOS()) {
+                              $scope.target = 'cdvfile://localhost/persistent/' + 'portrait.png';
+                          } else if (ionic.Platform.isAndroid()) {
+                              fileSystem = cordova.file.externalApplicationStorageDirectory;
+                              $scope.target = fileSystem + 'portrait.png';
+                          }
+
+                          var trustHosts = true;
+                          var options = {
+                              fileKey: 'file',
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              }
+                          };
+                          $cordovaFileTransfer.download(url, $scope.target, options, trustHosts)
+                              .then(function (res) {
+                                  var json = res.response;
+                                  if (Object.prototype.toString.call(json) == '[object String]')
+                                      json = JSON.parse(json);
+                                  if($scope.portrait!==undefined&&$scope.portrait!==null)
+                                      $scope.portrait.path=$scope.target;
+                                  else
+                                      $scope.portrait={
+                                          path:$scope.target
+                                      }
+                                  $rootScope.user.portrait=$scope.target;
+                                  deferred.resolve({re:1});
+                              }, function (err) {
+                                  // Error
+                                  $ionicPopup.alert({
+                                      title: '失败',
+                                      template: '个人头像同步失败'
+                                  });
+                                  deferred.reject(err);
+                              }, function (progress) {
+                                  $timeout(function () {
+                                      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+                                  });
+                              });
+
+                      }else{
+                          deferred.resolve({re:1});
+                      }
+                  }).catch(function (err) {
+                      deferred.reject(err);
+                  })
               }else{
-                  $ionicLoading.hide();
+                  deferred.resolve({re:1});
               }
-          }).catch(function (err) {
+
+          }
+          return deferred.promise;
+      }
+
+
+
+      $scope.syncPersonData=function () {
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">拉取个人信息<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+
+          $scope.fetchPersonScoreBalance()
+              .then(function (json) {
+                  return $scope.syncPersonPortrait();
+              })
+              .then(function (json) {
+                  $ionicLoading.hide();
+              })
+              .catch(function (err) {
               $ionicLoading.hide();
               var str='';
               for(var field in err)
                   str+=err[field];
               console.error('err=\r\n'+str);
-          });
+          })
 
       }
 
+      //同步个人信息
+      $scope.syncPersonData();
 
 
 

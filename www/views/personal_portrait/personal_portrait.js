@@ -16,8 +16,12 @@ angular.module('starter')
             });
         };
 
-        $scope.portrait={
-        }
+        if($rootScope.user.portrait!==undefined&& $rootScope.user.portrait!==null)
+            $scope.portrait={
+                path:$rootScope.user.portrait
+            };
+        else
+            $scope.portrait={};
 
 
         if($stateParams.params!==undefined&&$stateParams.params!==null)
@@ -116,7 +120,7 @@ angular.module('starter')
                 if($scope.portrait.path!==undefined&&$scope.portrait.path!==null)
                 {
                     $ionicLoading.show({
-                        template:'<p class="item-icon-left">Loading...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                        template:'<p class="item-icon-left">上传头像.....<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
                     });
 
                     var server = Proxy.local() + '/svr/request?request=uploadPortrait';
@@ -130,10 +134,21 @@ angular.module('starter')
                     $cordovaFileTransfer.upload(server, $scope.portrait.path, options).then(function () {
                         $ionicLoading.hide();
                         $scope.doingPortraitSave=false;
+
+                        if($rootScope.user!==undefined&&$rootScope.user!==null)
+                            $rootScope.user={
+                            };
+                        $rootScope.user.portrait=$scope.portrait.path;
+
                         var sucPopup = $ionicPopup.alert({
                             template: '头像保存成功',
                             title: '信息'
                         });
+
+                        sucPopup.then(function (res) {
+                            $scope.go_back();
+                        })
+
 
                     }).catch(function (err) {
                         var str='';

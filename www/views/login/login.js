@@ -538,44 +538,6 @@ angular.module('starter')
       }
 
 
-
-
-      $scope.speak=function () {
-          $scope.speakingText='我是山大研究生丁一铭';
-          try {
-              //navigator.speech.startSpeaking( $scope.speakingText);
-
-              //navigator.speech.startSpeaking($scope.speakingText);
-              try{
-                  // TTS.speak(
-                  //     {
-                  //         text:'您好',
-                  //         locale:'zh-cn',
-                  //         rate: 0.75
-                  //     }
-                  //     , function () {
-                  //     alert('success');
-                  // }, function (reason) {
-                  //     alert(reason);
-                  // });
-                  //百度语音说话
-
-                  var options = {txt:"新年好"};
-                  baidu_tts.speak(
-                      function(ret){}, //success
-                      function(e){},   //error
-                      options);
-              }catch(e)
-              {
-                  alert('err=\r\n' + e.toString());
-              }
-          }catch (e)
-          {
-              alert('exception=' + e.toString());
-          }
-
-      }
-
       $scope.installWxOrNot=function () {
           Wechat.isInstalled(function (installed) {
               alert("Wechat installed: " + (installed ? "Yes" : "No"));
