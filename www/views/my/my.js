@@ -105,68 +105,74 @@ angular.module('starter')
               };
               deferred.resolve({re:1});
           }else{
-              $http({
-                  method: "POST",
-                  url: Proxy.local()+"/svr/request",
-                  headers: {
-                      'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data: {
-                      request:'checkPortrait'
-                  }
-              }).then(function (res) {
-                  var json=res.data;
-                  if(json.re==1) {
-                      var filePath=json.data;
-
-                      var url = Proxy.local() + '/svr/request?request=downloadPortrait&filePath='+filePath;
-                      var fileSystem = null;
-                      if (ionic.Platform.isIOS()) {
-                          $scope.target = 'cdvfile://localhost/persistent/' + 'portrait.png';
-                      } else if (ionic.Platform.isAndroid()) {
-                          fileSystem = cordova.file.externalApplicationStorageDirectory;
-                          $scope.target = fileSystem + 'portrait.png';
+              if(window.cordova)
+              {
+                  $http({
+                      method: "POST",
+                      url: Proxy.local()+"/svr/request",
+                      headers: {
+                          'Authorization': "Bearer " + $rootScope.access_token
+                      },
+                      data: {
+                          request:'checkPortrait'
                       }
+                  }).then(function (res) {
+                      var json=res.data;
+                      if(json.re==1) {
+                          var filePath=json.data;
 
-                      var trustHosts = true;
-                      var options = {
-                          fileKey: 'file',
-                          headers: {
-                              'Authorization': "Bearer " + $rootScope.access_token
+                          var url = Proxy.local() + '/svr/request?request=downloadPortrait&filePath='+filePath;
+                          var fileSystem = null;
+                          if (ionic.Platform.isIOS()) {
+                              $scope.target = 'cdvfile://localhost/persistent/' + 'portrait.png';
+                          } else if (ionic.Platform.isAndroid()) {
+                              fileSystem = cordova.file.externalApplicationStorageDirectory;
+                              $scope.target = fileSystem + 'portrait.png';
                           }
-                      };
-                      $cordovaFileTransfer.download(url, $scope.target, options, trustHosts)
-                          .then(function (res) {
-                              var json = res.response;
-                              if (Object.prototype.toString.call(json) == '[object String]')
-                                  json = JSON.parse(json);
-                              if($scope.portrait!==undefined&&$scope.portrait!==null)
-                                  $scope.portrait.path=$scope.target;
-                              else
-                                  $scope.portrait={
-                                  path:$scope.target
-                                  }
-                              $rootScope.user.portrait=$scope.target;
-                              deferred.resolve({re:1});
-                          }, function (err) {
-                              // Error
-                              $ionicPopup.alert({
-                                  title: '失败',
-                                  template: '个人头像同步失败'
-                              });
-                              deferred.reject(err);
-                          }, function (progress) {
-                              $timeout(function () {
-                                  $scope.downloadProgress = (progress.loaded / progress.total) * 100;
-                              });
-                          });
 
-                  }else{
-                      deferred.resolve({re:1});
-                  }
-              }).catch(function (err) {
-                  deferred.reject(err);
-              })
+                          var trustHosts = true;
+                          var options = {
+                              fileKey: 'file',
+                              headers: {
+                                  'Authorization': "Bearer " + $rootScope.access_token
+                              }
+                          };
+                          $cordovaFileTransfer.download(url, $scope.target, options, trustHosts)
+                              .then(function (res) {
+                                  var json = res.response;
+                                  if (Object.prototype.toString.call(json) == '[object String]')
+                                      json = JSON.parse(json);
+                                  if($scope.portrait!==undefined&&$scope.portrait!==null)
+                                      $scope.portrait.path=$scope.target;
+                                  else
+                                      $scope.portrait={
+                                          path:$scope.target
+                                      }
+                                  $rootScope.user.portrait=$scope.target;
+                                  deferred.resolve({re:1});
+                              }, function (err) {
+                                  // Error
+                                  $ionicPopup.alert({
+                                      title: '失败',
+                                      template: '个人头像同步失败'
+                                  });
+                                  deferred.reject(err);
+                              }, function (progress) {
+                                  $timeout(function () {
+                                      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+                                  });
+                              });
+
+                      }else{
+                          deferred.resolve({re:1});
+                      }
+                  }).catch(function (err) {
+                      deferred.reject(err);
+                  })
+              }else{
+                  deferred.resolve({re:1});
+              }
+
           }
           return deferred.promise;
       }

@@ -11,6 +11,9 @@ angular.module('starter')
 
 
 
+        $scope.permissions=[
+            {name:'da',val:true}
+            ];
 
         $scope.constants=[
             'android.permission.WRITE_EXTERNAL_STORAGE',
