@@ -97,7 +97,6 @@ angular.module('starter')
                     var serviceHour=null;
                     var serviceDay=null;
 
-
                     if((date-curDay)>0&&curDay.getDate()!=date.getDate())
                     {
                         if($scope.maintain.servicePerson!==undefined&& $scope.maintain.servicePerson!==null){
@@ -108,8 +107,7 @@ angular.module('starter')
                             serviceDay = parseInt(serviceSegments.substring(0, 1));
                             if(day==serviceDay)
                             {
-
-                                if(parseInt(hour/12)==serviceHour)
+                                if(parseInt(hour/12)==serviceHour-1)
                                 {
                                     item[field]=date;
                                     return;
@@ -150,7 +148,6 @@ angular.module('starter')
                                     tip+='下午';
                                     break;
                             }
-
 
                             $ionicPopup.alert({
                                 title: '错误',
