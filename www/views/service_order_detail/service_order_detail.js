@@ -230,7 +230,8 @@ angular.module('starter')
                                   orderId: $scope.order.orderId,
                                   servicePersonId: candidate.servicePersonId,
                                   type: 'to-servicePerson',
-                                  subType:'agreeWithCandidate'
+                                  subType:'agreeWithCandidate',
+                                  orderNum:$scope.order.orderNum
                               }
                           }
                       });
