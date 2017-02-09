@@ -165,6 +165,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           }
         }
 
+
         //通知的回调
         $rootScope.onReceiveNotification = function(event) {
 
@@ -186,8 +187,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
                 alert('end');
 
-                // if(Object.prototype.toString.call(extras)=='[object String]')
-                //     extras=JSON.parse(extras);
+                if(Object.prototype.toString.call(extras)=='[object String]')
+                     extras=JSON.parse(extras);
 
                 // console.log('=====================notification=================');
                 // for(var field in extras)
@@ -220,7 +221,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                 ownerId:orderId,
                                                 content:content,
                                                 notyTime:date,
-                                                side:'customer',
+                                                recv:'customer',
                                                 subType:null,
                                                 type:'service'
 
@@ -373,7 +374,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                     ownerId:orderId,
                                                     content:content,
                                                     notyTime:new Date(date),
-                                                    side:'customer',
+                                                    recv:'customer',
                                                     subType:null,
                                                     type: orderType==1?'car':'life'
 
@@ -589,7 +590,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                           ownerId: orderId,
                                           content: content,
                                           notyTime: new Date(),
-                                          side: 'customer',
+                                          recv: 'customer',
                                           subType:orderType
                                       }
                                   }
@@ -1460,7 +1461,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://139.129.96.231:3000';
+            return 'http://192.168.1.118:3000';
           else
             return "/proxy/node_server";
 
