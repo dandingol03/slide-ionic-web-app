@@ -141,10 +141,8 @@ angular.module('starter')
         {
             $ionicPlatform.ready (function () {
 
-
                 if(ionic.Platform.isAndroid())
                 {
-
                     //检查是否含有danding.wav文件
                     $cordovaFile.checkFile(cordova.file.externalRootDirectory, "danding.wav")
                         .then(function (success) {
@@ -160,7 +158,6 @@ angular.module('starter')
                                 });
                         }, function (error) {
                         });
-
 
                     //获取手机版本号
                     $cordovaAppVersion.getVersionNumber().then(function (version) {
@@ -185,23 +182,29 @@ angular.module('starter')
                                 confirmPopup.then(function (res) {
                                     if(res)
                                     {
+                                        alert('begin to download');
+                                        try{
+                                            //打开浏览器下载apk
+                                            $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
+                                                .then(function(event) {
+                                                    //    for(var field in event)
+                                                    //    {
+                                                    //         alert(field + '\r\n' + event[field]);
+                                                    //    }
+                                                })
+                                                .catch(function(event) {
+                                                    alert('app download encounter error\r\n'+event);
+                                                });
+                                            $cordovaInAppBrowser.close();
 
-                                        //打开浏览器下载apk
-                                        $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
-                                            .then(function(event) {
-                                            //    for(var field in event)
-                                            //    {
-                                            //         alert(field + '\r\n' + event[field]);
-                                            //    }
-                                            })
-                                            .catch(function(event) {
-                                                // error
+                                            $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+                                                console.log('load stop...');
                                             });
-                                        $cordovaInAppBrowser.close();
+                                        }catch(e)
+                                        {
+                                            alert('error='+e);
+                                        }
 
-                                        $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
-                                            console.log('load stop...');
-                                        });
                                     }else{}
                                 })
                             }else{}
