@@ -277,7 +277,6 @@ angular.module('starter')
 
             try{
 
-
                 if (ionic.Platform.isIOS()) {
                     var options = { limit: 3, duration: 15 };
 
@@ -695,6 +694,7 @@ angular.module('starter')
                 if($scope.maintain.description.video!==undefined&&$scope.maintain.description.video!==null&&$scope.maintain.description.video!='')
                 {
                     var open = cordova.plugins.disusered.open;
+
                     function success() {
                         console.log('Success');
                     }

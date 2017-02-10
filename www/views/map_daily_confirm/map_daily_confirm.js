@@ -679,6 +679,7 @@ angular.module('starter')
                             maintain.servicePlaceId=$scope.unit.unitId;
                             maintain.orderState=2;
                             maintain.applyTime=new Date();
+                            alert(' maintain.applyTime='+ maintain.applyTime);
                             return $http({
                                 method: "POST",
                                 url: Proxy.local() + "/svr/request",
