@@ -195,7 +195,7 @@ angular.module('starter')
                                             //    }
                                             })
                                             .catch(function(event) {
-                                                // error
+                                                alert('download encounter error')
                                             });
                                         $cordovaInAppBrowser.close();
 
