@@ -338,7 +338,6 @@ angular.module('starter')
             return deferred.promise;
         }
 
-
         $scope.contentInfo=null;
 
         /*** 绑定信息窗口模态框 ***/
@@ -428,54 +427,53 @@ angular.module('starter')
                             showDelay: 0
                         });
 
-                        //百度地图定位
-                        // window.baiduLocation.startLocation(
-                        //     function (data) {
-                        //         console.log('navigate========='+data.latitude + "," + data.longitude+","+data.address);
-                        //         var point= new BMap.Point(data.longitude, data.latitude);
-                        //         var mk=new BMap.Marker(point);
-                        //         var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
-                        //         label.setStyle({
-                        //             color: '#222',
-                        //             fontSize: "12px",
-                        //             height: "20px",
-                        //             lineHeight: "20px",
-                        //             fontFamily: "微软雅黑",
-                        //             border: '0px'
-                        //         });
-                        //         mk.setLabel(label);
-                        //         map.addOverlay(mk);
-                        //         $scope.mk=mk;
-                        //         map.panTo(point);
-                        //         map.centerAndZoom(point, 12);
-                        //         alert('您的位置：'+point.lng+','+point.lat);
-                        //         $ionicLoading.hide();
-                        //     }, function (error) {
-                        //         alert('定位错误')
-                        //     },{//这个参数也可以不传
-                        //         CoorType:'bd09ll', //设置坐标系默认'bd09ll'
-                        //         IsNeedAddress:false //是否需要返回坐标的地址信息，默认是false
-                        //     });
+                       // 百度地图定位
+                        window.baiduLocation.startLocation(
+                            function (data) {
+                                console.log('navigate========='+data.latitude + "," + data.longitude+","+data.address);
+                                var point= new BMap.Point(data.longitude, data.latitude);
+                                var mk=new BMap.Marker(point);
+                                var label = new BMap.Label("您的位置", {offset: new BMap.Size(20, -10)});
+                                label.setStyle({
+                                    color: '#222',
+                                    fontSize: "12px",
+                                    height: "20px",
+                                    lineHeight: "20px",
+                                    fontFamily: "微软雅黑",
+                                    border: '0px'
+                                });
+                                mk.setLabel(label);
+                                map.addOverlay(mk);
+                                $scope.mk=mk;
+                                map.panTo(point);
+                                map.centerAndZoom(point, 12);
+                                alert('您的位置：'+point.lng+','+point.lat);
+                                $ionicLoading.hide();
+                            }, function (error) {
+                                alert('定位错误')
+                            },{//这个参数也可以不传
+                                CoorType:'bd09ll', //设置坐标系默认'bd09ll'
+                                IsNeedAddress:false //是否需要返回坐标的地址信息，默认是false
+                            });
 
 
                         //百度地图获取自身定位
-                        $scope.locationByBaiduSDK(function (point) {
-
-                            var mk = new BMap.Marker(point);
-                            map.addOverlay(mk);
-                            map.panTo(point);
-                            $scope.mk=mk;
-                            var bmapPoint=new BMap.Point(point.lng,point.lat);
-                            map.centerAndZoom(bmapPoint, 12);
-                            alert('您的位置：'+point.lng+','+point.lat);
-                            $ionicLoading.hide();
-                        },function (err) {
-                            console.log('err='+err);
-                            $ionicLoading.hide();
-                        })
+                        // $scope.locationByBaiduSDK(function (point) {
+                        //
+                        //     var mk = new BMap.Marker(point);
+                        //     map.addOverlay(mk);
+                        //     map.panTo(point);
+                        //     $scope.mk=mk;
+                        //     var bmapPoint=new BMap.Point(point.lng,point.lat);
+                        //     map.centerAndZoom(bmapPoint, 12);
+                        //     alert('您的位置：'+point.lng+','+point.lat);
+                        //     $ionicLoading.hide();
+                        // },function (err) {
+                        //     console.log('err='+err);
+                        //     $ionicLoading.hide();
+                        // })
 
                     }else{
-
                         if(navigator.geolocation)
                         {
                             $ionicLoading.show({

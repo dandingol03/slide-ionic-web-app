@@ -223,9 +223,6 @@ angular.module('starter')
             }
 
 
-
-
-
             if(checkFlag||$scope.tabIndex!=0)
             {
 
@@ -584,6 +581,16 @@ angular.module('starter')
         }
 
         $scope.playRecord=function () {
+
+            if(window.cordova)
+            {
+                if( ionic.Platform.isIOS()){
+                    CordovaAudio.playingRecorder(function(success) {
+                        alert('success=\r\n'+success);
+                    })
+                }
+            }
+
             if($scope.media&&$scope.media.media)
             {
                 try{
@@ -596,6 +603,7 @@ angular.module('starter')
                             if($scope.isRecording==false&&$scope.media!==undefined&&$scope.media!==null)
                             {
                                 if( ionic.Platform.isIOS()){
+
                                     CordovaAudio.playingRecorder(function(success) {
                                         alert('success=\r\n'+success);
                                     })
@@ -646,6 +654,7 @@ angular.module('starter')
                         {
                             if( ionic.Platform.isIOS()){
                                 CordovaAudio.playingRecorder(function(success) {
+
                                     alert('success=\r\n'+success);
                                 })
                             }else if(ionic.Platform.isAndroid()){
@@ -692,7 +701,7 @@ angular.module('starter')
         }
 
         $scope.moviePlay=function () {
-            if(  $scope.maintain.description.video!==undefined&&  $scope.maintain.description.video!==null&&  $scope.maintain.description.video!='')
+            if($scope.maintain.description.video!==undefined&&$scope.maintain.description.video!==null&&$scope.maintain.description.video!='')
             {
                 var open = cordova.plugins.disusered.open;
                 function success() {
@@ -719,7 +728,6 @@ angular.module('starter')
 
         //维修平铺新界面
         $scope.notFirstRowStyle={height: '120px',width:'100%',position: 'relative','border':'0px'};
-
 
 
     })
