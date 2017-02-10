@@ -32,24 +32,16 @@ angular.module('starter')
                     var day=date.getDay();
                     var serviceHour=null;
                     var serviceDay=null;
+
                     if((date-curDay)>0&&curDay.getDate()!=date.getDate())
                     {
-                        if($scope.carManage.servicePerson!==undefined&& $scope.carManage.servicePerson!==null){
+                        if($scope.maintain.servicePerson!==undefined&& $scope.maintain.servicePerson!==null){
 
-                            var servicePerson=$scope.carManage.servicePerson;
+                            var servicePerson=$scope.maintain.servicePerson;
                             var serviceSegments=servicePerson.serviceSegments;
                             serviceHour = parseInt(serviceSegments.substring(1, 2));
                             serviceDay = parseInt(serviceSegments.substring(0, 1));
-                            if(day==serviceDay)
-                            {
 
-                                if(parseInt(hour/12)==serviceHour)
-                                {
-                                    item[field]=date;
-                                    return;
-                                }else{
-                                }
-                            }
                             var tip='周';
                             switch (serviceDay) {
                                 case 1:
@@ -74,22 +66,42 @@ angular.module('starter')
                                     tip+='日';
                                     break;
                             }
-
                             switch(serviceHour)
                             {
-                                case 0:
+                                case 1:
                                     tip+='上午';
                                     break;
-                                case 1:
+                                case 2:
                                     tip+='下午';
                                     break;
                             }
 
+                            if(day==serviceDay)
+                            {
+                                if(parseInt(hour/12)==serviceHour-1)
+                                {
+                                    item[field]=date;
+                                    $scope.selectTime=true;
+                                    return;
+                                }else{
 
-                            $ionicPopup.alert({
-                                title: '错误',
-                                template: '您所选的日期时段不对,该服务人员的工作时段位于'+tip+',请重新选择'
-                            });
+                                    $ionicPopup.alert({
+                                        title: '错误',
+                                        template: '您所选的日期时段不对,该服务人员的工作时段位于'+tip+',请重新选择'
+                                    });
+
+
+                                }
+
+                            }else{
+
+                                $ionicPopup.alert({
+                                    title: '错误',
+                                    template: '您所选的日期时段不对,该服务人员的工作时段位于'+tip+',请重新选择'
+                                });
+                            }
+
+
                         }else{
                             item[field]=date;
                         }
@@ -102,7 +114,6 @@ angular.module('starter')
                         return ;
                     }
                     $scope.selectTime=true;
-
                 }).catch(function(err) {
                     $scope.selectTime=true;
                 });
@@ -536,7 +547,7 @@ angular.module('starter')
                 }).then(function(res) {
                     var json=res.data;
                     if(json.re==1) {
-                        var order=json.data;
+                        order=json.data;
                         servicePersonIds=$scope.verify.servicePersonIds;
                         personIds=$scope.verify.personIds;
                         return $http({
@@ -559,7 +570,7 @@ angular.module('starter')
                     var json = res.data;
                     if (json.re == 1) {
                         //TODO:append address and serviceType and serviceTime
-                        var serviceName = '车驾管-审车';
+                        var serviceName = '车驾管-接送机';
                         return $http({
                             method: "POST",
                             url: Proxy.local() + "/svr/request",

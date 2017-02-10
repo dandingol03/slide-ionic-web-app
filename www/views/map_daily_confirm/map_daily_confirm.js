@@ -720,6 +720,7 @@ angular.module('starter')
                                     request: 'sendCustomMessage',
                                     info: {
                                         order: order,
+                                        orderNum:order.orderNum,
                                         orderId:order.orderId,
                                         serviceItems: $scope.maintain.subServiceTypes,
                                         servicePersonId: order.servicePersonId,

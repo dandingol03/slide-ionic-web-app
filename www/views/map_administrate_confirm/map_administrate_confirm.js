@@ -22,31 +22,21 @@ angular.module('starter')
             if($scope.selectTime==true){
                 $scope.selectTime=false;
                 $cordovaDatePicker.show(options).then(function(date){
-
                     var curDay=new Date();
                     var hour=date.getHours();
                     var day=date.getDay();
                     var serviceHour=null;
                     var serviceDay=null;
+
                     if((date-curDay)>0&&curDay.getDate()!=date.getDate())
                     {
+                        if($scope.maintain.servicePerson!==undefined&& $scope.maintain.servicePerson!==null){
 
-                        if($scope.carManage.servicePerson!==undefined&& $scope.carManage.servicePerson!==null){
-
-                            var servicePerson=$scope.carManage.servicePerson;
+                            var servicePerson=$scope.maintain.servicePerson;
                             var serviceSegments=servicePerson.serviceSegments;
                             serviceHour = parseInt(serviceSegments.substring(1, 2));
                             serviceDay = parseInt(serviceSegments.substring(0, 1));
-                            if(day==serviceDay)
-                            {
 
-                                if(parseInt(hour/12)==serviceHour)
-                                {
-                                    item[field]=date;
-                                    return;
-                                }else{
-                                }
-                            }
                             var tip='周';
                             switch (serviceDay) {
                                 case 1:
@@ -71,22 +61,42 @@ angular.module('starter')
                                     tip+='日';
                                     break;
                             }
-
                             switch(serviceHour)
                             {
-                                case 0:
+                                case 1:
                                     tip+='上午';
                                     break;
-                                case 1:
+                                case 2:
                                     tip+='下午';
                                     break;
                             }
 
+                            if(day==serviceDay)
+                            {
+                                if(parseInt(hour/12)==serviceHour-1)
+                                {
+                                    item[field]=date;
+                                    $scope.selectTime=true;
+                                    return;
+                                }else{
 
-                            $ionicPopup.alert({
-                                title: '错误',
-                                template: '您所选的日期时段不对,该服务人员的工作时段位于'+tip+',请重新选择'
-                            });
+                                    $ionicPopup.alert({
+                                        title: '错误',
+                                        template: '您所选的日期时段不对,该服务人员的工作时段位于'+tip+',请重新选择'
+                                    });
+
+
+                                }
+
+                            }else{
+
+                                $ionicPopup.alert({
+                                    title: '错误',
+                                    template: '您所选的日期时段不对,该服务人员的工作时段位于'+tip+',请重新选择'
+                                });
+                            }
+
+
                         }else{
                             item[field]=date;
                         }
@@ -96,11 +106,9 @@ angular.module('starter')
                             template: '您所选的日期必须在当天之后,请重新选择'
                         });
                         $scope.selectTime=true;
-                        return;
+                        return ;
                     }
-
                     $scope.selectTime=true;
-
                 }).catch(function(err) {
                     $scope.selectTime=true;
                 });

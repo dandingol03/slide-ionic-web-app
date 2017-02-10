@@ -30,7 +30,6 @@ angular.module('starter')
         //     });
         // })
 
-
         $scope.serviceTypeMap={
             11:'维修-日常保养',
             12:'维修-故障维修',
@@ -50,7 +49,6 @@ angular.module('starter')
             insuranceder:{}
         };
 
-
         $scope.dailys = [
             {subServiceId:'1',subServiceTypes:'机油,机滤',serviceType:'11',checked:true},
             {subServiceId:'2',subServiceTypes:'检查制动系统,更换刹车片',serviceType:'11',checked:false},
@@ -64,8 +62,6 @@ angular.module('starter')
             {subServiceId:'10',subServiceTypes:'更换蓄电池,防冻液',serviceType:'11',checked:false}
         ];
 
-
-
         $scope.selectedTabStyle=
             {
                 display:'inline-block',color:'#0A9DC7',width:'33.333%',float:'left',height:'100%','border': '0px','background-color':'#fff'
@@ -76,8 +72,6 @@ angular.module('starter')
             };
 
         $scope.textareaFocusClass='card';
-
-
 
 
         /**
@@ -101,7 +95,6 @@ angular.module('starter')
 
         }
 
-
         //文本框字数监听
         $scope.descriptionTextChange=function () {
             var text=$scope.maintain.description.text;
@@ -109,15 +102,12 @@ angular.module('starter')
                 $scope.maintain.description.text = $scope.maintain.description.text.toString().substring(0, 300);
         };
 
-
         $scope.grid_check=function (index) {
             if($scope.dailys[index].checked!=true)
                 $scope.dailys[index].checked=true;
             else
                 $scope.dailys[index].checked=false;
         }
-
-
 
         /***  查看保养计划模态框***/
         $ionicModal.fromTemplateUrl('views/modal/maintain_plan_modal.html',{
@@ -131,12 +121,10 @@ angular.module('starter')
             $scope.maintain_plan_modal.show();
         };
 
-
         $scope.close_maintainPlanModal= function() {
             $scope.maintain_plan_modal.hide();
         };
         /*** 查看保养计划模态框 ***/
-
 
         $scope.miles=0;
         $scope.getMaintainPlan=function(miles){
@@ -222,10 +210,8 @@ angular.module('starter')
                 }
             }
 
-
             if(checkFlag||$scope.tabIndex!=0)
             {
-
                 $rootScope.maintain.dailys=$scope.dailys;
                 console.log('subTabIndex='+$scope.subTabIndex);
                 var serviceType=null;
@@ -289,115 +275,120 @@ angular.module('starter')
 
         $scope.startCapture=function(){
 
-            if (ionic.Platform.isIOS()) {
-                var options = { limit: 3, duration: 15 };
+            try{
 
-                //开始录制计时
-                $scope.videoSecond=0;
-                $scope.videoMinute=0;
-                $scope.videoTimer=$interval(function () {
-                    $scope.videoSecond++;
-                    if($scope.videoSecond<10)
-                        $scope.videoSecondStr='0'+$scope.videoSecond;
-                    else
-                        $scope.videoSecondStr=''+$scope.videoSecond;
-                    if($scope.videoSecond==60)
-                    {
-                        $scope.videoMinute++;
-                        if($scope.videoMinute<10)
-                            $scope.videoMinuteStr='0'+$scope.videoMinute;
-                        else
-                            $scope.videoMinuteStr=''+$scope.videoMinute;
-                    }
-                },1000);
 
-                $cordovaCapture.captureVideo(options).then(function(videoData) {
-                    // Success! Video data is here
+                if (ionic.Platform.isIOS()) {
+                    var options = { limit: 3, duration: 15 };
 
-                    //停止录制计时
-                    if($scope.videoTimer!==undefined&&$scope.videoTimer!==null)
-                    {
-                        $interval.cancel($scope.videoTimer);
-                        $scope.videoTimer=null;
-                    }
+                    //开始录制计时
                     $scope.videoSecond=0;
                     $scope.videoMinute=0;
-
-                    $scope.maintain.description.video=videoData[0].fullPath;
-                    alert('whole path=' + $scope.maintain.description.video);
-                    var basicPath=cordova.file.applicationStorageDirectory;
-                    alert('basic path=' + basicPath);
-
-                    var suffixIndex=videoData[0].fullPath.indexOf(basicPath)+basicPath.length;
-                    var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
-                    alert('filename=' + filename);
-                    $scope.videoData=videoData[0];
-                }, function(err) {
-                    // An error occurred. Show a message to the user
-                    var str='';
-                    for(var field in err)
-                        str+=err[field];
-                    console.error('error=\r\n' + str);
-                });
-            }else if(ionic.Platform.isAndroid()){
-                var options = { limit: 1, duration: 30 };
-                $cordovaCapture.captureVideo(options).then(function(videoData) {
-                    // Success! Video data is here
-
-                    // for(var field in videoData[0])
-                    // {
-                    //     alert('videoData[0]');
-                    //
-                    //     alert(field);
-                    // }
-
-                    // videoData[0].getFormatData(function (data) {
-                    //     alert('MediaFileData.duration'+data.duration);
-                    // });
-
-
-                    $scope.maintain.description.video=videoData[0].fullPath;
-                    alert('whole path=' + $scope.maintain.description.video);
-                    var basicPath=cordova.file.applicationStorageDirectory;
-                    alert('basic path=' + basicPath);
-
-                    var suffixIndex=videoData[0].fullPath.indexOf(basicPath)+basicPath.length;
-                    var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
-                    alert('filename=' + filename);
-                    $scope.videoData=videoData[0];
-
-                    function success(result) {
-                        // result is the path to the jpeg image on the device
-                        $scope.videoThumbnail=result;
-                        $scope.$apply();
-                        console.log('video thumbnail='+result);
-                    }
-
-                    function  error(err) {
-                        console.log('create thumbnail encounter error=\r\n'+err);
-                    }
-
-                    //TODO:generate a snapshot
-                    VideoEditor.createThumbnail(
-                        success, // success cb
-                        error, // error cb
+                    $scope.videoTimer=$interval(function () {
+                        $scope.videoSecond++;
+                        if($scope.videoSecond<10)
+                            $scope.videoSecondStr='0'+$scope.videoSecond;
+                        else
+                            $scope.videoSecondStr=''+$scope.videoSecond;
+                        if($scope.videoSecond==60)
                         {
-                            fileUri:videoData[0].fullPath, // the path to the video on the device
-                            outputFileName: 'thumbnail', // the file name for the JPEG image
-                            width: 320, // optional, width of the thumbnail
-                            height: 480, // optional, height of the thumbnail
-                            quality: 40 // optional, quality of the thumbnail (between 1 and 100)
+                            $scope.videoMinute++;
+                            if($scope.videoMinute<10)
+                                $scope.videoMinuteStr='0'+$scope.videoMinute;
+                            else
+                                $scope.videoMinuteStr=''+$scope.videoMinute;
                         }
-                    );
-                }, function(err) {
-                    // An error occurred. Show a message to the user
-                    var str='';
-                    for(var field in err)
-                        str+=err[field];
-                    console.error('error=\r\n' + str);
-                });
-            }
+                    },1000);
 
+                    $cordovaCapture.captureVideo(options).then(function(videoData) {
+                        // Success! Video data is here
+
+                        //停止录制计时
+                        if($scope.videoTimer!==undefined&&$scope.videoTimer!==null)
+                        {
+                            $interval.cancel($scope.videoTimer);
+                            $scope.videoTimer=null;
+                        }
+                        $scope.videoSecond=0;
+                        $scope.videoMinute=0;
+
+                        $scope.maintain.description.video=videoData[0].fullPath;
+                        alert('whole path=' + $scope.maintain.description.video);
+                        var basicPath=cordova.file.applicationStorageDirectory;
+                        alert('basic path=' + basicPath);
+
+                        var suffixIndex=videoData[0].fullPath.indexOf(basicPath)+basicPath.length;
+                        var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
+                        alert('filename=' + filename);
+                        $scope.videoData=videoData[0];
+                    }, function(err) {
+                        // An error occurred. Show a message to the user
+                        var str='';
+                        for(var field in err)
+                            str+=err[field];
+                        console.error('error=\r\n' + str);
+                    });
+                }else if(ionic.Platform.isAndroid()){
+                    var options = { limit: 1, duration: 30 };
+                    $cordovaCapture.captureVideo(options).then(function(videoData) {
+                        // Success! Video data is here
+
+                        // for(var field in videoData[0])
+                        // {
+                        //     alert('videoData[0]');
+                        //
+                        //     alert(field);
+                        // }
+
+                        // videoData[0].getFormatData(function (data) {
+                        //     alert('MediaFileData.duration'+data.duration);
+                        // });
+
+                        $scope.maintain.description.video=videoData[0].fullPath;
+                        alert('whole path=' + $scope.maintain.description.video);
+                        var basicPath=cordova.file.applicationStorageDirectory;
+                        alert('basic path=' + basicPath);
+
+                        var suffixIndex=videoData[0].fullPath.indexOf(basicPath)+basicPath.length;
+                        var filename=videoData[0].fullPath.substring(suffixIndex+1,videoData[0].fullPath.length);
+                        alert('filename=' + filename);
+                        $scope.videoData=videoData[0];
+
+                        function success(result) {
+                            // result is the path to the jpeg image on the device
+                            $scope.videoThumbnail=result;
+                            $scope.$apply();
+                            console.log('video thumbnail='+result);
+                        }
+
+                        function  error(err) {
+                            console.log('create thumbnail encounter error=\r\n'+err);
+                        }
+
+                        //TODO:generate a snapshot
+                        VideoEditor.createThumbnail(
+                            success, // success cb
+                            error, // error cb
+                            {
+                                fileUri:videoData[0].fullPath, // the path to the video on the device
+                                outputFileName: 'thumbnail', // the file name for the JPEG image
+                                width: 320, // optional, width of the thumbnail
+                                height: 480, // optional, height of the thumbnail
+                                quality: 40 // optional, quality of the thumbnail (between 1 and 100)
+                            }
+                        );
+                    }, function(err) {
+                        // An error occurred. Show a message to the user
+                        var str='';
+                        for(var field in err)
+                            str+=err[field];
+                        console.error('error=\r\n' + str);
+                    });
+                }
+
+            }catch(e){
+                alert(e);
+            }
 
         }
 
@@ -405,10 +396,8 @@ angular.module('starter')
 
         $scope.isRecording=false;
 
-
         //音幅数组,数组长度7,划分标准为0~0.09=>1,0.1~0.19=>2
         $scope.amplitudeWaves=[1,1,1,1,1,1,10];
-
 
         $scope.amplitudeImgMap={
             1:{src:'img/1.png'},
@@ -701,29 +690,36 @@ angular.module('starter')
         }
 
         $scope.moviePlay=function () {
-            if($scope.maintain.description.video!==undefined&&$scope.maintain.description.video!==null&&$scope.maintain.description.video!='')
-            {
-                var open = cordova.plugins.disusered.open;
-                function success() {
-                    console.log('Success');
-                }
 
-                function error(code) {
-                    if (code === 1) {
-                        console.log('No file handler found');
-                    } else {
-                        console.log('Undefined error');
+            try{
+                if($scope.maintain.description.video!==undefined&&$scope.maintain.description.video!==null&&$scope.maintain.description.video!='')
+                {
+                    var open = cordova.plugins.disusered.open;
+                    function success() {
+                        console.log('Success');
                     }
+
+                    function error(code) {
+                        if (code === 1) {
+                            console.log('No file handler found');
+                        } else {
+                            console.log('Undefined error');
+                        }
+                    }
+
+                    var filepath=$scope.maintain.description.video;
+                    open(filepath, success, error);
+                }else{
+                    var myPopup = $ionicPopup.alert({
+                        template: '您还未录制视频，不能进行播放',
+                        title: '<strong style="color:red">错误</strong>'
+                    });
                 }
 
-                var filepath=$scope.maintain.description.video;
-                open(filepath, success, error);
-            }else{
-                var myPopup = $ionicPopup.alert({
-                    template: '您还未录制视频，不能进行播放',
-                    title: '<strong style="color:red">错误</strong>'
-                });
+            }catch(e){
+                alert(e);
             }
+
         }
 
         //维修平铺新界面
