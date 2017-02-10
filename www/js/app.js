@@ -1738,6 +1738,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         // if none of the above states are matched, use this as the fallback
         //TODO:make auhtority grant modal to be start-up page
+
         $urlRouterProvider.otherwise('/login');
 
     })

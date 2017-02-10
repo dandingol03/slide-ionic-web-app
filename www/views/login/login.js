@@ -7,7 +7,7 @@ angular.module('starter')
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
         ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
         ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion
-        ,$cordovaFileOpener2,$cordovaInAppBrowser,$stateParams){
+        ,$cordovaFileOpener2,$cordovaInAppBrowser,$stateParams,$q){
 
 
 
@@ -48,52 +48,124 @@ angular.module('starter')
             $WebSocket.connect();
 
 
+
+        $scope.checkAppVersion=function () {
+            var deferred=$q.defer();
+            if(window.cordova)
+            {
+                //获取手机版本号
+                $cordovaAppVersion.getVersionNumber().then(function (version) {
+                    var appVersion = version;
+                    console.log('app version=================' + appVersion);
+                    $http({
+                        method:"GET",
+                        url:Proxy.local()+'/getLastAppVersion',
+                        headers: {
+                            'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    }).then(function (res) {
+                        var json=res.data;
+                        //   alert('version in server='+json.data);
+                        if(json.data>appVersion)
+                        {
+                            var confirmPopup = $ionicPopup.confirm({
+                                title: '您的app版本过旧，需要更新',
+                                template:'是否现在立即更新'
+                            });
+                            confirmPopup.then(function (res) {
+                                if(res)
+                                {
+
+                                    try{
+                                        //打开浏览器下载apk
+                                        $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
+                                            .then(function(event) {
+                                                //    for(var field in event)
+                                                //    {
+                                                //         alert(field + '\r\n' + event[field]);
+                                                //    }
+                                            })
+                                            .catch(function(event) {
+                                                alert('app download encounter error\r\n'+event);
+                                            });
+                                        $cordovaInAppBrowser.close();
+
+                                        $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+                                            console.log('load stop...');
+
+                                        });
+                                    }catch(e)
+                                    {
+                                        alert('error='+e);
+                                    }
+
+                                }else{}
+                            })
+                            deferred.resolve({re:2});
+                        }else{
+                            deferred.resolve({re:1});
+                        }
+                    })
+
+                });
+            }else{
+                deferred.resolve({re:-1});
+            }
+            return deferred.promise;
+        }
+
         $scope.getPreferences=function () {
 
-            $cordovaPreferences.fetch('preferences')
-                .success(function (data) {
+            $scope.checkAppVersion().then(function (json) {
+                if(json.re==1) {
+                    $cordovaPreferences.fetch('preferences')
+                        .success(function (data) {
 
 
-                    if(data!==undefined&&data!==null&&data!='')
-                    {
+                            if(data!==undefined&&data!==null&&data!='')
+                            {
 
-                        var preferences=data;
-                        if(Object.prototype.toString.call(preferences)=='[object String]')
-                            preferences = JSON.parse(preferences);
-                        if(preferences.initial==false)
-                        {
-                        }else{
-                            preferences.initial=false;
-                            $cordovaPreferences.store('preferences', preferences)
-                                .success(function(value) {
-                                    $state.go('map_lead_page');
-                                })
-                                .error(function(error) {
-                                    alert("Error: " + error);
-                                })
-                        }
+                                var preferences=data;
+                                if(Object.prototype.toString.call(preferences)=='[object String]')
+                                    preferences = JSON.parse(preferences);
+                                if(preferences.initial==false)
+                                {
+                                }else{
+                                    preferences.initial=false;
+                                    $cordovaPreferences.store('preferences', preferences)
+                                        .success(function(value) {
+                                            $state.go('map_lead_page');
+                                        })
+                                        .error(function(error) {
+                                            alert("Error: " + error);
+                                        })
+                                }
 
-                    }else{
-                        //TODO:初始化preferences
+                            }else{
+                                //TODO:初始化preferences
 
-                        var preferences={
-                            initial:false
-                        };
-                        $cordovaPreferences.store('preferences', preferences)
-                            .success(function(value) {
-                                $state.go('map_lead_page');
-                            })
-                            .error(function(error) {
-                                alert("Error: " + error);
-                            })
-                    }
-                })
-                .error(function (err) {
-                    var str='';
-                    for(var field in err)
-                        str+=err[field];
-                    console.error('err================\r\n'+str);
-                });
+                                var preferences={
+                                    initial:false
+                                };
+                                $cordovaPreferences.store('preferences', preferences)
+                                    .success(function(value) {
+                                        $state.go('map_lead_page');
+                                    })
+                                    .error(function(error) {
+                                        alert("Error: " + error);
+                                    })
+                            }
+                        })
+                        .error(function (err) {
+                            var str='';
+                            for(var field in err)
+                                str+=err[field];
+                            console.error('err================\r\n'+str);
+                        });
+                }
+            })
+
         }
 
 
@@ -141,10 +213,8 @@ angular.module('starter')
         {
             $ionicPlatform.ready (function () {
 
-
                 if(ionic.Platform.isAndroid())
                 {
-
                     //检查是否含有danding.wav文件
                     $cordovaFile.checkFile(cordova.file.externalRootDirectory, "danding.wav")
                         .then(function (success) {
@@ -160,54 +230,6 @@ angular.module('starter')
                                 });
                         }, function (error) {
                         });
-
-
-                    //获取手机版本号
-                    $cordovaAppVersion.getVersionNumber().then(function (version) {
-                        var appVersion = version;
-                        console.log('app version=================' + appVersion);
-                        $http({
-                            method:"GET",
-                            url:Proxy.local()+'/getLastAppVersion',
-                            headers: {
-                                'Authorization': "Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW",
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            }
-                        }).then(function (res) {
-                            var json=res.data;
-                         //   alert('version in server='+json.data);
-                            if(json.data>appVersion)
-                            {
-                                var confirmPopup = $ionicPopup.confirm({
-                                    title: '您的app版本过旧，需要更新',
-                                    template:'是否现在立即更新'
-                                });
-                                confirmPopup.then(function (res) {
-                                    if(res)
-                                    {
-
-                                        //打开浏览器下载apk
-                                        $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
-                                            .then(function(event) {
-                                            //    for(var field in event)
-                                            //    {
-                                            //         alert(field + '\r\n' + event[field]);
-                                            //    }
-                                            })
-                                            .catch(function(event) {
-                                                alert('download encounter error')
-                                            });
-                                        $cordovaInAppBrowser.close();
-
-                                        $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
-                                            console.log('load stop...');
-                                        });
-                                    }else{}
-                                })
-                            }else{}
-                        })
-
-                    });
 
                 }
 
