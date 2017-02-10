@@ -583,7 +583,8 @@ angular.module('starter')
                             data: {
                                 request: 'sendCustomMessage',
                                 info: {
-                                    order: order,
+                                    orderId:order.orderId,
+                                    orderNum:order.orderNum,
                                     serviceItems: null,
                                     servicePersonIds: servicePersonIds,
                                     serviceName: serviceName,
