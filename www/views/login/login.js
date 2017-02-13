@@ -78,23 +78,65 @@ angular.module('starter')
                                 {
 
                                     try{
-                                        //打开浏览器下载apk
-                                        $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
-                                            .then(function(event) {
-                                                //    for(var field in event)
-                                                //    {
-                                                //         alert(field + '\r\n' + event[field]);
-                                                //    }
-                                            })
-                                            .catch(function(event) {
-                                                alert('app download encounter error\r\n'+event);
+
+                                        //1.通过filetransfer下载
+
+                                        var url = Proxy.local() + '/svr/request?request=downloadAndroidApk';
+                                        var fileSystem = null;
+                                        if (ionic.Platform.isIOS()) {
+                                            $scope.target = 'cdvfile://localhost/persistent/' + 'android-release.apk';
+                                        } else if (ionic.Platform.isAndroid()) {
+                                            fileSystem = cordova.file.externalApplicationStorageDirectory;
+                                            $scope.target = fileSystem + 'android-release.apk';
+                                        }
+
+                                        var trustHosts = true;
+                                        var options = {
+                                            fileKey: 'file',
+                                            headers: {
+                                                'Authorization': "Bearer " + $rootScope.access_token
+                                            }
+                                        };
+
+                                        $cordovaFileTransfer.download(url, $scope.target, options, trustHosts)
+                                            .then(function (res) {
+                                                var json = res.response;
+                                                alert('apk下载成功')
+
+                                            }, function (err) {
+                                                // Error
+                                                $ionicPopup.alert({
+                                                    title: '错误',
+                                                    template: 'apk下载失败'
+                                                });
+                                                deferred.reject(err);
+                                            }, function (progress) {
+                                                $timeout(function () {
+                                                    $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+                                                });
                                             });
-                                        $cordovaInAppBrowser.close();
 
-                                        $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
-                                            console.log('load stop...');
-
-                                        });
+                                        //2.通过浏览器下载apk
+                                        // var options = {
+                                        //     date: new Date(),
+                                        //     mode: 'datetime',
+                                        // };
+                                        // $cordovaInAppBrowser.open(Proxy.local() + '/downloadAndroidApk', '_system', options)
+                                        //     .then(function(event) {
+                                        //         //    for(var field in event)
+                                        //         //    {
+                                        //         //         alert(field + '\r\n' + event[field]);
+                                        //         //    }
+                                        //     })
+                                        //     .catch(function(event) {
+                                        //         alert('app download encounter error\r\n'+event);
+                                        //     });
+                                        // $cordovaInAppBrowser.close();
+                                        //
+                                        // $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+                                        //     console.log('load stop...');
+                                        //
+                                        // });
                                     }catch(e)
                                     {
                                         alert('error='+e);
