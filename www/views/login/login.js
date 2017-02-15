@@ -599,7 +599,7 @@ angular.module('starter')
 
       $scope.goFetchPassword=function(){
           //$state.go('passwordForget');
-          $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+          $ionicNativeTransitions.stateGo('passwordForget', {}, {}, {
               "type": "slide",
               "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
               "duration": 300, // in milliseconds (ms), default 400

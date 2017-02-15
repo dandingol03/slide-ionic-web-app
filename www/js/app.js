@@ -1083,11 +1083,18 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                     $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
                         "type": "slide",
                         "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
-                        "duration": 240, // in milliseconds (ms), default 400
+                        "duration": 400, // in milliseconds (ms), default 400
                     });
                     break;
                 case 'passwordForget':
-                    $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+                    $ionicNativeTransitions.stateGo('login', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
+                case 'car_info_detail':
+                    $ionicNativeTransitions.stateGo('car_manage', {}, {}, {
                         "type": "slide",
                         "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
                         "duration": 240, // in milliseconds (ms), default 400
@@ -1786,7 +1793,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://192.168.1.118:3000';
+            return 'http://139.129.96.231:3000';
           else
             return "/proxy/node_server";
 

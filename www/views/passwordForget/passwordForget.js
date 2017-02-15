@@ -3,7 +3,7 @@
  */
 angular.module('starter')
     .controller('passwordForgetController',function($scope,$state,$http,
-                                                    $ionicPopup,Proxy){
+                                                    $ionicPopup,Proxy,$ionicNativeTransitions){
 
         $scope.info={
         };

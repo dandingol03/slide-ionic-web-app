@@ -3,7 +3,8 @@
  */
 angular.module('starter')
     .controller('carInfoDetailController',function($scope,$state,$stateParams,$ionicLoading,
-                                                    $ionicPopup,$http,Proxy,$rootScope){
+                                                    $ionicPopup,$http,Proxy,$rootScope,
+                                                   $ionicNativeTransitions){
 
         if($stateParams.carInfo!==undefined&&$stateParams.carInfo!==null)
         {
@@ -63,7 +64,11 @@ angular.module('starter')
         }
 
         $scope.go_back=function () {
-            window.history.back();
+            $ionicNativeTransitions.stateGo('car_manage', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 300, // in milliseconds (ms), default 400
+            });
         }
 
         $scope.go_to=function (url) {
