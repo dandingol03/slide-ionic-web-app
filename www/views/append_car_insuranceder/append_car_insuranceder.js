@@ -741,14 +741,13 @@ angular.module('starter')
                 .then(function(res) {
 
                     var json =res.data;
-                    alert(json.re);
                     if(json.re==1) {
 
                         personId = json.data.personId;
                         $scope.insuranceder.personId = personId;
 
                         var suffix = '';
-                        var imageType = 'perIdCard';
+                        imageType = 'perIdCard';
                         if ($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.jpg') != -1)
                             suffix = 'jpg';
                         else if ($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.png') != -1)
@@ -757,7 +756,7 @@ angular.module('starter')
                         }
                         server = Proxy.local() + '/svr/request?request=uploadPhoto' +
                             '&imageType=' + imageType + '&suffix=' + suffix +
-                            '&filename=' + 'perIdCard1_img' + '&personId=' + personId;
+                            '&filename=' + 'perIdAttachId1' + '&personId=' + personId;
                         options = {
                             fileKey: 'file',
                             headers: {
@@ -771,16 +770,14 @@ angular.module('starter')
                     }
                 }).then(function(res) {
 
-                alert('upload perIdCard1 success');
-                for (var field in res) {
-                    alert('field=' + field + '\r\n' + res[field]);
-                }
+
+
                 var su = null
                 if ($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.jpg') != -1)
                     su = 'jpg';
                 else if ($scope.car_insurance.insuranceder.perIdCard1_img.indexOf('.png') != -1)
                     su = 'png';
-                alert('suffix=' + su);
+
                 return $http({
                     method: "POST",
                     url: Proxy.local() + "/svr/request",
@@ -802,7 +799,7 @@ angular.module('starter')
                 var json = res.data;
                 if (json.re == 1) {
                     perIdAttachId1 = json.data;
-                    alert('perIdAttachId1=' + perIdAttachId1);
+                    console.log('perIdAttachId1=' + perIdAttachId1);
                     var su = null;
                     if ($scope.car_insurance.insuranceder.perIdCard2_img.indexOf('.jpg') != -1)
                         su = 'jpg';
@@ -814,7 +811,7 @@ angular.module('starter')
                     return $cordovaFileTransfer.upload(server, $scope.car_insurance.insuranceder.perIdCard2_img, options);
                 }
             }).then(function (res) {
-                alert('upload perIdCard2 success');
+
                 var su = null;
                 if ($scope.car_insurance.insuranceder.perIdCard2_img.indexOf('.jpg') != -1)
                     su = 'jpg';

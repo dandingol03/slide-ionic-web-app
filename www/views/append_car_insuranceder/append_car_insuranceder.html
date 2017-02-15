@@ -164,7 +164,7 @@
                                         <div style="width: 100%;height: 100%;display: table;"
                                              ng-click="addAttachment(car_insurance.insuranceder,'perIdCard1_img')">
                                             <div style="display: table-cell;vertical-align: middle;text-align: center;position: relative;height: 100%;">
-                                                <div style="position: absolute;left:35%;top:20%;
+                                                <div style="position: absolute;left:38%;top:20%;
                                                 width: 70px;height: 70px;border:2px dashed #fff;border-radius: 70px;padding-top: 10px;">
                                                     <div style="width: 100%;height: 100%;position: relative">
                                                         <span style="color:#fff;font-size: 2.4em;margin-top: 10px;">
@@ -211,9 +211,11 @@
 
                                 </div>
 
-                                <div style="margin-top:20px;position: absolute;top: 40%;left: 30%;z-index: 9999;"
+                                <div style="margin-top:20px;position: absolute;top: 40%;left:0;width: 100%;z-index: 9999;height: 120px;"
                                      ng-if="car_insurance.insuranceder.perIdCard1_img==undefined||car_insurance.insuranceder.perIdCard1_img==null">
-                                    <span style="color:#323232;font-weight: bolder;font-size:large">上传身份证正面</span>
+                                    <div style="width:100%;height:100%;display: table;">
+                                        <span style="color:#323232;font-weight: bolder;font-size:large;display: table-cell;vertical-align: middle;">上传身份证正面</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -234,7 +236,7 @@
                                         <div style="width: 100%;height: 100%;display: table;"
                                              ng-click="addAttachment(car_insurance.insuranceder,'perIdCard2_img')">
                                             <div style="display: table-cell;vertical-align: middle;text-align: center;position: relative;height: 100%;">
-                                                <div style="position: absolute;left:35%;top:20%;
+                                                <div style="position: absolute;left:38%;top:20%;
                                                 width: 70px;height: 70px;border:2px dashed #fff;border-radius: 70px;padding-top: 10px;">
                                                     <div style="width: 100%;height: 100%;position: relative">
 
@@ -283,9 +285,12 @@
 
                                 </div>
 
-                                <div style="margin-top:20px;position: absolute;top: 40%;left: 30%;z-index: 9999;"
+
+                                <div style="margin-top:20px;position: absolute;top: 40%;left: 0%;width: 100%;z-index: 9999;height: 120px;"
                                      ng-if="car_insurance.insuranceder.perIdCard1_img==undefined||car_insurance.insuranceder.perIdCard1_img==null">
-                                    <span style="color:#323232;font-weight: bolder;font-size:large">上传身份证反面</span>
+                                    <div style="width:100%;height:100%;display: table;">
+                                        <span style="color:#323232;font-weight: bolder;font-size:large;display: table-cell;vertical-align: middle;">上传身份证反面</span>
+                                    </div>
                                 </div>
                             </div>
 

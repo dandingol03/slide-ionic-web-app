@@ -1086,6 +1086,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                         "duration": 240, // in milliseconds (ms), default 400
                     });
                     break;
+                case 'passwordForget':
+                    $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
                 default:
                     $ionicHistory.goBack();
             }
@@ -1779,7 +1786,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://139.129.96.231:3000';
+            return 'http://192.168.1.118:3000';
           else
             return "/proxy/node_server";
 

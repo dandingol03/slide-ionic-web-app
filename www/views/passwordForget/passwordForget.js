@@ -9,7 +9,12 @@ angular.module('starter')
         };
 
         $scope.go_back=function(){
-            window.history.back();
+            //window.history.back();
+            $ionicNativeTransitions.stateGo('login', {}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         };
 
         $scope.getCode=function () {
@@ -25,6 +30,7 @@ angular.module('starter')
                 var json=res.data;
                 if(json.re==1){
                     $scope.code=json.data;
+                    alert($scope.code);
                 }
                 else{
                     console.error('error=\r\n'+json.data);

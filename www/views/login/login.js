@@ -7,7 +7,7 @@ angular.module('starter')
         ,$cordovaFile,$cordovaFileTransfer,$ionicActionSheet,$cordovaCamera,Proxy
         ,$ionicPopover,$cordovaPreferences,$ionicPlatform,$ionicModal,$ionicBackdrop
         ,$ionicViewSwitcher,$cordovaDevice,$ionicHistory,$WebSocket,$cordovaAppVersion
-        ,$cordovaFileOpener2,$cordovaInAppBrowser,$stateParams,$q){
+        ,$cordovaFileOpener2,$cordovaInAppBrowser,$stateParams,$q,$ionicNativeTransitions){
 
 
 
@@ -598,7 +598,12 @@ angular.module('starter')
       }
 
       $scope.goFetchPassword=function(){
-          $state.go('passwordForget');
+          //$state.go('passwordForget');
+          $ionicNativeTransitions.stateGo('tabs.dashboard_backup', {}, {}, {
+              "type": "slide",
+              "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
+              "duration": 300, // in milliseconds (ms), default 400
+          });
       }
 
 
