@@ -32,21 +32,45 @@ angular.module('starter')
         $ionicHistory.clearCache();
         if(window.cordova)
         {
-            $cordovaPreferences.store('username', '')
-                .success(function(value) {
-                    $cordovaPreferences.store('password', '')
+
+            $http({
+                method: "POST",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token
+                },
+                data: {
+                    request:'jpushRegistrationLogOff',
+                    info:{
+                        side:'customer'
+                    }
+                }
+            }).then(function (res) {
+                var json=res.data;
+                if(json.re==1) {
+                    $cordovaPreferences.store('username', '')
                         .success(function(value) {
-                            $rootScope.access_token=null;
-                            $state.go('login');
-                            $rootScope.flags.carManage.onFresh=true;
+                            $cordovaPreferences.store('password', '')
+                                .success(function(value) {
+                                    $rootScope.access_token=null;
+                                    $state.go('login');
+                                    $rootScope.flags.carManage.onFresh=true;
+                                })
+                                .error(function(error) {
+                                    console.error("Error: " + error);
+                                })
                         })
                         .error(function(error) {
                             console.error("Error: " + error);
                         })
-                })
-                .error(function(error) {
-                    console.error("Error: " + error);
-                })
+                }else{
+                    $ionicPopup.alert({
+                        title: '错误',
+                        template: json.data
+                    });
+                }
+            })
+
         }else{
             //浏览器环境
             $rootScope.flags.carManage.onFresh=true;

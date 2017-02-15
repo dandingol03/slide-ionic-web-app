@@ -113,8 +113,18 @@ angular.module('starter')
                         if(json.data!==undefined&&json.data!==null)
                         {
                             $scope.car_insurance.relativePersons = json.data;
+                            //对于人员来说凡是重复的人员都显示身份证号
+                            var abundant={};
                             json.data.map(function (person,i) {
 
+                                if(abundant[person.perName]!==undefined&&abundant[person.perName]!==null)
+                                    abundant[person.perName].count++;
+                                else{
+                                    abundant[person.perName]={
+                                        count:1
+                                    };
+                                }
+                                person.abundant=false;
                                 //当新增完被保险人后,自动刷新被保险人列表并选中
                                 if(personId!==undefined&&personId!==null&&person.personId==personId)
                                 {
@@ -122,6 +132,15 @@ angular.module('starter')
                                     $scope.car_insurance.insuranceder = person;
                                 }
                             });
+
+                            //迭代重复人员
+                            json.data.map(function (person,i) {
+                                if(abundant[person.perName].count>1)
+                                    person.abundant=true;
+                            })
+
+                            $scope.car_insurance.relativePersons = json.data;
+
                         }
                     }
                     $scope.sheild = false;
