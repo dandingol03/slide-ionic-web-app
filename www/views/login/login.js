@@ -56,7 +56,8 @@ angular.module('starter')
                 //获取手机版本号
                 $cordovaAppVersion.getVersionNumber().then(function (version) {
                     var appVersion = version;
-                    console.log('app version=================' + appVersion);
+                    console.log('app version='+appVersion);
+
                     $http({
                         method:"GET",
                         url:Proxy.local()+'/getLastAppVersion',
@@ -66,7 +67,7 @@ angular.module('starter')
                         }
                     }).then(function (res) {
                         var json=res.data;
-                        //   alert('version in server='+json.data);
+                        console.log('version in server='+json.data);
                         if(json.data>appVersion)
                         {
                             var confirmPopup = $ionicPopup.confirm({
@@ -129,7 +130,7 @@ angular.module('starter')
                                                 //    }
                                             })
                                             .catch(function(event) {
-                                                alert('app download encounter error\r\n'+event);
+                                                alert('APK升级遇到错误');
                                             });
                                         $cordovaInAppBrowser.close();
 
@@ -137,14 +138,17 @@ angular.module('starter')
                                             console.log('load stop...');
 
                                         });
+                                        deferred.resolve({re:2});
                                     }catch(e)
                                     {
                                         alert('error='+e);
+                                        deferred.reject({re:-1});
                                     }
 
-                                }else{}
+                                }else{
+                                    deferred.resolve({re:2});
+                                }
                             })
-                            deferred.resolve({re:2});
                         }else{
                             deferred.resolve({re:1});
                         }
@@ -159,6 +163,7 @@ angular.module('starter')
 
         $scope.getPreferences=function () {
 
+            var deferred=$q.defer();
             $scope.checkAppVersion().then(function (json) {
                 if(json.re==1) {
                     $cordovaPreferences.fetch('preferences')
@@ -173,13 +178,16 @@ angular.module('starter')
                                     preferences = JSON.parse(preferences);
                                 if(preferences.initial==false)
                                 {
+                                    deferred.resolve({re:1});
                                 }else{
                                     preferences.initial=false;
                                     $cordovaPreferences.store('preferences', preferences)
                                         .success(function(value) {
                                             $state.go('map_lead_page');
+                                            deferred.resolve({re:2});
                                         })
                                         .error(function(error) {
+                                            deferred.reject({re:-1});
                                             alert("Error: " + error);
                                         })
                                 }
@@ -193,9 +201,11 @@ angular.module('starter')
                                 $cordovaPreferences.store('preferences', preferences)
                                     .success(function(value) {
                                         $state.go('map_lead_page');
+                                        deferred.resolve({re:2});
                                     })
                                     .error(function(error) {
                                         alert("Error: " + error);
+                                        deferred.reject({re:-1});
                                     })
                             }
                         })
@@ -204,10 +214,13 @@ angular.module('starter')
                             for(var field in err)
                                 str+=err[field];
                             console.error('err================\r\n'+str);
+                            deferred.reject({re:-1});
                         });
+                }else{
+                    deferred.reject({re:-1});
                 }
             })
-
+            return deferred.promise;
         }
 
 
@@ -279,19 +292,17 @@ angular.module('starter')
                 if($scope.redirected==true)
                 {}
                 else{
-                    $scope.getPreferences();
+                    $scope.getPreferences().then(function (json) {
+                        if(json.re==1)
+                            $scope.fetch();
+                    })
                 }
 
-                $scope.fetch();
+
 
 
                 var model = $cordovaDevice.getModel();
                 var version = $cordovaDevice.getVersion();
-                console.log('===============device info==============');
-                //this is the customize version name
-                console.log('model=\r\n' + model);
-                //this is the android sdk version
-                console.log('version=\r\n' + version);
 
             })
         }else{

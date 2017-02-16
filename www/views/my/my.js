@@ -30,6 +30,12 @@ angular.module('starter')
         localStorage.pwdPersisted='false';
         $ionicHistory.clearHistory();
         $ionicHistory.clearCache();
+        //强制车险数据刷新
+        $rootScope.flags.carOrders.onFresh=true;
+        //强制寿险数据刷新
+        $rootScope.flags.lifeOrders.onFresh=true;
+        //强制服务数据刷新
+        $rootScope.flags.serviceOrders.onFresh=true;
         if(window.cordova)
         {
 
