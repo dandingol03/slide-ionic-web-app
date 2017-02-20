@@ -694,11 +694,19 @@ angular.module('starter')
                             '开户行:招商银行济南分行济南高新支行'+'\r\n'+'帐号:531904581010801'
                     });
 
+                    $rootScope.flags.carOrders.onFresh=true;
                     alertPopup.then(function(res) {
-                        $state.go('tabs.my');
+                        //回到车险订单的估价列表中
+                        $rootScope.car_orders_tabIndex=1;
+                        $rootScope.flags.carOrders.clear
+                        $ionicNativeTransitions.stateGo('car_orders', {}, {}, {
+                            "type": "slide",
+                            "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                            "duration": 400, // in milliseconds (ms), default 400
+                        });
                     });
 
-                    $rootScope.flags.carOrders.onFresh=true;
+
 
                 }
             }).catch(function (err) {
@@ -709,7 +717,7 @@ angular.module('starter')
             });
         }
 
-        //提交车险方案
+        //确认购买
         $scope.apply=function() {
             //TODO:check if order has been payed
             $http({
