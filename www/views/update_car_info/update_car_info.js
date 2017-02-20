@@ -747,7 +747,7 @@ angular.module('starter')
                                                   {
                                                       $ionicPopup.alert({
                                                           title: '错误',
-                                                          template: '请重新输入16位的发动机号再点击车辆创建'
+                                                          template: '请重新输入6位以上的发动机号再点击车辆创建'
                                                       });
                                                   }else{
                                                       if($scope.carInfo.frameNum!==undefined&&$scope.carInfo.frameNum!==null){
