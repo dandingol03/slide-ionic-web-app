@@ -251,7 +251,6 @@ angular.module('starter')
     /**************选择车险相关人员模态框*************************/
 
 
-
     $scope.getInsuranceMeals=function () {
 
         $ionicLoading.show({
@@ -295,6 +294,7 @@ angular.module('starter')
                             products[product.productName].productIds.push(products[product.productName].productId);
                             products[product.productName].insuranceTypes.push(products[product.productName].insuranceType);
                         }
+
                         products[product.productName].productIds.push(product.productId);
                         products[product.productName].insuranceTypes.push(product.insuranceType);
 
