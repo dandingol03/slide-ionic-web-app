@@ -41,12 +41,21 @@ angular.module('starter')
                       request:'getCarOrdersInHistory'
                   }
           }).then(function(res) {
-              var json=res.data;
-              if(json.re==1) {
-                  $scope.historyOrders=json.data;
-                  $rootScope.flags.carOrders.data.historyOrders=json.data;
+              var json = res.data;
+              if (json.re == 1) {
+                  json.data.map(function (order, i) {
+                      var insuranceFeeTotal=0;
+                      insuranceFeeTotal+=order.price.contractFee;
+                      if(order.price.carTax!==undefined&&order.price.carTax!==null)
+                          insuranceFeeTotal+=order.price.carTax;
+                      order.insuranceFeeTotal=insuranceFeeTotal;
+
+                  });
+                  $scope.historyOrders = json.data;
+                  $rootScope.flags.carOrders.data.historyOrders = json.data;
               }
-            return   $http({
+
+              return   $http({
                   method: "POST",
                   url: Proxy.local()+"/svr/request",
                   headers: {
@@ -57,13 +66,37 @@ angular.module('starter')
                           request:'getCarOrderInPricedState'
                       }
               });
-          }).then(function(res) {
+
+          }).then(function (res) {
               var json=res.data;
               if(json.re==1) {
                   $scope.orderPricedList=json.data;
                   if($scope.orderPricedList==undefined||$scope.orderPricedList==null)
                   {
                       $scope.orderPricedList=[];
+                  }
+              }
+
+
+              return $http({
+                  method: "POST",
+                  url: Proxy.local() + "/svr/request",
+                  headers: {
+                      'Authorization': "Bearer " + $rootScope.access_token
+                  },
+                  data: {
+                      request: 'getCarOrderInConfirmedState'
+                  }
+              });
+
+
+
+          }).then(function(res) {
+              var json=res.data;
+              if(json.re==1) {
+                  if(json.data!==undefined&&json.data!==null)
+                  {
+                      $scope.orderPricedList.push(json.data)
                   }
               }
               return  $http({
