@@ -32,7 +32,8 @@ angular.module('starter')
                     {
                         request:'verifyCarOwnerPriority',
                         info:{
-                            ownerIdCard:$scope.carInfo.ownerIdCard
+                            ownerIdCard:$scope.carInfo.ownerIdCard,
+                            carId:$scope.carInfo.carId
                         }
                     }
             }).then(function (res) {
