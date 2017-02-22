@@ -135,8 +135,8 @@ angular.module('starter')
                 {
                     //询问用户是否需要创建新车
                     var confirmPopup = $ionicPopup.confirm({
-                        title: '您没有已绑定的车辆',
-                        template: '您尚未绑定车辆，请点击"确定"创建新车。'
+                        title: '信息',
+                        template: '数据库未保存该车信息，点击创建新车。'
                     });
                     confirmPopup.then(function(res) {
                         if(res) {
@@ -145,6 +145,79 @@ angular.module('starter')
                             alert('放弃降无法使用车险报价，车驾管等服务，确认取消吗?');
                         }
                     });
+                }else if(json.re==3) {
+                    //询问用户是否需要创建新车
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: '信息',
+                        template: '您尚未绑定车辆，点击绑定该车。'
+                    });
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            //TODO:
+
+                            $http({
+                                method: "POST",
+                                url: Proxy.local()+"/svr/request",
+                                headers: {
+                                    'Authorization': "Bearer " + $rootScope.access_token
+                                },
+                                data:
+                                    {
+                                        request:'verifyCarOwner',
+                                        info:{
+                                            carNum:$scope.car.carNum
+                                        }
+                                    }
+                            }).then(function (res) {
+                                var json=res.data;
+                                if(json.data==true)
+                                {
+                                    var confirmPopup = $ionicPopup.alert({
+                                        title: '信息',
+                                        template: '该车已绑定至你的用户!'
+                                    });
+                                }else{
+                                   return  $http({
+                                        method: "POST",
+                                        url: Proxy.local()+"/svr/request",
+                                        headers: {
+                                            'Authorization': "Bearer " + $rootScope.access_token
+                                        },
+                                        data:
+                                            {
+                                                request:'bindNewCar',
+                                                info:{
+                                                    carNum:$scope.car.carNum
+                                                }
+                                            }
+                                    })
+                                }
+                            }).then(function (res) {
+                                var json=res.data;
+                                if(json.re==1)
+                                {
+                                    var confirmPopup = $ionicPopup.alert({
+                                        title: '信息',
+                                        template: '该车已绑定至你的用户!'
+                                    });
+                                }else{
+                                    var confirmPopup = $ionicPopup.alert({
+                                        title: '错误',
+                                        template: json.data
+                                    });
+                                }
+                            })
+
+
+
+
+                        } else {
+                            alert('放弃降无法使用车险报价，车驾管等服务，确认取消吗?');
+                        }
+                    });
+
+
+
                 }else{}
                 $ionicLoading.hide();
             }).catch(function(err) {
