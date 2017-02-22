@@ -120,7 +120,7 @@
       </ion-scroll>
     </div>
 
-    <!-- 估价列表 -->
+    <!-- 正在进行 -->
     <div class="list list-inset padding"
          style="margin-bottom: 0px;height: 100%;width: 100%;background: transparent;"
          ng-if="tabIndex==1">
@@ -170,7 +170,8 @@
                   <div style="font-size: 0.8em;">
                     <span ng-if="order.orderState==2">正在报价</span>
                     <span ng-if="order.orderState==3">报价完成</span>
-                    <span ng-if="order.orderState==4">已确认</span>
+                    <span ng-if="order.orderState==4">客户确认</span>
+
                   </div>
                 </div>
               </div>

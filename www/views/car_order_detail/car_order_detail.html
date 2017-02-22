@@ -19,28 +19,40 @@
 
 
     <!-- inset one -->
-    <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
+    <div class="list list-inset" style="margin: 0;margin-bottom:40px;" >
       <div class="item" style="padding:16px;position: relative">
         车牌号:
         <span style="position: absolute;left:35%;">{{order.carInfo.carNum}}</span>
       </div>
       <div class="item" style="padding:16px;">
-        投保人:
-        <span style="position: absolute;left:35%;">{{order.insurer.perName}}</span>
+        <span style="width: 50%;display: inline-block;">
+          <span style="display: inline-block;margin-right:20px;">
+            投保人:
+          </span>
+
+          <span style="display: inline-block;">{{order.insurer.perName}}</span>
+        </span>
+
+        <span style="width: 50%;display: inline-block;">
+          <span style="display: inline-block;margin-right: 20px;">
+             被保险人:
+          </span>
+
+          <span style="display: inline-block;">
+            {{order.insuranceder.perName}}
+          </span>
+        </span>
       </div>
-      <div class="item" style="padding:16px;">
-        被保险人:
-        <span style="position: absolute;left:35%;">{{order.insuranceder.perName}}</span>
-      </div>
+
     </div>
 
     <!-- inset two -->
     <div
       class="list list-inset"
-      style="margin-bottom:40px;margin-left:0px;margin-right:0px;"
+      style="margin-bottom:0px;margin-left:0px;margin-right:0px;"
       ng-if="order.items!==undefined&&order.items!==null">
       <div class="item item-divider">
-        订单产品
+        保险项目
       </div>
       <div class="item" style="padding: 16px;" ng-repeat="item in order.items">
           <span>
@@ -50,14 +62,48 @@
             {{item.insuranceFee}}
           </span>
       </div>
+      <!-- 不计免赔 -->
+      <div class="item" style="padding: 16px;"
+           ng-if="order.price.nonDeductibleInsurance!==undefined&&order.price.nonDeductibleInsurance!==null">
+        <span>
+          不计免赔:
+        </span>
+
+        <span style="position:absolute;left:35%;text-align: center">
+            {{order.price.nonDeductibleInsurance}}
+          </span>
+      </div>
+      <!-- 车船税 -->
+      <div class="item" style="padding: 16px;"
+           ng-if="order.price.carTax!==undefined&&order.price.carTax!==null">
+        <span>
+          车船税:
+        </span>
+
+        <span style="position:absolute;left:35%;text-align: center">
+            {{order.price.carTax}}
+          </span>
+      </div>
+      <!-- 积分 -->
+      <div class="item" style="padding: 16px;color:#0a9dc7;"
+           ng-if="order.price.carTax!==undefined&&order.price.carTax!==null">
+        <span>
+          积分:
+        </span>
+
+        <span style="position:absolute;left:35%;text-align: center">
+            {{order.price.score}}
+          </span>
+      </div>
+
     </div>
 
     <!-- inset three -->
-    <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
+    <div class="list list-inset" style="margin:0;margin-bottom:40px;padding-top:0px;" >
       <div class="item" href="" style="padding:16px;color: rgba(228, 93, 46, 0.87);">
         总保费:
         <span style="position: absolute;left:35%;color: rgba(228, 93, 46, 0.87);">
-          {{order.contractFee}}
+          {{order.insuranceFeeTotal}}
         </span>
       </div>
       <div class="item" href="" style="padding:16px;">

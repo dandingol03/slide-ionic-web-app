@@ -64,7 +64,7 @@ angular.module('starter')
               price.items.map(function (item, j) {
                   fee+=item.insuranceFee;
               });
-              price.insuranceFeeTotal=fee;
+              price.insuranceFeeTotal=fee.toFixed(2);
           });
           if($scope.order.prices.length==1)
           {
@@ -249,7 +249,7 @@ angular.module('starter')
               info: {
                 orderId:$scope.order.orderId,
                 fields:{
-                  insurerId:31,
+                  insurerId:19,
                   companyId:selected_price.companyId,
                   discount:selected_price.discount,
                   benefit:selected_price.benefit,

@@ -6,11 +6,11 @@
             <div style="width: 100%;height: 130px;background: rgba(17, 17, 17, 0.6);position: relative">
 
                 <!-- goback  -->
-                <div style="position: absolute;left:2%;top:10%;">
+                <div style="position: absolute;left:2%;top:3%;">
                     <div style="width: 100%;height: 100%;display: table;margin-left:10%;"
                          ng-click="go_back()">
-                       <span style="display: table-cell;vertical-align: middle;color:#fff;font-size: 2.4em;">
-                         <i class="fa fa-chevron-left"></i>
+                       <span style="display: table-cell;vertical-align: middle;color:#fff;font-size: 3.4em;">
+                         <i class="ion-ios-arrow-back"></i>
                        </span>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                                     padding-bottom: 4px;margin-top:1px;margin-bottom:4px;"
                              ng-repeat="person in car_insurance.relativePersons" ng-click="mutex(person,car_insurance.relativePersons)">
 
-                            <div style="display:inline-block;width:70%">
+                            <div style="display:inline-block;width:90%">
                                <!--无重复人员 -->
                                 <span ng-if="person.abundant==false">
                                     {{person.perName}}
@@ -75,12 +75,20 @@
 
                                 <!--已重复人员-->
                                 <span ng-if="person.abundant==true" style="width:100%;">
-                                    <span style="width:25%;display: inline-block;">
+                                    <!--<span style="width:25%;display: inline-block;">-->
+                                        <!--{{person.perName}}-->
+                                    <!--</span>-->
+                                    <!--<span style="width: 75%;display: inline-block;">-->
+                                        <!--身份证: <span style="color:rgba(220, 11, 35, 0.6)">{{person.perIdCard}}</span>-->
+                                    <!--</span>-->
+
+                                    <span style="display: inline-block;padding-right: 20px;">
                                         {{person.perName}}
                                     </span>
-                                    <span style="width: 75%;display: inline-block;color:rgba(220, 11, 35, 0.6)">
-                                        {{person.perIdCard}}
+                                    <span style="display: inline-block;">
+                                        身份证: <span style="color:rgba(220, 11, 35, 0.6)">{{person.perIdCard}}</span>
                                     </span>
+
                                 </span>
 
                             </div>
