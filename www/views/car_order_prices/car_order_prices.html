@@ -205,6 +205,113 @@
                 </div>
 
 
+
+                <div ng-repeat="price in order.prices" ng-if="order.orderState==4">
+                  <!-- 公司产品细项 -->
+                  <div class="padding"
+                       style="padding:0px 10px;position: relative">
+
+
+                    <!--选中开关 -->
+                    <div ng-style="checkedStyle">
+                      <span style="color:#ff3b30">已选中</span>
+                      <span style="color:#f1c300;font-size: 1.3em;"><i class="fa fa-check"></i></span>
+                    </div>
+
+                    <ion-item style="border-bottom:0px;position:relative;padding-left:3%;padding-right:3%;
+                                      padding-bottom: 0px;">
+                      <span style="width: 30%;display: inline-block;">
+                      </span>
+                      <span style="width: 40%;display: inline-block;text-align: center;
+                              font-weight: bolder;">
+                        <span>￥</span>
+                        <span style="color:#f00;font-size: 2em;">{{confirmedPrice.insuranceFeeTotal}}</span>
+                      </span>
+                      <span style="width: 30%;display: inline-block;"></span>
+
+                    </ion-item>
+
+                    <!-- 公司名 -->
+                    <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;"
+                    >
+                      <span style="width: 25%;display: inline-block;"></span>
+                      <span style="width: 75%;display: inline-block;font-weight: bolder;font-size: 1.1em;">
+                        {{confirmedPrice.companyName}}
+                      </span>
+
+                    </ion-item>
+                  </div>
+
+                  <!-- 公司产品细项 -->
+                  <div class="padding"
+                       style="padding-top: 0px;padding-left:9px;padding-right: 9px;">
+                    <div style="margin:1px;padding:1px;border-left:1px solid #e5e5e5;border-right:1px solid #e5e5e5;"
+                         class="list">
+
+                      <div style="width: 100%;height: 20px;"></div>
+
+
+
+                      <ion-item
+                              ng-repeat="product in confirmedPrice.items"
+                              style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                            border:0px;"
+                      >
+                        <div style="display:inline-block;width:33%;">
+                          <span>{{product.productName}}</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          {{product.insuranceType}}
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          ￥{{product.insuranceFee}}
+                        </div>
+                      </ion-item>
+
+                      <!-- 积分 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;">
+                        <div style="display:inline-block;width:33%;color:#0a9dc7;font-size: 1.2em;">
+                          <span>积分:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;color:#0a9dc7;font-size: 1.2em;">
+                          {{confirmedPrice.score}}
+                        </div>
+                      </ion-item>
+
+
+
+                      <ion-item style="border-top:0px;border-left:0px;border-right:0px;">
+                        <div style="display:inline-block;width:60%;">
+                        </div>
+                        <div style="display: inline-block;width: 30%;font-size: 1.2em;font-weight: bolder;">
+                          <span>总计:</span>
+                          <span>
+                            ￥{{price.insuranceFeeTotal}}
+                          </span>
+                        </div>
+                        <span style="display: inline-block;width: 10%;"></span>
+                      </ion-item>
+
+                      <!--<ion-item style="position: relative" ng-click="goDetail(price)">-->
+                      <!--<h2 style="width: 30%;display: inline-block">-->
+                      <!--查看详情:-->
+                      <!--</h2>-->
+                      <!--<h2 style="display: inline-block">-->
+                      <!--<span  style="font-size: 1.3em;">-->
+                      <!--<i class="ion-compose"></i>-->
+                      <!--</span>-->
+                      <!--</h2>-->
+                      <!--</ion-item>-->
+                    </div>
+
+                  </div>
+                </div>
+
+
+
               </div>
             </ion-scroll>
           </div>

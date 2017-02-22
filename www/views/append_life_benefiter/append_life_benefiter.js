@@ -107,10 +107,6 @@ angular.module('starter')
 
     }
 
-
-
-    //$scope.car_insurance.relativePersons={};
-
       $scope.fetchRelativePersons=function () {
           $ionicLoading.show({
               template:'<p class="item-icon-left">拉取关联人...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'

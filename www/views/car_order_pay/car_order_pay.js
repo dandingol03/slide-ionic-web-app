@@ -668,7 +668,7 @@ angular.module('starter')
                             info: {
                                 orderId:$scope.order.orderId,
                                 fields:{
-                                    insurerId:31,
+                                    insurerId:19,
                                     companyId:selected_price.companyId,
                                     discount:selected_price.discount,
                                     benefit:selected_price.benefit,

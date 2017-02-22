@@ -90,6 +90,9 @@ angular.module('starter')
                           if(order.orderState==2){
                               $scope.orderPricedList.push(order);
                           }
+                          // if(order.orderState==4){
+                          //     $scope.orderPricedList.push(order);
+                          // }
                           if(order.orderState==1){
                               $scope.applyedList.push(order);
                           }

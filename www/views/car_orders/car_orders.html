@@ -37,7 +37,7 @@
       </div>
       <div ng-style="tabIndex==1?selectedTabStyle:unSelectedTabStyle" ng-click="tab_change(1)">
         <div style="width: 100%;height: 100%;display: table;">
-          <span style="display: table-cell;vertical-align: middle;text-align: center;">估价列表</span>
+          <span style="display: table-cell;vertical-align: middle;text-align: center;">正在进行</span>
         </div>
       </div>
       <div ng-style="tabIndex==2?selectedTabStyle:unSelectedTabStyle"
@@ -170,6 +170,7 @@
                   <div style="font-size: 0.8em;">
                     <span ng-if="order.orderState==2">正在报价</span>
                     <span ng-if="order.orderState==3">报价完成</span>
+                    <span ng-if="order.orderState==4">已确认</span>
                   </div>
                 </div>
               </div>

@@ -73,6 +73,30 @@ angular.module('starter')
           }
       }
 
+      if($scope.order.orderState==4){
+
+          $scope.confirmedPrice = null;
+          $scope.order.prices.map(function (price, i) {
+              var fee=0;
+              price.items.map(function (item, j) {
+                  fee+=item.insuranceFee;
+              });
+              price.insuranceFeeTotal=fee;
+              if(price.isConfirm==1){
+                  $scope.confirmedPrice = price;
+                  $scope.confirmedPrice.checked = true;
+              }
+          });
+          if($scope.order.prices.length==1)
+          {
+              $scope.priceIndex=0;
+              $scope.order.prices[0].checked=true;
+          }
+
+
+      }
+
+
 
 
 
