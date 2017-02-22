@@ -10,7 +10,7 @@
             </span>
             <span style="display: inline-block;width: 80%;text-align: center;">
                 <span style="color:#bf530c;font-size: 1.3em;vertical-align: middle;font-weight: bolder;">
-                    创建邮箱地址
+                    创建收件地址
                 </span>
             </span>
             <span style="display: inline-block;width: 10%;"></span>
@@ -34,22 +34,6 @@
                 </span>
             </div>
 
-            <!-- 电话 -->
-            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
-                <span class="input-label"
-                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
-                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
-                  <i class="fa fa-mobile-phone"></i>
-                </span>
-                <input type="text" placeholder="请输入收件人的电话"
-                       style="display: inline-block;width:80%;vertical-align: super;padding-left:10px;padding-right:10px;"
-                       ng-model="mail.phone"
-                       ng-value="mail.phone"/>
-                <span class="input-label"
-                      style="display: inline-block;width:5%;">
-                </span>
-            </div>
-
             <!-- 收件地址 -->
             <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
                 <span class="input-label"
@@ -61,6 +45,22 @@
                        style="display: inline-block;width:80%;vertical-align: super;padding-left:10px;padding-right:10px;"
                        ng-model="mail.address"
                        ng-value="mail.address"/>
+                <span class="input-label"
+                      style="display: inline-block;width:5%;">
+                </span>
+            </div>
+
+            <!-- 电话 -->
+            <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;">
+                <span class="input-label"
+                      style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 15%;
+                      text-align: center;padding-bottom: 5px;padding-top:5px;border-right: 1px solid;">
+                  <i class="fa fa-mobile-phone"></i>
+                </span>
+                <input type="text" placeholder="请输入收件人的电话"
+                       style="display: inline-block;width:80%;vertical-align: super;padding-left:10px;padding-right:10px;"
+                       ng-model="mail.phone"
+                       ng-value="mail.phone"/>
                 <span class="input-label"
                       style="display: inline-block;width:5%;">
                 </span>

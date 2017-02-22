@@ -72,7 +72,8 @@
 
             <!-- 车主姓名 -->
             <div class="item"
-                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;padding:10px;background-color:transparent;">
+                   style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;
+                    padding:10px;background-color:transparent;">
 
                   <span style="display: inline-block;width: 5%;text-align: center">
                       <i class="fa fa-user"></i>
@@ -121,6 +122,44 @@
                 <!--</span>-->
             <!--</div>-->
 
+            <!-- 是否为车主 -->
+            <div class="item item-toggle" ng-style="carInfo.isOwner==true?carOwnerStyle:notCarOwnerStyle">
+                <span style="color:#222;">
+                    是否为车主:
+                </span>
+                <label class="toggle toggle-calm">
+                    <input type="checkbox" ng-model="carInfo.isOwner" ng-value="carInfo.isOwner" ng-change="ownerToggleCb(carInfo.isOwner)">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </div>
+
+
+            <!-- 车主身份证 -->
+            <div class="item" ng-if="carInfo.isOwner==true"
+                 style="margin:1px;border-top:1px solid #ef473a;border-left:0px;border-right:0px;border-bottom:1px solid #ef473a;
+                    border-left:1px solid #ef473a;border-right: 1px solid #ef473a;padding:10px;background-color:transparent;">
+
+                  <span style="display: inline-block;width: 5%;text-align: center;vertical-align: middle;">
+                      <i class="fa fa-id-card"></i>
+                  </span>
+                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;">
+                      车主身份证:
+                  </span>
+                <span style="width: 37%;display: inline-block;text-align: left;vertical-align: middle;">
+                      <input type="text" placeholder="请输入车主身份证号码"
+                             style="display:inline-block;background-color: transparent;"
+                             ng-value="carInfo.ownerIdCard"
+                             ng-model="carInfo.ownerIdCard"
+                             ng-change="validate(carInfo,'ownerIdCard','/\\d{18}/')"
+                      />
+                  </span>
+                <span style="display: inline-block;width: 27%;text-align: left;color:#ff3b30;font-size: 0.8em;padding-top:3px;
+                        vertical-align: middle" ng-if="carInfo['ownerIdCard_error']==true">
+                      身份证只能为数字
+                  </span>
+            </div>
 
             <!-- 是否过户 -->
             <div class="item"
@@ -128,7 +167,7 @@
                 padding:10px;background-color:transparent;"
                  ng-click="Toggle('boolean',carInfo,'isTransfer')">
 
-                <span style="display: inline-block;width: 55%;text-align: left">
+                <span style="display: inline-block;width: 55%;text-align: left;color:#222">
                     是一年内过户的二手车吗:
                 </span>
                 <span style="display: inline-block;width: 25%;">
@@ -141,7 +180,6 @@
                       style="font-size: 1.5em;font-weight: bolder"></i>
                 </span>
             </div>
-
 
             <div class="item"
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;padding:10px;background-color:transparent;"

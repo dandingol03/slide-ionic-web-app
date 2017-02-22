@@ -82,6 +82,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 data:{
 
                 }
+            },
+            recvAddresses:{
+                onFresh:true,
+                data:{}
             }
         }
 
@@ -1487,6 +1491,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_order_pay',{
+              cache:false,
               url:'/car_order_pay/:info',
               controller:'carOrderPayController',
               templateUrl:'views/car_order_pay/car_order_pay.html'

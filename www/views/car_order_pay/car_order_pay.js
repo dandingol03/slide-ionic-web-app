@@ -6,7 +6,7 @@ angular.module('starter')
 /**
  * 本页面不开启缓存
  */
-    .controller('carOrderPayController',function($scope,$state,$http,
+    .controller('carOrderPayController',function($scope,$state,$http,$ionicLoading,
                                                     $location,$rootScope,$stateParams,
                                                     Proxy,$ionicModal,$ionicPopup,
                                                 $q,$ionicActionSheet,$cordovaImagePicker,$cordovaCamera,
@@ -167,33 +167,56 @@ angular.module('starter')
         /*** show create_new_mailAddress modal ***/
 
 
-        //获取用户的收件地址
-        $http({
-            method: "post",
-            url: Proxy.local()+"/svr/request",
-            headers: {
-                'Authorization': "Bearer " + $rootScope.access_token,
-            },
-            data:
-                {
-                    request:'getCustomerMailAddresses'
-                }
-        }).then(function(res) {
-            var json=res.data;
-            if(json.re==1) {
-                $scope.addresses=[];
-                json.data.map(function(add,i) {
-                   if(i==0)
-                   {
-                       add.checked=true;
-                   }
-                   $scope.addresses.push(add);
-                });
+        $scope.getRecvAddresses=function () {
+            $ionicLoading.show({
+                template:'<p class="item-icon-left">拉取收件地址...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+            });
+            //获取用户的收件地址
+            $http({
+                method: "post",
+                url: Proxy.local()+"/svr/request",
+                headers: {
+                    'Authorization': "Bearer " + $rootScope.access_token,
+                },
+                data:
+                    {
+                        request:'getCustomerMailAddresses'
+                    }
+            }).then(function(res) {
+                var json=res.data;
+                if(json.re==1) {
+                    $scope.addresses=[];
+                    $rootScope.flags.recvAddresses.onFresh=false;
+                    $rootScope.flags.recvAddresses.data=json.data;
+                    json.data.map(function(add,i) {
+                        if(i==0)
+                        {
+                            add.checked=true;
+                        }
+                        $scope.addresses.push(add);
+                    });
 
-            }
-        }).catch(function(err) {
-            console.error('error=\r\n' + err.toString());
-        })
+                }
+                $ionicLoading.hide();
+            }).catch(function(err) {
+                console.error('error=\r\n' + err.toString());
+                $ionicLoading.hide();
+            })
+        }
+
+        if($rootScope.flags.recvAddresses.onFresh==true)
+            $scope.getRecvAddresses();
+        else{
+            var addresses=$rootScope.flags.recvAddresses.data;
+            addresses.map(function(add,i) {
+                if(i==0)
+                {
+                    add.checked=true;
+                }
+                $scope.addresses.push(add);
+            });
+
+        }
 
         $scope.createMailAddress=function () {
             $http({
@@ -218,9 +241,11 @@ angular.module('starter')
                         template: '创建成功',
                         title: '<strong style="color:red">信息</strong>'
                     });
+
                     myPopup.then(function (res) {
                         $scope.closeMailAddressModal();
-                    })
+                        $scope.getRecvAddresses();
+                    });
                 }
             }).catch(function (err) {
                 console.error('error=\r\n' + err.toString());
@@ -649,7 +674,8 @@ angular.module('starter')
                 data: {
                     request: 'applyCarOrderPrice',
                     info: {
-                        price: selected_price
+                        price: selected_price,
+                        invoiceTitle:$scope.order.invoiceTitle
                     }
                 }
             }).then(function (res) {
@@ -719,41 +745,48 @@ angular.module('starter')
 
         //确认购买
         $scope.apply=function() {
-            //TODO:check if order has been payed
-            $http({
-                method: "POST",
-                url: Proxy.local() + "/svr/request",
-                headers: {
-                    'Authorization': "Bearer " + $rootScope.access_token
-                },
-                data: {
-                    request: 'getOrderStateByOrderId',
-                    info: {
-                        orderId:$scope.order.orderId,
-                        type:'car'
+            if($scope.order.invoiceTitle!==undefined&&$scope.order.invoiceTitle!==null)
+            {
+                //TODO:check if order has been payed
+                $http({
+                    method: "POST",
+                    url: Proxy.local() + "/svr/request",
+                    headers: {
+                        'Authorization': "Bearer " + $rootScope.access_token
+                    },
+                    data: {
+                        request: 'getOrderStateByOrderId',
+                        info: {
+                            orderId:$scope.order.orderId,
+                            type:'car'
+                        }
                     }
-                }
-            }).then(function (res) {
-                var json=res.data;
-                if(json.re==1) {
-                    var state=json.data;
-                    if(state!=3)
-                    {
-                        var alertPopup = $ionicPopup.alert({
-                            title: '信息',
-                            template: '您已支付过一次'
-                        });
+                }).then(function (res) {
+                    var json=res.data;
+                    if(json.re==1) {
+                        var state=json.data;
+                        if(state!=3)
+                        {
+                            var alertPopup = $ionicPopup.alert({
+                                title: '信息',
+                                template: '您已支付过一次'
+                            });
+                        }else{
+                            $scope.checkCarNeedValidateWhetherOrNot();
+                        }
                     }else{
-                        $scope.checkCarNeedValidateWhetherOrNot();
+                        var alertPopup = $ionicPopup.alert({
+                            title: '错误',
+                            template: '无效的orderId'
+                        });
                     }
-                }else{
-                    var alertPopup = $ionicPopup.alert({
-                        title: '错误',
-                        template: '无效的orderId'
-                    });
-                }
-            })
-
+                })
+            }else{
+                var alertPopup = $ionicPopup.alert({
+                    title: '错误',
+                    template: '请填写完发票抬头再确认购买'
+                });
+            }
         }
 
 

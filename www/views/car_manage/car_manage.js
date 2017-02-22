@@ -27,7 +27,9 @@ angular.module('starter')
             var params=$stateParams.params;
             if(Object.prototype.toString.call(params)=='[object String]')
                 params = JSON.parse(params);
+        }
 
+        $scope.query={
         }
 
 
@@ -146,77 +148,158 @@ angular.module('starter')
                         }
                     });
                 }else if(json.re==3) {
-                    //询问用户是否需要创建新车
-                    var confirmPopup = $ionicPopup.confirm({
-                        title: '信息',
-                        template: '您尚未绑定车辆，点击绑定该车。'
-                    });
-                    confirmPopup.then(function(res) {
-                        if(res) {
-                            //TODO:
+                    //询问用户是否绑定该车
+                    var carInfo=json.data;
+                    //检测该车是否处于订单状态
+                    var isBusied=json.isBusied;
+                    if(isBusied==true)
+                    {
+                        var ownerConfirm = $ionicPopup.confirm({
+                            title: '信息',
+                            template: '该车处于订单状态,只有车主才能绑定该车'
+                        });
 
-                            $http({
-                                method: "POST",
-                                url: Proxy.local()+"/svr/request",
-                                headers: {
-                                    'Authorization': "Bearer " + $rootScope.access_token
-                                },
-                                data:
-                                    {
-                                        request:'verifyCarOwner',
-                                        info:{
-                                            carNum:$scope.car.carNum
-                                        }
-                                    }
-                            }).then(function (res) {
-                                var json=res.data;
-                                if(json.data==true)
+                        ownerConfirm.then(function (res) {
+                            if(res)
+                            {
+                                var ownerIdCard=carInfo.ownerIdCard;
+                                //该车已有车主
+                                if(ownerIdCard!==undefined&&ownerIdCard!==null)
                                 {
-                                    var confirmPopup = $ionicPopup.alert({
-                                        title: '信息',
-                                        template: '该车已绑定至你的用户!'
-                                    });
-                                }else{
-                                   return  $http({
-                                        method: "POST",
-                                        url: Proxy.local()+"/svr/request",
-                                        headers: {
-                                            'Authorization': "Bearer " + $rootScope.access_token
-                                        },
-                                        data:
+                                    if(ownerIdCard== $rootScope.user.personInfo.perIdCard)
+                                    {
+                                        $http({
+                                            method: "POST",
+                                            url: Proxy.local()+"/svr/request",
+                                            headers: {
+                                                'Authorization': "Bearer " + $rootScope.access_token
+                                            },
+                                            data:
+                                                {
+                                                    request:'bindNewCar',
+                                                    info:{
+                                                        carNum:$scope.car.carNum
+                                                    }
+                                                }
+                                        }).then(function (res) {
+                                            var json=res.data;
+                                            if(json.re==1)
                                             {
-                                                request:'bindNewCar',
-                                                info:{
-                                                    carNum:$scope.car.carNum
+                                                $ionicLoading.hide();
+                                                alert('该车成功绑定');
+                                            }else{
+                                                $ionicLoading.hide();
+                                                alert(json.data);
+                                            }
+                                        })
+                                    }else{
+                                        var confirmPopup = $ionicPopup.alert({
+                                            title: '错误',
+                                            template: '您不是车主,无法绑定'
+                                        });
+                                        $ionicLoading.hide();
+                                    }
+                                }else{
+                                    //该车目前没有车主
+                                    var perIdCardInput = $ionicPopup.show({
+                                        template: '<input type="text" ng-model="query.ownerIdCard">',
+                                        title: '输入',
+                                        subTitle: '请输入车主身份证号',
+                                        scope: $scope,
+                                        buttons: [
+                                            { text: '取消' },
+                                            {
+                                                text: '<b>Save</b>',
+                                                type: 'button-positive',
+                                                onTap: function(e) {
+                                                    if (!$scope.query.ownerIdCard) {
+                                                        //don't allow the user to close unless he enters wifi password
+                                                        e.preventDefault();
+                                                    } else {
+                                                        return $scope.query.ownerIdCard;
+                                                    }
                                                 }
                                             }
-                                    })
-                                }
-                            }).then(function (res) {
-                                var json=res.data;
-                                if(json.re==1)
-                                {
-                                    var confirmPopup = $ionicPopup.alert({
-                                        title: '信息',
-                                        template: '该车已绑定至你的用户!'
+                                        ]
                                     });
-                                }else{
-                                    var confirmPopup = $ionicPopup.alert({
-                                        title: '错误',
-                                        template: json.data
+
+                                    perIdCardInput.then(function(res) {
+
                                     });
+
                                 }
-                            })
+                            }else{
+                                $ionicLoading.hide();
+                            }
+                        })
 
+                    }else{
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: '信息',
+                            template: '您尚未绑定车辆，点击绑定该车。'
+                        });
+                        confirmPopup.then(function(res) {
+                            if(res) {
 
+                                $http({
+                                    method: "POST",
+                                    url: Proxy.local()+"/svr/request",
+                                    headers: {
+                                        'Authorization': "Bearer " + $rootScope.access_token
+                                    },
+                                    data:
+                                        {
+                                            request:'verifyCarOwner',
+                                            info:{
+                                                ownerIdCard:carInfo.ownerIdCard
+                                            }
+                                        }
+                                }).then(function (res) {
+                                    var json=res.data;
+                                    if(json.data==true)
+                                    {
+                                        var confirmPopup = $ionicPopup.alert({
+                                            title: '信息',
+                                            template: '该车已绑定至你的用户!'
+                                        });
+                                    }else{
+                                        return  $http({
+                                            method: "POST",
+                                            url: Proxy.local()+"/svr/request",
+                                            headers: {
+                                                'Authorization': "Bearer " + $rootScope.access_token
+                                            },
+                                            data:
+                                                {
+                                                    request:'bindNewCar',
+                                                    info:{
+                                                        carNum:$scope.car.carNum
+                                                    }
+                                                }
+                                        })
+                                    }
+                                }).then(function (res) {
+                                    var json=res.data;
+                                    if(json.re==1)
+                                    {
+                                        var confirmPopup = $ionicPopup.alert({
+                                            title: '信息',
+                                            template: '该车已绑定至你的用户!'
+                                        });
+                                    }else{
+                                        var confirmPopup = $ionicPopup.alert({
+                                            title: '错误',
+                                            template: json.data
+                                        });
+                                    }
+                                })
 
+                            } else {
+                                alert('放弃降无法使用车险报价，车驾管等服务，确认取消吗?');
+                            }
+                        });
 
-                        } else {
-                            alert('放弃降无法使用车险报价，车驾管等服务，确认取消吗?');
-                        }
-                    });
-
-
+                    }
 
                 }else{}
                 $ionicLoading.hide();

@@ -380,6 +380,17 @@ angular.module('starter')
 
         }
 
+        $scope.notCarOwnerStyle={
+            'border-bottom':'1px solid #646464',
+            background: 'transparent',
+            'padding-left':'9px'
+        };
+
+        $scope.carOwnerStyle={
+            'border-bottom':'0',
+            background: 'transparent',
+            'padding-left':'9px'
+        }
 
 
         $scope.slideDescriptionHint='list';
@@ -499,6 +510,17 @@ angular.module('starter')
 
                 }
             })
+        }
+
+        //车主的回调函数
+        $scope.ownerToggleCb=function (val) {
+            if(val==true)
+            {
+
+
+            }else{
+
+            }
         }
 
         //统一上传行驶症
@@ -725,6 +747,21 @@ angular.module('starter')
                                   template: '您输入的车主姓名不能少于2位\r\n请重新输入'
                               });
                               return ;
+                          }
+
+                          //TODO:加入身份证的检测
+                          if($scope.carInfo.isOwner==true)
+                          {
+                              if($rootScope.user.personInfo.perIdCard!==undefined&&$rootScope.user.personInfo.perIdCard!==null)
+                              {
+                                  $scope.carInfo.ownerIdCard=$rootScope.user.personInfo.perIdCard;
+                              }else{
+                                  $ionicPopup.alert({
+                                      title: '错误',
+                                      template: '作为车主创建新车必须先填写身份证号码并提交'
+                                  });
+                                  return ;
+                              }
                           }
 
 
