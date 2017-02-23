@@ -153,6 +153,7 @@ angular.module('starter')
       }
 
 
+      //仅限android
       $scope.getChatAudioFileNum=function () {
           var deferred=$q.defer();
           $cordovaFile.checkDir(cordova.file.externalRootDirectory, "chat")

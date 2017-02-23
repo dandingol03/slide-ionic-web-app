@@ -19,12 +19,13 @@
 
 
     <!-- inset one -->
-    <div class="list list-inset" style="margin: 0;margin-bottom:40px;" >
+    <div class="list list-inset" style="margin: 0;margin-bottom:0px;" >
       <div class="item" style="padding:16px;position: relative">
         车牌号:
         <span style="position: absolute;left:35%;">{{order.carInfo.carNum}}</span>
       </div>
-      <div class="item" style="padding:16px;">
+
+      <div class="item" style="padding:16px;border-bottom:0;">
         <span style="width: 50%;display: inline-block;">
           <span style="display: inline-block;margin-right:20px;">
             投保人:
@@ -49,7 +50,7 @@
     <!-- inset two -->
     <div
       class="list list-inset"
-      style="margin-bottom:0px;margin-left:0px;margin-right:0px;"
+      style="margin-bottom:0px;margin-left:0px;margin-right:0px;margin-top:0px;"
       ng-if="order.items!==undefined&&order.items!==null">
       <div class="item item-divider">
         保险项目
@@ -100,11 +101,28 @@
 
     <!-- inset three -->
     <div class="list list-inset" style="margin:0;margin-bottom:40px;padding-top:0px;" >
-      <div class="item" href="" style="padding:16px;color: rgba(228, 93, 46, 0.87);">
-        总保费:
-        <span style="position: absolute;left:35%;color: rgba(228, 93, 46, 0.87);">
-          {{order.insuranceFeeTotal}}
+
+      <div class="item" style="padding:16px;">
+        <span style="width: 50%;display: inline-block">
+          <span style="font-weight: bold;vertical-align: middle;padding-right:20px;">
+            总保费:
+          </span>
+          <span style="display: inline-block;color: rgba(228, 93, 46, 0.87);vertical-align: middle;">
+            {{order.insuranceFeeTotal}}
+          </span>
         </span>
+
+        <span style="width: 50%;display: inline-block;">
+          <span style="vertical-align: middle;display: inline-block;font-weight: bold;padding-right:15px;">
+            报价图例
+          </span>
+          <span style="vertical-align: middle;display: inline-block;">
+            <button class="button button-small button-calm" ng-click="openOrderScreenShootModal()">
+              <span style="font-size:1.2em;">点击查看</span>
+            </button>
+          </span>
+        </span>
+
       </div>
       <div class="item" href="" style="padding:16px;">
         生效日期:

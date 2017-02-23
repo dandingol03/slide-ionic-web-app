@@ -38,9 +38,6 @@ angular.module('starter')
 
       $scope.popInput=function (item,field,template,pattern) {
 
-          $scope.openPopInputModal();
-          return ;
-
           var popInput = $ionicPopup.show({
               template: '<input type="text" ng-model="tmp.'+field+'">',
               title: template,

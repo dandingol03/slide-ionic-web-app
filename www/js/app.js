@@ -86,7 +86,8 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
             recvAddresses:{
                 onFresh:true,
                 data:{}
-            }
+            },
+            screenShoots:[]
         }
 
         $rootScope.msg=[];
@@ -1387,9 +1388,10 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
           })
 
           .state('car_order_detail',{
-            url:'/car_order_detail/:order',
-            controller:'carOrderDetailController',
-            templateUrl:'views/car_order_detail/car_order_detail.html'
+              cache:false,
+              url:'/car_order_detail/:order',
+              controller:'carOrderDetailController',
+              templateUrl:'views/car_order_detail/car_order_detail.html'
 
           })
 
@@ -1798,7 +1800,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
       var ob={
         local:function(){
           if(window.cordova!==undefined&&window.cordova!==null)
-            return 'http://139.129.96.231:3000';
+            return 'http://192.168.1.118:3000';
           else
             return "/proxy/node_server";
 
