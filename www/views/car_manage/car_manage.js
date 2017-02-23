@@ -216,7 +216,25 @@ angular.module('starter')
                                                         //don't allow the user to close unless he enters wifi password
                                                         e.preventDefault();
                                                     } else {
-                                                        return $scope.query.ownerIdCard;
+                                                        $http({
+                                                            method: "POST",
+                                                            url: Proxy.local()+"/svr/request",
+                                                            headers: {
+                                                                'Authorization': "Bearer " + $rootScope.access_token
+                                                            },
+                                                            data:
+                                                                {
+                                                                    request:'updateCarOwnerIdCard',
+                                                                    info:{ownerIdCard:$scope.query.ownerIdCard,carId:carInfo.carId}
+                                                                },
+                                                        }).then(function(res){
+                                                            var json=res.data;
+                                                            if(json.re==1) {
+                                                                alert("身份证绑定成功！");
+                                                            }
+
+                                                        })
+
                                                     }
                                                 }
                                             }
