@@ -12,7 +12,12 @@ angular.module('starter')
                                                 $q,$ionicActionSheet,$cordovaImagePicker,$cordovaCamera,
                                                  $cordovaFileTransfer,$ionicNativeTransitions){
 
+
+
         $scope.carInfo={};
+
+        $scope.mail={
+        };
 
         $scope.info=$stateParams.info;
         if($scope.info!==undefined&&$scope.info!==null)
@@ -25,12 +30,17 @@ angular.module('starter')
             }
         }
 
-        $scope.mail={
-        };
 
         $scope.go_back=function(){
-            window.history.back();
+            $ionicNativeTransitions.stateGo('car_order_prices', {order: JSON.stringify($scope.order)}, {}, {
+                "type": "slide",
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 240, // in milliseconds (ms), default 400
+            });
         }
+
+        $scope.personInfo=$rootScope.user.personInfo;
+
 
         $scope.Mutex=function(item,field,cluster) {
             if(item[field])
@@ -207,6 +217,7 @@ angular.module('starter')
         if($rootScope.flags.recvAddresses.onFresh==true)
             $scope.getRecvAddresses();
         else{
+            $scope.addresses=[];
             var addresses=$rootScope.flags.recvAddresses.data;
             addresses.map(function(add,i) {
                 if(i==0)

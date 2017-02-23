@@ -2,7 +2,7 @@ angular.module('starter')
 
   .controller('carOrderDetailController',function($scope,$state,$http, $location,
                                                   $rootScope,$stateParams,$ionicModal,
-                                                  $cordovaFileTransfer,Proxy,$ionicLoading){
+                                                  $cordovaFileTransfer,Proxy,$ionicLoading,$ionicNativeTransitions){
 
       //车险订单  0.报价中;1.已生成;2.待支付
       $scope.order=$stateParams.order;
@@ -14,12 +14,16 @@ angular.module('starter')
           $location.path(url);
       };
 
-      $scope.go_back=function(){
+      //改为原生滑动
+      $scope.go_back = function () {
           if($scope.order.orderState==5)
               $rootScope.car_orders_tabIndex=2;
-          window.history.back();
+          $ionicNativeTransitions.stateGo('car_orders', {}, {}, {
+              "type": "slide",
+              "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+              "duration": 240, // in milliseconds (ms), default 400
+          });
       }
-
 
       //同步图片,这里暂且不做图片管理
       $scope.syncOrderScreenShoot=function () {
@@ -36,7 +40,7 @@ angular.module('starter')
                   return ;
 
               $ionicLoading.show({
-                  template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+                  template:'<p class="item-icon-left">下载报价图例...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
               });
 
 

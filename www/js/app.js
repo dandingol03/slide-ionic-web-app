@@ -1105,6 +1105,27 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                         "duration": 240, // in milliseconds (ms), default 400
                     });
                     break;
+                case 'car_order_detail':
+                    $ionicNativeTransitions.stateGo('car_orders', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
+                case 'car_orders':
+                    $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
+                case 'car_order_prices':
+                    $ionicNativeTransitions.stateGo('car_orders', {}, {}, {
+                        "type": "slide",
+                        "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                        "duration": 240, // in milliseconds (ms), default 400
+                    });
+                    break;
                 default:
                     $ionicHistory.goBack();
             }

@@ -2,7 +2,8 @@ angular.module('starter')
 
   .controller('carOrdersController',function($scope,$state,$http,
                                              $location, $rootScope,Proxy,
-                                             $ionicLoading,$ionicHistory,$ionicPlatform){
+                                             $ionicLoading,$ionicHistory,$ionicPlatform,
+                                             $ionicNativeTransitions){
 
       if($rootScope.flags.carOrders.clear==true){
           $ionicHistory.clearHistory();
@@ -78,27 +79,6 @@ angular.module('starter')
               }
 
 
-              return $http({
-                  method: "POST",
-                  url: Proxy.local() + "/svr/request",
-                  headers: {
-                      'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data: {
-                      request: 'getCarOrderInConfirmedState'
-                  }
-              });
-
-
-
-          }).then(function(res) {
-              var json=res.data;
-              if(json.re==1) {
-                  if(json.data!==undefined&&json.data!==null)
-                  {
-                      $scope.orderPricedList.push(json.data)
-                  }
-              }
               return  $http({
                   method: "POST",
                   url: Proxy.local()+"/svr/request",
@@ -163,13 +143,8 @@ angular.module('starter')
 
 
 
-      //车险订单  0.已完成;1.估价列表;2.已申请
-
-      //最新改动
-      //车险订单 0.已申请;1.估价列表;2.已完成
-
-
-    $scope.tabIndex=$rootScope.car_orders_tabIndex;
+      //车险订单  0.已完成;1.正在进行;2.已申请
+      $scope.tabIndex=$rootScope.car_orders_tabIndex;
 
     $scope.priceIndex=-1;
 
@@ -183,12 +158,11 @@ angular.module('starter')
     };
 
     $scope.go_back=function(){
-        if($ionicHistory.backView())
-        {
-            window.history.back();
-        }else{
-            $state.go('tabs.my');
-        }
+        $ionicNativeTransitions.stateGo('tabs.my', {}, {}, {
+            "type": "slide",
+            "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+            "duration": 240, // in milliseconds (ms), default 400
+        });
     }
 
     $scope.tab_change=function(i)
