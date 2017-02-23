@@ -251,7 +251,8 @@ angular.module('starter')
                                         {
                                             request:'verifyCarOwner',
                                             info:{
-                                                ownerIdCard:carInfo.ownerIdCard
+                                                ownerIdCard:carInfo.ownerIdCard,
+                                                carNum:carInfo.carNum
                                             }
                                         }
                                 }).then(function (res) {
