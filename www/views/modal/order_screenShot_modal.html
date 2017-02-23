@@ -1,0 +1,34 @@
+<ion-modal-view  class=" carInfo_modal animated slideInDown>"
+                 style="background: transparent;top:12%;width: 75%;margin-left:12.5%;overflow: visible">
+
+    <!-- close按钮 -->
+    <div style="position: absolute;top:-40px;left:-10px;">
+        <div style="width: 35px;height: 35px;background: rgb(221, 221, 221);text-align: center;border-radius: 35px;"
+            ng-click="closeOrderScreenShootModal()">
+            <div style="width:100%;height: 100%;display: table;">
+                <span style="color:#ff4f39;font-size: 2em;vertical-align: middle;"><i class="fa fa-close"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <ion-content
+            class="card h-300"
+            style="margin: 0 auto;top: 0%;height: 550px;border:1px solid #ddd;" scroll="false">
+        <div style="width: 100%;height: 100%;position: relative">
+
+
+            <div class="list padding" style="margin-top:0px;height: 100%;">
+
+                <div class="item" style="margin:0;border:0;padding:0px;height: 100%;display: inline-block;width: 100%;
+                        float: left;">
+                    <img ng-src="{{screenShoot}}" style="max-height: 100%;">
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </ion-content>
+
+</ion-modal-view>
