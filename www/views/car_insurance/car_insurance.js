@@ -288,7 +288,7 @@ angular.module('starter')
                     {
                         if(products[product.productName].productIds!==undefined&&products[product.productName].productIds!==null)
                         {}else{
-                            //新创建productIds和insuranceTypes,默认选中第一个
+                            //新创建productIds和insuranceTypes
                             products[product.productName].productIds=[];
                             products[product.productName].insuranceTypes=[];
                             products[product.productName].productIds.push(products[product.productName].productId);
@@ -297,14 +297,29 @@ angular.module('starter')
 
                         products[product.productName].productIds.push(product.productId);
                         products[product.productName].insuranceTypes.push(product.insuranceType);
+                        //如果有多个默认选中偏选项
+                        if(product.preference==1)
+                        {
+                            products[product.productName].productId=product.productId;
+                            products[product.productName].insuranceType=product.insuranceType;
+                        }
 
                     }
                 });
-                meals.push({mealName:meal.mealName,products:products});
+                meals.push({mealName:meal.mealName,mealId:meal.mealId,products:products});
             });
 
+            //按照基础\建议\自定义的顺序添加
+            $scope.tabs=[{},{},{}];
+            meals.map(function (meal,i) {
+                if(meal.mealName=='基础套餐')
+                    $scope.tabs[0]=meal;
+                if(meal.mealName=='建议套餐')
+                    $scope.tabs[1]=meal;
+                if(meal.mealName=='自定义')
+                    $scope.tabs[2]=meal;
+            })
 
-            $scope.tabs=meals;
 
             return $http({
                 method: "POST",

@@ -10,7 +10,7 @@
                     <i class="ion-chevron-left"></i>
                 </span>
                 <span style="display: inline-block;width:65%;text-align: center; font-size: medium;color: #737373;padding-left: 5%;">
-                    填写行驶证信息
+                    填写车辆信息
                 </span>
                 <span style="display: inline-block;font-size:0.8em;text-align: center;width: 20%;color: #737373;"
                       ng-click="close_licenseInfoModal()">
@@ -55,7 +55,7 @@
                              style="display:inline-block;background-color: transparent;"
                              ng-value="carInfo.engineNum"
                              ng-model="carInfo.engineNum"
-                             ng-change="validate(carInfo,'engineNum','/^\\d{6}/')"
+                             ng-change="validate(carInfo,'engineNum','/[\\w|\\d]{6}/')"
                       />
                   </span>
                     <div style="width: 100%;text-align: center;font-size: 0.7em;color:#ff3b30"
@@ -66,13 +66,12 @@
 
                 </div>
 
+                <!-- 车架号 -->
                 <div class="item"
-                     style="border:0;
-               padding:4px 10px;background-color:transparent;overflow: initial;">
-
-                  <span class="input-label" style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;font-size: 0.9em;">
+                     style="border:0;border-bottom:1px solid #ddd;padding:4px 10px;background-color:transparent;overflow: initial;">
+                    <span class="input-label" style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;font-size: 0.9em;">
                       车架号:
-                  </span>
+                    </span>
                     <span style="width: 60%;display: inline-block;text-align: left;">
                       <input type="text" placeholder="设置车架号"
                              style="display:inline-block;background-color: transparent;"
@@ -80,14 +79,54 @@
                              ng-model="carInfo.frameNum"
                              ng-change="validate(carInfo,'frameNum','/^\\w{17}$/')"
                       />
-                  </span>
+                    </span>
                     <div style="width: 100%;text-align: center;font-size: 0.8em;color:#ff3b30"
                          ng-if="carInfo['frameNum_error']==true">
-                        请输入17位车架号
+                        <span>请输入17位车架号</span>
                     </div>
-
                 </div>
 
+                <!-- 注册日期 -->
+                <div class="item"
+                     style="border:0;border-bottom:1px solid #ddd;padding:4px 10px;background-color:transparent;overflow: initial;">
+                    <span class="input-label" style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;font-size: 0.9em;">
+                      注册日期:
+                    </span>
+                    <span style="width: 50%;display: inline-block;text-align: left;">
+                        <span ng-if="carInfo.firstRegisterDate==undefined||carInfo.firstRegisterDate==null"
+                                style="color: #aaa;font-size: 0.85em;vertical-align: middle;">
+                            选择您的注册日期
+                        </span>
+                        <span ng-if="carInfo.firstRegisterDate!==undefined&&carInfo.firstRegisterDate!==null"
+                            style="vertical-align: middle;">
+                            {{carInfo.firstRegisterDate}}
+                        </span>
+                    </span>
+                    <span style="width:25%;display: inline-block;text-align: center;">
+                        <button class="button button-small button-balanced" ng-click="datetimepicker(carInfo,'firstRegisterDate')">选择日期</button>
+                    </span>
+                </div>
+
+                <!-- 发证日期 -->
+                <div class="item"
+                     style="border:0;border-bottom:1px solid #ddd;padding:4px 10px;background-color:transparent;overflow: initial;">
+                    <span class="input-label" style="display: inline-block;width: 25%;text-align: left;vertical-align: middle;font-size: 0.9em;">
+                      发证日期:
+                    </span>
+                    <span style="width: 50%;display: inline-block;text-align: left;">
+                        <span ng-if="carInfo.issueDate==undefined||carInfo.issueDate==null"
+                              style="color: #aaa;font-size: 0.85em;vertical-align: middle;">
+                            选择您的发证日期
+                        </span>
+                        <span ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null"
+                              style="vertical-align: middle;">
+                            {{carInfo.issueDate}}
+                        </span>
+                    </span>
+                    <span style="width:25%;display: inline-block;text-align: center;">
+                        <button class="button button-small button-balanced" ng-click="datetimepicker(carInfo,'issueDate')">选择日期</button>
+                    </span>
+                </div>
 
             </div>
 

@@ -20,10 +20,10 @@
 
                 <div class="list list-inset padding"
                      style="margin-bottom:0px;height: 100%;padding:0;">
+
+                    <!-- 收件 -->
                     <div class="card">
-                        <!--<div class="item item-text-wrap">-->
-                        <!--This is a basic Card which contains an item that has wrapping text.-->
-                        <!--</div>-->
+
                         <div class="item item-divider"
                              style="margin:1px;border:0px;padding:10px;
                      position: relative;background-color:transparent;color:#d6730d">
@@ -39,27 +39,51 @@
                                 <i class="ion-plus"></i>
                                 新增收件地址
                             </span>
-
                         </div>
 
                         <div class="list list-inset padding" style="padding-top:0px;margin-top:0px;">
                             <div class="item"
                                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
-                         padding:10px;background-color:transparent;overflow:initial"
+                                    padding:4px;background-color:transparent;overflow:initial"
                                  ng-repeat="item in addresses"
                                  ng-click="Mutex(item,'checked',addresses)">
-                                <span style="display: inline-block;width: 85%;text-align: left">
+                                <span style="display: inline-block;width: 85%;text-align: left;vertical-align: middle;">
                                     {{item.address}}
                                 </span>
-                                <span style="display: inline-block;width: 15%;text-align: right;font-size: 2.4em;">
-                                    <i class="ion-ios-checkmark-empty" ng-if="item.checked==true"></i>
+                                <span style="display: inline-block;width: 15%;text-align: center;font-size: 1.6em;vertical-align: middle;
+                                    color:#d6730d">
+                                    <i class="fa fa-check" ng-if="item.checked==true"></i>
                                 </span>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- 抬头 -->
+                    <div class="card">
+
+                        <div class="item item-divider"
+                             style="margin:1px;border:0px;padding:10px;
+                            position: relative;background-color:transparent;color:#d6730d">
+
+                            <span style="display: inline-block;width: 35%;vertical-align: middle;">
+                                <span style="font-size: 1.5em;">
+                                    <i class="fa fa-tag"></i>
+                                </span>
+                                发票抬头
+                            </span>
+                            <span style="width: 65%;display: inline-block;text-align: left;border-bottom:1px solid #00f;
+                                vertical-align: middle;">
+                                  <input type="text" placeholder="填写发票抬头"
+                                         style="display:inline-block;background-color: transparent;"
+                                         ng-value="order.invoiceTitle"
+                                         ng-model="order.invoiceTitle"
+                                  />
+                              </span>
+                        </div>
 
                     </div>
 
+                    <!-- 险别 -->
                     <div class="card">
 
                         <div class="item item-divider"

@@ -380,6 +380,17 @@ angular.module('starter')
 
         }
 
+        $scope.notCarOwnerStyle={
+            'border-bottom':'1px solid #646464',
+            background: 'transparent',
+            'padding-left':'9px'
+        };
+
+        $scope.carOwnerStyle={
+            'border-bottom':'0',
+            background: 'transparent',
+            'padding-left':'9px'
+        }
 
 
         $scope.slideDescriptionHint='list';
@@ -499,6 +510,17 @@ angular.module('starter')
 
                 }
             })
+        }
+
+        //车主的回调函数
+        $scope.ownerToggleCb=function (val) {
+            if(val==true)
+            {
+
+
+            }else{
+
+            }
         }
 
         //统一上传行驶症
@@ -727,6 +749,21 @@ angular.module('starter')
                               return ;
                           }
 
+                          //TODO:加入身份证的检测
+                          if($scope.carInfo.isOwner==true)
+                          {
+                              if($rootScope.user.personInfo.perIdCard!==undefined&&$rootScope.user.personInfo.perIdCard!==null)
+                              {
+                                  $scope.carInfo.ownerIdCard=$rootScope.user.personInfo.perIdCard;
+                              }else{
+                                  $ionicPopup.alert({
+                                      title: '错误',
+                                      template: '作为车主创建新车必须先填写身份证号码并提交'
+                                  });
+                                  return ;
+                              }
+                          }
+
 
                           //填入车驾号的方式提交
                           if($scope.licenseIndex==0)
@@ -759,31 +796,22 @@ angular.module('starter')
                                                                   template: '请重新输入17位的车架号再点击车辆创建'
                                                               });
                                                           }else{
-                                                              $http({
-                                                                  method: "POST",
-                                                                  url: Proxy.local()+"/svr/request",
-                                                                  headers: {
-                                                                      'Authorization': "Bearer " + $rootScope.access_token
-                                                                  },
-                                                                  data:
-                                                                      {
-                                                                          request:'getCarInfoByCarNum',
-                                                                          info:{
-                                                                              carNum:carNum,
-                                                                              ownerName:$scope.carInfo.ownerName
-                                                                          }
-                                                                      }
-                                                              }).then(function(res) {
-                                                                  var json=res.data;
-                                                                  if(json.re==1) {
-                                                                      //TODO:核实已匹配车牌号
+
+                                                              if($scope.carInfo.firstRegisterDate==undefined||$scope.carInfo.firstRegisterDate==null)
+                                                              {
+                                                                  $ionicPopup.alert({
+                                                                      title: '错误',
+                                                                      template: '请选择注册日期后再点击保存'
+                                                                  });
+                                                              }else{
+
+                                                                  if($scope.carInfo.issueDate==undefined||$scope.carInfo.issueDate==null)
+                                                                  {
                                                                       $ionicPopup.alert({
-                                                                          title: '警告',
-                                                                          template: '你提交的车牌号重复,请重新填入后提交'
+                                                                          title: '错误',
+                                                                          template: '请选择发证日期后再点击保存'
                                                                       });
-                                                                  }else if(json.re==-1) {
-
-
+                                                                  }else{
                                                                       $http({
                                                                           method: "POST",
                                                                           url: Proxy.local()+"/svr/request",
@@ -792,40 +820,68 @@ angular.module('starter')
                                                                           },
                                                                           data:
                                                                               {
-                                                                                  request:'uploadCarAndOwnerInfo',
-                                                                                  info:$scope.carInfo
+                                                                                  request:'getCarInfoByCarNum',
+                                                                                  info:{
+                                                                                      carNum:carNum,
+                                                                                      ownerName:$scope.carInfo.ownerName
+                                                                                  }
                                                                               }
                                                                       }).then(function(res) {
                                                                           var json=res.data;
-                                                                          if(json.re==1){
-                                                                              var carInfo = json.data;
-                                                                              var popup = $ionicPopup.alert({
-                                                                                  title: '信息',
-                                                                                  template: '车辆信息保存成功'
+                                                                          if(json.re==1) {
+                                                                              //TODO:核实已匹配车牌号
+                                                                              $ionicPopup.alert({
+                                                                                  title: '警告',
+                                                                                  template: '你提交的车牌号重复,请重新填入后提交'
                                                                               });
-                                                                              popup.then(function(res) {
-                                                                                  $rootScope.flags.carManage.onFresh=true;
-                                                                                  $scope.goBack();
-                                                                              })
-                                                                              $timeout(function(){
-                                                                                  //如果模态框未关闭
-                                                                                  if(popup.$$state.status==0){
-                                                                                      popup.close();
-                                                                                      $rootScope.flags.carManage.onFresh=true;
-                                                                                      $scope.goBack();
+                                                                          }else if(json.re==-1) {
+
+
+                                                                              $http({
+                                                                                  method: "POST",
+                                                                                  url: Proxy.local()+"/svr/request",
+                                                                                  headers: {
+                                                                                      'Authorization': "Bearer " + $rootScope.access_token
+                                                                                  },
+                                                                                  data:
+                                                                                      {
+                                                                                          request:'uploadCarAndOwnerInfo',
+                                                                                          info:$scope.carInfo
+                                                                                      }
+                                                                              }).then(function(res) {
+                                                                                  var json=res.data;
+                                                                                  if(json.re==1){
+                                                                                      var carInfo = json.data;
+                                                                                      var popup = $ionicPopup.alert({
+                                                                                          title: '信息',
+                                                                                          template: '车辆信息保存成功'
+                                                                                      });
+                                                                                      popup.then(function(res) {
+                                                                                          $rootScope.flags.carManage.onFresh=true;
+                                                                                          $scope.goBack();
+                                                                                      })
+                                                                                      $timeout(function(){
+                                                                                          //如果模态框未关闭
+                                                                                          if(popup.$$state.status==0){
+                                                                                              popup.close();
+                                                                                              $rootScope.flags.carManage.onFresh=true;
+                                                                                              $scope.goBack();
+                                                                                          }
+                                                                                      },3000);
+
                                                                                   }
-                                                                              },3000);
 
-                                                                          }
+                                                                              }).catch(function(err) {
+                                                                                  var str='';
+                                                                                  for(var field in err)
+                                                                                      str+=err[field];
+                                                                                  alert('error=================\r\n' + str);
+                                                                              })
+                                                                          }else{}
+                                                                      });
+                                                                  }
 
-                                                                      }).catch(function(err) {
-                                                                          var str='';
-                                                                          for(var field in err)
-                                                                              str+=err[field];
-                                                                          alert('error=================\r\n' + str);
-                                                                      })
-                                                                  }else{}
-                                                              });
+                                                              }
                                                           }
                                                       }else{
                                                           $ionicPopup.alert({
@@ -1224,6 +1280,7 @@ angular.module('starter')
 
 
         $scope.selectTime=true;
+
         $scope.datetimepicker=function (item,field) {
 
             var options = {
