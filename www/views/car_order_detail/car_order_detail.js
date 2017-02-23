@@ -39,10 +39,10 @@ angular.module('starter')
                   template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
               });
 
-
-
               //首先获取attachment
               var attachId=$scope.order.insuranceCompanyAttachId;
+
+
               $http({
                   method: "POST",
                   url: Proxy.local() + "/svr/request",
@@ -67,7 +67,7 @@ angular.module('starter')
                         suffix=reg.exec(filePath)[1];
 
                       var url = Proxy.local() + '/svr/request?request=downloadOrderScreenShoot&filePath='+filePath+
-                            'suffix='+suffix;
+                            '&suffix='+suffix;
                       var fileSystem = null;
                       if (ionic.Platform.isIOS()) {
                           $scope.target = 'cdvfile://localhost/persistent/' +$scope.order.orderId+'_screenShoot'+suffix;
