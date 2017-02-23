@@ -234,6 +234,8 @@ angular.module('starter')
                         })
 
                     }else{
+
+                        //车辆空闲
                         var confirmPopup = $ionicPopup.confirm({
                             title: '信息',
                             template: '您尚未绑定车辆，点击绑定该车。'
@@ -251,7 +253,7 @@ angular.module('starter')
                                         {
                                             request:'verifyCarOwner',
                                             info:{
-                                                ownerIdCard:carInfo.ownerIdCard
+                                                carNum:carInfo.carNum
                                             }
                                         }
                                 }).then(function (res) {

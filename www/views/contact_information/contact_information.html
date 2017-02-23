@@ -19,100 +19,126 @@
 
     <div class="list list-inset padding" style="margin-bottom:40px;background: transparent;">
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
-        <span class="input-label"
-              style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
-              text-align: center;padding-bottom: 5px;padding-top:5px;">
-          <i class="fa fa-user-o"></i>
-        </span>
-        <span style="width: 15%;display: inline-block;">
-          用户名:
-        </span>
-        <span style="width: 60%;display: inline-block;padding-left: 5px;font-weight:bolder;">
-          {{contactInfo.perName}}
-        </span>
-        <span class="input-label" style="display: inline-block;width:10%;">
-        </span>
-      </div>
+        <!-- 信息维护 -->
+        <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border:0;background: transparent;">
+            <span class="input-label"
+                  style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
+                  text-align: center;padding-bottom: 5px;padding-top:5px;vertical-align: middle;">
+              <i class="fa fa-wpforms"></i>
+            </span>
+            <span style="width: 15%;display: inline-block;color:#bf530c;vertical-align: middle;font-weight: bold;">
+                信息维护:
+            </span>
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
-        <span class="input-label"
-              style="display: inline-block;font-size: 1.5em;color:#bf530c;width: 8%;
-              text-align: center;padding-bottom: 5px;padding-top:5px;">
-          <i class="fa fa-address-card"></i>
-        </span>
-        <span style="width: 15%;display: inline-block;">
-          身份证:
-        </span>
-        <input type="text" style="width: 48%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;"
-               ng-value="contactInfo.perIdCard"
-               ng-model="contactInfo.perIdCard"
-               ng-change="validate(contactInfo,'perIdCard','/^\\d{18}$/')"
-        />
-        <span class="input-label" style="display: inline-block;width:29%;">
-         <span ng-if="contactInfo.perIdCard_error==true" style="color:#ff3b30;font-size: 0.8em;">
-              证件位数错误
-         </span>
-        </span>
-      </div>
+            <span style="width: 62%;display: inline-block"></span>
+
+            <span style="width: 15%;display: inline-block;vertical-align: middle;color:#bf530c;font-size:1.4em;">
+                <i class="fa fa-chevron-down"></i>
+            </span>
+        </div>
+
+        <!-- 用户名 -->
+        <div class="item" style="margin:1px;padding:12px;margin-left:12px;margin-bottom:10px;border-top:0px;
+                border-left:0px;border-right:0px;background: transparent;">
+
+            <span style="width: 50%;display: inline-block;font-size:1.1em;">
+                用户名:
+            </span>
+            <span style="width: 50%;display: inline-block;text-align: right;font-weight:bolder;font-size:1.1em;
+                color:rgba(146, 86, 29, 0.9);padding-right:20px;" ng-click="popInput(contactInfo,'perName','输入需要更改的用户名')">
+                <span ng-if="contactInfo.perName!==undefined&&contactInfo.perName!==null">
+                    {{contactInfo.perName}}
+                </span>
+                <span ng-if="contactInfo.perName==undefined||contactInfo.perName==null" style="color:#aaa;font-size:0.9em;">
+                    编辑
+                </span>
+
+            </span>
+
+        </div>
+
+        <!-- 身份证 -->
+        <div class="item" style="margin:1px;padding:12px;margin-left:12px;margin-bottom:10px;border-top:0px;
+                border-left:0px;border-right:0px;background: transparent;">
+
+            <span style="width: 50%;display: inline-block;font-size:1.1em;">
+                身份证:
+            </span>
+            <span style="width: 50%;display: inline-block;text-align: right;font-weight:bolder;font-size:1.1em;
+                color:rgba(146, 86, 29, 0.9);padding-right:20px;"
+                  ng-click="popInput(contactInfo,'perIdCard','输入需要更改的身份证号','/^\\d{18}$/')">
+                <span ng-if="contactInfo.perIdCard!==undefined&&contactInfo.perIdCard!==null">
+                    {{contactInfo.perIdCard}}
+                </span>
+                <span ng-if="contactInfo.perIdCard==undefined||contactInfo.perIdCard==null" style="color:#aaa;font-size:0.9em;">
+                    编辑
+                </span>
+
+            </span>
+
+        </div>
+
+        <!-- 电话 -->
+        <div class="item" style="margin:1px;padding:12px;margin-left:12px;margin-bottom:10px;border-top:0px;
+                border-left:0px;border-right:0px;background: transparent;">
+
+            <span style="width: 50%;display: inline-block;font-size:1.1em;">
+                电话:
+            </span>
+            <span style="width: 50%;display: inline-block;text-align: right;font-weight:bolder;font-size:1.1em;
+                color:rgba(146, 86, 29, 0.9);padding-right:20px;"
+                  ng-click="popInput(contactInfo,'mobilePhone','输入需要更改的电话号码','/^\\d{11}$/')">
+                <span ng-if="contactInfo.mobilePhone!==undefined&&contactInfo.mobilePhone!==null">
+                    {{contactInfo.mobilePhone}}
+                </span>
+                <span ng-if="contactInfo.mobilePhone==undefined||contactInfo.mobilePhone==null" style="color:#aaa;font-size:0.9em;">
+                    编辑
+                </span>
+
+            </span>
+        </div>
 
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
-        <span class="input-label"
-              style="display: inline-block;font-size: 2.4em;color:#bf530c;width: 8%;
-              text-align: center;padding-bottom: 5px;padding-top:5px;">
-          <i class="fa fa-mobile"></i>
-        </span>
-        <span style="width: 15%;display: inline-block;">
-          电话:
-        </span>
-        <input type="text" style="width: 37%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;"
-               ng-value="contactInfo.mobilePhone"
-               ng-model="contactInfo.mobilePhone"
-               ng-change="validate(contactInfo,'mobilePhone','/^\\d{11}$/')"
-        />
-        <span class="input-label" style="display: inline-block;width:33%;">
-         <span ng-if="contactInfo.mobilePhone_error==true" style="color:#ff3b30;font-size: 0.8em;">
-           请输入11位的手机号
-         </span>
-        </span>
-      </div>
+        <!-- 邮箱 -->
+        <div class="item" style="margin:1px;padding:12px;margin-left:12px;margin-bottom:10px;border-top:0px;
+                border-left:0px;border-right:0px;background: transparent;">
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
-        <span class="input-label"
-              style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
-              text-align: center;padding-bottom: 5px;padding-top:5px;">
-          <i class="ion-android-mail"></i>
-        </span>
-        <span style="width: 15%;display: inline-block;">
-          邮箱:
-        </span>
-        <input type="text" style="width: 50%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;;"
-               ng-value="contactInfo.EMAIL"
-               ng-model="contactInfo.EMAIL"
-               ng-change="validate(contactInfo,'EMAIL','/^.*@.*\\.com$/')"
-        />
-        <span class="input-label" style="display: inline-block;width:20%;color:#ff3b30;font-size: 0.8em;">
-          <span ng-if="contactInfo.EMAIL_error==true">格式错误</span>
-        </span>
-      </div>
+            <span style="width: 50%;display: inline-block;font-size:1.1em;">
+                邮箱:
+            </span>
+            <span style="width: 50%;display: inline-block;text-align: right;font-weight:bolder;font-size:1.1em;
+                color:rgba(146, 86, 29, 0.9);padding-right:20px;"
+                  ng-click="popInput(contactInfo,'EMAIL','输入需要更改的电话号码','/^.*@.*\\.com$/')">
+                <span ng-if="contactInfo.EMAIL!==undefined&&contactInfo.EMAIL!==null">
+                    {{contactInfo.EMAIL}}
+                </span>
+                <span ng-if="contactInfo.EMAIL==undefined||contactInfo.EMAIL==null" style="color:#aaa;font-size:0.9em;">
+                    编辑
+                </span>
 
-      <div class="item" style="margin:1px;padding:4px;margin-bottom:10px;border-top:0px;border-left:0px;border-right:0px;background: transparent;">
-        <span class="input-label"
-              style="display: inline-block;font-size: 1.8em;color:#bf530c;width: 8%;
-              text-align: center;padding-bottom: 5px;padding-top:5px;">
-          <i class="ion-home"></i>
-        </span>
-        <span style="width: 15%;display: inline-block;">
-          地址:
-        </span>
-        <input type="text" style="width: 70%;display: inline-block;padding-left: 5px;font-weight:bolder;background:transparent;"
-               ng-value="contactInfo.perAddress"
-               ng-model="contactInfo.perAddress"
-        />
-        <span class="input-label" style="display: inline-block;width:10%;">
-        </span>
-      </div>
+            </span>
+        </div>
+
+        <!-- 地址 -->
+        <div class="item" style="margin:1px;padding:12px;margin-left:12px;margin-bottom:10px;border-top:0px;
+                border-left:0px;border-right:0px;background: transparent;">
+
+            <span style="width: 50%;display: inline-block;font-size:1.1em;">
+                地址:
+            </span>
+            <span style="width: 50%;display: inline-block;text-align: right;font-weight:bolder;font-size:1.1em;
+                color:rgba(146, 86, 29, 0.9);padding-right:20px;"
+                  ng-click="popInput(contactInfo,'perAddress','输入需要更改的地址','/^.*@.*\\.com$/')">
+                <span ng-if="contactInfo.perAddress!==undefined&&contactInfo.perAddress!==null">
+                    {{contactInfo.perAddress}}
+                </span>
+                <span ng-if="contactInfo.perAddress==undefined||contactInfo.perAddress==null" style="color:#aaa;font-size:0.9em;">
+                    编辑
+                </span>
+
+            </span>
+        </div>
+
 
 
       <div class="item"
