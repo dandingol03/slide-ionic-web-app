@@ -80,43 +80,6 @@ angular.module('starter')
 
                                     try{
 
-                                        //1.通过filetransfer下载
-
-                                        // var url = Proxy.local() + '/downloadAndroidApk';
-                                        // var fileSystem = null;
-                                        // if (ionic.Platform.isIOS()) {
-                                        //     $scope.target = 'cdvfile://localhost/persistent/' + 'android-release.apk';
-                                        // } else if (ionic.Platform.isAndroid()) {
-                                        //     fileSystem = cordova.file.externalApplicationStorageDirectory;
-                                        //     $scope.target = fileSystem + 'android-release.apk';
-                                        // }
-                                        //
-                                        // var trustHosts = true;
-                                        // var options = {
-                                        //     fileKey: 'file',
-                                        //     headers: {
-                                        //         'Authorization': "Bearer " + $rootScope.access_token
-                                        //     }
-                                        // };
-                                        //
-                                        // $cordovaFileTransfer.download(url, $scope.target, options, trustHosts)
-                                        //     .then(function (res) {
-                                        //         var json = res.response;
-                                        //         alert('apk下载成功')
-                                        //
-                                        //     }, function (err) {
-                                        //         // Error
-                                        //         $ionicPopup.alert({
-                                        //             title: '错误',
-                                        //             template: 'apk下载失败'
-                                        //         });
-                                        //         deferred.reject(err);
-                                        //     }, function (progress) {
-                                        //         $timeout(function () {
-                                        //             $scope.downloadProgress = (progress.loaded / progress.total) * 100;
-                                        //         });
-                                        //     });
-
                                         //2.通过浏览器下载apk
                                         var options = {
                                             date: new Date(),
@@ -623,20 +586,6 @@ angular.module('starter')
           Wechat.isInstalled(function (installed) {
               alert("Wechat installed: " + (installed ? "Yes" : "No"));
           });
-      }
-
-      //分享至指定朋友
-      $scope.wxSendText=function (text) {
-          var ob={
-              scene:Wechat.Scene.SESSION,
-              text :text
-          };
-          Wechat.share(ob, function () {
-              alert('share success')
-          }, function (reason) {
-              alert('share encounter failure');
-          });
-
       }
 
 

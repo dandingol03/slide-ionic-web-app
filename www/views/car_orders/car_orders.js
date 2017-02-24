@@ -5,32 +5,34 @@ angular.module('starter')
                                              $ionicLoading,$ionicHistory,$ionicPlatform,
                                              $ionicNativeTransitions){
 
+
+
       if($rootScope.flags.carOrders.clear==true){
           $ionicHistory.clearHistory();
           $ionicHistory.clearCache();
           $rootScope.flags.carOrders.clear==false;
       }
 
+      /****监听物理回退,以取消loading****/
+      $scope.deferred=null;
       var deregister = $ionicPlatform.registerBackButtonAction(
           function () {
               console.log("close the popup");
-              if($scope.doingGetOrders==true){
+              if($scope.doingGetOrders==true&&$scope.deferred!==undefined&&$scope.deferred!==null){
+                  $scope.deferred.reject({re: -1});
+                  $scope.doingGetOrders=false;
                   $ionicLoading.hide();
               }
           }, 505
       );
 
-      $scope.$on('$destroy', deregister)
+      $scope.$on('$destroy', deregister);
 
-      $scope.getOrders=function () {
 
-          $ionicLoading.show({
-              template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-          });
 
-          $scope.doingGetOrders = true;
-
-          //获取已完成订单,估价列表
+      $scope.getCarOrdersInHistory=function () {
+          var deferred = $q.defer();
+          $scope.deferred=deferred;
           $http({
               method: "POST",
               url: Proxy.local()+"/svr/request",
@@ -41,83 +43,124 @@ angular.module('starter')
                   {
                       request:'getCarOrdersInHistory'
                   }
-          }).then(function(res) {
+          }).then(function (res) {
               var json = res.data;
-              if (json.re == 1) {
-                  json.data.map(function (order, i) {
-                      var insuranceFeeTotal=0;
-                      insuranceFeeTotal+=order.price.contractFee;
-                      if(order.price.carTax!==undefined&&order.price.carTax!==null)
-                          insuranceFeeTotal+=order.price.carTax;
-                      order.insuranceFeeTotal=insuranceFeeTotal;
 
-                  });
-                  $scope.historyOrders = json.data;
-                  $rootScope.flags.carOrders.data.historyOrders = json.data;
-              }
+              deferred.resolve(json);
+          })
 
-              return   $http({
-                  method: "POST",
-                  url: Proxy.local()+"/svr/request",
-                  headers: {
-                      'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data:
-                      {
-                          request:'getCarOrderInPricedState'
-                      }
-              });
+          return deferred.promise;
+      }
 
+      $scope.getCarOrderInPricedState=function () {
+          var deferred = $q.defer();
+          $scope.deferred=deferred;
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data:
+                  {
+                      request:'getCarOrderInPricedState'
+                  }
           }).then(function (res) {
               var json=res.data;
-              if(json.re==1) {
-                  $scope.orderPricedList=json.data;
-                  if($scope.orderPricedList==undefined||$scope.orderPricedList==null)
+              deferred.resolve(json);
+          })
+
+          return deferred.promise;
+      }
+
+      $scope.getApplyedCarOrders=function () {
+          var deferred = $q.defer();
+          $http({
+              method: "POST",
+              url: Proxy.local()+"/svr/request",
+              headers: {
+                  'Authorization': "Bearer " + $rootScope.access_token
+              },
+              data:
                   {
-                      $scope.orderPricedList=[];
+                      request:'getApplyedCarOrders'
                   }
-              }
-
-
-              return  $http({
-                  method: "POST",
-                  url: Proxy.local()+"/svr/request",
-                  headers: {
-                      'Authorization': "Bearer " + $rootScope.access_token
-                  },
-                  data:
-                      {
-                          request:'getApplyedCarOrders'
-                      }
-              });
-          }).then(function(res) {
+          }).then(function (res) {
               var json=res.data;
-              $scope.applyedList = [];
-              if(json.re==1) {
-                  $scope.orderUnpricedList=[];
+              deferred.resolve(json);
+          })
+          return deferred.promise;
+      }
 
-                  if(json.data!==undefined&&json.data!==null&&json.data.length>0)
-                  {
-                      $scope.orderUnpricedList=json.data;
-                      $scope.orderUnpricedList.map(function(order,i){
-                          if(order.orderState==2){
-                              $scope.orderPricedList.push(order);
-                          }
-                          // if(order.orderState==4){
-                          //     $scope.orderPricedList.push(order);
-                          // }
-                          if(order.orderState==1){
-                              $scope.applyedList.push(order);
-                          }
-                      })
-                  }else{}
-              }
-              $rootScope.flags.carOrders.data.orderPricedList=$scope.orderPricedList;
-              $rootScope.flags.carOrders.data.applyedList=$scope.applyedList;
-              $rootScope.flags.carOrders.onFresh=false;
 
-              $scope.doingGetOrders = false;
-              $ionicLoading.hide();
+
+      $scope.getOrders=function () {
+
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+
+          $scope.doingGetOrders = true;
+
+          //获取已完成订单,估价列表
+
+          $scope.getCarOrdersInHistory()
+              .then(function (json) {
+
+                  if (json.re == 1) {
+                      json.data.map(function (order, i) {
+                          var insuranceFeeTotal=0;
+                          insuranceFeeTotal+=order.price.contractFee;
+                          if(order.price.carTax!==undefined&&order.price.carTax!==null)
+                              insuranceFeeTotal+=order.price.carTax;
+                          order.insuranceFeeTotal=insuranceFeeTotal;
+
+                      });
+                      $scope.historyOrders = json.data;
+                      $rootScope.flags.carOrders.data.historyOrders = json.data;
+                  }
+
+                  return $scope.getCarOrderInPricedState();
+              })
+              .then(function (json) {
+
+
+                  if(json.re==1) {
+                      $scope.orderPricedList=json.data;
+                      if($scope.orderPricedList==undefined||$scope.orderPricedList==null)
+                      {
+                          $scope.orderPricedList=[];
+                      }
+                  }
+
+                  return  $scope.getApplyedCarOrders();
+              })
+              .then(function(json) {
+
+                  $scope.applyedList = [];
+                  if(json.re==1) {
+                      $scope.orderUnpricedList=[];
+
+                      if(json.data!==undefined&&json.data!==null&&json.data.length>0)
+                      {
+                          $scope.orderUnpricedList=json.data;
+                          $scope.orderUnpricedList.map(function(order,i){
+                              if(order.orderState==2){
+                                  $scope.orderPricedList.push(order);
+                              }
+
+                              if(order.orderState==1){
+                                  $scope.applyedList.push(order);
+                              }
+                          })
+                      }else{}
+                  }
+                  $rootScope.flags.carOrders.data.orderPricedList=$scope.orderPricedList;
+                  $rootScope.flags.carOrders.data.applyedList=$scope.applyedList;
+                  $rootScope.flags.carOrders.onFresh=false;
+
+                  $scope.doingGetOrders = false;
+                  $ionicLoading.hide();
           }).catch(function(err) {
               var str='';
               for(var field in err)

@@ -503,7 +503,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         //通知的回调
         $rootScope.onReceiveNotification = function(event) {
-            alert('onReceiveNotification');
+
             try{
 
                 var extras=null;
@@ -512,13 +512,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                 } else {
                     alert('ios');
                     extras=event;
-
+                    //ios的通知回调走另一个方法
                     iosCallBack(extras);
                     return;
 
                 }
 
-                alert('end');
+
 
                 if(Object.prototype.toString.call(extras)=='[object String]')
                      extras=JSON.parse(extras);
@@ -572,9 +572,21 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                     'Authorization': "Bearer " + $rootScope.access_token
                                                 }
                                             };
-                                            alert('begin download audio');
+
                                             $cordovaFileTransfer.download(url, target, options, trustHosts)
                                                 .then(function (res) {
+
+                                                    //TODO:播放录音
+                                                    var filepath=fileSystem+'temp.mp3';
+                                                    filepath = filepath.replace('file://','');
+                                                    var media = $cordovaMedia.newMedia(filepath);
+
+                                                    if(ionic.Platform.isIOS()) {
+                                                    }else if(ionic.Platform.isAndroid()) {
+                                                        media.play();
+                                                    }else{}
+                                                    console.log('tts speach generate success');
+
 
                                                     var order=null;
                                                     $rootScope.getOrderInfo(orderId).then(function (json) {
@@ -588,8 +600,15 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                                 timeout:0,
                                                                 showCloseButton: true,
                                                                 onHideCallback: function () {
-                                                                    //TODO:validate accessToken
+                                                                    //TODO:停止录音播放
+                                                                    if(media!==undefined&&media!==null)
+                                                                    {
+                                                                        media.stop();
+                                                                        media.release();
+                                                                    }
 
+
+                                                                    //TODO:validate accessToken
                                                                     if($rootScope.access_token!==undefined&&$rootScope.access_token!==null)
                                                                     {
                                                                         //服务人员接单
@@ -616,16 +635,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                         }
                                                     });
 
-                                                    //TODO:播放录音
-                                                    var filepath=fileSystem+'temp.mp3';
-                                                    filepath = filepath.replace('file://','');
-                                                    var media = $cordovaMedia.newMedia(filepath);
 
-                                                    if(ionic.Platform.isIOS()) {
-                                                    }else if(ionic.Platform.isAndroid()) {
-                                                        media.play();
-                                                    }else{}
-                                                    console.log('tts speach generate success');
                                                 }, function (err) {
                                                     console.log('err=========================');
                                                     var str='';
@@ -671,10 +681,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                 var date=extras.date;
                                 var msg=null;
                                 var content='订单号为'+orderNum+'的车险订单已报价完成';
-                              //  alert('orderId=' + orderId);
-                              //  alert('orderNum=' + orderNum);
-                              //  alert('orderType=' + orderType);
-                              //  alert('date='+date);
+
                                 if(orderType==1)
                                 {
                                     msg='订单号为'+orderNum+'的车险订单已报价完成\r\n'+'是否现在进入车险订单页面查看';
@@ -740,6 +747,20 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                                 break;
                                                         }
 
+
+
+                                                        //TODO:播放录音
+                                                        var filepath=fileSystem+'temp.mp3';
+                                                        filepath = filepath.replace('file://','');
+                                                        var media = $cordovaMedia.newMedia(filepath);
+
+                                                        if(ionic.Platform.isIOS()) {
+                                                        }else if(ionic.Platform.isAndroid()) {
+                                                            //    alert('play media');
+                                                            media.play();
+                                                        }else{}
+                                                        console.log('tts speach generate success');
+
                                                         $http({
                                                             method: "POST",
                                                             url: Proxy.local() + '/'+cmd,
@@ -763,6 +784,13 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                                     timeout:0,
                                                                     showCloseButton: true,
                                                                     onHideCallback: function () {
+                                                                        //停止播放录音
+                                                                        if(media!==undefined&&media!==null)
+                                                                        {
+                                                                            media.stop();
+                                                                            media.release();
+                                                                        }
+
                                                                         if($rootScope.access_token!==undefined&&$rootScope.access_token!==null)
                                                                         {
                                                                             if(orderType==1)
@@ -793,18 +821,6 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
                                                             }
                                                         });
 
-
-                                                        //TODO:播放录音
-                                                        var filepath=fileSystem+'temp.mp3';
-                                                        filepath = filepath.replace('file://','');
-                                                        var media = $cordovaMedia.newMedia(filepath);
-
-                                                        if(ionic.Platform.isIOS()) {
-                                                        }else if(ionic.Platform.isAndroid()) {
-                                                        //    alert('play media');
-                                                            media.play();
-                                                        }else{}
-                                                        console.log('tts speach generate success');
                                                     }, function (err) {
                                                         console.log('err=========================');
                                                         var str='';
@@ -858,7 +874,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
 
         //获取自定义消息的回调
         $rootScope.onReceiveMessage = function(event) {
-            alert('onReceiveMessage');
+
           try{
               alert('ios');
               console.log('message receiving......');
