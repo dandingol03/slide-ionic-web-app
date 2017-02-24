@@ -1,6 +1,6 @@
 angular.module('starter')
 
-  .controller('carOrdersController',function($scope,$state,$http,
+  .controller('carOrdersController',function($scope,$state,$http,$q,
                                              $location, $rootScope,Proxy,
                                              $ionicLoading,$ionicHistory,$ionicPlatform,
                                              $ionicNativeTransitions){
@@ -20,6 +20,7 @@ angular.module('starter')
               console.log("close the popup");
               if($scope.doingGetOrders==true&&$scope.deferred!==undefined&&$scope.deferred!==null){
                   $scope.deferred.reject({re: -1});
+                  $scope.deferred=null;
                   $scope.doingGetOrders=false;
                   $ionicLoading.hide();
               }
@@ -168,7 +169,6 @@ angular.module('starter')
               console.error('err=\r\n'+str);
               $scope.doingGetOrders = false;
               $ionicLoading.hide();
-              $scope.doingGetOrders=false;
           });
       }
 
