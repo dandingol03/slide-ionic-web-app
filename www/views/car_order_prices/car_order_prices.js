@@ -8,7 +8,8 @@ angular.module('starter')
  */
   .controller('carOrderPricesController',function($scope,$state,$http,
                                             $location,$rootScope,$stateParams,
-                                            Proxy,$ionicModal,$ionicLoading,$ionicPopup){
+                                            Proxy,$ionicModal,$ionicLoading,$ionicPopup,
+                                                  $ionicNativeTransitions){
 
     $scope.insuranceder={};
 
@@ -101,8 +102,12 @@ angular.module('starter')
 
 
       $scope.go_back=function(){
-      window.history.back();
-    }
+          $ionicNativeTransitions.stateGo('car_orders', {}, {}, {
+              "type": "slide",
+              "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+              "duration": 240, // in milliseconds (ms), default 400
+          });
+      }
 
     $scope.tab_change=function(i){
       $scope.tabIndex=i;
