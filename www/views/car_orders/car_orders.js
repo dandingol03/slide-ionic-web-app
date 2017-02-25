@@ -15,7 +15,7 @@ angular.module('starter')
 
       /****监听物理回退,以取消loading****/
       $scope.deferred=null;
-      var deregister = $ionicPlatform.registerBackButtonAction(
+      $scope.deregister = $ionicPlatform.registerBackButtonAction(
           function () {
               console.log("close the popup");
               if($scope.doingGetOrders==true&&$scope.deferred!==undefined&&$scope.deferred!==null){
@@ -23,11 +23,13 @@ angular.module('starter')
                   $scope.deferred=null;
                   $scope.doingGetOrders=false;
                   $ionicLoading.hide();
+                  //销毁优先级高的函数
+                  $scope.deregister();
               }
           }, 505
       );
 
-      $scope.$on('$destroy', deregister);
+      $scope.$on('$destroy', $scope.deregister);
 
 
 
