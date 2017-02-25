@@ -23,13 +23,13 @@ angular.module('starter')
                   $scope.deferred=null;
                   $scope.doingGetOrders=false;
                   $ionicLoading.hide();
+                  //销毁优先级高的函数
                   $scope.deregister();
               }
           }, 505
       );
 
-
-      $scope.$on('$destroy', $scope.deregister);//destroy $scope,离开这个页面的之后，才会执行deregister.
+      $scope.$on('$destroy', $scope.deregister);
 
       $scope.getCarOrdersInHistory=function () {
           var deferred = $q.defer();

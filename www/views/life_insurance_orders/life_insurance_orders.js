@@ -5,7 +5,8 @@ angular.module('starter')
  */
   .controller('lifeInsuranceOrdersController',function($scope,$state,$http,
                                                        $location,$rootScope,$stateParams,
-                                                       $ionicPopup,Proxy,$ionicLoading,$ionicHistory){
+                                                       $ionicPopup,Proxy,$ionicLoading,$ionicHistory,
+                                                       $q,ionicPlatform){
 
       if($rootScope.flags.lifeOrders.clear==true){
           $ionicHistory.clearHistory();
@@ -52,13 +53,27 @@ angular.module('starter')
       $scope.appliedOrders=[];
 
 
+      /****监听物理回退,以取消loading****/
+      $scope.deferred=null;
+      $scope.deregister = $ionicPlatform.registerBackButtonAction(
+          function () {
+              console.log("close the popup");
+              if($scope.doingGetOrders==true&&$scope.deferred!==undefined&&$scope.deferred!==null){
+                  $scope.deferred.reject({re: -1});
+                  $scope.deferred=null;
+                  $scope.doingGetOrders=false;
+                  $ionicLoading.hide();
+                  //销毁优先级高的函数
+                  $scope.deregister();
+              }
+          }, 505
+      );
 
-      if($rootScope.flags.lifeOrders.onFresh)
-      {
-          $ionicLoading.show({
-              template:'<p class="item-icon-left">拉取寿险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
-          });
 
+
+      $scope.getLifeOrders=function () {
+          var deferred=$q.defer();
+          $scope.deferred=deferred;
           $http({
               method: "POST",
               url: Proxy.local()+'/svr/request',
@@ -69,49 +84,70 @@ angular.module('starter')
                   {
                       request:'getLifeOrders'
                   }
-          }).then(function(res) {
+          }).then(function (res) {
+              var json=res.data;
+              deferred.resolve(json);
+          })
 
-              $ionicLoading.hide();
-
-              var json = res.data;
-              if (json.re == 1) {
-                  $scope.orders = json.data;
-                  if ($rootScope.lifeInsurance == undefined || $rootScope.lifeInsurance == null)
-                      $rootScope.lifeInsurance = {};
-                  $rootScope.lifeInsurance.orders = $scope.orders;
-                  if ($scope.orders !== undefined && $scope.orders !== null && $scope.orders.length > 0) {
-                      $scope.orders.map(function (order, i) {
-
-                          var date = new Date(order.applyTime);
-                          // order.applyTime = date.getFullYear().toString() + '-'
-                          //     + date.getMonth().toString() + '-' + date.getDate().toString();
-
-                          if (order.orderState == 3) {
-                              $scope.pricingOrders.push(order);
-                          }
-                          if (order.orderState == 5) {
-                              $scope.finishOrders.push(order);
-                          }
-                          if (order.orderState == 1||order.orderState == 2) {
-                              $scope.appliedOrders.push(order);
-                          }
+          return deferred.promise;
+      }
 
 
-                      })
+      //拉取寿险订单数据
+      $scope.getOrders=function () {
+          $scope.doingGetOrders=true;
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">拉取寿险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+
+         $scope.getLifeOrders()
+             .then(function(json) {
+
+                 if (json.re == 1) {
+                      $scope.orders = json.data;
+                      if ($rootScope.lifeInsurance == undefined || $rootScope.lifeInsurance == null)
+                          $rootScope.lifeInsurance = {};
+                      $rootScope.lifeInsurance.orders = $scope.orders;
+                      if ($scope.orders !== undefined && $scope.orders !== null && $scope.orders.length > 0) {
+                          $scope.orders.map(function (order, i) {
+
+                              var date = new Date(order.applyTime);
+                              // order.applyTime = date.getFullYear().toString() + '-'
+                              //     + date.getMonth().toString() + '-' + date.getDate().toString();
+
+                              if (order.orderState == 3) {
+                                  $scope.pricingOrders.push(order);
+                              }
+                              if (order.orderState == 5) {
+                                  $scope.finishOrders.push(order);
+                              }
+                              if (order.orderState == 1||order.orderState == 2) {
+                                  $scope.appliedOrders.push(order);
+                              }
+
+
+                          })
+                      }
+                      $rootScope.lifeInsurance.pricingOrders = $scope.pricingOrders;
+                      $rootScope.lifeInsurance.finishOrders = $scope.finishOrders;
+                      $rootScope.lifeInsurance.appliedOrders = $scope.appliedOrders;
                   }
-                  $rootScope.lifeInsurance.pricingOrders = $scope.pricingOrders;
-                  $rootScope.lifeInsurance.finishOrders = $scope.finishOrders;
-                  $rootScope.lifeInsurance.appliedOrders = $scope.appliedOrders;
-              }
-
+                 $ionicLoading.hide();
+                 $scope.doingGetOrders=false;
           }).catch(function (err) {
               var str='';
               for(var field in err)
                   str+=err[field];
               console.error('err='+str);
+              $scope.doingGetOrders=false;
               $ionicLoading.hide();
           })
+      }
 
+
+      if($rootScope.flags.lifeOrders.onFresh)
+      {
+          $scope.getOrders();
       }else{
           if($rootScope.lifeInsurance!==undefined&&$rootScope.lifeInsurance!==null)
           {
