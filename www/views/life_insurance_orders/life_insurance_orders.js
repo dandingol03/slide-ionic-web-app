@@ -6,7 +6,7 @@ angular.module('starter')
   .controller('lifeInsuranceOrdersController',function($scope,$state,$http,
                                                        $location,$rootScope,$stateParams,
                                                        $ionicPopup,Proxy,$ionicLoading,$ionicHistory,
-                                                       $q,ionicPlatform){
+                                                       $q,$ionicPlatform){
 
       if($rootScope.flags.lifeOrders.clear==true){
           $ionicHistory.clearHistory();
