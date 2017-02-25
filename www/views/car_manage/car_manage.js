@@ -6,7 +6,7 @@ angular.module('starter')
                                                $rootScope,$cordovaFileTransfer,Proxy,
                                                $ionicModal,$ionicPopup,$ionicLoading,
                                                 $timeout,$ionicNativeTransitions,$ionicHistory,
-                                               $stateParams,$q){
+                                               $stateParams,$q,$ionicPlatform){
 
 
         $scope.go_back=function () {
