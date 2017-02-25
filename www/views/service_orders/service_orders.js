@@ -5,7 +5,7 @@ angular.module('starter')
 
   .controller('serviceOrdersController',function($scope,$state,$http, $location,
                                                  $rootScope,Proxy,$ionicLoading,
-                                                 $ionicHistory,$ionicPopup,$ionicNativeTransitions){
+                                                 $ionicHistory,$ionicPopup,$ionicNativeTransitions,$q,$ionicPlatform){
 
 
       if($rootScope.flags.serviceOrders.clear==true){
@@ -67,16 +67,30 @@ angular.module('starter')
       $scope.orders3 = [];
 
 
-      /**
-       * refresh invoke
-       *
-       * **/
-      $scope.fetchServiceOrders=function () {
 
-          $scope.orders1 = [];
-          $scope.orders2 = [];
-          $scope.orders3 = [];
 
+      /****监听物理回退,以取消loading****/
+      $scope.deferred=null;
+      $scope.deregister = $ionicPlatform.registerBackButtonAction(
+          function () {
+              console.log("close the popup");
+              if($scope.doingGetOrders==true&&$scope.deferred!==undefined&&$scope.deferred!==null){
+                  $scope.deferred.reject({re: -1});
+                  $scope.deferred=null;
+                  $scope.doingGetOrders=false;
+                  $ionicLoading.hide();
+                  //销毁优先级高的函数
+                  $scope.deregister();
+              }
+          }, 505
+      );
+
+      $scope.$on('$destroy', $scope.deregister);
+
+
+      $scope.fetchServiceOrderByCustomerId = function(){
+          var deferred=$q.defer();
+          $scope.deferred=deferred;
           $http({
               method: "post",
               url: Proxy.local()+"/svr/request",
@@ -89,9 +103,30 @@ angular.module('starter')
                   },
               timeout:9000
           }).then(function (res) {
-              $ionicLoading.hide();
               var json=res.data;
+              deferred.resolve(json);
+          })
+          return deferred.promise;
+      }
 
+      /**
+       * refresh invoke
+       *
+       * **/
+      $scope.fetchServiceOrders=function () {
+
+          $scope.orders1 = [];
+          $scope.orders2 = [];
+          $scope.orders3 = [];
+
+          $scope.doingGetOrders=true;
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">拉取服务订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+
+          $scope.fetchServiceOrderByCustomerId().then(function (json) {
+              $scope.deferred=null;
+              $scope.doingGetOrders=false;
               if(json.re==1)
               {
                   $scope.orders=json.data;
@@ -126,6 +161,9 @@ angular.module('starter')
               });
               console.log('success');
               $rootScope.flags.serviceOrders.onFresh=false;
+              $scope.doingGetOrders = false;
+              $ionicLoading.hide();
+
           }).catch(function(err) {
               if(err.status==-1)
               {
@@ -141,11 +179,8 @@ angular.module('starter')
               }
               $ionicLoading.hide();
           })
+
       }
-
-
-
-
 
 
           if($rootScope.flags.serviceOrders.onFresh==true){
