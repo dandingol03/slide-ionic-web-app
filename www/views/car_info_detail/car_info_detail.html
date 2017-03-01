@@ -49,7 +49,7 @@
                     注册日期:
                 </span>
 
-                <span style="display: inline-block;width: 65%;color:#888;font-size: .9em;text-align: left;"
+                <span style="display: inline-block;width: 65%;color:#222;font-size: .9em;text-align: left;"
                       ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null">
                     {{carInfo.issueDate|date:'yyyy-MM-dd HH:mm'}}
                 </span>
@@ -85,14 +85,30 @@
                  style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #222;
            padding:10px;background-color:transparent;overflow: initial">
 
-            <span class="input-label" style="display: inline-block;width: 35%;text-align: left">
-              车架号:
-            </span>
-                <span style="width: 65%;display: inline-block;text-align: left;">
-              {{carInfo.frameNum}}
-            </span>
+                <span class="input-label" style="display: inline-block;width: 35%;text-align: left">
+                  车架号:
+                </span>
+                    <span style="width: 65%;display: inline-block;text-align: left;">
+                  {{carInfo.frameNum}}
+                </span>
             </div>
 
+
+            <div class="item"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:0;
+                   padding:10px;position: relative;background-color:transparent;width:100%">
+
+                  <span
+                          style="width: 60%;margin-left:25%;display: inline-block;text-align: left"
+                          ng-click="open_licenseInfoModal()"
+                  >
+                     <button class="card" style="width: 100%;background-color:rgba(250, 250, 250, 0.46);border-radius:6px;width: 80%;font-size:large;color:#323232;">
+                       编辑车辆信息
+                     </button>
+
+                  </span>
+
+            </div>
 
 
 
