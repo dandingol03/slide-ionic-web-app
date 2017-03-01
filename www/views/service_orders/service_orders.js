@@ -159,7 +159,7 @@ angular.module('starter')
                       $scope.orders3.push(order);
 
               });
-              console.log('success');
+
               $rootScope.flags.serviceOrders.onFresh=false;
               $scope.doingGetOrders = false;
               $ionicLoading.hide();

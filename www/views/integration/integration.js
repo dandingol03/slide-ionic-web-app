@@ -14,7 +14,7 @@ angular.module('starter')
     };
 
       //个人信息同步
-      $scope.userInfo=$rootScope.userInfo;
+      $scope.userInfo=$rootScope.user.personInfo;
 
       $scope.score_tab=0;
 
