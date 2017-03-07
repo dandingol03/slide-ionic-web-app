@@ -717,6 +717,7 @@ angular.module('starter')
 
         $scope.doingBusiness=false;
 
+        //提交审车订单
         $scope.preCheck=function () {
 
             if($scope.doingBusiness==false)

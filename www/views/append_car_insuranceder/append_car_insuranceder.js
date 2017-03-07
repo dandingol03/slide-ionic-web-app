@@ -731,9 +731,6 @@ angular.module('starter')
 
 
 
-
-
-
         //提交统一函数
         $scope.upload=function(cmd,item,field){
 
