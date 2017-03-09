@@ -12,11 +12,12 @@
                 <span style="display: inline-block;width:65%;text-align: center; font-size: medium;color: #737373;padding-left: 5%;">
                     填写车辆信息
                 </span>
-                <span style="display: inline-block;font-size:0.8em;text-align: center;width: 20%;color: #737373;"
+                <span style="display: inline-block;font-size:0.8em;text-align: center;width: 15%;background: #737373;color:#fff;
+                                border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;border-top-left-radius: 6px;border-top-right-radius: 6px"
                       ng-click="close_licenseInfoModal()">
                  保存
               </span>
-                <span style="display: inline-block;width: 5%;">
+                <span style="display: inline-block;width: 20px;">
               </span>
             </div>
         </div>
@@ -99,7 +100,7 @@
                         </span>
                         <span ng-if="carInfo.firstRegisterDate!==undefined&&carInfo.firstRegisterDate!==null"
                             style="vertical-align: middle;">
-                            {{carInfo.firstRegisterDate}}
+                            {{carInfo.firstRegisterDate|date:'yyyy-MM-dd HH:mm'}}
                         </span>
                     </span>
                     <span style="width:25%;display: inline-block;text-align: center;">
@@ -120,7 +121,7 @@
                         </span>
                         <span ng-if="carInfo.issueDate!==undefined&&carInfo.issueDate!==null"
                               style="vertical-align: middle;">
-                            {{carInfo.issueDate}}
+                            {{carInfo.issueDate|date:'yyyy-MM-dd HH:mm'}}
                         </span>
                     </span>
                     <span style="width:25%;display: inline-block;text-align: center;">
