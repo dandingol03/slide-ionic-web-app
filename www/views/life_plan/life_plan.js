@@ -139,7 +139,7 @@ angular.module('starter')
         var json = res.data;
         if(json.re==1){
           alert('应该进入寿险支付页面');
-          var info = {insureId:$scope.order.insurerId,planIds: planIds,orderId: $scope.order.orderId}
+          var info = {insurerId:$scope.order.insurerId,planIds: planIds,orderId: $scope.order.orderId}
           $state.go('life_order_pay', {info: JSON.stringify(info)});
         }
 

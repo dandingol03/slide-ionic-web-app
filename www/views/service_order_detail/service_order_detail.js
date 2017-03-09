@@ -1,9 +1,7 @@
 /**
  * Created by yiming on 16/10/5.
  */
-/**
- * Created by yiming on 16/9/13.
- */
+
 angular.module('starter')
 
   .controller('serviceOrderDetailController',function($scope,$stateParams,$http,
@@ -418,6 +416,7 @@ angular.module('starter')
 
       //完成订单
       $scope.finishOrder=function () {
+
           $http({
               method: "post",
               url: Proxy.local() + "/svr/request",
