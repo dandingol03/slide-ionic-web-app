@@ -848,8 +848,8 @@ angular.module('starter')
             }else{}
         }
 
-        $scope.applyCarServiceOrder=function () {
 
+        $scope.applyCarServiceOrder=function () {
 
             var fee = null;
             var scoreBalance = null;

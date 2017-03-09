@@ -4,7 +4,7 @@
 angular.module('starter')
     .controller('carInfoDetailController',function($scope,$state,$stateParams,$ionicLoading,
                                                     $ionicPopup,$http,Proxy,$rootScope,
-                                                   $ionicNativeTransitions,$ionicModal){
+                                                   $ionicNativeTransitions,$ionicModal,$timeout){
 
 
         $scope.go_back=function () {
@@ -97,10 +97,13 @@ angular.module('starter')
                 var json=res.data;
                 if(json.re==1)
                 {
-                    $ionicPopup.alert({
-                        title: '信息',
-                        template: '车辆信息保存成功'
-                    });
+                    $ionicLoading.hide();
+                    $timeout(function () {
+                        $ionicPopup.alert({
+                            title: '信息',
+                            template: '车辆信息保存成功'
+                        });
+                    },1000);
                 }
 
             }).catch(function (err) {

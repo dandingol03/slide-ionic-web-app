@@ -108,6 +108,21 @@
                         </div>
                       </ion-item>
 
+                      <!-- 不计免赔 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;"
+                                ng-if="price.nonDeductibleInsurance!==undefined&&price.nonDeductibleInsurance!==null&&price.nonDeductibleInsurance!=0">
+                        <div style="display:inline-block;width:33%;">
+                          <span>不计免赔:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          ￥{{price.nonDeductibleInsurance}}
+                        </div>
+                      </ion-item>
+
+
                       <!-- 积分 -->
                       <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
                                       border:0px;">
@@ -265,6 +280,20 @@
                         </div>
                         <div style="display: inline-block;width: 33%;text-align: center;">
                           ￥{{product.insuranceFee}}
+                        </div>
+                      </ion-item>
+
+                      <!-- 不计免赔 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;"
+                                ng-if="confirmedPrice.nonDeductibleInsurance!==undefined&&confirmedPrice.nonDeductibleInsurance!==null&&confirmedPrice.nonDeductibleInsurance!=0">
+                        <div style="display:inline-block;width:33%;">
+                          <span>不计免赔:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          ￥{{confirmedPrice.nonDeductibleInsurance}}
                         </div>
                       </ion-item>
 
