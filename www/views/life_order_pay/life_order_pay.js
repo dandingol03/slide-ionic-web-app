@@ -14,7 +14,7 @@ angular.module('starter')
             $scope.info=JSON.parse($scope.info);
 
         $scope.planIds = $scope.info.planIds;
-        $scope.insureId = $scope.info.insureId;
+        $scope.insurerId = $scope.info.insurerId;
         $scope.orderId = $scope.info.orderId;
 
         $scope.insurer = {};
@@ -107,7 +107,7 @@ angular.module('starter')
                     var personId=null;
                     var orderId = null;
 
-                    personId = $scope.insureId;
+                    personId = $scope.insurerId;
                     orderId = $scope.orderId;
 
                     alert('orderId ='+orderId);
@@ -252,15 +252,6 @@ angular.module('starter')
             }
 
         }
-
-
-
-
-
-
-
-
-
 
 
 
