@@ -709,6 +709,7 @@ angular.module('starter')
 
                     var filepath=$scope.maintain.description.video;
                     open(filepath, success, error);
+
                 }else{
                     var myPopup = $ionicPopup.alert({
                         template: '您还未录制视频，不能进行播放',

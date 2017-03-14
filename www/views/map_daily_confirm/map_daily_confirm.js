@@ -462,6 +462,17 @@ angular.module('starter')
                         'Authorization': "Bearer " + $rootScope.access_token
                     }
                 };
+
+                // var server='http://211.87.225.199:8080/insurancems/insurance/insuranceTransformAmrToMp3.do'+'?' +
+                //     'request=uploadVideo&orderId='+orderId+'&fileName='+$scope.maintain.description.video+'&videoType=serviceVideo';
+                //
+                // var options = {
+                //     fileKey:'form',
+                //     headers: {
+                //         'Authorization': "Bearer " + $rootScope.access_token
+                //     }
+                // };
+
                 $cordovaFileTransfer.upload(server, $scope.maintain.description.video, options).then(function(res) {
                     var json=res.response;
                     json=JSON.parse(json);
@@ -529,15 +540,28 @@ angular.module('starter')
 
             if($scope.maintain.description.audio!=null&&$scope.maintain.description.audio!=undefined)
             {
-                var server=Proxy.local()+'/svr/request?' +
-                    'request=uploadAudio&orderId='+orderId+'&fileName='+$scope.maintain.description.audio+'&audioType=serviceAudio';
-                var options = {
-                    fileKey:'file',
-                    headers: {
-                        'Authorization': "Bearer " + $rootScope.access_token
-                    }
-                };
-                alert('go into upload audio');
+                // var server=Proxy.local()+'/svr/request?' +
+                //     'request=uploadAudio&orderId='+orderId+'&fileName='+$scope.maintain.description.audio+'&audioType=serviceAudio';
+                // var options = {
+                //     fileKey:'file',
+                //     headers: {
+                //         'Authorization': "Bearer " + $rootScope.access_token
+                //     }
+                // };
+
+
+                // var server='http://211.87.225.199:8080/insurancems/insurance/insuranceTransformAmrToMp3.do'+'?' +
+                //     'request=uploadVideo&orderId='+orderId+'&fileName='+$scope.maintain.description.video+'&videoType=serviceVideo';
+                //
+                // var options = {
+                //     fileKey:'form',
+                //     headers: {
+                //         'Authorization': "Bearer " + $rootScope.access_token
+                //     }
+                // };
+
+
+
                 $cordovaFileTransfer.upload(server, $scope.maintain.description.audio, options)
                     .then(function(res) {
                         var json=res.response;
