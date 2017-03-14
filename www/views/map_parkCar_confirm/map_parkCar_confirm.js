@@ -32,9 +32,9 @@ angular.module('starter')
 
                     if((date-curDay)>0&&curDay.getDate()!=date.getDate())
                     {
-                        if($scope.maintain.servicePerson!==undefined&& $scope.maintain.servicePerson!==null){
+                        if($scope.carManage.servicePerson!==undefined&& $scope.carManage.servicePerson!==null){
 
-                            var servicePerson=$scope.maintain.servicePerson;
+                            var servicePerson=$scope.carManage.servicePerson;
                             var serviceSegments=servicePerson.serviceSegments;
                             serviceHour = parseInt(serviceSegments.substring(1, 2));
                             serviceDay = parseInt(serviceSegments.substring(0, 1));

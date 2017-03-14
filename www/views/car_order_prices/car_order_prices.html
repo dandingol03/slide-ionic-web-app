@@ -72,13 +72,12 @@
                     </ion-item>
 
                     <!-- 公司名 -->
-                    <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;"
-                              >
-                      <span style="width: 25%;display: inline-block;"></span>
-                      <span style="width: 75%;display: inline-block;font-weight: bolder;font-size: 1.1em;">
-                        {{price.companyName}}
-                      </span>
+                    <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;
+                          text-align: center">
 
+                      <span style="font-weight: bolder;font-size: 1.2em;">
+                        {{price.companyName.replace('股份有限公司','')}}
+                      </span>
                     </ion-item>
                   </div>
 
@@ -90,6 +89,18 @@
 
                       <div style="width: 100%;height: 20px;"></div>
 
+
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;">
+                        <div style="display:inline-block;width:33%;color:#222;font-weight: bold;font-size:1.2em;">
+                          <span>车牌号</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;font-size:1.2em;font-weight: bold;color:#222;">
+                          {{order.carNum}}
+                        </div>
+                      </ion-item>
 
 
                       <ion-item
@@ -105,6 +116,34 @@
                         </div>
                         <div style="display: inline-block;width: 33%;text-align: center;">
                           ￥{{product.insuranceFee}}
+                        </div>
+                      </ion-item>
+
+                      <!-- 不计免赔 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;"
+                                ng-if="price.nonDeductibleInsurance!==undefined&&price.nonDeductibleInsurance!==null&&price.nonDeductibleInsurance!=0">
+                        <div style="display:inline-block;width:33%;">
+                          <span>不计免赔:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          ￥{{price.nonDeductibleInsurance}}
+                        </div>
+                      </ion-item>
+
+                      <!-- 车船税 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;"
+                                ng-if="price.carTax!==undefined&&price.carTax!==null&&price.carTax!=0">
+                        <div style="display:inline-block;width:33%;">
+                          <span>车船税:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          ￥{{price.carTax}}
                         </div>
                       </ion-item>
 
@@ -236,7 +275,7 @@
                     >
                       <span style="width: 25%;display: inline-block;"></span>
                       <span style="width: 75%;display: inline-block;font-weight: bolder;font-size: 1.1em;">
-                        {{confirmedPrice.companyName}}
+                        {{confirmedPrice.companyName.replace('股份有限公司','')}}
                       </span>
 
                     </ion-item>
@@ -267,6 +306,36 @@
                           ￥{{product.insuranceFee}}
                         </div>
                       </ion-item>
+
+                      <!-- 不计免赔 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;"
+                                ng-if="confirmedPrice.nonDeductibleInsurance!==undefined&&confirmedPrice.nonDeductibleInsurance!==null&&confirmedPrice.nonDeductibleInsurance!=0">
+                        <div style="display:inline-block;width:33%;">
+                          <span>不计免赔:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          ￥{{confirmedPrice.nonDeductibleInsurance}}
+                        </div>
+                      </ion-item>
+
+                      <!-- 车船税 -->
+                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                      border:0px;"
+                                ng-if="confirmedPrice.carTax!==undefined&&confirmedPrice.carTax!==null&&confirmedPrice.carTax!=0">
+                        <div style="display:inline-block;width:33%;">
+                          <span>车船税:</span>
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        </div>
+                        <div style="display: inline-block;width: 33%;text-align: center;">
+                          ￥{{confirmedPrice.carTax}}
+                        </div>
+                      </ion-item>
+
+
 
                       <!-- 积分 -->
                       <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;

@@ -61,7 +61,7 @@ angular.module('starter')
       if($scope.order.orderState==3){
 
           $scope.order.prices.map(function (price, i) {
-              price.insuranceFeeTotal=price.contractFee.toFixed(2);
+              price.insuranceFeeTotal=parseFloat(price.contractFee.toFixed(2));
               if(price.carTax!==undefined&&price.carTax!==null)
                   price.insuranceFeeTotal+=price.carTax;
           });
@@ -77,7 +77,7 @@ angular.module('starter')
           $scope.confirmedPrice = null;
           $scope.order.prices.map(function (price, i) {
 
-              price.insuranceFeeTotal=price.contractFee.toFixed(2);
+              price.insuranceFeeTotal=parseFloat(price.contractFee.toFixed(2));
               if(price.carTax!==undefined&&price.carTax!==null)
                   price.insuranceFeeTotal+=price.carTax;
 
