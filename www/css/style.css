@@ -17,12 +17,7 @@
   margin:0
 }
 
-.background1{
-  background-image: url(../img/bkg2@2x.png);
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: 0% 100%;
-}
+
 
 .backgroundRes{
   background:url(../img/123.png);
