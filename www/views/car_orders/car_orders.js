@@ -94,6 +94,77 @@ angular.module('starter')
       }
 
 
+      $scope.fetchOrders=function () {
+
+          $ionicLoading.show({
+              template:'<p class="item-icon-left">拉取车险订单数据...<ion-spinner icon="ios" class="spinner-calm spinner-bigger"/></p>'
+          });
+
+          $scope.doingGetOrders = true;
+
+          //获取已完成订单,估价列表
+
+          $scope.getCarOrdersInHistory()
+              .then(function (json) {
+
+                  if (json.re == 1) {
+                      json.data.map(function (order, i) {
+                          var insuranceFeeTotal=0;
+                          insuranceFeeTotal+=order.price.contractFee;
+                          if(order.price.carTax!==undefined&&order.price.carTax!==null)
+                              insuranceFeeTotal+=order.price.carTax;
+                          order.insuranceFeeTotal=insuranceFeeTotal;
+
+                      });
+                      $scope.historyOrders = json.data;
+                      $rootScope.flags.carOrders.data.historyOrders = json.data;
+                  }
+
+                  return  $scope.getApplyedCarOrders();
+              })
+              .then(function(json) {
+
+                  $scope.applyedList = [];
+                  if(json.re==1) {
+                      $scope.orderUnpricedList=[];
+
+                      if(json.data!==undefined&&json.data!==null&&json.data.length>0)
+                      {
+                          json.data.map(function (order,i) {
+                              var pricedC=0;
+                              if(order.prices!==undefined&&order.prices!==null)
+                              {
+                                  order.prices.map(function (price,j) {
+                                      //已报价
+                                      if(price.priceState==1)
+                                          pricedC++;
+                                  });
+                                  order.pricedCount=pricedC;
+                              }else{
+                                  order.pricedCount=0;
+                              }
+                          })
+                          $scope.applyedList=json.data;
+
+                      }else{}
+                  }
+                  $rootScope.flags.carOrders.data.orderPricedList=$scope.orderPricedList;
+                  $rootScope.flags.carOrders.data.applyedList=$scope.applyedList;
+                  $rootScope.flags.carOrders.onFresh=false;
+
+                  $scope.doingGetOrders = false;
+                  $ionicLoading.hide();
+              }).catch(function(err) {
+              var str='';
+              for(var field in err)
+                  str+=err[field];
+              console.error('err=\r\n'+str);
+              $scope.doingGetOrders = false;
+              $ionicLoading.hide();
+          });
+
+
+      }
 
       $scope.getOrders=function () {
 
@@ -175,7 +246,7 @@ angular.module('starter')
 
       if($rootScope.flags.carOrders.onFresh==true)
       {
-          $scope.getOrders();
+          $scope.fetchOrders();
       }
       else
       {
@@ -252,6 +323,19 @@ angular.module('starter')
       $state.go('car_order_prices', {order: JSON.stringify(order)});
     }
 
+
+    //统一详情跳转分发
+      $scope.goDetail=function(order)
+      {
+          if(order.prices!==undefined&&order.prices!==null)
+          {
+              $state.go('car_order_prices', {order: JSON.stringify(order)});
+          }else{
+              $state.go('applied_car_order_detail',{orderId:order.orderId});
+          }
+      }
+
+
     $scope.goAppliedOrderDetail=function(order)
     {
         $state.go('applied_car_order_detail',{orderId:order.orderId});
@@ -300,11 +384,11 @@ angular.module('starter')
 
       $scope.selectedTabStyle=
           {
-              display:'inline-block',color:'#fff',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgba(17, 17, 17, 0.6)','background-color':'rgba(17, 17, 17, 0.6)'
+              display:'inline-block',color:'#fff',width:'48%',float:'left',height:'100%','border': '1px solid','border-color': 'rgba(17, 17, 17, 0.6)','background-color':'rgba(17, 17, 17, 0.6)'
           };
       $scope.unSelectedTabStyle=
           {
-              display:'inline-block',width:'31%',float:'left',height:'100%','border': '1px solid','border-color': 'rgba(17, 17, 17, 0.6)'
+              display:'inline-block',width:'48%',float:'left',height:'100%','border': '1px solid','border-color': 'rgba(17, 17, 17, 0.6)'
           };
 
 
