@@ -19,6 +19,10 @@ angular.module('starter')
       $scope.order=JSON.parse($scope.order);
 
 
+    //不能在基于orderState划分
+
+
+
     if($scope.order.orderState==2) {
         $scope.getOrder = function () {
             $ionicLoading.show({
@@ -57,8 +61,8 @@ angular.module('starter')
     }
 
 
-      //对于报价完成的订单,获取各公司的估价详请
-      if($scope.order.orderState==3){
+      //对于订单，如果已有公司报价完成。则进行报价的显示
+      if($scope.order.prices!==undefined&&$scope.order.prices!==null&&$scope.order.pricedCount>0){
 
           $scope.order.prices.map(function (price, i) {
               price.insuranceFeeTotal=parseFloat(price.contractFee.toFixed(2));
