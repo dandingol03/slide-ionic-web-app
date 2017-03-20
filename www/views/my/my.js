@@ -315,9 +315,9 @@ angular.module('starter')
                   }
 
                   Wechat.share(ob, function () {
-                      alert('share success')
+                      alert('分享成功')
                   }, function (reason) {
-                      alert('share encounter failure');
+                      alert('分享失败');
                   });
               }else{
                   $ionicPopup.alert({

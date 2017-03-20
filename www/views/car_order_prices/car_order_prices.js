@@ -76,7 +76,8 @@ angular.module('starter')
           }
       }
 
-      if($scope.order.orderState==4){
+      //如果用户已确认
+      if($scope.order.confirmed==true){
 
           $scope.confirmedPrice = null;
           $scope.order.prices.map(function (price, i) {
