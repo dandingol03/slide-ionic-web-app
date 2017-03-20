@@ -260,7 +260,7 @@ angular.module('starter')
       //车险订单  0.已完成;1.正在进行;2.已申请
       $scope.tabIndex=$rootScope.car_orders_tabIndex;
 
-    $scope.priceIndex=-1;
+
 
 
     $scope.orders=$rootScope.car_orders;
@@ -327,18 +327,20 @@ angular.module('starter')
     //统一详情跳转分发
       $scope.goDetail=function(order)
       {
-          if(order.prices!==undefined&&order.prices!==null)
-          {
-              $state.go('car_order_prices', {order: JSON.stringify(order)});
-          }else{
-              $state.go('applied_car_order_detail',{orderId:order.orderId});
-          }
+
+          $state.go('applied_car_order_detail',{orderId:order.orderId});
+
       }
 
 
     $scope.goAppliedOrderDetail=function(order)
     {
-        $state.go('applied_car_order_detail',{orderId:order.orderId});
+        if(order.prices!==null&&order.prices!==undefined&&order.pricedCount>0)
+        {
+            $state.go('car_order_prices', {order: JSON.stringify(order)});
+        }else{
+            $state.go('applied_car_order_detail',{orderId:order.orderId});
+        }
     }
 
 

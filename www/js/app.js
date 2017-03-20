@@ -870,7 +870,7 @@ angular.module('starter', ['ionic', 'ngCordova','ngBaiduMap','ionic-datepicker',
         //notification初始化
         $rootScope.notifications={0:[],1:[],2:[]};
 
-        $rootScope.car_orders_tabIndex=1;
+        $rootScope.car_orders_tabIndex=0;
 
         //获取自定义消息的回调
         $rootScope.onReceiveMessage = function(event) {
