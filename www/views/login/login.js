@@ -534,6 +534,7 @@ angular.module('starter')
               else
                   console.log('cannot get access_token');
           }).catch(function(err) {
+              alert(err)
               var msg=err.data;
               if(msg.error=='invalid_grant')
               {
