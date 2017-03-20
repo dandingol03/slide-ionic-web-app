@@ -40,344 +40,349 @@
 
               <div style="margin-top:1px;">
 
-                <div ng-repeat="price in order.prices" ng-if="order.prices!==undefined&&order.prices!==null&&order.pricedCount>0"
-                  class="card" style="padding:0;padding-top:1px;">
-                  <!-- 公司产品细项 -->
-                  <div class="padding "
-                       style="padding:0px 0px;position: relative">
+
+                  <!-- 报价完成 -->
+                  <div ng-repeat="price in order.prices" ng-if="order.prices!==undefined&&order.prices!==null
+                        &&order.pricedCount>0&&order.confirmed!=true" class="card" style="padding:0;padding-top:1px;">
+                      <!-- 公司产品细项 -->
+                      <div class="padding "
+                           style="padding:0px 0px;position: relative">
 
 
-                    <!--选中开关 -->
-                    <div ng-style="priceIndex==$index?checkedStyle:uncheckedStyle"
-                         ng-click="setterPrice($index,price)">
-                      <span ng-if="priceIndex!=$index">点击选中</span>
-                      <span ng-if="priceIndex==$index" style="color:#ff3b30">已选中</span>
-                      <span style="color:#f1c300;font-size: 1.3em;" ng-if="priceIndex==$index"><i class="fa fa-check"></i></span>
+                            <!--选中开关 -->
+                            <div ng-style="priceIndex==$index?checkedStyle:uncheckedStyle"
+                                 ng-click="setterPrice($index,price)">
+                              <span ng-if="priceIndex!=$index">点击选中</span>
+                              <span ng-if="priceIndex==$index" style="color:#ff3b30">已选中</span>
+                              <span style="color:#f1c300;font-size: 1.3em;" ng-if="priceIndex==$index"><i class="fa fa-check"></i></span>
 
-                    </div>
+                            </div>
 
 
 
-                    <ion-item style="border-bottom:0px;position:relative;padding-left:3%;padding-right:3%;
-                                      padding-bottom: 0px;"
-                              ng-click="setterPrice($index,price)">
-                      <span style="width: 30%;display: inline-block;">
-                      </span>
-                      <span style="width: 40%;display: inline-block;text-align: center;
-                              font-weight: bolder;">
-                        <span>￥</span>
-                        <span style="color:#f00;font-size: 2em;">{{price.insuranceFeeTotal}}</span>
-                      </span>
-                      <span style="width: 30%;display: inline-block;"></span>
+                            <ion-item style="border-bottom:0px;position:relative;padding-left:3%;padding-right:3%;
+                                              padding-bottom: 0px;"
+                                      ng-click="setterPrice($index,price)">
+                              <span style="width: 30%;display: inline-block;">
+                              </span>
+                              <span style="width: 40%;display: inline-block;text-align: center;
+                                      font-weight: bolder;">
+                                <span>￥</span>
+                                <span style="color:#f00;font-size: 2em;">{{price.insuranceFeeTotal}}</span>
+                              </span>
+                              <span style="width: 30%;display: inline-block;"></span>
 
-                    </ion-item>
+                            </ion-item>
 
-                    <!-- 公司名 -->
-                    <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;
-                          text-align: center">
+                            <!-- 公司名 -->
+                            <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;
+                                  text-align: center">
 
-                      <span style="font-weight: bolder;font-size: 1.2em;">
-                        {{price.companyName.replace('股份有限公司','')}}
-                      </span>
-                    </ion-item>
+                              <span style="font-weight: bolder;font-size: 1.2em;">
+                                {{price.companyName.replace('股份有限公司','')}}
+                              </span>
+                            </ion-item>
+                      </div>
+
+                      <!-- 公司产品细项 -->
+                      <div style="padding:0">
+                        <div style="margin:0px;padding:1px;border-left:1px solid #e5e5e5;border-right:1px solid #e5e5e5;"
+                          class="list">
+
+                          <div style="width: 100%;height: 20px;"></div>
+
+
+                          <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                          border:0px;">
+                            <div style="display:inline-block;width:33%;color:#222;font-weight: bold;font-size:1.2em;">
+                              <span>车牌号</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;font-size:1.2em;font-weight: bold;color:#222;">
+                              {{order.carNum}}
+                            </div>
+                          </ion-item>
+
+
+                          <ion-item
+                            ng-repeat="product in price.items"
+                            style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                border:0px;"
+                            >
+                            <div style="display:inline-block;width:33%;">
+                              <span>{{product.productName}}</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              {{product.insuranceType}}
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              ￥{{product.insuranceFee}}
+                            </div>
+                          </ion-item>
+
+                          <!-- 不计免赔 -->
+                          <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                          border:0px;"
+                                    ng-if="price.nonDeductibleInsurance!==undefined&&price.nonDeductibleInsurance!==null&&price.nonDeductibleInsurance!=0">
+                            <div style="display:inline-block;width:33%;">
+                              <span>不计免赔:</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              ￥{{price.nonDeductibleInsurance}}
+                            </div>
+                          </ion-item>
+
+                          <!-- 车船税 -->
+                          <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                          border:0px;"
+                                    ng-if="price.carTax!==undefined&&price.carTax!==null&&price.carTax!=0">
+                            <div style="display:inline-block;width:33%;">
+                              <span>车船税:</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              ￥{{price.carTax}}
+                            </div>
+                          </ion-item>
+
+                          <!-- 积分 -->
+                          <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                          border:0px;">
+                            <div style="display:inline-block;width:33%;color:#0a9dc7;font-size: 1.2em;">
+                              <span>积分:</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;color:#0a9dc7;font-size: 1.2em;">
+                              {{price.score}}
+                            </div>
+                          </ion-item>
+
+
+
+                          <ion-item style="border-top:0px;border-left:0px;border-right:0px;">
+                            <div style="display:inline-block;width:60%;">
+                            </div>
+                            <div style="display: inline-block;width: 30%;font-size: 1.2em;font-weight: bolder;">
+                              <span>总计:</span>
+                              <span>
+                                ￥{{price.insuranceFeeTotal}}
+                              </span>
+                            </div>
+                            <span style="display: inline-block;width: 10%;"></span>
+                          </ion-item>
+
+                          <!--<ion-item style="position: relative" ng-click="goDetail(price)">-->
+                            <!--<h2 style="width: 30%;display: inline-block">-->
+                              <!--查看详情:-->
+                            <!--</h2>-->
+                            <!--<h2 style="display: inline-block">-->
+                              <!--<span  style="font-size: 1.3em;">-->
+                                <!--<i class="ion-compose"></i>-->
+                              <!--</span>-->
+                            <!--</h2>-->
+                          <!--</ion-item>-->
+                        </div>
+
+                      </div>
                   </div>
 
-                  <!-- 公司产品细项 -->
-                  <div style="padding:0">
-                    <div style="margin:0px;padding:1px;border-left:1px solid #e5e5e5;border-right:1px solid #e5e5e5;"
-                      class="list">
 
-                      <div style="width: 100%;height: 20px;"></div>
+                  <!-- 正在报价，已没有 -->
+                  <div ng-if="order.orderState==2">
 
-
-                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                                      border:0px;">
-                        <div style="display:inline-block;width:33%;color:#222;font-weight: bold;font-size:1.2em;">
-                          <span>车牌号</span>
+                      <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
+                        <div class="item item-divider">
+                          编号
                         </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
+                        <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
+                          车牌号:
+                          <span style="position: absolute;left:35%;">{{order.carInfo.carNum}}</span>
                         </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;font-size:1.2em;font-weight: bold;color:#222;">
-                          {{order.carNum}}
+                        <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
+                          订单号:
+                          <span style="position: absolute;left:35%;">{{order.orderNum}}</span>
                         </div>
-                      </ion-item>
+
+                      </div>
+
+                      <!-- inset two -->
+                      <div class="list list-inset"
+                           style="margin-bottom:20px;margin-left:0px;margin-right:0px;"
+                           ng-if="order.products!==undefined&&order.products!==null">
+
+                        <div class="item item-divider">
+                          订单产品
+                        </div>
+
+                        <div class="item"  style="padding: 16px;position:relative" ng-repeat="product in order.products">
+                          <span style="display: inline-block;width: 60%;">
+                            {{product.productName}}:
+                          </span>
+                          <span style="display: inline-block;width: 40%;" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
+                            (保额){{product.insuranceType}}
+                          </span>
+                        </div>
 
 
-                      <ion-item
-                        ng-repeat="product in price.items"
-                        style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                            border:0px;"
+                      </div>
+
+                      <!-- inset three -->
+                      <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;margin-top:0px" >
+                        <div class="item" style="padding:16px;position: relative;border-left:0px;border-top:0px;
+                  border-right:0px;color:rgba(228, 93, 46, 0.87);font-size: 1em;">
+                          被保险人:
+                          <span style="position: absolute;left:35%;">{{order.insuranceder.perName}}</span>
+                        </div>
+                        <div class="item" style="padding:16px;font-size: 1em;color:rgba(228, 93, 46, 0.87);">
+                          申请日期:
+                          <span style="position: absolute;left:35%;font-size: 1em;">
+                          {{order.applyTime|date:'yyyy-MM-dd HH:mm'}}
+                      </span>
+                        </div>
+                      </div>
+                   </div>
+
+
+
+                   <!-- 客户已确认 -->
+                   <div ng-repeat="price in order.prices" ng-if="order.confirmed==true">
+                      <!-- 公司产品细项 -->
+                      <div class="padding"
+                           style="padding:0px 10px;position: relative">
+
+
+                        <!--选中开关 -->
+                        <div ng-style="checkedStyle">
+                          <span style="color:#ff3b30">已选中</span>
+                          <span style="color:#f1c300;font-size: 1.3em;"><i class="fa fa-check"></i></span>
+                        </div>
+
+                        <ion-item style="border-bottom:0px;position:relative;padding-left:3%;padding-right:3%;
+                                          padding-bottom: 0px;">
+                          <span style="width: 30%;display: inline-block;">
+                          </span>
+                          <span style="width: 40%;display: inline-block;text-align: center;
+                                  font-weight: bolder;">
+                            <span>￥</span>
+                            <span style="color:#f00;font-size: 2em;">{{confirmedPrice.insuranceFeeTotal}}</span>
+                          </span>
+                          <span style="width: 30%;display: inline-block;"></span>
+
+                        </ion-item>
+
+                        <!-- 公司名 -->
+                        <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;"
                         >
-                        <div style="display:inline-block;width:33%;">
-                          <span>{{product.productName}}</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          {{product.insuranceType}}
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          ￥{{product.insuranceFee}}
-                        </div>
-                      </ion-item>
-
-                      <!-- 不计免赔 -->
-                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                                      border:0px;"
-                                ng-if="price.nonDeductibleInsurance!==undefined&&price.nonDeductibleInsurance!==null&&price.nonDeductibleInsurance!=0">
-                        <div style="display:inline-block;width:33%;">
-                          <span>不计免赔:</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          ￥{{price.nonDeductibleInsurance}}
-                        </div>
-                      </ion-item>
-
-                      <!-- 车船税 -->
-                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                                      border:0px;"
-                                ng-if="price.carTax!==undefined&&price.carTax!==null&&price.carTax!=0">
-                        <div style="display:inline-block;width:33%;">
-                          <span>车船税:</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          ￥{{price.carTax}}
-                        </div>
-                      </ion-item>
-
-                      <!-- 积分 -->
-                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                                      border:0px;">
-                        <div style="display:inline-block;width:33%;color:#0a9dc7;font-size: 1.2em;">
-                          <span>积分:</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;color:#0a9dc7;font-size: 1.2em;">
-                          {{price.score}}
-                        </div>
-                      </ion-item>
-
-
-
-                      <ion-item style="border-top:0px;border-left:0px;border-right:0px;">
-                        <div style="display:inline-block;width:60%;">
-                        </div>
-                        <div style="display: inline-block;width: 30%;font-size: 1.2em;font-weight: bolder;">
-                          <span>总计:</span>
-                          <span>
-                            ￥{{price.insuranceFeeTotal}}
+                          <span style="width: 25%;display: inline-block;"></span>
+                          <span style="width: 75%;display: inline-block;font-weight: bolder;font-size: 1.1em;">
+                            {{confirmedPrice.companyName.replace('股份有限公司','')}}
                           </span>
-                        </div>
-                        <span style="display: inline-block;width: 10%;"></span>
-                      </ion-item>
 
-                      <!--<ion-item style="position: relative" ng-click="goDetail(price)">-->
-                        <!--<h2 style="width: 30%;display: inline-block">-->
+                        </ion-item>
+                      </div>
+
+                      <!-- 公司产品细项 -->
+                      <div class="padding"
+                           style="padding-top: 0px;padding-left:9px;padding-right: 9px;">
+                        <div style="margin:1px;padding:1px;border-left:1px solid #e5e5e5;border-right:1px solid #e5e5e5;"
+                             class="list">
+
+                          <div style="width: 100%;height: 20px;"></div>
+
+
+
+                          <ion-item
+                                  ng-repeat="product in confirmedPrice.items"
+                                  style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                border:0px;"
+                          >
+                            <div style="display:inline-block;width:33%;">
+                              <span>{{product.productName}}</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              {{product.insuranceType}}
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              ￥{{product.insuranceFee}}
+                            </div>
+                          </ion-item>
+
+                          <!-- 不计免赔 -->
+                          <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                          border:0px;"
+                                    ng-if="confirmedPrice.nonDeductibleInsurance!==undefined&&confirmedPrice.nonDeductibleInsurance!==null&&confirmedPrice.nonDeductibleInsurance!=0">
+                            <div style="display:inline-block;width:33%;">
+                              <span>不计免赔:</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              ￥{{confirmedPrice.nonDeductibleInsurance}}
+                            </div>
+                          </ion-item>
+
+                          <!-- 车船税 -->
+                          <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                          border:0px;"
+                                    ng-if="confirmedPrice.carTax!==undefined&&confirmedPrice.carTax!==null&&confirmedPrice.carTax!=0">
+                            <div style="display:inline-block;width:33%;">
+                              <span>车船税:</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                              ￥{{confirmedPrice.carTax}}
+                            </div>
+                          </ion-item>
+
+
+
+                          <!-- 积分 -->
+                          <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
+                                          border:0px;">
+                            <div style="display:inline-block;width:33%;color:#0a9dc7;font-size: 1.2em;">
+                              <span>积分:</span>
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;">
+                            </div>
+                            <div style="display: inline-block;width: 33%;text-align: center;color:#0a9dc7;font-size: 1.2em;">
+                              {{confirmedPrice.score}}
+                            </div>
+                          </ion-item>
+
+
+
+                          <ion-item style="border-top:0px;border-left:0px;border-right:0px;">
+                            <div style="display:inline-block;width:60%;">
+                            </div>
+                            <div style="display: inline-block;width: 30%;font-size: 1.2em;font-weight: bolder;">
+                              <span>总计:</span>
+                              <span>
+                                ￥{{price.insuranceFeeTotal}}
+                              </span>
+                            </div>
+                            <span style="display: inline-block;width: 10%;"></span>
+                          </ion-item>
+
+                          <!--<ion-item style="position: relative" ng-click="goDetail(price)">-->
+                          <!--<h2 style="width: 30%;display: inline-block">-->
                           <!--查看详情:-->
-                        <!--</h2>-->
-                        <!--<h2 style="display: inline-block">-->
+                          <!--</h2>-->
+                          <!--<h2 style="display: inline-block">-->
                           <!--<span  style="font-size: 1.3em;">-->
-                            <!--<i class="ion-compose"></i>-->
+                          <!--<i class="ion-compose"></i>-->
                           <!--</span>-->
-                        <!--</h2>-->
-                      <!--</ion-item>-->
+                          <!--</h2>-->
+                          <!--</ion-item>-->
+                        </div>
+
+                      </div>
                     </div>
-
-                  </div>
-                </div>
-
-                <div ng-if="order.orderState==2">
-
-                  <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;" >
-                    <div class="item item-divider">
-                      编号
-                    </div>
-                    <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
-                      车牌号:
-                      <span style="position: absolute;left:35%;">{{order.carInfo.carNum}}</span>
-                    </div>
-                    <div class="item" style="padding:16px;position: relative;border-left:0px;border-right:0px;">
-                      订单号:
-                      <span style="position: absolute;left:35%;">{{order.orderNum}}</span>
-                    </div>
-
-                  </div>
-
-                  <!-- inset two -->
-                  <div class="list list-inset"
-                       style="margin-bottom:20px;margin-left:0px;margin-right:0px;"
-                       ng-if="order.products!==undefined&&order.products!==null">
-
-                    <div class="item item-divider">
-                      订单产品
-                    </div>
-
-                    <div class="item"  style="padding: 16px;position:relative" ng-repeat="product in order.products">
-                      <span style="display: inline-block;width: 60%;">
-                        {{product.productName}}:
-                      </span>
-                      <span style="display: inline-block;width: 40%;" ng-if="product.insuranceType!=undefined&&product.insuranceType!=null">
-                        (保额){{product.insuranceType}}
-                      </span>
-                    </div>
-
-
-                  </div>
-
-                  <!-- inset three -->
-                  <div class="list list-inset" style="margin-bottom:40px;margin-left:0px;margin-right:0px;margin-top:0px" >
-                    <div class="item" style="padding:16px;position: relative;border-left:0px;border-top:0px;
-              border-right:0px;color:rgba(228, 93, 46, 0.87);font-size: 1em;">
-                      被保险人:
-                      <span style="position: absolute;left:35%;">{{order.insuranceder.perName}}</span>
-                    </div>
-                    <div class="item" style="padding:16px;font-size: 1em;color:rgba(228, 93, 46, 0.87);">
-                      申请日期:
-                      <span style="position: absolute;left:35%;font-size: 1em;">
-                      {{order.applyTime|date:'yyyy-MM-dd HH:mm'}}
-                  </span>
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <div ng-repeat="price in order.prices" ng-if="order.orderState==4">
-                  <!-- 公司产品细项 -->
-                  <div class="padding"
-                       style="padding:0px 10px;position: relative">
-
-
-                    <!--选中开关 -->
-                    <div ng-style="checkedStyle">
-                      <span style="color:#ff3b30">已选中</span>
-                      <span style="color:#f1c300;font-size: 1.3em;"><i class="fa fa-check"></i></span>
-                    </div>
-
-                    <ion-item style="border-bottom:0px;position:relative;padding-left:3%;padding-right:3%;
-                                      padding-bottom: 0px;">
-                      <span style="width: 30%;display: inline-block;">
-                      </span>
-                      <span style="width: 40%;display: inline-block;text-align: center;
-                              font-weight: bolder;">
-                        <span>￥</span>
-                        <span style="color:#f00;font-size: 2em;">{{confirmedPrice.insuranceFeeTotal}}</span>
-                      </span>
-                      <span style="width: 30%;display: inline-block;"></span>
-
-                    </ion-item>
-
-                    <!-- 公司名 -->
-                    <ion-item style="border-bottom:0px;border-top:0px;position:relative;padding-left:3%;padding-right:3%;"
-                    >
-                      <span style="width: 25%;display: inline-block;"></span>
-                      <span style="width: 75%;display: inline-block;font-weight: bolder;font-size: 1.1em;">
-                        {{confirmedPrice.companyName.replace('股份有限公司','')}}
-                      </span>
-
-                    </ion-item>
-                  </div>
-
-                  <!-- 公司产品细项 -->
-                  <div class="padding"
-                       style="padding-top: 0px;padding-left:9px;padding-right: 9px;">
-                    <div style="margin:1px;padding:1px;border-left:1px solid #e5e5e5;border-right:1px solid #e5e5e5;"
-                         class="list">
-
-                      <div style="width: 100%;height: 20px;"></div>
-
-
-
-                      <ion-item
-                              ng-repeat="product in confirmedPrice.items"
-                              style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                            border:0px;"
-                      >
-                        <div style="display:inline-block;width:33%;">
-                          <span>{{product.productName}}</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          {{product.insuranceType}}
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          ￥{{product.insuranceFee}}
-                        </div>
-                      </ion-item>
-
-                      <!-- 不计免赔 -->
-                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                                      border:0px;"
-                                ng-if="confirmedPrice.nonDeductibleInsurance!==undefined&&confirmedPrice.nonDeductibleInsurance!==null&&confirmedPrice.nonDeductibleInsurance!=0">
-                        <div style="display:inline-block;width:33%;">
-                          <span>不计免赔:</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          ￥{{confirmedPrice.nonDeductibleInsurance}}
-                        </div>
-                      </ion-item>
-
-                      <!-- 车船税 -->
-                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                                      border:0px;"
-                                ng-if="confirmedPrice.carTax!==undefined&&confirmedPrice.carTax!==null&&confirmedPrice.carTax!=0">
-                        <div style="display:inline-block;width:33%;">
-                          <span>车船税:</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                          ￥{{confirmedPrice.carTax}}
-                        </div>
-                      </ion-item>
-
-
-
-                      <!-- 积分 -->
-                      <ion-item style="padding-left: 3%;padding-right: 3%;padding-top:4px;padding-bottom: 4px;
-                                      border:0px;">
-                        <div style="display:inline-block;width:33%;color:#0a9dc7;font-size: 1.2em;">
-                          <span>积分:</span>
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;">
-                        </div>
-                        <div style="display: inline-block;width: 33%;text-align: center;color:#0a9dc7;font-size: 1.2em;">
-                          {{confirmedPrice.score}}
-                        </div>
-                      </ion-item>
-
-
-
-                      <ion-item style="border-top:0px;border-left:0px;border-right:0px;">
-                        <div style="display:inline-block;width:60%;">
-                        </div>
-                        <div style="display: inline-block;width: 30%;font-size: 1.2em;font-weight: bolder;">
-                          <span>总计:</span>
-                          <span>
-                            ￥{{price.insuranceFeeTotal}}
-                          </span>
-                        </div>
-                        <span style="display: inline-block;width: 10%;"></span>
-                      </ion-item>
-
-                      <!--<ion-item style="position: relative" ng-click="goDetail(price)">-->
-                      <!--<h2 style="width: 30%;display: inline-block">-->
-                      <!--查看详情:-->
-                      <!--</h2>-->
-                      <!--<h2 style="display: inline-block">-->
-                      <!--<span  style="font-size: 1.3em;">-->
-                      <!--<i class="ion-compose"></i>-->
-                      <!--</span>-->
-                      <!--</h2>-->
-                      <!--</ion-item>-->
-                    </div>
-
-                  </div>
-                </div>
 
 
 
@@ -385,7 +390,7 @@
             </ion-scroll>
           </div>
 
-          <div style="height: 25%;position: relative" ng-if="order.orderState==3">
+          <div style="height: 25%;position: relative" ng-if="order.prices!==undefined&&order.prices!==null&&order.pricedCount>0&&order.confirmed!=true">
             <div class="bar bar-footer  bar-assertive"
                  style="position: static;position: absolute;bottom:50%;width: 60%;margin-left:20%;"
                  ng-click="applyCarPrice()">

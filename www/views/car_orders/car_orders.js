@@ -132,17 +132,21 @@ angular.module('starter')
                       {
                           json.data.map(function (order,i) {
                               var pricedC=0;
+                              var confirmed=false;
                               if(order.prices!==undefined&&order.prices!==null)
                               {
                                   order.prices.map(function (price,j) {
                                       //已报价
                                       if(price.priceState==1)
                                           pricedC++;
+                                      if(price.isConfirm==1)
+                                          confirmed=true;
                                   });
                                   order.pricedCount=pricedC;
                               }else{
                                   order.pricedCount=0;
                               }
+                              order.confirmed=confirmed;
                           })
                           $scope.applyedList=json.data;
 
