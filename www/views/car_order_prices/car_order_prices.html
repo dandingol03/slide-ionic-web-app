@@ -250,7 +250,7 @@
 
 
                    <!-- 客户已确认 -->
-                   <div ng-repeat="price in order.prices" ng-if="order.confirmed==true">
+                   <div ng-if="order.confirmed==true">
                       <!-- 公司产品细项 -->
                       <div class="padding"
                            style="padding:0px 10px;position: relative">
@@ -363,7 +363,7 @@
                             <div style="display: inline-block;width: 30%;font-size: 1.2em;font-weight: bolder;">
                               <span>总计:</span>
                               <span>
-                                ￥{{price.insuranceFeeTotal}}
+                                ￥{{confirmedPrice.insuranceFeeTotal}}
                               </span>
                             </div>
                             <span style="display: inline-block;width: 10%;"></span>

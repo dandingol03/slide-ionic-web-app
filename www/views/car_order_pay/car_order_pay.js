@@ -732,10 +732,11 @@ angular.module('starter')
                     });
 
                     $rootScope.flags.carOrders.onFresh=true;
+                    $rootScope.car_orders_tabIndex=0;
+                    $rootScope.flags.carOrders.clear=true;
                     alertPopup.then(function(res) {
                         //回到车险订单的估价列表中
-                        $rootScope.car_orders_tabIndex=1;
-                        $rootScope.flags.carOrders.clear
+
                         $ionicNativeTransitions.stateGo('car_orders', {}, {}, {
                             "type": "slide",
                             "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
@@ -756,9 +757,10 @@ angular.module('starter')
 
         //确认购买
         $scope.apply=function() {
-            if($scope.order.invoiceTitle!==undefined&&$scope.order.invoiceTitle!==null)
+            if($scope.order.invoiceTitle!==undefined&&$scope.order.invoiceTitle!==null&&$scope.order.invoiceTitle!='')
             {
                 //TODO:check if order has been payed
+
                 $http({
                     method: "POST",
                     url: Proxy.local() + "/svr/request",
@@ -775,8 +777,8 @@ angular.module('starter')
                 }).then(function (res) {
                     var json=res.data;
                     if(json.re==1) {
-                        var state=json.data;
-                        if(state!=3)
+                        var confirmed=json.data;
+                        if(confirmed==true)
                         {
                             var alertPopup = $ionicPopup.alert({
                                 title: '信息',
