@@ -121,6 +121,11 @@ angular.module('starter')
     }
 
     $scope.setterPrice=function(i,item) {
+
+        if($scope.order.prices.length>1){
+            alert('有仍未报完价的方案，是否要继续');
+        }
+
       if($scope.priceIndex==i)
       {
         $scope.priceIndex=-1;
@@ -206,15 +211,58 @@ angular.module('starter')
                 selected_price = price;
         });
 
-        if(selected_price==null)
-        {
-            $ionicPopup.alert({
-                title: '错误',
-                template: '请至少选择一个报价方案后再点击提交'
-            });
-        }else{
-            $state.go('car_order_pay',{info:JSON.stringify({order:order,price:selected_price})});
-        }
+        //提交前先去数据库确认一下是否还有未报价完成的方案
+        var hasUnpriced=null;
+
+        $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data:
+                {
+                    request:'getCarOrderUnpricesByOrderId',
+                    info:{
+                        orderId:$scope.order.orderId
+                    }
+                }
+        }).then(function(res) {
+            if(res.data.re==1){
+                hasUnpriced = true;
+            }else{
+                hasUnpriced = false;
+            }
+            if(hasUnpriced){
+                var confirmPopup = $ionicPopup.confirm({
+                    title: '提示',
+                    template:'有仍未报完价的方案，是否要继续?'
+                });
+
+                confirmPopup.then(function(res) {
+                    if(res) {
+
+                        if(selected_price==null)
+                        {
+                            $ionicPopup.alert({
+                                title: '错误',
+                                template: '请至少选择一个报价方案后再点击提交'
+                            });
+                        }else{
+                            $state.go('car_order_pay',{info:JSON.stringify({order:order,price:selected_price})});
+                        }
+
+
+                    } else {
+
+                        return;
+                    }
+
+                });
+            }
+
+        })
+
     }
 
 
