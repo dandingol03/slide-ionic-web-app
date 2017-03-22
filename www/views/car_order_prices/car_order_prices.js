@@ -122,10 +122,6 @@ angular.module('starter')
 
     $scope.setterPrice=function(i,item) {
 
-        if($scope.order.prices.length>1){
-            alert('有仍未报完价的方案，是否要继续');
-        }
-
       if($scope.priceIndex==i)
       {
         $scope.priceIndex=-1;
@@ -259,6 +255,18 @@ angular.module('starter')
                     }
 
                 });
+            }else{
+
+                if(selected_price==null)
+                {
+                    $ionicPopup.alert({
+                        title: '错误',
+                        template: '请至少选择一个报价方案后再点击提交'
+                    });
+                }else{
+                    $state.go('car_order_pay',{info:JSON.stringify({order:order,price:selected_price})});
+                }
+
             }
 
         })
