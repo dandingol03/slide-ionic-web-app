@@ -10,6 +10,27 @@ angular.module('starter')
         ,$cordovaFileOpener2,$cordovaInAppBrowser,$stateParams,$q,$ionicNativeTransitions){
 
 
+        /*** bind upload_carAttach_modal***/
+        $ionicModal.fromTemplateUrl('views/modal/upload_carAttach_modal.html',{
+            scope:  $scope,
+            animation: 'animated '+' bounceInUp',
+            hideDelay:920
+        }).then(function(modal) {
+            $scope.upload_carAttach_modal = modal;
+        });
+
+        $scope.open_uploadCarAttachModal= function(){
+            $scope.upload_carAttach_modal.show();
+        };
+
+        $scope.close_uploadCarAttachModal= function() {
+            $scope.upload_carAttach_modal.hide();
+        };
+
+        /*** bind upload_carAttach_modal ***/
+
+
+
 
         if($stateParams.params!==undefined&&$stateParams.params!==null&&$stateParams.params!='')
         {
