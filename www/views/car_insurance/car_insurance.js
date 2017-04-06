@@ -599,46 +599,130 @@ angular.module('starter')
                 companys.push(company);
         });
 
-        if(companys.length>0) {
-            //TODO:append insuranceder modal
-            //$scope.open_appendCarOrderModal();
-            var products=[];
-            var meal = $scope.tabs[$scope.tabIndex];
-            for(var productName in meal.products) {
-                var product=meal.products[productName];
-                if(product.checked==true)
-                {
-                    products.push(product);
-                }
-            }
+        var subCompanys = [];
 
-            if($rootScope.carOrderModify!=undefined&&$rootScope.carOrderModify!=null){
-                var info={
-                    orderId:$rootScope.carOrderModify.orderId,
-                    products:products,
-                    companys:companys,
-                    carId:$rootScope.carOrderModify.carId
-                };
-            }else{
-                var info={
-                    products:products,
-                    companys:companys,
-                    carId:$scope.carInfo.carId
-                };
-
-            }
-
-            $scope.closeCompanyModal();
-            $state.go('append_car_insuranceder',{info:JSON.stringify(info)});
-
-        }else{
-            var alertPopup = $ionicPopup.alert({
-                title: '错误',
-                template: '请选择公司后点击确认'
-            });
+        var carNumPrefix = $scope.carInfo.carNum.substring(0,2);
+        var carCity2 = null;
+        switch (carNumPrefix) {
+            case '鲁A':
+                carCity2='济南';
+                break;
+            case '鲁B':
+                carCity2='青岛';
+                break;
+            case '鲁C':
+                carCity2='淄博';
+                break;
+            case '鲁D':
+                carCity2='枣庄';
+                break;
+            case '鲁E':
+                carCity2='东营';
+                break;
+            case '鲁F':
+                carCity2='烟台';
+                break;
+            case '鲁G':
+                carCity2='潍坊';
+                break;
+            case '鲁H':
+                carCity2='济宁';
+                break;
+            case '鲁J':
+                carCity2='泰安';
+                break;
+            case '鲁K':
+                carCity2='威海';
+                break;
+            case '鲁L':
+                carNum='日照';
+                break;
+            case '鲁M':
+                carCity2='滨州';
+                break;
+            case '鲁N':
+                carCity2='德州';
+                break;
+            case '鲁P':
+                carCity2='聊城';
+                break;
+            case '鲁Q':
+                carCity2='临沂';
+                break;
+            case '鲁R':
+                carCity2='菏泽';
+                break;
+            case '鲁S':
+                carCity2='莱芜';
+                break;
+            default:
+                break;
         }
 
 
+        $http({
+            method: "POST",
+            url: Proxy.local()+"/svr/request",
+            headers: {
+                'Authorization': "Bearer " + $rootScope.access_token
+            },
+            data:
+                {
+                    request:'getSubInsuranceCompany',
+                    info: {
+                        companys:companys,
+                        carCity: $scope.carInfo.carCity,
+                        carNum:$scope.carInfo.carNum,
+                        carCity2:carCity2
+                    }
+                }
+        }).then(function(res) {
+            var json = res.data;
+            if(json.re==1){
+                subCompanys = json.data;
+
+                if(subCompanys.length>0) {
+                    //TODO:append insuranceder modal
+                    //$scope.open_appendCarOrderModal();
+                    var products=[];
+                    var meal = $scope.tabs[$scope.tabIndex];
+                    for(var productName in meal.products) {
+                        var product=meal.products[productName];
+                        if(product.checked==true)
+                        {
+                            products.push(product);
+                        }
+                    }
+
+                    if($rootScope.carOrderModify!=undefined&&$rootScope.carOrderModify!=null){
+                        var info={
+                            orderId:$rootScope.carOrderModify.orderId,
+                            products:products,
+                            companys:subCompanys,
+                            carId:$rootScope.carOrderModify.carId
+                        };
+                    }else{
+                        var info={
+                            products:products,
+                            companys:subCompanys,
+                            carId:$scope.carInfo.carId
+                        };
+
+                    }
+
+                    $scope.closeCompanyModal();
+                    $state.go('append_car_insuranceder',{info:JSON.stringify(info)});
+
+                }else{
+                    var alertPopup = $ionicPopup.alert({
+                        title: '错误',
+                        template: '请选择公司后点击确认'
+                    });
+                }
+
+            }
+
+        })
 
     }
 

@@ -5,7 +5,7 @@ angular.module('starter')
     .controller('carManageController',function($scope,$state,$http,
                                                $rootScope,$cordovaFileTransfer,Proxy,
                                                $ionicModal,$ionicPopup,$ionicLoading,
-                                                $timeout,$ionicNativeTransitions,$ionicHistory,
+                                               $timeout,$ionicNativeTransitions,$ionicHistory,
                                                $stateParams,$q,$ionicPlatform){
 
 
@@ -341,7 +341,7 @@ angular.module('starter')
 
                     }else{}
                     $ionicLoading.hide();
-            }).catch(function(err) {
+                }).catch(function(err) {
                 $scope.doingGetOrders=false;
                 if(err.status==-1)
                 {
@@ -362,14 +362,14 @@ angular.module('starter')
         if($rootScope.flags.carManage.onFresh==true){
             $scope.fetchRelativeCars();
         }else{
-           $scope.relativeCars=$rootScope.flags.carOrders.data.relativeCars;
-           $scope.relativeCars.map(function (car,i) {
-               car.checked=false;
-           })
+            $scope.relativeCars=$rootScope.flags.carOrders.data.relativeCars;
+            $scope.relativeCars.map(function (car,i) {
+                car.checked=false;
+            })
         }
 
         $scope.Mutex=function(item,field,cluster) {
-                           // car checked relativeCars
+            // car checked relativeCars
 
             if(item.idle)
             {
@@ -498,7 +498,7 @@ angular.module('starter')
         $scope.city_confirm=function () {
 
             $scope.city_confirmed=$scope.city;
-           // $scope.carInfo.carNum=$scope.getCarNumPrefixByCity($scope.city);
+            $scope.carInfo.carNum=$scope.getCarNumPrefixByCity($scope.city);
             $scope.close_append_carNumPrefixModal();
 
         }
@@ -566,16 +566,16 @@ angular.module('starter')
             $scope.flag=true;
             var carNum=$scope.carInfo.carNum;
 
-            // var carNumPrefix=carNum.substring(0,2);
-            // var  prefix=$scope.getCarNumPrefixByCity ($scope.city_confirmed);
-            // if(carNumPrefix!=prefix)
-            // {
-            //     $ionicPopup.alert({
-            //         title: '错误',
-            //         template: '您输入的车牌号前缀不符合您选择的城市'
-            //     });
-            //     return ;
-            // }
+            var carNumPrefix=carNum.substring(0,2);
+            var  prefix=$scope.getCarNumPrefixByCity ($scope.city_confirmed);
+            if(carNumPrefix!=prefix)
+            {
+                $ionicPopup.alert({
+                    title: '错误',
+                    template: '您输入的车牌号前缀不符合您选择的城市'
+                });
+                return ;
+            }
 
             $http({
                 method: "POST",
@@ -720,3 +720,6 @@ angular.module('starter')
         };
 
     })
+/**
+ * Created by dingyiming on 2017/4/5.
+ */
