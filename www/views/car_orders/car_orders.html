@@ -86,14 +86,14 @@
                     {{order.orderNum}}
                   </div>
                   <div style="font-size: 0.8em;">
-                    <span ng-if="order.pricedCount!=undefined&&order.pricedCount!==null&&order.pricedCount&&order.confirmed!=true>0"
+                    <span ng-if="order.pricedCount!=undefined&&order.pricedCount!==null&&order.pricedCount>0&&order.orderState!=2"
                         style="color:#ff4f39">
                       已报价公司数: <span style="color:#222;font-weight: bold;font-size:1.1em">{{order.pricedCount}}</span>
                     </span>
-                    <span ng-if="(order.pricedCount==undefined||order.pricedCount==null||order.pricedCount==0)&&order.confirmed!=true">
+                    <span ng-if="(order.pricedCount==undefined||order.pricedCount==null||order.pricedCount==0)&&order.orderState!=2">
                       已申请
                     </span>
-                     <span ng-if="order.confirmed==true">
+                     <span ng-if="order.orderState==2">
                         客户确认
                      </span>
                   </div>
