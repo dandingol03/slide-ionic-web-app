@@ -43,7 +43,7 @@
 
                   <!-- 报价完成 -->
                   <div ng-repeat="price in order.prices" ng-if="order.prices!==undefined&&order.prices!==null
-                        &&order.pricedCount>0&&order.confirmed!=true" class="card" style="padding:0;padding-top:1px;">
+                        &&order.pricedCount>0&&order.orderState!=4" class="card" style="padding:0;padding-top:1px;">
                       <!-- 公司产品细项 -->
                       <div class="padding "
                            style="padding:0px 0px;position: relative">
@@ -250,7 +250,7 @@
 
 
                    <!-- 客户已确认 -->
-                   <div ng-if="order.confirmed==true">
+                   <div ng-if="order.orderState==4">
                       <!-- 公司产品细项 -->
                       <div class="padding"
                            style="padding:0px 10px;position: relative">
@@ -390,7 +390,7 @@
             </ion-scroll>
           </div>
 
-          <div style="height: 25%;position: relative" ng-if="order.prices!==undefined&&order.prices!==null&&order.pricedCount>0&&order.confirmed!=true">
+          <div style="height: 25%;position: relative" ng-if="order.prices!==undefined&&order.prices!==null&&order.pricedCount>0&&order.orderState!=4">
             <div class="bar bar-footer  bar-assertive"
                  style="position: static;position: absolute;bottom:50%;width: 60%;margin-left:20%;"
                  ng-click="applyCarPrice()">

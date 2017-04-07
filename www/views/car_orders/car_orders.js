@@ -94,6 +94,7 @@ angular.module('starter')
       }
 
 
+      //车险订单拉取
       $scope.fetchOrders=function () {
 
           $ionicLoading.show({

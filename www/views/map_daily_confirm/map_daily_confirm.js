@@ -551,7 +551,7 @@ angular.module('starter')
 
 
                 var server='http://211.87.225.199:8080/insurancems/insurance/insuranceTransformAmrToMp3.do'+'?' +
-                    'request=uploadVideo&orderId='+orderId+'&fileName='+$scope.maintain.description.video+'&videoType=serviceVideo';
+                    'request=uploadAudio&orderId='+orderId+'&fileName='+$scope.maintain.description.audio+'&audioType=serviceVideo';
 
                 var options = {
                     fileKey:'form',
