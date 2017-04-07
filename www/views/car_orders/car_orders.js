@@ -265,9 +265,6 @@ angular.module('starter')
       //车险订单  0.已完成;1.正在进行;2.已申请
       $scope.tabIndex=$rootScope.car_orders_tabIndex;
 
-
-
-
     $scope.orders=$rootScope.car_orders;
 
 

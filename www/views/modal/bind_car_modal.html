@@ -26,25 +26,6 @@
 
         <div class="list padding">
 
-            <!-- 用车城市 -->
-            <div class="item"
-                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;padding:10px;background-color:transparent;">
-                <span style="display: inline-block;width: 5%;text-align: center">
-                    <i class="fa fa-map-marker"></i>
-                </span>
-                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;color:#323232">
-                    用车城市:
-                </span>
-                <span style="width: 50%;display: inline-block;text-align: left;color:#323232">
-                    {{city_confirmed!==undefined&&city_confirmed!==null?city_confirmed:''}}
-                </span>
-                <span style="width: 20%;display: inline-block;text-align: center;font-size: 1.4em;"
-                      ng-click="selectCarNumPrefixByCity()">
-                    <i class="ion-chevron-right"></i>
-                </span>
-            </div>
-
-
             <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;
              padding:10px;background-color:transparent;overflow:initial">
                 <span style="display: inline-block;width: 5%;text-align: center">
@@ -66,6 +47,26 @@
                 <span style="width: 20%;display: inline-block;"></span>
 
             </div>
+
+
+            <!-- 选择用车城市 -->
+            <div class="item"
+                 style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #646464;padding:10px;background-color:transparent;">
+                <span style="display: inline-block;width: 5%;text-align: center">
+                    <i class="fa fa-map-marker"></i>
+                </span>
+                <span class="input-label" style="display: inline-block;width: 25%;text-align: left;color:#323232">
+                    用车城市:
+                </span>
+                <span style="width: 50%;display: inline-block;text-align: left;color:#323232">
+                    {{city_confirmed!==undefined&&city_confirmed!==null?city_confirmed:''}}
+                </span>
+                <span style="width: 20%;display: inline-block;text-align: center;font-size: 1.4em;"
+                      ng-click="selectCarNumPrefixByCity()">
+                    <i class="ion-chevron-right"></i>
+                </span>
+            </div>
+
 
             <div class="item" style="margin:1px;border:0px;
              padding:10px;background-color:transparent;overflow:initial;margin-top:15%">

@@ -19,8 +19,12 @@ angular.module('starter')
                 carNumInfo = JSON.parse(carNumInfo);
             if(carNumInfo.carNum!==undefined&&carNumInfo.carNum!==null)
                 $scope.carInfo.carNum=carNumInfo.carNum;
-            if(carNumInfo.city!==undefined&&carNumInfo.city!==null)
+            if(carNumInfo.city!==undefined&&carNumInfo.city!==null){
                 $scope.city_confirmed=carNumInfo.city;
+                $scope.carInfo.carCity=carNumInfo.city;
+
+            }
+
         }
 
         $scope.imgArrs=['','licenseCard1_img','licenseCard2_img','licenseCard3_img'];
@@ -95,7 +99,8 @@ angular.module('starter')
         $scope.city_confirm=function () {
 
             $scope.city_confirmed=$scope.city;
-            $scope.carInfo.carNum=$scope.getCarNumPrefixByCity($scope.city);
+            $scope.carInfo.carCity=$scope.city;
+            //$scope.carInfo.carNum=$scope.getCarNumPrefixByCity($scope.city);
             $scope.close_append_carNumPrefixModal();
 
         }
@@ -729,15 +734,15 @@ angular.module('starter')
                     });
                 }else{
                     var carNum=$scope.carInfo.carNum;
-                    var carNumPrefix=carNum.substring(0,2);
-                    var prefix=$scope.getCarNumPrefixByCity($scope.city_confirmed);
-                    if(prefix!=carNumPrefix)
-                    {
-                        $ionicPopup.alert({
-                            title: '错误',
-                            template: '您输入的车牌号前缀不符合您选择的城市'
-                        });
-                    }else{
+                    // var carNumPrefix=carNum.substring(0,2);
+                    // var prefix=$scope.getCarNumPrefixByCity($scope.city_confirmed);
+                    // if(prefix!=carNumPrefix)
+                    // {
+                    //     $ionicPopup.alert({
+                    //         title: '错误',
+                    //         template: '您输入的车牌号前缀不符合您选择的城市'
+                    //     });
+                    // }else{
                       if($scope.carInfo.ownerName!==undefined&&$scope.carInfo.ownerName!==null&&$scope.carInfo.ownername!=='')
                       {
                           if($scope.carInfo.ownerName.toString().length<2)
@@ -768,6 +773,8 @@ angular.module('starter')
                           //填入车驾号的方式提交
                           if($scope.licenseIndex==0)
                           {
+                              $scope.carInfo.firstRegisterDate=new Date();
+                              $scope.carInfo.issueDate=new Date();
                               //如果要是有未清空的行驶证照片，提醒用户是否选择上传行驶证
                               $scope.checkPhotoUploadOrNot().then(function (json) {
                                   if(json.re==1) {
@@ -951,7 +958,7 @@ angular.module('starter')
                               template: '请填入车主姓名'
                           });
                       }
-                    }
+                   // }
                 }
 
 

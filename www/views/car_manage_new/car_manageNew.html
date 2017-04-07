@@ -2,33 +2,33 @@
 <ion-nav-view class="slide-left-right" hide-nav-bar="true">
     <ion-view class="passwordForget-view" view-title="车辆管理" hide-nav-bar="true">
 
-    <ion-content scroll="false" style="background-image: url('img/flowAndMoutain@2x.png');background-repeat: no-repeat;
+        <ion-content scroll="false" style="background-image: url('img/flowAndMoutain@2x.png');background-repeat: no-repeat;
     background-size: 100%;background-position: 0% 100%;">
 
-        <!-- header bar -->
-        <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
-            <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:4%">
+            <!-- header bar -->
+            <div class="bar bar-header bar-dark" style="position: static;height:10%;width: 100%;padding-left: 16px;padding-right: 16px;background-color: rgba(17, 17, 17, 0.6);">
+                <h1 class="title" style="display: inline-block;width: 90%;margin-left:5%;text-align:center;margin-top:4%">
                 <span style="display: inline-block;width: 10%;text-align: center;font-size: 1.6em;"  ng-click="go_back()">
                     <i class="ion-chevron-left"></i>
                 </span>
-                <span style="display: inline-block;width: 70%;text-align: center;">
+                    <span style="display: inline-block;width: 70%;text-align: center;">
                     车辆管理
                 </span>
-                <span style="display: inline-block;font-size:1.5em;text-align: center;width: 20%;"
-                      ng-click="fetchRelativeCars()">
+                    <span style="display: inline-block;font-size:1.5em;text-align: center;width: 20%;"
+                          ng-click="fetchRelativeCars()">
                   <i class="ion-refresh"></i>
               </span>
-                <span style="display: inline-block;width: 5%;">
+                    <span style="display: inline-block;width: 5%;">
               </span>
-            </h1>
-        </div>
+                </h1>
+            </div>
 
-        <div style="height:90%;">
+            <div style="height:90%;">
 
-            <div style="height:80%;width:90%;margin-left:5%;">
+                <div style="height:80%;width:90%;margin-left:5%;">
 
-                <div class="item" style="height:40px;padding:0;border-radius:6px;margin-top: 10px;">
-                    <div style="width:100%;height: 100%;position: relative;">
+                    <div class="item" style="height:40px;padding:0;border-radius:6px;margin-top: 10px;">
+                        <div style="width:100%;height: 100%;position: relative;">
                     <span style="width: 82%;display: inline-block;position: absolute;left:0%;top:0px;
                          height: 100%;text-align: center">
                         <input type="text" placeholder="请输入车牌号作为搜索条件"
@@ -39,7 +39,7 @@
                         />
                     </span>
 
-                    <span style="width: 18%;height: 100%;display: inline-block;position: absolute;left:82%;top:0px;">
+                            <span style="width: 18%;height: 100%;display: inline-block;position: absolute;left:82%;top:0px;">
                         <div style="width: 100%;height: 100%;display: table;text-align: center;background: #00c9ff"
                              ng-click="fetchRelativeCars()">
                             <span style="display: table-cell;vertical-align: middle;font-size: 1.5em;color:#fff;">
@@ -47,16 +47,16 @@
                             </span>
                         </div>
                     </span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="list list-inset"
-                     style="height:90%;margin-bottom:7%;margin-left: 0;margin-right: 0;background:transparent;">
-                    <ion-scroll style="height:90%;">
-                        <!--<div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"-->
-                             <!--ng-style="$index==0?firstRowStyle:$index==(relativeCars.length-1)?lastRowStyle:notFirstRowStyle">-->
-                        <div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"
-                             style="height:50px;position:relative;
+                    <div class="list list-inset"
+                         style="height:90%;margin-bottom:7%;margin-left: 0;margin-right: 0;background:transparent;">
+                        <ion-scroll style="height:90%;">
+                            <!--<div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"-->
+                            <!--ng-style="$index==0?firstRowStyle:$index==(relativeCars.length-1)?lastRowStyle:notFirstRowStyle">-->
+                            <div class="item" ng-repeat="car in relativeCars | orderBy:'-carId'"
+                                 style="height:50px;position:relative;
                              margin: 1px;
                              border-top: 0px;
                              border-left: 0px;
@@ -66,8 +66,8 @@
                              background-color: transparent;
                              overflow: initial;">
 
-                            <div style="position: absolute;width: 18%;height: 100%;left:0;top:0;">
-                                <div style="width:100%;height: 100%;display: table;">
+                                <div style="position: absolute;width: 18%;height: 100%;left:0;top:0;">
+                                    <div style="width:100%;height: 100%;display: table;">
                                 <span style="display: table-cell;vertical-align: middle;font-size:0.8em;padding-left:10px;text-align: left;">
                                     <div style="display:inline-block;width:100%;text-align: center" ng-if="car.idle==true" ng-click="Mutex(car,'checked',relativeCars)">
                                         <i ng-if="car.checked!=true" class="ion-ios-circle-outline" style="font-size:200%;color: #646464;"></i>
@@ -79,11 +79,11 @@
                                         <span style="color:#ff5c3c">已申请</span>
                                     </div>
                                 </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                           <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
-                            <span style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
+                                <div style="position: absolute;width: 4%;height: 100%;left:31%;top:0;"></div>
+                                <span style="position: absolute;left:30%;width: 45%;height: 100%;top:0;">
                             <div style="width: 100%;height: 100%;display: table;">
                               <div style="display: table-cell;vertical-align: middle;">
                                   <div style="font-size: 1em;color:#323232;">
@@ -101,7 +101,7 @@
 
 
 
-                            <span style="width:20%;height:100%;position: absolute;left:80%;top:0;text-align: center;">
+                                <span style="width:20%;height:100%;position: absolute;left:80%;top:0;text-align: center;">
                               <div style="width: 100%;height: 100%;display: table;" ng-click="goDetail(car)">
                                 <span style="display:table-cell;vertical-align: middle;">
                                   <span style="font-size: 0.8em;display: inline-block;vertical-align: baseline;">&nbsp;</span>
@@ -111,29 +111,29 @@
                                 </span>
                               </div>
                             </span>
-                        </div>
+                            </div>
 
-                        <div style="width: 100%;height: 20px;"></div>
-                    </ion-scroll>
+                            <div style="width: 100%;height: 20px;"></div>
+                        </ion-scroll>
+                    </div>
                 </div>
-            </div>
 
-            <div style="height:20%;width: 100%;">
-                <div style="width: 100%;height: 100%;display:table;">
-                    <div style="display: table-cell;vertical-align: middle;text-align: center">
-                        <button class="card" ng-click="openBindCarModal()"
-                                style="height: 40%;margin-top: 0;background-color:rgba(250, 250, 250, 0.46);border-radius:6px;width: 60%;font-size:large;color:#323232;">
-                            创 建 新 车
-                        </button>
+                <div style="height:20%;width: 100%;">
+                    <div style="width: 100%;height: 100%;display:table;">
+                        <div style="display: table-cell;vertical-align: middle;text-align: center">
+                            <button class="card" ng-click="openBindCarModal()"
+                                    style="height: 40%;margin-top: 0;background-color:rgba(250, 250, 250, 0.46);border-radius:6px;width: 60%;font-size:large;color:#323232;">
+                                创 建 新 车
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-    </ion-content>
+        </ion-content>
 
-</ion-view>
+    </ion-view>
 
     </ion-view>
 </ion-nav-view>
