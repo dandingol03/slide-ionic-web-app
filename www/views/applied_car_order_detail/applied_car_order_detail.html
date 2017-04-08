@@ -65,12 +65,12 @@
 
         <button class="button button-calm"
                 ng-click="modifyOrder()"
-                style="width: 70%;margin-left:15%;" ng-if="haveModifyOrder==false">
+                style="width: 70%;margin-left:15%;" ng-if="haveModifyOrder==false&&order.orderState!==3">
             修改订单
         </button>
 
         <button class="button button-calm"
-                style="width: 70%;margin-left:15%;" ng-if="haveModifyOrder==true"
+                style="width: 70%;margin-left:15%;" ng-if="haveModifyOrder==true&&order.orderState!==3"
         >
             订单正在修改.....
         </button>
