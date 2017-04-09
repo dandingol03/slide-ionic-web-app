@@ -46,7 +46,8 @@
 
 
     <!-- 已申请订单 -->
-    <div class="list list-inset padding" style="margin-bottom: 0px;height: 100%;width: 100%;background: transparent;margin-top:0" ng-if="tabIndex==0">
+    <div class="list list-inset padding" style="margin-bottom: 0px;height: 100%;width: 100%;background: transparent;margin-top:0"
+         ng-if="tabIndex==0">
 
       <ion-scroll style="height:65%;width: 100%;">
 
@@ -86,11 +87,11 @@
                     {{order.orderNum}}
                   </div>
                   <div style="font-size: 0.8em;">
-                    <span ng-if="order.pricedCount!=undefined&&order.pricedCount!==null&&order.pricedCount>0&&order.orderState!=2"
+                    <span ng-if="order.pricedCount!=undefined&&order.pricedCount!==null&&order.pricedCount>0&&order.orderState==1"
                         style="color:#ff4f39">
                       已报价公司数: <span style="color:#222;font-weight: bold;font-size:1.1em">{{order.pricedCount}}</span>
                     </span>
-                    <span ng-if="(order.pricedCount==undefined||order.pricedCount==null||order.pricedCount==0)&&order.orderState!=2">
+                    <span ng-if="(order.pricedCount==undefined||order.pricedCount==null||order.pricedCount==0)&&order.orderState==1">
                       已申请
                     </span>
                      <span ng-if="order.orderState==2">
@@ -122,7 +123,7 @@
       </ion-scroll>
     </div>
 
-    <!-- 正在进行 -->
+    <!-- !!!!!!!已废弃，不显示!!!!!!! -->
     <div class="list list-inset padding"
          style="margin-bottom: 0px;height: 100%;width: 100%;background: transparent;"
          ng-if="tabIndex==2">
