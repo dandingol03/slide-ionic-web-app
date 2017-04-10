@@ -270,6 +270,10 @@ angular.module('starter')
           console.log('type=' + $scope.wx.type);
       }
 
+      $scope.setType=function (type) {
+          $scope.wx.type=type;
+      }
+
       $scope.toggleWxDialog=function () {
           if($scope.wxVisible==false)
           {
@@ -277,7 +281,6 @@ angular.module('starter')
               $scope.wxVisible=true;
           }else{}
       }
-
 
       //分享至指定朋友
       $scope.wxConfirm=function () {
@@ -333,8 +336,6 @@ angular.module('starter')
           $scope.closeWxShareModal();
       }
 
-
-
       /****** 设置 popover******/
       $scope.popover={};
 
@@ -343,8 +344,6 @@ angular.module('starter')
       }).then(function(ins) {
           $scope.popover.instance = ins;
       });
-
-
 
       $scope.openPopover = function($event) {
           $scope.popover.instance.show($event);

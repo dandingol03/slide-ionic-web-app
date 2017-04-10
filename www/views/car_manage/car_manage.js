@@ -104,14 +104,19 @@ angular.module('starter')
 
         /****监听物理回退,以取消loading****/
         $scope.deferred=null;
+
         $scope.deregister = $ionicPlatform.registerBackButtonAction(
             function () {
                 console.log("close the popup");
+
                 if($scope.doingGetOrders==true&&$scope.deferred!==undefined&&$scope.deferred!==null){
                     $scope.deferred.reject({re: -1});
                     $scope.deferred=null;
                     $scope.doingGetOrders=false;
                     $ionicLoading.hide();
+                    //销毁优先级高的函数
+                    $scope.deregister();
+                }else{
                     //销毁优先级高的函数
                     $scope.deregister();
                 }
@@ -174,7 +179,7 @@ angular.module('starter')
                         //询问用户是否需要创建新车
                         var confirmPopup = $ionicPopup.confirm({
                             title: '信息',
-                            template: '数据库未保存该车信息，点击创建新车。'
+                            template: '数据库没有已绑定的车辆，请点击创建新车。'
                         });
                         confirmPopup.then(function(res) {
                             if(res) {
