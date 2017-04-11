@@ -2,26 +2,59 @@
                  style="background: transparent;top:38%;width: 84%;margin-left:8%;">
     <ion-content
             class="card h-300"
-            style="margin: 0 auto;top: 0%;height: 300px;border:1px solid #ddd;">
+            style="margin: 0 auto;top: 0%;height: 300px;border:1px solid #ddd;background-image: url('img/flowAndMoutain@2x.png')">
 
         <div class="list padding">
 
-
-            <div class="item" style="margin:0;border:0;padding:16px;background: #eee;">
-                <div style="white-space: normal;color:#222;">我正在使用捷慧宝App,想与您一起分享</div>
-                <div><span style="font-size: 0.9em;color:#888;">来自捷慧宝</span></div>
+            <div class="item" style="margin:0;border-color: #ddd;padding: 16px;background: transparent;">
+                <div style="white-space: normal;color:#222;">我正在使用捷惠保App,想与您一起分享</div>
+                <div><span style="font-size: 0.9em;color:#888;">来自捷惠保</span></div>
             </div>
 
 
-            <div class="item item-input item-select">
-                <div class="input-label">
-                    分享类型
-                </div>
-                <select ng-model="wx.type" ng-value="wx.type" ng-change="typeChange()" style="font-size: 1em;">
-                    <option value="friend">好友</option>
-                    <option value="timeline">朋友圈</option>
-                </select>
+            <!--<div class="item item-input item-select">-->
+                <!--<div class="input-label">-->
+                    <!--分享类型-->
+                <!--</div>-->
+                <!--<select ng-model="wx.type" ng-value="wx.type" ng-change="typeChange()" style="font-size: 1em;">-->
+                    <!--<option value="friend">好友</option>-->
+                    <!--<option value="timeline">朋友圈</option>-->
+                <!--</select>-->
+            <!--</div>-->
+
+
+            <div class="item item-input "  style="background:transparent">
+                    <div class="input-label" style="width:30%;display: inline-block;">
+                        分享类型:
+                    </div>
+                    <div class="input-label" ng-click="setType('friend')"
+                         style="width: 23%;display: inline-block;margin-left:10%;color:#387ef5"
+                         ng-if="wx.type=='friend'">
+                        <span>好友</span>
+                        <span><i class="ion-chatbubbles"></i></span>
+                    </div>
+                    <div class="input-label" ng-click="setType('friend')"
+                         style="width: 23%;display: inline-block;margin-left:10%;"
+                         ng-if="wx.type!=='friend'">
+                        <span>好友</span>
+                        <span><i class="ion-chatbubbles"></i></span>
+                    </div>
+                    <div class="input-label"
+                         ng-click="setType('timeline')"
+                         style="width: 23%;display: inline-block;margin-left:10%; color:#387ef5"
+                         ng-if="wx.type=='timeline'">
+                        朋友圈
+                        <span><i class="ion-aperture"></i></span>
+                    </div>
+                    <div class="input-label"
+                         ng-click="setType('timeline')"
+                         style="width: 23%;display: inline-block;margin-left:10%;"
+                         ng-if="wx.type!=='timeline'">
+                        朋友圈
+                        <span><i class="ion-aperture"></i></span>
+                    </div>
             </div>
+
 
             <div class="item" style="margin:1px;border-top:0px;border-left:0px;border-right:0px;border-bottom:1px solid #11c1f3;
                     padding:10px;background-color:transparent">

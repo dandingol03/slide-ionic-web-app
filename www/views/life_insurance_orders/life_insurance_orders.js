@@ -65,6 +65,9 @@ angular.module('starter')
                   $ionicLoading.hide();
                   //销毁优先级高的函数
                   $scope.deregister();
+              }else{
+                  //销毁优先级高的函数
+                  $scope.deregister();
               }
           }, 505
       );
